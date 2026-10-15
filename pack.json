@@ -1,0 +1,28 @@
+{
+  "name": "만승팩",
+  "sources": [
+    {
+      "id": "narae_hangul",
+      "repository": "y5496694/narae_hangul",
+      "branch": "main",
+      "skills": ["1_나래엔진/narae-hangul"]
+    },
+    {
+      "id": "narae_gyomoo_portal",
+      "repository": "y5496694/narae_gyomoo_portal",
+      "branch": "main",
+      "skills": [
+        "skills/narae-gyomu-work-portal",
+        "skills/narae-gyomu-neis",
+        "skills/narae-gyomu-edufine",
+        "skills/wxs-cli"
+      ]
+    },
+    {
+      "id": "CBE_CLI",
+      "repository": "y5496694/CBE_CLI",
+      "branch": "main",
+      "skills": ["skills/cbe-messenger"]
+    }
+  ]
+}

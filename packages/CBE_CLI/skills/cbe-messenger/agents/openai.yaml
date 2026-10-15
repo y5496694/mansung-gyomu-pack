@@ -1,0 +1,4 @@
+interface:
+  display_name: "충북소통메신저"
+  short_description: "충북소통메신저의 검색·조회·새 방 생성·쪽지 전송을 백그라운드로 처리"
+  default_prompt: "$cbe-messenger를 사용해 충북소통메신저에서 요청한 조회·방 생성·대화나 쪽지 전송을 백그라운드로 처리해 줘."

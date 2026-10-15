@@ -1,0 +1,4 @@
+interface:
+  display_name: "나래 한글"
+  short_description: "HWP/HWPX 독립 편집과 설치된 한컴 COM의 문서 생성·편집을 수행합니다"
+  default_prompt: "$narae-hangul을 사용해 표와 그림이 들어간 HWP를 작성하고 검증해 줘."

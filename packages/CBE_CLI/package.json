@@ -1,0 +1,14 @@
+{
+  "name": "cbe-messenger-cli",
+  "version": "0.4.0",
+  "private": true,
+  "description": "충북소통메신저의 조직 검색, 쪽지·대화 조회, 백그라운드 대화 전송을 위한 Windows CLI",
+  "type": "module",
+  "bin": {"cbe": "cli.mjs"},
+  "engines": {"node": ">=22.19"},
+  "scripts": {"test": "node --test test.mjs"},
+  "repository": {"type": "git", "url": "git+https://github.com/y5496694/CBE_CLI.git"},
+  "homepage": "https://github.com/y5496694/CBE_CLI#readme",
+  "bugs": {"url": "https://github.com/y5496694/CBE_CLI/issues"},
+  "license": "MIT"
+}
