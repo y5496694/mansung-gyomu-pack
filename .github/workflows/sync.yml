@@ -1,0 +1,38 @@
+name: Sync upstream packages
+on:
+  schedule:
+    - cron: '17 * * * *'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: upstream-sync
+  cancel-in-progress: false
+jobs:
+  sync:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/setup-python@v7.0.0
+        with:
+          python-version: '3.13'
+      - name: Import latest main commits
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: python scripts/sync.py
+      - name: Check bundle and installer
+        run: |
+          python scripts/validate.py
+          python -m unittest discover -s tests -v
+      - name: Commit validated snapshots
+        shell: bash
+        run: |
+          git add --all packages sources.lock.json
+          if git diff --cached --quiet; then
+            echo 'Already up to date.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'chore: sync upstream packages'
+          git push
