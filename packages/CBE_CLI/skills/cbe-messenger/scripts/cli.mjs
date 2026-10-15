@@ -5,18 +5,18 @@ import { resolve } from 'node:path';
 import { realpathSync } from 'node:fs';
 import { Messenger } from './messenger.mjs';
 
-const HELP=`충북소통메신저 CLI 0.4.0 — 로그인된 앱에 연결
+const HELP=`충북소통메신저 CLI 0.5.0 — 로그인된 앱에 연결
 
 사용법:
   cbe status
   cbe notes list [--box received|sent|unread|important|self|reserved|all]
                  [--search "검색어"] [--search-type send|receive|title|content]
   cbe notes read <쪽지ID> [--type R|S] [--reserved]
-  cbe notes send --to <사용자ID[,사용자ID...]> --text "내용" [--title "제목"]
+  cbe notes send --to <사용자ID[,사용자ID...]> [--text "내용"] [--title "제목"] [--file "경로"]
   cbe chats list [--search "참여자 또는 방 이름"]
   cbe chats read <대화방ID>
-  cbe chats send --to <사용자ID> --text "내용"
-  cbe chats create --to <사용자ID[,사용자ID...]> --text "첫 메시지" [--title "그룹 제목"]
+  cbe chats send --to <사용자ID> [--text "내용"] [--file "경로"]
+  cbe chats create --to <사용자ID[,사용자ID...]> [--text "첫 메시지"] [--title "그룹 제목"] [--file "경로"]
   cbe users search "이름" [--scope auto|my|all]
   cbe users show <사용자ID>
   cbe memos list [--search "검색어"]
@@ -35,6 +35,7 @@ const HELP=`충북소통메신저 CLI 0.4.0 — 로그인된 앱에 연결
   --port N        로컬 디버깅 포트, 기본 9000
   --dry-run       전송 명령의 수신자·설정만 확인 (실제 전송·방 생성 없음)
   --confirm-many  앱에서 추가 수신자 확인이 필요한 쪽지 전송 허용
+  --file 경로     첨부할 로컬 파일 (여러 파일은 --file을 반복, 본문 생략 가능)
   --help          도움말
 
 앱을 실행하고 로그인해 두세요. 비밀번호·키를 파일에 저장하지 않습니다.
@@ -44,7 +45,8 @@ open은 앱의 일반 열기 동작으로 읽음 처리될 수 있습니다.
 compose는 수신자를 지정한 작성창만 엽니다. 실제 전송은 앱에서 합니다.
 chats send는 기존 1:1 방을 사용하고, 없으면 첫 메시지와 함께 새 방을 만듭니다.
 chats create는 1명이면 1:1, 2명 이상이면 새 그룹을 만들며 본인을 자동 포함합니다.
-notes send는 일반 텍스트 쪽지를 백그라운드로 전송합니다. 첨부·예약·보안 전송은 미지원입니다.
+쪽지·대화에 --file로 파일을 첨부합니다. 대화 본문과 파일은 각각 별도 메시지로 전송됩니다.
+--dry-run은 파일 읽기·권한·개수·용량을 점검하고 업로드하지 않습니다. 예약·보안 전송은 미지원입니다.
 `;
 
 export function positive(value,name,max=Number.MAX_SAFE_INTEGER) {
@@ -57,7 +59,7 @@ function clean(value){return String(value??'').replace(/[\x00-\x08\x0b-\x1f\x7f-
 export function printResult(result,json) {
   if(json){console.log(JSON.stringify(result,null,2));return;}
   if(result.dryRun){console.log(clean(JSON.stringify(result,null,2)));return;}
-  if(result.sent===true){console.log(clean(`서버 기록 확인 완료 · ${result.noteId?'쪽지':'대화'} ID: ${result.noteId||result.messageId}\n${result.room?'방 ID: '+result.room+'\n':''}수신자: ${result.recipients.map(u=>u.name+' ('+u.id+')').join(', ')}\n\n${result.text}`));return;}
+  if(result.sent===true){console.log(clean(`서버 기록 확인 완료 · ${result.noteId?'쪽지':'대화'} ID: ${result.noteId||result.messageId}\n${result.room?'방 ID: '+result.room+'\n':''}수신자: ${result.recipients.map(u=>u.name+' ('+u.id+')').join(', ')}\n\n${result.text}`));for(const file of result.files||[])console.log(clean(`첨부: ${file.name} (${file.size} bytes)`));return;}
   if(result.items){
     if(result.scope)console.log(`검색 범위: ${result.scope==='my'?'내 조직':'전체 조직'}${result.fallback?' (내 조직에 일치하는 이름 없음)':''}`);
     console.log(`페이지 ${result.page} · ${result.items.length}개${result.total===null?'':` · 전체 ${result.total}개`}`);
@@ -80,7 +82,7 @@ export function printResult(result,json) {
 }
 
 export async function run(argv=process.argv.slice(2)) {
-  const {values:v,positionals:p}=parseArgs({args:argv,allowPositionals:true,strict:true,options:{help:{type:'boolean',short:'h'},json:{type:'boolean'},port:{type:'string',default:'9000'},page:{type:'string',default:'1'},limit:{type:'string',default:'30'},offset:{type:'string',default:'0'},search:{type:'string',default:''},'search-type':{type:'string',default:'send'},box:{type:'string',default:'all'},type:{type:'string',default:'R'},reserved:{type:'boolean'},to:{type:'string'},text:{type:'string'},title:{type:'string'},'dry-run':{type:'boolean'},'confirm-many':{type:'boolean'},scope:{type:'string',default:'auto'}}});
+  const {values:v,positionals:p}=parseArgs({args:argv,allowPositionals:true,strict:true,options:{help:{type:'boolean',short:'h'},json:{type:'boolean'},port:{type:'string',default:'9000'},page:{type:'string',default:'1'},limit:{type:'string',default:'30'},offset:{type:'string',default:'0'},search:{type:'string',default:''},'search-type':{type:'string',default:'send'},box:{type:'string',default:'all'},type:{type:'string',default:'R'},reserved:{type:'boolean'},to:{type:'string'},text:{type:'string'},title:{type:'string'},file:{type:'string',multiple:true,default:[]},'dry-run':{type:'boolean'},'confirm-many':{type:'boolean'},scope:{type:'string',default:'auto'}}});
   if(v.help||!p.length){console.log(HELP);return;}
   const options={page:positive(v.page,'--page'),limit:positive(v.limit,'--limit',100),search:v.search,offset:v.offset};
   const port=positive(v.port,'--port',65535);
@@ -93,8 +95,8 @@ export async function run(argv=process.argv.slice(2)) {
   if(idCommands)requiredId(p[2]);
   if(group==='compose')requiredId(v.to);
   const sending=['notes','chats'].includes(group)&&['send','create'].includes(action);
-  if(sending){if(!v.to||v.to.split(',').some(id=>! /^[a-f0-9]{24}$/i.test(id.trim())))throw new Error('--to에 조회한 사용자 ID를 입력하세요.');if(!v.text?.trim())throw new Error('--text에 전송할 내용을 입력하세요.');}
-  if((v['dry-run']||v['confirm-many']||v.title!==undefined)&&!sending)throw new Error('--dry-run, --confirm-many, --title은 전송 명령에서만 사용하세요.');
+  if(sending){if(!v.to||v.to.split(',').some(id=>! /^[a-f0-9]{24}$/i.test(id.trim())))throw new Error('--to에 조회한 사용자 ID를 입력하세요.');if(!v.text?.trim()&&!v.file.length)throw new Error('--text에 내용 또는 --file에 첨부파일을 입력하세요.');}
+  if((v['dry-run']||v['confirm-many']||v.title!==undefined||v.file.length)&&!sending)throw new Error('--dry-run, --confirm-many, --title, --file은 전송 명령에서만 사용하세요.');
   if(v['confirm-many']&&!(group==='notes'&&action==='send'))throw new Error('--confirm-many는 notes send에서만 사용하세요.');
   if(group==='users'&&action==='search'&&!p[2]?.trim())throw new Error('사용자 검색어를 입력하세요.');
   const valid=(group==='status'&&p.length===1)||(['notes','chats'].includes(group)&&['list','read'].includes(action))||(['notes','chats'].includes(group)&&action==='send'&&p.length===2)||(group==='chats'&&action==='create'&&p.length===2)||(group==='users'&&['search','show'].includes(action))||(group==='memos'&&action==='list')||(group==='open'&&['main','note','chat','profile'].includes(action))||(group==='compose'&&p.length===1);
@@ -107,10 +109,10 @@ export async function run(argv=process.argv.slice(2)) {
     let result;
     if(group==='status')result=await client.status();
     else if(group==='notes'&&action==='list')result=await client.notes({...options,box:boxes[v.box],searchType:v['search-type']});
-    else if(group==='notes'&&action==='send')result=await client.sendNote(v.to,v.text,{title:v.title,dryRun:!!v['dry-run'],confirmMany:!!v['confirm-many']});
+    else if(group==='notes'&&action==='send')result=await client.sendNote(v.to,v.text,{title:v.title,dryRun:!!v['dry-run'],confirmMany:!!v['confirm-many'],files:v.file});
     else if(group==='notes')result=await client.note(p[2],v.type,!!v.reserved);
     else if(group==='chats'&&action==='list')result=await client.chats({...options,box:boxes[v.box]});
-    else if(group==='chats'&&['send','create'].includes(action))result=await client[action==='send'?'sendChat':'createChat'](v.to,v.text,{title:v.title,dryRun:!!v['dry-run']});
+    else if(group==='chats'&&['send','create'].includes(action))result=await client[action==='send'?'sendChat':'createChat'](v.to,v.text,{title:v.title,dryRun:!!v['dry-run'],files:v.file});
     else if(group==='chats'){
       if(!Number.isSafeInteger(Number(v.offset)))throw new Error('대화 offset이 너무 큽니다.');
       result=await client.messages(p[2],{...options,offset:Number(v.offset)});

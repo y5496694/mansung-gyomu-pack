@@ -130,24 +130,24 @@
   "CBE_CLI": {
     "repository": "y5496694/CBE_CLI",
     "branch": "main",
-    "commit": "452b84737d75e4f5e6678ba6bee9080da600f67c",
-    "url": "https://github.com/y5496694/CBE_CLI/commit/452b84737d75e4f5e6678ba6bee9080da600f67c",
+    "commit": "de129d9436cdff7bee56ea31ff21e671b8a8650d",
+    "url": "https://github.com/y5496694/CBE_CLI/commit/de129d9436cdff7bee56ea31ff21e671b8a8650d",
     "files": {
       ".gitattributes": "998d536393ff3a100eea514c4e4eca9284ad0b21b0c97e6e3c1a6cf86a9dcad2",
       ".gitignore": "4f2d033cc9aeaeadbff2095bf4b57ae9e465c412fd4dcaf15d2cb6f22436723b",
       "cbe.cmd": "eecdb03ae8979d47c6e7094bea23d2ccc4064a38c4a2cad06d8b132b457dcb38",
-      "cli.mjs": "516b054ae448b06da6490b019e9ca3b1d7c2b9a3ef9987ea8b17f3c74bbfdd62",
+      "cli.mjs": "604e1b8a1aa37dae740f06610332ecff70d640feacfe725dd761d4483596bb4f",
       "LICENSE": "55d74ecf3c6533468afaccbd1ad357bf952b6f76304452a9aa99f3c49e57bb1e",
-      "messenger.mjs": "2fc3278151c6ac8fca80ef824c1c85d8b2fab2f16c4d8effeee69b0cfbaeb8b3",
-      "package.json": "9731b1136fee0e090fcafee4334f7ee986bf8bce8b6b476535b4311e2d04dd73",
-      "README.md": "d873f518a4b171b7d1c19a459054dd663a45842877e77c9d3a399c1a08452102",
-      "skills/cbe-messenger/agents/openai.yaml": "96aedfa24255c5dc899e3b5bb14498512aa8534424d71d6dfcdba16251737e94",
-      "skills/cbe-messenger/references/commands.md": "9ce161fe2553246c2acc1bd1d1e13a89a43e25fd7d438638bb0ef16440ec350a",
-      "skills/cbe-messenger/scripts/cli.mjs": "516b054ae448b06da6490b019e9ca3b1d7c2b9a3ef9987ea8b17f3c74bbfdd62",
-      "skills/cbe-messenger/scripts/messenger.mjs": "2fc3278151c6ac8fca80ef824c1c85d8b2fab2f16c4d8effeee69b0cfbaeb8b3",
-      "skills/cbe-messenger/scripts/test.mjs": "791f10ce7e1e3552b310794d54a59f20b09eec8276bf866267336829e3e7c529",
-      "skills/cbe-messenger/SKILL.md": "e9730c09ace645ab6fc2a2908393b08e87c65e65d3b8f1315bc80a8647818d3c",
-      "test.mjs": "791f10ce7e1e3552b310794d54a59f20b09eec8276bf866267336829e3e7c529"
+      "messenger.mjs": "5adbb077d62e1cc29f9b30d8e74d45602c6b0d419180f812f470fa71c07161ca",
+      "package.json": "b697b079c24237a92e0ac107a0e3f9a2e7dcd14c7c9d0c9635e09b409d5ccb81",
+      "README.md": "b3e141898c8574dd8e4e0ae680a3e192ca6aa2732c21c32f82ef9c41a1f6b5f9",
+      "skills/cbe-messenger/agents/openai.yaml": "f66738639f7e55724712abffd86d5f747b8d701dff606f36b44a2d3b1d591205",
+      "skills/cbe-messenger/references/commands.md": "4d6e27700b053e106179738c9abbeb6792c67dcead43a77ef037ebe1830527fe",
+      "skills/cbe-messenger/scripts/cli.mjs": "604e1b8a1aa37dae740f06610332ecff70d640feacfe725dd761d4483596bb4f",
+      "skills/cbe-messenger/scripts/messenger.mjs": "5adbb077d62e1cc29f9b30d8e74d45602c6b0d419180f812f470fa71c07161ca",
+      "skills/cbe-messenger/scripts/test.mjs": "f6ba7ff90844ac2390bbab5d2b0f237df34fbb8ab80f8bad6bedef98368e0cdc",
+      "skills/cbe-messenger/SKILL.md": "b495cd1b36e72374eb280d1f1075fb3a88c72287c503927746b5fb06359d8b54",
+      "test.mjs": "f6ba7ff90844ac2390bbab5d2b0f237df34fbb8ab80f8bad6bedef98368e0cdc"
     }
   },
   "narae-gyomoo_ezedu": {
@@ -168,13 +168,13 @@
   "narae_gyomoo_highclass": {
     "repository": "y5496694/narae_gyomoo_highclass",
     "branch": "main",
-    "commit": "5fa2a2d77919c0a134523356e89efdcd68b7ef5c",
-    "url": "https://github.com/y5496694/narae_gyomoo_highclass/commit/5fa2a2d77919c0a134523356e89efdcd68b7ef5c",
+    "commit": "4aa4a6aac963d1f6bcb378a56a458e0cc482b5be",
+    "url": "https://github.com/y5496694/narae_gyomoo_highclass/commit/4aa4a6aac963d1f6bcb378a56a458e0cc482b5be",
     "files": {
-      "README.md": "3c83bcd6d9a7aebd35656f51119de9ec8dd2abf88141b5c9ed41d4801e404739",
+      "README.md": "d4348ba2cbc3044fb3d51c720351d30010af68710349608c2484b16ef686b884",
       "skills/narae-gyomu-hiclass/agents/openai.yaml": "b4e9c5932b7dc78518758469a380930545eb7766045b925f6e0fa88f4a7d84d3",
       "skills/narae-gyomu-hiclass/references/ui-workflows.md": "eecee7fdd1254ff6a9f5b26e0378380b3f7624e385e8776ee4f5947295132af9",
-      "skills/narae-gyomu-hiclass/SKILL.md": "df4fe4770ad4a91bdcf3e08bc1727211eec23436fa45f133381025ad7bef1590"
+      "skills/narae-gyomu-hiclass/SKILL.md": "4ed86554b47508bcfeb1613283d5eddda291b3e8c4bf1ae46d6e4cc760b82d5e"
     }
   },
   "narae_gyomoo_classtime": {

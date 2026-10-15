@@ -1,4 +1,6 @@
 import { randomUUID } from 'node:crypto';
+import { open, realpath } from 'node:fs/promises';
+import { basename } from 'node:path';
 
 const ORIGIN = 'http://stmsg.cbe.go.kr:7880';
 const MAIN_PATH = '/ezmaru/pc/main';
@@ -8,11 +10,11 @@ const READ_ROUTES = new Set([
   '/pc/user/newUserSearch', '/pc/user/getUserInfo', '/pc/memo/list', '/message/chatlist1vs1', '/pc/common/pageInitInfo',
   '/common/checkcharfilter', '/pc/note/sendtotalusercount', '/pc/note/getAllReceiveUserForNote',
 ]);
-const WRITE_ROUTES = new Set(['/pc/note/write']);
+const WRITE_ROUTES = new Set(['/pc/note/write', '/common/fileuploadConfirm', '/common/getBsonCode4Chat']);
 
 export class DeliveryError extends Error {
   constructor(message,receipt){
-    super(`${message} 자동 재전송하지 않았습니다. ${receipt.noteId?'쪽지':'메시지'} ID: ${receipt.noteId||receipt.messageId}`);
+    super(`${message} 자동 재전송하지 않았습니다. ${receipt.noteId?'쪽지':receipt.messageId?'메시지':'방'} ID: ${receipt.noteId||receipt.messageId||receipt.room}`);
     this.receipt={sent:null,verified:false,...receipt,retry:false};
   }
 }
@@ -42,7 +44,7 @@ function startRequest(key,path,params,once,account){
   return true;
 }
 
-function submitChat(account,room,id,recipients,text,title,group,extension){
+function submitChat(account,room,id,recipients,text,title,group,extension,file){
   var key='__cbeCliSend_'+id;
   if(window[key])throw Error('already submitted');
   if(common_activityData.getData('subStatus')==='FAKEOFF')throw Error('offline');
@@ -65,10 +67,61 @@ function submitChat(account,room,id,recipients,text,title,group,extension){
     NMC_CTYPE:group?'I':'M',NUR_NIC:ownName,NUR_UUID:account,NUR_THUMB_PIC:$('input[name=userImg]').val()||'',
     MAF_FILEURL:'',MAF_FILETHUMBURL:'',NMS_TYPE:group?'G':'C',WINDOWNAME:'chat:'+room,NMS_TITLE:title,NMC_FONTCOLOR:'',NMC_FONTSIZE:''};
   if(group){data.INVITE_RUIDS=recipients.map(function(u){return u.id;}).join(',');data.NMC_EXTENSION_ENC=encrypted;}
+  if(file){data.NMC_CTYPE='F';data.NMC_MCODE=id;data.NMC_REGDATE=file.date||'';data.NMS_TYPE=file.type;if(file.name!==undefined)data.FILENAME=file.name;if(file.size!==undefined)data.FILESIZE=file.size;if(file.uploadPath!==undefined)data.UPLOADFILEPATH=file.uploadPath;}
   window[key]={submitted:true};
   var queued=realtimeConect_view.sendMessageChat(data);
   window[key].queued=queued;
   return {queued:queued===true,content:content};
+}
+
+// Multipart upload runs in the logged-in app; session credentials stay there.
+function startUpload(key,account,fields){
+  var state=window[key];
+  if(!state||state.submitted)throw Error('invalid upload state');
+  if(common_activityData.getData('nurUuid')!==account)throw Error('account changed');
+  if(common_activityData.getData('subStatus')==='FAKEOFF'||common_activityData.getData('permission').PC.P04!=='Y')throw Error('upload restricted');
+  var url=common_activityData.getData('fileServerUrl')+'/fileupload';
+  if(!/^http:\/\/stmsg\.cbe\.go\.kr:7880\/file\//.test(url))throw Error('unexpected file server');
+  var parts=state.chunks.map(function(chunk){var s=atob(chunk),b=new Uint8Array(s.length);for(var i=0;i<s.length;i++)b[i]=s.charCodeAt(i);return b;});
+  var blob=new Blob(parts,{type:'application/octet-stream'}),form=new FormData();
+  if(blob.size!==state.size)throw Error('file size changed');
+  Object.keys(fields).forEach(function(k){form.append(k,fields[k]);});
+  form.append('file',blob,state.name);
+  state.chunks=[];
+  var xhr=new XMLHttpRequest();
+  xhr.open('POST',url,true);xhr.timeout=120000;
+  xhr.setRequestHeader('Accept','application/json, text/javascript, */*; q=0.01');
+  xhr.setRequestHeader('X-Requested-With','XMLHttpRequest');
+  function finish(error,result){window[key]={done:true,submitted:true,error:error||null,result:result||{}};}
+  xhr.onload=function(){try{var r=JSON.parse(xhr.responseText);if(xhr.status!==200||r.RESULT!=='SUCCESS')finish('파일 업로드가 거절되었습니다.');else finish(null,{date:r.REGDATE||'',name:r.FILENAME,size:r.FILESIZE,uploadPath:r.UPLOADFILEPATH});}catch(e){finish('파일 업로드 응답을 해석할 수 없습니다.');}};
+  xhr.onerror=function(){finish('파일 업로드 연결 오류.');};
+  xhr.ontimeout=function(){finish('파일 업로드 시간 초과.');};
+  xhr.onabort=function(){finish('파일 업로드 중단.');};
+  state.submitted=true;
+  xhr.send(form);
+  return true;
+}
+
+export async function attachmentFiles(paths=[]){
+  if(!Array.isArray(paths)||paths.some(p=>typeof p!=='string'||!p.trim()))throw new Error('--file에 파일 경로를 입력하세요.');
+  const files=[],seen=new Set();
+  for(const path of paths){
+    const resolved=await realpath(path),identity=process.platform==='win32'?resolved.toLowerCase():resolved;
+    if(seen.has(identity))throw new Error('같은 첨부파일을 중복 지정했습니다.');
+    const handle=await open(resolved,'r');
+    try{
+      const stat=await handle.stat(),name=basename(resolved);
+      if(!stat.isFile()||!Number.isSafeInteger(stat.size)||/[\x00-\x1f\x7f]/.test(name))throw new Error('일반 파일만 첨부할 수 있습니다.');
+      files.push({path:resolved,name,size:stat.size,mtimeMs:stat.mtimeMs,dev:stat.dev,ino:stat.ino});seen.add(identity);
+    }finally{await handle.close();}
+  }
+  return files;
+}
+
+function fileSummary(files){return files.map(({name,size})=>({name,size}));}
+function matchingFiles(actual,files,nameKey,sizeKey){
+  const signature=(name,size)=>JSON.stringify([name,Number(size)]);
+  return Array.isArray(actual)&&actual.length===files.length&&actual.every(f=>typeof f[nameKey]==='string'&&f[sizeKey]!==null&&f[sizeKey]!==''&&Number.isSafeInteger(Number(f[sizeKey]))&&Number(f[sizeKey])>=0)&&actual.map(f=>signature(f[nameKey],f[sizeKey])).sort().join('\n')===files.map(f=>signature(f.name,f.size)).sort().join('\n');
 }
 
 function recipientIds(value){
@@ -180,7 +233,7 @@ export class Messenger {
   }
   async request(path,params,{write=false,account=''}={}) {
     if(!(write?WRITE_ROUTES:READ_ROUTES).has(path))throw new Error('지원하지 않는 요청 경로입니다.');
-    const key = write?'__cbeCliNote_'+params.nteCode:'__cbeCli_' + randomUUID().replaceAll('-', '');
+    const key = write&&path==='/pc/note/write'?'__cbeCliNote_'+params.nteCode:'__cbeCli_' + randomUUID().replaceAll('-', '');
     // Older CEF does not support awaitPromise. Poll an isolated callback result.
     try {
       await this.evaluate(`(${startRequest.toString()})(${[key,path,params,write,account].map(v=>JSON.stringify(v)).join(',')})`);
@@ -218,7 +271,52 @@ export class Messenger {
   }
 
   async sendSettings(){
-    return JSON.parse(await this.evaluate(`JSON.stringify({userId:common_activityData.getData('nurUuid'),name:common_activityData.getData('nurNic'),offline:common_activityData.getData('subStatus')==='FAKEOFF',socket:!!realtimeConect_activityData.getData('XDMSocket'),limits:common_activityData.getData('permission').COM})`));
+    return JSON.parse(await this.evaluate(`JSON.stringify({userId:common_activityData.getData('nurUuid'),name:common_activityData.getData('nurNic'),offline:common_activityData.getData('subStatus')==='FAKEOFF',socket:!!realtimeConect_activityData.getData('XDMSocket'),limits:common_activityData.getData('permission').COM,fileLimits:common_activityData.getData('permission').PC})`));
+  }
+
+  checkAttachments(files,settings,kind){
+    if(!files.length)return;
+    const p=settings.fileLimits,count=Number(p?.P05),mb=Number(p?.P06);
+    if(p?.P04!=='Y')throw new Error('앱에서 파일 첨부 권한이 제한되었습니다.');
+    if(!Number.isSafeInteger(count)||count<1||p.P06===null||p.P06===''||!Number.isFinite(mb)||mb<0)throw new Error('앱의 첨부파일 제한을 확인할 수 없습니다.');
+    if(files.length>count)throw new Error(`첨부파일은 ${count}개까지 가능합니다.`);
+    for(const file of files){
+      if((mb>0||kind==='note')&&file.size>mb*1048576)throw new Error(`첨부파일의 최대 용량은 ${mb}MB입니다: ${file.name}`);
+      const allowed=String(settings.limits?.C19||'').toUpperCase(),ext=file.name.includes('.')?file.name.split('.').at(-1).toUpperCase():'';
+      if(allowed&&(!ext||!allowed.includes(ext)))throw new Error(`앱에서 허용하지 않는 파일 확장자입니다: ${file.name}`);
+    }
+  }
+
+  async uploadFile(file,fields,account){
+    const key='__cbeCliUpload_'+randomUUID().replaceAll('-',''),handle=await open(file.path,'r');
+    try{
+      const stat=await handle.stat();
+      if(!stat.isFile()||['size','mtimeMs','dev','ino'].some(k=>stat[k]!==file[k]))throw new Error('점검 후 첨부파일이 변경되었습니다.');
+      await this.evaluate(`window[${JSON.stringify(key)}]=${JSON.stringify({done:false,submitted:false,name:file.name,size:file.size,chunks:[]})};true`);
+      const buffer=Buffer.alloc(192*1024);
+      for(let offset=0;offset<file.size;){
+        const {bytesRead}=await handle.read(buffer,0,Math.min(buffer.length,file.size-offset),offset);
+        if(!bytesRead)throw new Error('첨부파일 읽기가 중단되었습니다.');
+        await this.evaluate(`window[${JSON.stringify(key)}].chunks.push(${JSON.stringify(buffer.subarray(0,bytesRead).toString('base64'))});true`);
+        offset+=bytesRead;
+      }
+      const after=await handle.stat();
+      if(after.size!==file.size||after.mtimeMs!==file.mtimeMs)throw new Error('첨부파일 읽기 중 파일이 변경되었습니다.');
+      await this.evaluate(`(${startUpload.toString()})(${[key,account,fields].map(v=>JSON.stringify(v)).join(',')})`);
+      const deadline=Date.now()+125000;
+      while(Date.now()<deadline){
+        const state=JSON.parse(await this.evaluate(`JSON.stringify({done:window[${JSON.stringify(key)}].done,error:window[${JSON.stringify(key)}].error,result:window[${JSON.stringify(key)}].result})`));
+        if(state.done){if(state.error)throw new Error(state.error);return state.result;}
+        await new Promise(r=>setTimeout(r,250));
+      }
+      throw new Error('첨부파일 업로드 결과를 확인할 수 없습니다.');
+    }finally{await handle.close();await this.evaluate(`delete window[${JSON.stringify(key)}]`).catch(()=>{});}
+  }
+
+  async uploadAuthorization(account){
+    const auth=await this.request('/common/fileuploadConfirm',{mode:'PC'},{write:true,account});
+    if(!isId(auth.BSON))throw new Error('파일 업로드 인증 응답이 올바르지 않습니다.');
+    return auth.BSON;
   }
 
   async notes({box='ALL',page=1,limit=30,search='',searchType='send',offset='0'}={}) {
@@ -290,11 +388,13 @@ export class Messenger {
     if(recipientIds(uid).length!==1)throw new Error('chats send는 수신자 한 명을 지정하세요. 그룹 생성은 chats create를 사용하세요.');
     return this.createChat(uid,text,options);
   }
-  async createChat(to,text,{title='',dryRun=false}={}){
-    const ids=recipientIds(to);text=messageText(text);
+  async createChat(to,text,{title='',dryRun=false,files:paths=[]}={}){
+    const ids=recipientIds(to),files=await attachmentFiles(paths);
+    text=files.length&&(text===undefined||(typeof text==='string'&&!text.trim()))?'':messageText(text);
     if(typeof title!=='string'||title.length>100)throw new Error('방 제목은 100자 이하로 입력하세요.');
     const settings=await this.sendSettings(),own=settings.userId,group=ids.length>1;
     if(!isId(own)||settings.offline||!settings.socket)throw new Error('로그인·온라인 상태와 메신저 전송 연결을 확인하세요.');
+    this.checkAttachments(files,settings,'chat');
     if(ids.includes(own))throw new Error('대화 수신자에는 본인을 제외해 주세요.');
     if(ids.length+1>recipientLimit(settings.limits?.C04))throw new Error('앱의 대화방 최대 인원을 초과했습니다.');
     if(!group&&title)throw new Error('--title은 새 그룹 대화방에만 지정할 수 있습니다.');
@@ -312,34 +412,69 @@ export class Messenger {
         if(!isId(direct.SCODE))throw new Error('1:1 대화방 조회 응답이 올바르지 않습니다.');
         if(direct.NMS_TYPE!=='C'||!sameIds(String(direct.RUIDS||'').split(','),[...ids,own]))throw new Error('1:1 대화방 수신자 정보가 일치하지 않습니다. 전송하지 않았습니다.');
         room=direct.SCODE;created=false;
+        if(files.length){
+          const detail=await this.messageData(room,{limit:1});
+          if(detail.CHAT_INFO?.NMS_SCODE!==room||detail.CHAT_INFO?.NMS_TYPE!=='C'||!sameIds(detail.USER_OFFSET_LIST?.map(u=>u.NMU_UID),[...ids,own]))throw new Error('첨부 전송 전 대화방·참여자 확인에 실패했습니다.');
+          this.checkAttachments(files,{...settings,fileLimits:detail.PERMISSION},'chat');
+        }
       }
     }
-    if(dryRun)return {sent:false,dryRun:true,valid:true,willCreate:created,type:group?'group':'direct',recipients,room:room||null,title,text,background:true};
+    if(dryRun)return {sent:false,dryRun:true,valid:true,willCreate:created,type:group?'group':'direct',recipients,room:room||null,title,text,files:fileSummary(files),background:true};
     if(!room)room=await this.evaluate('new ObjectId().toString()');
-    const id=await this.evaluate('new ObjectId().toString()');
-    if(!isId(room)||!isId(id)||room===id)throw new Error('메신저 ID 생성 실패.');
-    const receipt={room,messageId:id,recipients,created,background:true};
+    if(!isId(room))throw new Error('메신저 ID 생성 실패.');
+    const receipt={room,messageId:null,messageIds:[],files:[],recipients,created,background:true};
+    let date;
     try{
-      const result=await this.evaluate(`(${submitChat.toString()})(${[own,room,id,recipients,text,title,group,extension].map(v=>JSON.stringify(v)).join(',')})`);
-      if(!result?.queued)throw new Error('전송 접수 여부가 불확실합니다.');
-      const deadline=Date.now()+15000;
-      while(Date.now()<deadline){
-        const history=await this.messageData(room,{limit:100,contentsLength:Math.max(500,result.content.length+1000)});
-        if(history.CHAT_INFO?.NMS_SCODE!==room||history.CHAT_INFO?.NMS_TYPE!==(group?'G':'C')||!sameIds(history.USER_OFFSET_LIST?.map(u=>u.NMU_UID),[...ids,own]))throw new Error('서버 대화방·참여자 검증에 실패했습니다.');
-        const found=history.LIST?.find(m=>m.NMC_CODE===id&&m.NUR_UUID===own&&m.NMC_CTYPE===(group?'I':'M')&&m.NMC_CONTENT===result.content&&m.NMC_WITHDRAW_FLAG!=='Y'&&m.DELETE_YN!=='Y');
-        if(found)return {sent:true,verified:true,...receipt,recipient:group?undefined:recipients[0],date:found.NMC_REGDATE,title,text};
-        await new Promise(resolve=>setTimeout(resolve,500));
+      if(text||group){
+        const id=await this.evaluate('new ObjectId().toString()');
+        if(!isId(id)||room===id)throw new Error('메신저 ID 생성 실패.');
+        receipt.messageId=id;
+        const result=await this.evaluate(`(${submitChat.toString()})(${[own,room,id,recipients,text,title,group,extension].map(v=>JSON.stringify(v)).join(',')})`);
+        if(!result?.queued)throw new Error('전송 접수 여부가 불확실합니다.');
+        date=await this.verifyChat(room,id,own,ids,group,group?'I':'M',result.content);
+        receipt.messageIds.push(id);
       }
-      throw new Error('서버에서 같은 메시지 기록을 아직 확인하지 못했습니다.');
-    }catch(error){throw new DeliveryError(error.message,receipt);}
+      for(const file of files){
+        receipt.pendingFile={name:file.name,size:file.size};
+        await this.request('/common/getBsonCode4Chat',{scode:room,ruids:[...ids,own].join(',')},{write:true,account:own});
+        const id=await this.uploadAuthorization(own);
+        receipt.pendingFile.messageId=id;
+        if(!receipt.messageId)receipt.messageId=id;
+        const uploaded=await this.uploadFile(file,{uuid:own,type:'chat',auth:id,clientType:'pc',count:'1',code:id,scode:room},own);
+        const result=await this.evaluate(`(${submitChat.toString()})(${[own,room,id,recipients,'',title,false,'',{...uploaded,type:group?'G':'C'}].map(v=>JSON.stringify(v)).join(',')})`);
+        if(!result?.queued)throw new Error('파일 메시지 접수 여부가 불확실합니다.');
+        date=await this.verifyChat(room,id,own,ids,group,'F','',file);
+        receipt.messageIds.push(id);receipt.files.push({name:file.name,size:file.size,messageId:id});
+        delete receipt.pendingFile;
+      }
+      return {sent:true,verified:true,...receipt,recipient:group?undefined:recipients[0],date,title,text};
+    }catch(error){throw new DeliveryError(error.message,{...receipt,partial:receipt.messageIds.length>0});}
   }
 
-  async sendNote(to,text,{title,dryRun=false,confirmMany=false}={}){
-    const ids=recipientIds(to);text=messageText(text);
-    title=title===undefined?text.split('\n')[0].slice(0,100):title;
+  async verifyChat(room,id,own,ids,group,type,content,file){
+    const deadline=Date.now()+15000;
+    while(Date.now()<deadline){
+      const history=await this.messageData(room,{limit:100,contentsLength:Math.max(500,content.length+1000)});
+      if(history.CHAT_INFO?.NMS_SCODE!==room||history.CHAT_INFO?.NMS_TYPE!==(group?'G':'C')||!sameIds(history.USER_OFFSET_LIST?.map(u=>u.NMU_UID),[...ids,own]))throw new Error('서버 대화방·참여자 검증에 실패했습니다.');
+      const found=history.LIST?.find(m=>m.NMC_CODE===id&&m.NUR_UUID===own&&m.NMC_CTYPE===type&&m.NMC_WITHDRAW_FLAG!=='Y'&&m.DELETE_YN!=='Y');
+      if(found){
+        if(file?!matchingFiles([found],[file],'MAF_ORI_NAME','MAF_FILE_SIZE'):found.NMC_CONTENT!==content)throw new Error('서버 메시지의 본문 또는 첨부파일 정보가 일치하지 않습니다.');
+        return found.NMC_REGDATE;
+      }
+      await new Promise(resolve=>setTimeout(resolve,500));
+    }
+    throw new Error('서버에서 같은 메시지 기록을 아직 확인하지 못했습니다.');
+  }
+
+  async sendNote(to,text,{title,dryRun=false,confirmMany=false,files:paths=[]}={}){
+    const ids=recipientIds(to),files=await attachmentFiles(paths);
+    const fileOnly=files.length&&(text===undefined||(typeof text==='string'&&!text.trim()));
+    text=fileOnly?'내용없음':messageText(text);
+    title=title===undefined?(fileOnly?files[0].name:text.split('\n')[0]).slice(0,100):title;
     if(typeof title!=='string'||title.length>100)throw new Error('쪽지 제목은 100자 이하로 입력하세요.');
     const settings=await this.sendSettings(),own=settings.userId;
     if(!isId(own)||settings.offline)throw new Error('로그인·온라인 상태를 확인하세요.');
+    this.checkAttachments(files,settings,'note');
     if(ids.length>recipientLimit(settings.limits?.C05))throw new Error('앱의 쪽지 최대 수신자 수를 초과했습니다.');
     if(ids.includes(own)&&ids.length!==1)throw new Error('본인에게 쪽지를 보낼 때는 본인만 지정하세요.');
     const config=await this.pageConfig('note');
@@ -358,11 +493,20 @@ export class Messenger {
     if(!Number.isSafeInteger(total)||total!==ids.length||total>recipientLimit(settings.limits?.C05)||!sameIds(count.USER_LIST?.map(u=>u.NUR_UUID),ids))throw new Error('서버의 쪽지 수신자 목록·인원 확인에 실패했습니다.');
     if(count.NOT_SAME_WITHGROUP_USER_CNT===null||count.NOT_SAME_WITHGROUP_USER_CNT===undefined||!Number.isSafeInteger(threshold)||threshold<0)throw new Error('앱의 추가 수신자 확인 기준을 읽을 수 없습니다.');
     const requiresConfirmation=total>threshold;
-    if(dryRun)return {sent:false,dryRun:true,valid:true,recipients,title,text,requiresConfirmation,background:true};
+    if(dryRun)return {sent:false,dryRun:true,valid:true,recipients,title,text,files:fileSummary(files),requiresConfirmation,background:true};
     if(requiresConfirmation&&!confirmMany)throw new Error('앱에서 추가 수신자 확인을 요구합니다. 수신자 목록을 확인한 뒤 --confirm-many로 실행하세요.');
-    const params={nteCode:id,ruids:ids.join(':‡:'),nteContent:text,nteContentHtml:escapeHtml(text),mode:'write',fileDeleteList:'',fileDeleteCode:'',nteReceiveYn:'N',nteRejectYn:'N',nteReservYn:'N',nteReservDate:'',nteSecurityYn:'N',groupCodeList:'',myGroupCodeList:'',nteReplyYn:'N',nteCharFilter:filter.DATA.trim(),myReciveFlag:ids[0]===own?'Y':'N',fileCount:0,nteTitle:title,nteEachYn:'N'};
-    const receipt={noteId:id,recipients,background:true};
+    const params={nteCode:id,ruids:ids.join(':‡:'),nteContent:text,nteContentHtml:escapeHtml(text),mode:'write',fileDeleteList:'',fileDeleteCode:'',nteReceiveYn:'N',nteRejectYn:'N',nteReservYn:'N',nteReservDate:'',nteSecurityYn:'N',groupCodeList:'',myGroupCodeList:'',nteReplyYn:'N',nteCharFilter:filter.DATA.trim(),myReciveFlag:ids[0]===own?'Y':'N',fileCount:files.length,nteTitle:title,nteEachYn:'N'};
+    const receipt={noteId:id,recipients,files:fileSummary(files),uploadedFiles:[],background:true};
+    let submitted=false;
     try{
+      if(files.length){
+        const auth=await this.uploadAuthorization(own);
+        for(const file of files){
+          await this.uploadFile(file,{uuid:own,type:'note',code:id,auth,clientType:'pc',count:String(files.length)},own);
+          receipt.uploadedFiles.push({name:file.name,size:file.size});
+        }
+      }
+      submitted=true;
       await this.request('/pc/note/write',params,{write:true,account:own});
       const deadline=Date.now()+15000;
       while(Date.now()<deadline){
@@ -371,12 +515,13 @@ export class Messenger {
         if(n?.NTE_CODE===id&&n.NUR_UUID===own&&n.NTE_CONTENT===text&&n.NTE_TITLE===title&&n.NTE_SECURITY_YN!=='Y'&&n.NTE_WITHDRAW_YN!=='Y'){
           const received=await this.query('/pc/note/getAllReceiveUserForNote',{nteCode:id});
           if(!sameIds(received.LIST?.map(u=>u.NRU_UID),ids))throw new Error('저장된 쪽지의 수신자가 일치하지 않습니다.');
+          if(files.length&&!matchingFiles(n.ATTACH_IMAGE,files,'NNF_ORI_NAME','NNF_FILE_SIZE'))throw new Error('저장된 쪽지의 첨부파일 정보가 일치하지 않습니다.');
           return {sent:true,verified:true,...receipt,date:n.NTE_REGDATE,title,text};
         }
         await new Promise(resolve=>setTimeout(resolve,500));
       }
       throw new Error('서버에서 같은 쪽지 기록을 아직 확인하지 못했습니다.');
-    }catch(error){throw new DeliveryError(error.message,receipt);}
+    }catch(error){throw new DeliveryError(error.message,{...receipt,...(!submitted?{sent:false}:{}),stage:submitted?'verify-note':'upload'});}
   }
 }
 
