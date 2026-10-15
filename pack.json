@@ -36,6 +36,12 @@
       "repository": "y5496694/narae_gyomoo_highclass",
       "branch": "main",
       "skills": [{"path": "skills/narae-gyomu-hiclass", "name": "narae-gyomu-hiclass"}]
+    },
+    {
+      "id": "narae_gyomoo_classtime",
+      "repository": "y5496694/narae_gyomoo_classtime",
+      "branch": "main",
+      "skills": [{"path": ".", "name": "narae-gyomu-classtime"}]
     }
   ]
 }

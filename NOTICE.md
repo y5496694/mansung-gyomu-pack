@@ -7,6 +7,7 @@
 - https://github.com/y5496694/CBE_CLI
 - https://github.com/y5496694/narae-gyomoo_ezedu
 - https://github.com/y5496694/narae_gyomoo_highclass
+- https://github.com/y5496694/narae_gyomoo_classtime
 
 각 원본의 정확한 반영 커밋은 `sources.lock.json`에 기록합니다. 구성 요소별 이용 조건은 각각의 원본 고지를 확인합니다.
 

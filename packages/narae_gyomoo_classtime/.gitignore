@@ -1,0 +1,7 @@
+sources.local.json
+mapping.local.json
+data/
+__pycache__/
+*.pyc
+*.log
+.server.local.json

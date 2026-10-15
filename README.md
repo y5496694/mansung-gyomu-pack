@@ -2,9 +2,9 @@
 
 **만승초등학교 교직원이 교무 업무에 사용하는 기능들을 모아둔 패키지입니다.**
 
-한글 문서 작성·편집, 업무포털·나이스·에듀파인 업무, 충북소통메신저, 이지에듀 일정 관리, 하이클래스 학부모 소통 기능을 한곳에서 설치하고 사용합니다. **5개 도구의 8개 스킬**을 함께 제공합니다.
+한글 문서 작성·편집, 업무포털·나이스·에듀파인 업무, 충북소통메신저, 이지에듀 일정 관리, 하이클래스 학부모 소통, 공유시트 기본 시간표 기능을 한곳에서 설치하고 사용합니다. **6개 도구의 9개 스킬**을 함께 제공합니다.
 
-각 도구는 원본 저장소에서 계속 개발합니다. 만승 교무팩은 다섯 원본의 최신 `main`을 자동으로 가져와 `packages/`에 묶습니다. ZIP에도 실제 소스와 템플릿이 모두 포함됩니다.
+각 도구는 원본 저장소에서 계속 개발합니다. 만승 교무팩은 여섯 원본의 최신 `main`을 자동으로 가져와 `packages/`에 묶습니다. ZIP에도 실제 소스와 템플릿이 모두 포함됩니다.
 
 | 구성 | 원본 | 설치되는 스킬 |
 | --- | --- | --- |
@@ -13,6 +13,7 @@
 | 충북소통메신저 | [CBE_CLI](https://github.com/y5496694/CBE_CLI) | `cbe-messenger` |
 | 나래교무 이지에듀 | [narae-gyomoo_ezedu](https://github.com/y5496694/narae-gyomoo_ezedu) | `narae-gyomu-ezedu` |
 | 나래교무 하이클래스 | [narae_gyomoo_highclass](https://github.com/y5496694/narae_gyomoo_highclass) | `narae-gyomu-hiclass` |
+| 나래교무 기본 시간표 | [narae_gyomoo_classtime](https://github.com/y5496694/narae_gyomoo_classtime) | `narae-gyomu-classtime` |
 
 ## 제공 기능
 
@@ -69,6 +70,19 @@
 
 로그인·기존 알림장·읽음 현황·하이톡 조회와 빈 작성 양식 표시를 확인했습니다. 실제 입력·게시·발송·예약은 실사용 검증하지 않았습니다. 자세한 절차: [하이클래스 안내](packages/narae_gyomoo_highclass/README.md)
 
+### 6. 학급 기본 시간표 — 나래교무 기본 시간표
+
+- 전체 공개 Google Sheets의 학년도·학기·학년·반·요일·교시를 AI로 해석
+- 학교별 다른 양식, 가변 학년과 반 이름, 8교시 이상도 가능한 셀 매핑
+- 조회일의 한국 날짜로 2~7월은 해당 연도 1학기, 8~12월 및 다음 해 1월은 2학기 선택
+- 전체 학급 JSON과 학년·반 선택 HTML을 함께 갱신하고 최신 원본 기준 질문에 응답
+- HTML을 열 때와 5분마다 원본 확인, 에이전트가 갱신한 JSON도 화면에 자동 반영
+- 주간 과목별 시수에서 여러 과목을 선택해 시간표의 해당 과목을 함께 강조하고 개별·일괄 해제
+- 표 배치·학급이 바뀌면 AI 재해석 요청, 갱신 실패 시 마지막 확인 시각과 자료 상태 표시
+- 실제 공유시트 링크·학교별 매핑·추출 데이터는 Git에서 제외하고 PC의 설치 폴더에 보존
+
+만승초등학교 원본의 2026년 1·2학기 각 22반 추출과 HTML 표시를 확인했으며, 학기 경계·다른 표 방향·8교시·로컬 설정 보존 등을 자동 시험했습니다. 기본 시간표를 다루므로 날짜별 행사·휴업·대체수업은 자동 추정하지 않습니다. 처음 연결하거나 배치가 바뀌면 에이전트에게 재조사를 요청합니다. 자세한 사용법: [기본 시간표 안내](packages/narae_gyomoo_classtime/README.md)
+
 ## 내려받기와 설치
 
 [만승 교무팩 ZIP 다운로드](https://github.com/y5496694/mansung-gyomu-pack/archive/refs/heads/main.zip) 후 압축을 풀거나, Git으로 받습니다.
@@ -87,11 +101,13 @@ Windows와 Python 3.10 이상이 필요합니다. 기본 설치 위치는 `CODEX
 충북소통메신저에서 읽지 않은 쪽지를 보여줘.
 이지에듀에서 이번 주 학교 일정을 조회해 줘.
 하이클래스에서 우리 반 알림장과 읽음 현황을 확인해 줘.
+이 공개 시간표 링크를 연결하고, 현재 학기 전체 학급 시간표를 HTML로 보여줘.
+오늘 3학년 1반 3교시 과목을 최신 원본으로 확인해 줘.
 ```
 
 다른 위치에 설치하려면 `./install.ps1 -SkillsDirectory 'D:\my-skills'`를 사용합니다. 이 옵션은 스킬 파일을 복사하는 위치만 지정하며 다른 에이전트의 등록 형식을 변환하지 않습니다.
 
-기존 파일과 내용이 같으면 건너뛰고, 교체하는 기존 파일은 스킬 폴더 밖의 `skill-backups/mansung-날짜/`에 백업합니다. 기존의 `narae-gyomu-work-portal/references/portal.json`은 로컬 교육청 설정으로 보존합니다. 배포본에 없는 기존 사용자 파일은 삭제하지 않습니다.
+기존 파일과 내용이 같으면 건너뛰고, 교체하는 기존 파일은 스킬 폴더 밖의 `skill-backups/mansung-날짜/`에 백업합니다. 기존의 `narae-gyomu-work-portal/references/portal.json`은 로컬 교육청 설정으로 보존합니다. 시간표의 `sources.local.json`, `mapping.local.json`, `data/`도 유지하므로 업데이트 뒤 같은 공유시트 링크를 계속 사용합니다. 배포본에 없는 기존 사용자 파일은 삭제하지 않습니다.
 
 ### 기능별 실행 환경
 
@@ -102,6 +118,7 @@ Windows와 Python 3.10 이상이 필요합니다. 기본 설치 위치는 `CODEX
 - **한글:** 사용하는 경로에 따라 한컴오피스·Python 라이브러리가 필요합니다. [나래한글 안내](packages/narae_hangul/README.md)와 설치된 스킬의 `references/hancom.md`를 확인합니다.
 - **이지에듀:** 이지에듀 투게더에 로그인한 이력과 활성화된 일정 게이트웨이 모드가 필요합니다. 외부 Python 패키지는 사용하지 않습니다.
 - **하이클래스:** 브라우저 컨트롤이 연결된 브라우저와 하이클래스 교직원 계정이 필요합니다.
+- **기본 시간표:** Python 3.10 이상, 인터넷 연결과 다운로드 가능한 공개 Google Sheets 링크가 필요합니다. 외부 Python 패키지·AI API 키는 필요하지 않습니다. 설치 폴더의 `시간표 열기.cmd`로 HTML을 엽니다.
 
 원본 도구의 지원 범위와 검증 상태는 각각의 README와 SKILL.md를 따릅니다.
 
@@ -109,7 +126,7 @@ Windows와 Python 3.10 이상이 필요합니다. 기본 설치 위치는 `CODEX
 
 ### GitHub의 만승 교무팩
 
-GitHub Actions가 **매시간 17분**에 원본 다섯 저장소의 최신 `main` 커밋을 확인합니다. 변경이 있으면 가져온 파일과 설치 경로를 검사한 뒤 만승 교무팩에 자동 커밋합니다. Actions의 **Sync upstream packages → Run workflow**로 즉시 실행할 수도 있습니다.
+GitHub Actions가 **매시간 17분**에 원본 여섯 저장소의 최신 `main` 커밋을 확인합니다. 변경이 있으면 가져온 파일과 설치 경로를 검사한 뒤 만승 교무팩에 자동 커밋합니다. Actions의 **Sync upstream packages → Run workflow**로 즉시 실행할 수도 있습니다.
 
 GitHub의 예약 실행은 지연될 수 있습니다. 공개 저장소에 60일간 활동이 없으면 예약 작업이 비활성화될 수 있으므로, 장기 미사용 후에는 Actions 상태를 확인합니다. [GitHub 예약 실행 안내](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#schedule)
 
@@ -140,7 +157,7 @@ python -m unittest discover -s tests -v
 
 ```text
 mansung-gyomu-pack/
-├─ packages/              원본 다섯 저장소의 소스·문서·템플릿
+├─ packages/              원본 여섯 저장소의 소스·문서·템플릿
 ├─ scripts/               통합 동기화·검사·설치
 ├─ tests/                 설치·업데이트 검사
 ├─ .github/workflows/     자동 동기화

@@ -1,0 +1,4 @@
+interface:
+  display_name: "나래교무 기본 시간표"
+  short_description: "공개 공유시트의 모든 학급 시간표를 JSON·HTML로 갱신하고 질문에 답합니다."
+  default_prompt: "$narae-gyomu-classtime으로 현재 학기 전체 학급 시간표를 갱신하고 HTML로 보여줘."

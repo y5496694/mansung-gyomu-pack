@@ -26,6 +26,12 @@ class PackTests(unittest.TestCase):
             self.assertEqual({p.parent.name for p in skills.glob("*/SKILL.md")}, expected_names)
             self.assertTrue((skills / "narae-gyomu-ezedu/scripts/easyedu_schedule.py").is_file())
             self.assertTrue((skills / "narae-gyomu-hiclass/references/ui-workflows.md").is_file())
+            self.assertTrue((skills / "narae-gyomu-classtime/scripts/timetable.py").is_file())
+            timetable_files = [skills / "narae-gyomu-classtime" / name for name in
+                               ("sources.local.json", "mapping.local.json", "data/current.json")]
+            for local in timetable_files:
+                local.parent.mkdir(parents=True, exist_ok=True)
+                local.write_bytes(b'{"local":"preserve"}\n')
             cli = skills / "cbe-messenger/scripts/cli.mjs"
             expected = cli.read_bytes()
             cli.write_bytes(b"local customized CLI\n")
@@ -40,6 +46,8 @@ class PackTests(unittest.TestCase):
             self.assertEqual(backups[0].read_bytes(), b"local customized CLI\n")
             self.assertEqual(settings.read_bytes(), b'{"region":"local-test"}\n')
             self.assertEqual(extra.read_text(), "keep")
+            for local in timetable_files:
+                self.assertEqual(local.read_bytes(), b'{"local":"preserve"}\n')
             subprocess.run(command, check=True, capture_output=True)
             self.assertEqual(len(list((sandbox / "skill-backups").iterdir())), 1)
 
