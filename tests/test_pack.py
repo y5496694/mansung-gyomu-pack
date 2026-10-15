@@ -8,7 +8,7 @@ from zipfile import ZipFile
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
-from sync import unpack
+from sync import read_json, unpack
 
 
 class PackTests(unittest.TestCase):
@@ -19,7 +19,13 @@ class PackTests(unittest.TestCase):
             command = [sys.executable, str(ROOT / "scripts/install.py"),
                        "--skills-directory", str(skills)]
             subprocess.run(command, check=True, capture_output=True)
-            self.assertEqual(len(list(skills.glob("*/SKILL.md"))), 6)
+            expected_names = {
+                entry["name"] for source in read_json(ROOT / "pack.json")["sources"]
+                for entry in source["skills"]
+            }
+            self.assertEqual({p.parent.name for p in skills.glob("*/SKILL.md")}, expected_names)
+            self.assertTrue((skills / "narae-gyomu-ezedu/scripts/easyedu_schedule.py").is_file())
+            self.assertTrue((skills / "narae-gyomu-hiclass/references/ui-workflows.md").is_file())
             cli = skills / "cbe-messenger/scripts/cli.mjs"
             expected = cli.read_bytes()
             cli.write_bytes(b"local customized CLI\n")

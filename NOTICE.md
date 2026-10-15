@@ -1,10 +1,12 @@
 # 출처 안내
 
-만승팩은 아래 공개 저장소를 묶습니다. `packages/`의 파일은 원본 내용을 가져온 것이며, 원본의 README·라이선스·제3자 고지를 유지합니다.
+만승 교무팩은 만승초등학교 교직원의 교무 업무를 위해 아래 공개 저장소를 묶습니다. `packages/`의 파일은 원본 내용을 가져온 것이며, 원본의 README·라이선스·제3자 고지를 유지합니다.
 
 - https://github.com/y5496694/narae_hangul
 - https://github.com/y5496694/narae_gyomoo_portal
 - https://github.com/y5496694/CBE_CLI
+- https://github.com/y5496694/narae-gyomoo_ezedu
+- https://github.com/y5496694/narae_gyomoo_highclass
 
 각 원본의 정확한 반영 커밋은 `sources.lock.json`에 기록합니다. 구성 요소별 이용 조건은 각각의 원본 고지를 확인합니다.
 

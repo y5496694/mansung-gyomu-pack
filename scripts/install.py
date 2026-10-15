@@ -14,9 +14,10 @@ def install(skills_directory):
     backup = skills_directory.parent / "skill-backups" / ("mansung-" + datetime.now().strftime("%Y%m%d-%H%M%S-%f"))
     copied = kept = 0
     for source in read_json(ROOT / "pack.json")["sources"]:
-        for path in source["skills"]:
-            skill = ROOT / "packages" / source["id"] / path
-            target = skills_directory / skill.name
+        for entry in source["skills"]:
+            skill = ROOT / "packages" / source["id"] / entry["path"]
+            name = entry["name"]
+            target = skills_directory / name
             if target.is_symlink() or target.resolve().parent != skills_directory:
                 raise ValueError(f"Invalid skill target: {target}")
             for original in skill.rglob("*"):
@@ -32,13 +33,13 @@ def install(skills_directory):
                         continue
                     if output.read_bytes() == original.read_bytes():
                         continue
-                    saved = backup / skill.name / relative
+                    saved = backup / name / relative
                     saved.parent.mkdir(parents=True, exist_ok=True)
                     shutil.copy2(output, saved)
                 output.parent.mkdir(parents=True, exist_ok=True)
                 shutil.copy2(original, output)
                 copied += 1
-            print(f"Installed: {skill.name}")
+            print(f"Installed: {name}")
     print(f"Copied {copied} files; preserved {kept} local portal setting(s).")
     if backup.exists():
         print(f"Backup: {backup}")

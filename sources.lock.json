@@ -149,5 +149,32 @@
       "skills/cbe-messenger/SKILL.md": "e9730c09ace645ab6fc2a2908393b08e87c65e65d3b8f1315bc80a8647818d3c",
       "test.mjs": "791f10ce7e1e3552b310794d54a59f20b09eec8276bf866267336829e3e7c529"
     }
+  },
+  "narae-gyomoo_ezedu": {
+    "repository": "y5496694/narae-gyomoo_ezedu",
+    "branch": "main",
+    "commit": "a1519abd3dd068e40e1a693e7e85c1d3fb068bcb",
+    "url": "https://github.com/y5496694/narae-gyomoo_ezedu/commit/a1519abd3dd068e40e1a693e7e85c1d3fb068bcb",
+    "files": {
+      ".gitignore": "610544d4fcaad71d19e62ea24ee73406ad98977417918b262aefa898cebedf09",
+      "agents/openai.yaml": "24304de304b511e5fd35cb53be1828966d1366dffd7191a3ae9a12aeef9f34ca",
+      "easyedu.cmd": "0498b3c6550f3b58d7d9acf8b0017b9df8fa8ee0cf6fdedce5c1ac88638db576",
+      "README.md": "5b7124d2d2642ef751f4bf73fd7483331f19d374df08b0494c1ef0dd9a48e185",
+      "scripts/easyedu_schedule.py": "377914159129691f04b0c78c5020d63e17154b90d22089e0e509311ae8ca3cfd",
+      "SKILL.md": "027d75800266af4b4fc340018991f20d9a13b12933e31f37e7c37fd31417dfc4",
+      "tests/test_schedule.py": "02ba633cc634d7f961d53fbfd5e6febd3e0d6e4e0880c8107f21f1639bef74d7"
+    }
+  },
+  "narae_gyomoo_highclass": {
+    "repository": "y5496694/narae_gyomoo_highclass",
+    "branch": "main",
+    "commit": "5fa2a2d77919c0a134523356e89efdcd68b7ef5c",
+    "url": "https://github.com/y5496694/narae_gyomoo_highclass/commit/5fa2a2d77919c0a134523356e89efdcd68b7ef5c",
+    "files": {
+      "README.md": "3c83bcd6d9a7aebd35656f51119de9ec8dd2abf88141b5c9ed41d4801e404739",
+      "skills/narae-gyomu-hiclass/agents/openai.yaml": "b4e9c5932b7dc78518758469a380930545eb7766045b925f6e0fa88f4a7d84d3",
+      "skills/narae-gyomu-hiclass/references/ui-workflows.md": "eecee7fdd1254ff6a9f5b26e0378380b3f7624e385e8776ee4f5947295132af9",
+      "skills/narae-gyomu-hiclass/SKILL.md": "df4fe4770ad4a91bdcf3e08bc1727211eec23436fa45f133381025ad7bef1590"
+    }
   }
 }

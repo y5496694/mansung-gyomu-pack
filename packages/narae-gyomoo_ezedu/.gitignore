@@ -1,0 +1,14 @@
+__pycache__/
+*.py[cod]
+.venv/
+work/
+outputs/
+*.log
+.env
+.env.*
+credentials.json
+*.har
+*.saz
+*.mdb
+*.exe
+*.dll

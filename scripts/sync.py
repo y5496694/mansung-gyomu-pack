@@ -101,7 +101,7 @@ def main():
             snapshot.mkdir()
             unpack(download(f"https://codeload.github.com/{repo}/zip/{commit}"), snapshot)
             for skill in source["skills"]:
-                if not (snapshot / skill / "SKILL.md").is_file():
+                if not (snapshot / skill["path"] / "SKILL.md").is_file():
                     raise ValueError(f"Missing skill: {name}/{skill}")
             updated[name] = {
                 "repository": repo, "branch": branch, "commit": commit,
