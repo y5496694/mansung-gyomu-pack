@@ -5,6 +5,7 @@ import os
 from pathlib import Path
 import shutil
 from sync import ROOT, read_json
+from routing import load_overrides, render_skill, skill_entries, skill_files
 from validate import main as validate
 
 
@@ -13,33 +14,32 @@ def install(skills_directory):
     skills_directory = skills_directory.resolve()
     backup = skills_directory.parent / "skill-backups" / ("mansung-" + datetime.now().strftime("%Y%m%d-%H%M%S-%f"))
     copied = kept = 0
-    for source in read_json(ROOT / "pack.json")["sources"]:
-        for entry in source["skills"]:
-            skill = ROOT / "packages" / source["id"] / entry["path"]
-            name = entry["name"]
-            target = skills_directory / name
-            if target.is_symlink() or target.resolve().parent != skills_directory:
-                raise ValueError(f"Invalid skill target: {target}")
-            for original in skill.rglob("*"):
-                if not original.is_file():
+    overrides = load_overrides()
+    for name, skill, selected in skill_entries(read_json(ROOT / "pack.json")):
+        target = skills_directory / name
+        if target.is_symlink() or target.resolve().parent != skills_directory:
+            raise ValueError(f"Invalid skill target: {target}")
+        for original in skill_files(skill, selected):
+            relative = original.relative_to(skill)
+            output = target / relative
+            data = original.read_bytes()
+            if relative.as_posix() == "SKILL.md":
+                data = render_skill(name, data, overrides)
+            if not output.resolve().is_relative_to(skills_directory):
+                raise ValueError("Install path escapes skills directory")
+            if output.exists():
+                if relative.as_posix() == "references/portal.json":
+                    kept += 1
                     continue
-                relative = original.relative_to(skill)
-                output = target / relative
-                if not output.resolve().is_relative_to(skills_directory):
-                    raise ValueError("Install path escapes skills directory")
-                if output.exists():
-                    if relative.as_posix() == "references/portal.json":
-                        kept += 1
-                        continue
-                    if output.read_bytes() == original.read_bytes():
-                        continue
-                    saved = backup / name / relative
-                    saved.parent.mkdir(parents=True, exist_ok=True)
-                    shutil.copy2(output, saved)
-                output.parent.mkdir(parents=True, exist_ok=True)
-                shutil.copy2(original, output)
-                copied += 1
-            print(f"Installed: {name}")
+                if output.read_bytes() == data:
+                    continue
+                saved = backup / name / relative
+                saved.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copy2(output, saved)
+            output.parent.mkdir(parents=True, exist_ok=True)
+            output.write_bytes(data)
+            copied += 1
+        print(f"Installed: {name}")
     print(f"Copied {copied} files; preserved {kept} local portal setting(s).")
     if backup.exists():
         print(f"Backup: {backup}")

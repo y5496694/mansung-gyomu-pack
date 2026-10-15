@@ -1,6 +1,13 @@
 {
   "name": "만승 교무팩",
   "description": "만승초등학교 교직원이 교무 업무에 사용하는 기능들을 모아둔 패키지입니다.",
+  "local_skills": [
+    {
+      "name": "mansung-gyomu-pack",
+      "path": ".",
+      "files": ["SKILL.md", "references/routing.md", "agents/openai.yaml"]
+    }
+  ],
   "sources": [
     {
       "id": "narae_hangul",

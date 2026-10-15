@@ -8,7 +8,8 @@ from zipfile import ZipFile
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
-from sync import read_json, unpack
+from sync import file_hashes, read_json, unpack
+from routing import load_overrides, render_skill, skill_entries
 
 
 class PackTests(unittest.TestCase):
@@ -20,8 +21,7 @@ class PackTests(unittest.TestCase):
                        "--skills-directory", str(skills)]
             subprocess.run(command, check=True, capture_output=True)
             expected_names = {
-                entry["name"] for source in read_json(ROOT / "pack.json")["sources"]
-                for entry in source["skills"]
+                name for name, _, _ in skill_entries(read_json(ROOT / "pack.json"))
             }
             self.assertEqual({p.parent.name for p in skills.glob("*/SKILL.md")}, expected_names)
             self.assertTrue((skills / "narae-gyomu-ezedu/scripts/easyedu_schedule.py").is_file())
@@ -50,6 +50,40 @@ class PackTests(unittest.TestCase):
                 self.assertEqual(local.read_bytes(), b'{"local":"preserve"}\n')
             subprocess.run(command, check=True, capture_output=True)
             self.assertEqual(len(list((sandbox / "skill-backups").iterdir())), 1)
+
+    def test_routing_survives_reinstall_without_mutating_snapshots(self):
+        before = file_hashes(ROOT / "packages")
+        with tempfile.TemporaryDirectory(prefix="mansung-routing-") as directory:
+            skills = Path(directory) / "skills"
+            command = [sys.executable, str(ROOT / "scripts/install.py"),
+                       "--skills-directory", str(skills)]
+            subprocess.run(command, check=True, capture_output=True)
+            root_skill = skills / "mansung-gyomu-pack/SKILL.md"
+            self.assertEqual(root_skill.read_bytes(), (ROOT / "SKILL.md").read_bytes())
+            self.assertTrue((root_skill.parent / "references/routing.md").is_file())
+            self.assertTrue((root_skill.parent / "agents/openai.yaml").is_file())
+            overrides = load_overrides()
+            for name, folder, _ in skill_entries(read_json(ROOT / "pack.json")):
+                if name not in overrides:
+                    continue
+                installed = skills / name / "SKILL.md"
+                rendered = render_skill(name, (folder / "SKILL.md").read_bytes(), overrides)
+                self.assertEqual(installed.read_bytes(), rendered)
+                # The pack adds discovery guidance while retaining the entire
+                # original workflow body and its support/approval constraints.
+                original_body = (folder / "SKILL.md").read_text(encoding="utf-8-sig").split("---", 2)[2].lstrip("\n")
+                self.assertTrue(installed.read_text(encoding="utf-8").endswith(original_body))
+                self.assertTrue((installed.parent / "../mansung-gyomu-pack/SKILL.md").resolve().is_file())
+            initial = file_hashes(skills)
+            subprocess.run(command, check=True, capture_output=True)
+            self.assertEqual(initial, file_hashes(skills))
+            self.assertFalse((skills.parent / "skill-backups").exists())
+        self.assertEqual(before, file_hashes(ROOT / "packages"))
+
+    def test_overlay_rejects_unrecognized_frontmatter_without_overwriting(self):
+        source = b'---\nname: narae-hangul\ndescription: >\n  Multiline description\n---\nOriginal workflow\n'
+        with self.assertRaises(ValueError):
+            render_skill("narae-hangul", source, load_overrides())
 
     def test_archive_cannot_write_outside_package(self):
         archive = io.BytesIO()

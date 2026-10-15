@@ -1,0 +1,6 @@
+interface:
+  display_name: "만승 교무팩 필독"
+  short_description: "학교 업무 시작 전 필독하고 일정·시간표·문서·연락 도구를 분류합니다"
+  default_prompt: "$mansung-gyomu-pack을 먼저 읽고 해당 업무 스킬을 사용해 요청을 처리해줘."
+policy:
+  allow_implicit_invocation: true
