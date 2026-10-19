@@ -1,7 +1,7 @@
 import test, {after} from 'node:test';
 import assert from 'node:assert/strict';
 import { selectTarget, socketUrl, plain, Messenger } from './messenger.mjs';
-import {positive,run} from './cli.mjs';
+import {positive,run,printResult} from './cli.mjs';
 import {mkdtempSync,writeFileSync,rmSync} from 'node:fs';
 import {tmpdir} from 'node:os';
 import {join} from 'node:path';
@@ -25,6 +25,27 @@ test('서버를 변형하는 임의 API 경로는 호출하지 않음',async()=>
 test('페이지 범위와 숫자 파싱 검증',()=>{
   assert.equal(positive('100','limit',100),100);
   for(const value of ['0','-1','1.5','101','NaN','1e2'])assert.throws(()=>positive(value,'limit',100));
+});
+
+test('잉여 위치 인자와 너무 큰 대화 offset은 앱 연결 전에 거절',async()=>{
+  const original=Messenger.connect;let connections=0;
+  Messenger.connect=async()=>{connections++;throw Error('must not connect');};
+  try{
+    for(const args of [['notes','list','typo'],['notes','read','id','extra'],['chats','list','extra'],['chats','read','room','extra'],['users','search','이름','extra'],['users','show','id','extra'],['memos','list','extra'],['open','main','extra'],['open','chat','room','extra']])await assert.rejects(()=>run(args),/지원하지 않는 명령/);
+    await assert.rejects(()=>run(['chats','read','room','--offset','9007199254740993']),/offset이 너무/);
+    await assert.rejects(()=>run(['notes','send','--to','111111111111111111111111','--text','예약 요청','--reserved']),/예약 전송은 지원하지/);
+    assert.equal(connections,0);
+  }finally{Messenger.connect=original;}
+});
+
+test('전체 건수 미상과 재조회 미확인을 확인 완료로 출력하지 않음',()=>{
+  const output=[],original=console.log;console.log=(value)=>output.push(String(value));
+  try{
+    printResult({page:1,items:[]},false);
+    assert.doesNotMatch(output.pop(),/undefined|전체/);
+    printResult({sent:true,verified:false,messageId:'id'},false);
+    assert.doesNotMatch(output.pop(),/서버 기록 확인 완료/);
+  }finally{console.log=original;}
 });
 test('메시지 HTML 및 엔티티를 실행 없이 텍스트로 변환',()=>{
   assert.equal(plain('<p>안녕 &amp; &lt;동료&gt;</p><div>다음<br>줄 &#x1F600;</div>'),'안녕 & <동료>\n다음\n줄 😀');

@@ -58,11 +58,12 @@ function clean(value){return String(value??'').replace(/[\x00-\x08\x0b-\x1f\x7f-
 
 export function printResult(result,json) {
   if(json){console.log(JSON.stringify(result,null,2));return;}
+  if(result.sent===true&&result.verified!==true){console.log(clean(JSON.stringify(result,null,2)));return;}
   if(result.dryRun){console.log(clean(JSON.stringify(result,null,2)));return;}
   if(result.sent===true){console.log(clean(`서버 기록 확인 완료 · ${result.noteId?'쪽지':'대화'} ID: ${result.noteId||result.messageId}\n${result.room?'방 ID: '+result.room+'\n':''}수신자: ${result.recipients.map(u=>u.name+' ('+u.id+')').join(', ')}\n\n${result.text}`));for(const file of result.files||[])console.log(clean(`첨부: ${file.name} (${file.size} bytes)`));return;}
   if(result.items){
     if(result.scope)console.log(`검색 범위: ${result.scope==='my'?'내 조직':'전체 조직'}${result.fallback?' (내 조직에 일치하는 이름 없음)':''}`);
-    console.log(`페이지 ${result.page} · ${result.items.length}개${result.total===null?'':` · 전체 ${result.total}개`}`);
+    console.log(`페이지 ${result.page} · ${result.items.length}개${result.total==null?'':` · 전체 ${result.total}개`}`);
     if(result.title)console.log(clean(result.title));
     for(const r of result.items){
       console.log(clean(`${r.id||''}  ${r.date||''}  ${r.title||r.name||r.sender||''}${r.type?` [${r.type}]`:''}`));
@@ -91,6 +92,7 @@ export async function run(argv=process.argv.slice(2)) {
   if(!['send','receive','title','content'].includes(v['search-type']))throw new Error('--search-type은 send, receive, title, content 중 하나입니다.');
   if(!['auto','my','all'].includes(v.scope))throw new Error('--scope는 auto, my, all 중 하나입니다.');
   const group=p[0],action=p[1]||'list';
+  if(v.reserved&&!((group==='notes'&&action==='read')||(group==='open'&&action==='note')))throw new Error('--reserved는 notes read 또는 open note에서만 사용하세요. 예약 전송은 지원하지 않습니다.');
   const idCommands=(group==='open'&&action!=='main')||(['notes','chats'].includes(group)&&action==='read')||(group==='users'&&action==='show');
   if(idCommands)requiredId(p[2]);
   if(group==='compose')requiredId(v.to);
@@ -99,11 +101,12 @@ export async function run(argv=process.argv.slice(2)) {
   if((v['dry-run']||v['confirm-many']||v.title!==undefined||v.file.length)&&!sending)throw new Error('--dry-run, --confirm-many, --title, --file은 전송 명령에서만 사용하세요.');
   if(v['confirm-many']&&!(group==='notes'&&action==='send'))throw new Error('--confirm-many는 notes send에서만 사용하세요.');
   if(group==='users'&&action==='search'&&!p[2]?.trim())throw new Error('사용자 검색어를 입력하세요.');
-  const valid=(group==='status'&&p.length===1)||(['notes','chats'].includes(group)&&['list','read'].includes(action))||(['notes','chats'].includes(group)&&action==='send'&&p.length===2)||(group==='chats'&&action==='create'&&p.length===2)||(group==='users'&&['search','show'].includes(action))||(group==='memos'&&action==='list')||(group==='open'&&['main','note','chat','profile'].includes(action))||(group==='compose'&&p.length===1);
+  const valid=(group==='status'&&p.length===1)||(['notes','chats'].includes(group)&&((action==='list'&&p.length<=2)||(action==='read'&&p.length===3)))||(['notes','chats'].includes(group)&&action==='send'&&p.length===2)||(group==='chats'&&action==='create'&&p.length===2)||(group==='users'&&['search','show'].includes(action)&&p.length===3)||(group==='memos'&&action==='list'&&p.length<=2)||(group==='open'&&((action==='main'&&p.length===2)||(['note','chat','profile'].includes(action)&&p.length===3)))||(group==='compose'&&p.length===1);
   if(!valid)throw new Error('지원하지 않는 명령입니다. cbe --help를 확인하세요.');
   const boxes={all:'ALL',received:'R',sent:'S',unread:'N',important:'I',self:'M',reserved:'B'};
   if(group==='notes'&&action==='list'&&!(v.box in boxes))throw new Error('지원하지 않는 --box 값입니다.');
   if(group==='chats'&&action==='list'&&!['all','unread','important'].includes(v.box))throw new Error('대화방 --box는 all, unread, important를 지원합니다.');
+  if(group==='chats'&&action==='read'&&!Number.isSafeInteger(Number(v.offset)))throw new Error('대화 offset이 너무 큽니다.');
   const client=await Messenger.connect(port);
   try{
     let result;
@@ -114,7 +117,6 @@ export async function run(argv=process.argv.slice(2)) {
     else if(group==='chats'&&action==='list')result=await client.chats({...options,box:boxes[v.box]});
     else if(group==='chats'&&['send','create'].includes(action))result=await client[action==='send'?'sendChat':'createChat'](v.to,v.text,{title:v.title,dryRun:!!v['dry-run'],files:v.file});
     else if(group==='chats'){
-      if(!Number.isSafeInteger(Number(v.offset)))throw new Error('대화 offset이 너무 큽니다.');
       result=await client.messages(p[2],{...options,offset:Number(v.offset)});
     }
     else if(group==='users'&&action==='search')result=await client.users(p[2],{...options,scope:v.scope});
