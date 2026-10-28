@@ -7,7 +7,8 @@
 | 이지에듀 | `packages/narae-gyomoo_ezedu/SKILL.md` |
 | classtime | `packages/narae_gyomoo_classtime/SKILL.md` |
 | 하이클래스 | `packages/narae_gyomoo_highclass/skills/narae-gyomu-hiclass/SKILL.md` |
-| 나래한글 | `packages/Narae_hangul_office/skills/narae-hangul-office/SKILL.md` |
+| 나래 한글 오피스 (학교 문서 기본) | `packages/Narae_hangul_office/skills/narae-hangul-office/SKILL.md` |
+| 독립 나래한글 CLI (사용자 지정) | `packages/narae_hangul/1_나래엔진/narae-hangul/SKILL.md` |
 | CBE CLI | `packages/CBE_CLI/skills/cbe-messenger/SKILL.md` |
 | 교무나래 포탈 | `packages/narae_gyomoo_portal/skills/narae-gyomu-work-portal/SKILL.md` |
 | 나이스 / 에듀파인 / WXS | 위 포탈의 `skills/narae-gyomu-neis`, `skills/narae-gyomu-edufine`, `skills/wxs-cli` 각각의 `SKILL.md` |

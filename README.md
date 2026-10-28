@@ -6,14 +6,15 @@
 
 **만승초등학교 교직원이 교무 업무에 사용하는 기능들을 모아둔 패키지입니다.**
 
-한글 문서 읽기·작성·편집, 업무포털·나이스·에듀파인 업무, 충북소통메신저, 이지에듀 일정 관리, 하이클래스 학부모 소통, 공유시트 기본 시간표 기능을 한곳에서 설치하고 사용합니다. **필독 스킬 1개 + 6개 도구의 업무 스킬 9개, 총 10개**를 함께 설치합니다.
+한글 문서 읽기·작성·편집, 업무포털·나이스·에듀파인 업무, 충북소통메신저, 이지에듀 일정 관리, 하이클래스 학부모 소통, 공유시트 기본 시간표 기능을 한곳에서 설치하고 사용합니다. **필독 스킬 1개 + 7개 도구의 업무 스킬 10개, 총 11개**를 함께 설치합니다.
 
-각 도구는 원본 저장소에서 계속 개발합니다. 만승 교무팩은 여섯 원본의 최신 `main`을 자동으로 가져와 `packages/`에 묶습니다. ZIP에도 실제 소스와 템플릿이 모두 포함됩니다.
+각 도구는 원본 저장소에서 계속 개발합니다. 만승 교무팩은 일곱 원본의 최신 `main`을 자동으로 가져와 `packages/`에 묶습니다. ZIP에도 실제 소스와 템플릿이 모두 포함됩니다.
 
 | 구성 | 원본 | 설치되는 스킬 |
 | --- | --- | --- |
 | 만승 교무팩 필독 | [최상단 SKILL.md](SKILL.md) | `mansung-gyomu-pack` |
-| 나래한글 | [narae_hangul](https://github.com/y5496694/narae_hangul) | `narae-hangul` |
+| 나래 한글 오피스 (기본) | [Narae_hangul_office](https://github.com/y5496694/Narae_hangul_office) | `narae-hangul-office` |
+| 독립 나래한글 CLI | [narae_hangul](https://github.com/y5496694/narae_hangul) | `narae-hangul` |
 | 나래교무 업무포털 | [narae_gyomoo_portal](https://github.com/y5496694/narae_gyomoo_portal) | 업무포털·나이스·에듀파인·WXS, 4개 |
 | 충북소통메신저 | [CBE_CLI](https://github.com/y5496694/CBE_CLI) | `cbe-messenger` |
 | 나래교무 이지에듀 | [narae-gyomoo_ezedu](https://github.com/y5496694/narae-gyomoo_ezedu) | `narae-gyomu-ezedu` |
@@ -134,7 +135,7 @@ Windows와 Python 3.10 이상이 필요합니다. 기본 설치 위치는 `CODEX
 
 ### GitHub의 만승 교무팩
 
-GitHub Actions가 **매시간 17분**에 원본 여섯 저장소의 최신 `main` 커밋을 확인합니다. 변경이 있으면 가져온 파일과 설치 경로를 검사한 뒤 만승 교무팩에 자동 커밋합니다. Actions의 **Sync upstream packages → Run workflow**로 즉시 실행할 수도 있습니다.
+GitHub Actions가 **매시간 17분**에 원본 일곱 저장소의 최신 `main` 커밋을 확인합니다. 두 한글 CLI도 각 원본에서 별도로 갱신합니다. 변경이 있으면 가져온 파일과 설치 경로를 검사한 뒤 만승 교무팩에 자동 커밋합니다. Actions의 **Sync upstream packages → Run workflow**로 즉시 실행할 수도 있습니다.
 
 GitHub의 예약 실행은 지연될 수 있습니다. 공개 저장소에 60일간 활동이 없으면 예약 작업이 비활성화될 수 있으므로, 장기 미사용 후에는 Actions 상태를 확인합니다. [GitHub 예약 실행 안내](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#schedule)
 
@@ -175,7 +176,7 @@ mansung-gyomu-pack/
 ├─ routing/               설치본의 적용 설명·필독 연결 보강
 ├─ agents/                필독 스킬 표시 정보
 ├─ docs/                  폴더별 쉬운 사용법·설치 캡처
-├─ packages/              원본 여섯 저장소의 소스·문서·템플릿
+├─ packages/              원본 일곱 저장소의 소스·문서·템플릿
 ├─ scripts/               통합 동기화·검사·설치
 ├─ tests/                 설치·업데이트 검사
 ├─ .github/workflows/     자동 동기화
@@ -187,4 +188,4 @@ mansung-gyomu-pack/
 
 각 구성 요소의 라이선스·출처 고지는 원본 폴더에 유지합니다. 만승 교무팩 전체에 하나의 라이선스를 일괄 적용하지 않습니다. 자세한 내용은 [출처 안내](NOTICE.md)를 확인하세요.
 
-한글 문서 기능은 [나래 한글 오피스](https://github.com/y5496694/Narae_hangul_office)로 연결됩니다. 한컴오피스 한글을 먼저 설치하고 오피스의 설치.cmd를 한 번 실행하세요. 그 밖의 오피스 의존성은 자동 설치됩니다. 기존 narae-hangul 스킬 이름도 새 CLI에 연결합니다.
+한글 문서 기본 도구는 [나래 한글 오피스](https://github.com/y5496694/Narae_hangul_office)입니다. 한컴오피스 한글을 먼저 설치하고 오피스의 설치.cmd를 한 번 실행하세요. 그 밖의 오피스 의존성은 자동 설치됩니다. `narae-hangul`은 [독립 Python CLI](https://github.com/y5496694/narae_hangul)이며 해당 저장소의 설치.cmd로 별도 준비합니다. 두 CLI의 설치 경로와 스킬은 서로 덮어쓰지 않습니다.

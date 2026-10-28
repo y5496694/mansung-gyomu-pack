@@ -1,4 +1,0 @@
-interface:
-  display_name: "나래한글 · 오피스 호환"
-  short_description: "기존 나래한글 요청을 새 오피스 CLI의 문서 읽기·작성·편집으로 연결"
-  default_prompt: "Use $narae-hangul to route this HWP/HWPX task through Narae Hangul Office."

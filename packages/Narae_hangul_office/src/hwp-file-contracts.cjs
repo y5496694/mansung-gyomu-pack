@@ -1,7 +1,7 @@
 const string={type:'string'},number={type:'number'},integer={type:'integer',minimum:0},boolean={type:'boolean'};
 const object=(properties,required=[])=>({type:'object',properties,required,additionalProperties:false});
-const textStyle=object({font:string,size:number,bold:boolean,italic:boolean,underline:boolean,color:string});
-const paragraphStyle=object({align:{type:'string',enum:['LEFT','CENTER','RIGHT','JUSTIFY','DISTRIBUTE']},line:number,before:number,after:number});
+const textStyle=object({font:string,size:number,bold:boolean,italic:boolean,underline:boolean,strike:boolean,color:string,background:string,superscript:boolean,subscript:boolean,stretch:number,letter_spacing:number});
+const paragraphStyle=object({align:{type:'string',enum:['LEFT','CENTER','RIGHT','JUSTIFY','DISTRIBUTE']},line:number,line_type:string,left:number,right:number,indent:number,before:number,after:number,page_break:boolean});
 const operations={type:'array',minItems:1,items:{anyOf:[
  object({op:{type:'string',enum:['set_text']},target:string,text:string},['op','target','text']),
  object({op:{type:'string',enum:['replace_text']},target:string,find:string,replace:string,expected:{type:'integer',minimum:1}},['op','target','find','replace','expected']),

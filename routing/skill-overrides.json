@@ -1,7 +1,7 @@
 {
   "narae-hangul": {
-    "description": "나래 한글 오피스 CLI의 기존 narae-hangul 이름 호환 진입점.",
-    "instruction": "같은 skills 폴더의 narae-hangul-office/SKILL.md를 읽고 새 CLI를 실제 실행한다. 예전 narae.py run 호출도 새 오피스에 연결된다. 한컴오피스 한글과 나래 한글 오피스를 설치해야 한다."
+    "description": "독립 나래한글 Python CLI. 오피스 앱 없이 HWP/HWPX 읽기·생성·보존 편집·렌더링을 수행하고, 설치된 한컴의 열린 문서와 고급 COM 편집을 지원한다.",
+    "instruction": "사용자가 독립 나래한글 CLI를 지정하면 이 스킬의 scripts/narae.py를 실제 실행한다. 나래 한글 오피스나 Node.js를 요구하지 않는다. CLI 파일 편집에는 직전 inspect의 input_sha256을 전달하고, 열린 한글 편집에는 live-read의 liveRevision을 전달한다. 한컴 경로의 사전 설치·검증 한계를 유지한다. 학교 문서의 기본 도구는 narae-hangul-office이며 명시적인 독립 CLI 지정은 존중한다."
   },
   "narae-gyomu-ezedu": {
     "description": "만승 교무팩의 일정·스케줄·스케쥴 필수 도구. 오늘·이번 주·특정 기간의 학교·개인·그룹 일정을 조회하고 지원되는 일정을 입력한다. 학교 시간표·교시·과목은 classtime, 실제 복무·출장 신청은 포탈로 분류한다.",
@@ -13,7 +13,7 @@
   },
   "narae-gyomu-hiclass": {
     "description": "만승 교무팩의 학부모 소통·학부모 공지·공지사항·안내·알림장·가정통신문 필수 도구. 서비스 이름이 없어도 문안 준비와 하이클래스 조회·연락에 사용한다. 교직원 쪽지·대화는 CBE CLI, HWP/HWPX 파일 읽기·제작은 나래한글과 연계한다.",
-    "instruction": "학교 업무의 학부모 소통·학부모 공지·공지사항·안내·가정통신문은 반드시 하이클래스 스킬을 읽고 요청한 단계까지만 처리한다. 문안 초안만 요청받으면 게시하지 않는다. 학부모 연락은 연락이라는 단어가 있어도 CBE CLI로 보내지 않는다. HWP/HWPX 첨부 읽기·제작은 narae-hangul CLI를 함께 사용한다. 사용자가 명시한 다른 대상·서비스는 최상단 분류 규칙으로 구분한다."
+    "instruction": "학교 업무의 학부모 소통·학부모 공지·공지사항·안내·가정통신문은 반드시 하이클래스 스킬을 읽고 요청한 단계까지만 처리한다. 문안 초안만 요청받으면 게시하지 않는다. 학부모 연락은 연락이라는 단어가 있어도 CBE CLI로 보내지 않는다. HWP/HWPX 첨부 읽기·제작은 narae-hangul-office CLI를 함께 사용한다. 사용자가 명시한 다른 대상·서비스는 최상단 분류 규칙으로 구분한다."
   },
   "cbe-messenger": {
     "description": "만승 교무팩의 쪽지·대화·연락·교직원 메시지 필수 도구. 충북소통메신저 사용자 검색·조회·지원되는 전송을 로컬 CBE CLI로 처리한다. 학부모 연락·공지·가정통신문은 하이클래스로 분류하며 일반 작업은 GUI를 띄우지 않는다.",
@@ -21,7 +21,7 @@
   },
   "narae-gyomu-work-portal": {
     "description": "만승 교무팩의 교무나래 포탈(나래교무 업무포털). 공문·기안·복무·출장·결재·접수 요청의 필수 진입점으로 나이스·에듀파인·WXS에 분류한다. 현재 지원은 조회·일부 초안·임시저장이며 최종 상신·승인·실제 발송은 지원하지 않는다.",
-    "instruction": "공문·기안·복무·출장·결재·접수는 반드시 이 포탈 스킬부터 읽어 나이스·에듀파인·WXS로 분류한다. 분류가 해당 업무의 구현 완료를 뜻하지 않는다. 출장·접수 등 미지원 절차와 최종 상신·승인·실제 발송의 한계를 유지한다. 독립 HWP/HWPX 첨부 읽기는 narae-hangul, 열린 WXS 본문은 wxs-cli를 사용한다."
+    "instruction": "공문·기안·복무·출장·결재·접수는 반드시 이 포탈 스킬부터 읽어 나이스·에듀파인·WXS로 분류한다. 분류가 해당 업무의 구현 완료를 뜻하지 않는다. 출장·접수 등 미지원 절차와 최종 상신·승인·실제 발송의 한계를 유지한다. 독립 HWP/HWPX 첨부 읽기는 narae-hangul-office, 열린 WXS 본문은 wxs-cli를 사용한다."
   },
   "narae-gyomu-neis": {
     "description": "만승 교무팩 포탈의 나이스 복무 담당. 연가·조퇴 초안과 개인결재선 지정에 사용한다. 복무·출장 요청은 포탈 공통 지침에서 분류하며 출장 등 다른 종류는 미구현 상태를 확인한다. 최종 상신은 지원하지 않는다.",
@@ -29,14 +29,14 @@
   },
   "narae-gyomu-edufine": {
     "description": "만승 교무팩 포탈의 K-에듀파인 공문·기안·결재·접수 업무 분류. 확인된 기능은 문서등록대장 검색·문서정보 조회이며 열린 본문·초안·임시저장은 WXS로 연결한다. 미지원 접수·결재 처리를 완료했다고 보고하지 않는다.",
-    "instruction": "공문·기안·결재·접수 요청은 narae-gyomu-work-portal 공통 지침을 필독하고 지원되는 범위만 수행한다. 열린 공문 본문·양식은 wxs-cli, 다운로드된 독립 HWP/HWPX 첨부 열람·요약은 narae-hangul CLI를 사용한다. 제목·첨부 목록만으로 내용을 읽었다고 보고하지 않는다."
+    "instruction": "공문·기안·결재·접수 요청은 narae-gyomu-work-portal 공통 지침을 필독하고 지원되는 범위만 수행한다. 열린 공문 본문·양식은 wxs-cli, 다운로드된 독립 HWP/HWPX 첨부 열람·요약은 narae-hangul-office CLI를 사용한다. 제목·첨부 목록만으로 내용을 읽었다고 보고하지 않는다."
   },
   "wxs-cli": {
     "description": "만승 교무팩 포탈에서 이미 열린 WXS 공문서 에디터 본문·첨부 조회와 지원되는 기안 초안·임시저장을 CLI로 처리한다. 업무포털 웹 로그인이나 독립 HWP/HWPX 파일 읽기는 각각 포탈·나래한글의 범위다. 컴퓨터 유즈와 최종 상신은 사용하지 않는다.",
-    "instruction": "공문·기안은 narae-gyomu-work-portal 공통 지침을 필독한다. WXS에서 열린 본문은 이 CLI로 읽고, 독립 HWP/HWPX 첨부는 narae-hangul CLI로 읽는다. 컴퓨터 유즈로 우회하지 않으며 최종 상신·승인·실제 발송은 수행하지 않는다."
+    "instruction": "공문·기안은 narae-gyomu-work-portal 공통 지침을 필독한다. WXS에서 열린 본문은 이 CLI로 읽고, 독립 HWP/HWPX 첨부는 narae-hangul-office CLI로 읽는다. 컴퓨터 유즈로 우회하지 않으며 최종 상신·승인·실제 발송은 수행하지 않는다."
   },
   "narae-hangul-office": {
     "description": "만승 교무팩의 한글 HWP/HWPX 읽기·요약·작성·수정 도구. 한컴오피스 한글과 나래 한글 오피스의 로컬 CLI를 사용한다.",
-    "instruction": "HWP/HWPX 문서는 이 스킬의 scripts/narae.py 또는 설치한 나래 한글 오피스 narae-office.cmd로 실제 처리한다. 구 독립 엔진 대신 새 오피스를 사용한다. 편집 전 inspect의 최신 input_sha256, 열린 한글 편집은 live-read의 liveRevision을 전달한다. 한컴오피스 한글을 사전 설치하고 오피스 설치.cmd로 다른 의존성을 한 번에 준비한다."
+    "instruction": "학교 HWP/HWPX 문서의 기본 도구로 이 스킬의 scripts/narae.py 또는 설치한 나래 한글 오피스 narae-office.cmd를 실제 실행한다. 별도 narae-hangul은 독립 Python CLI이므로 사용자가 명시하면 해당 스킬을 따른다. 편집 전 inspect의 최신 input_sha256, 열린 한글 편집은 live-read의 liveRevision을 전달한다. 한컴오피스 한글을 사전 설치하고 오피스 설치.cmd로 다른 의존성을 한 번에 준비한다."
   }
 }

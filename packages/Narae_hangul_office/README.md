@@ -9,7 +9,7 @@
 ## 설치
 
 1. Windows 10/11 x64에 **한컴오피스 한글이 먼저 설치되어 있어야 합니다.** 한 번 직접 실행해 초기 설정을 마칩니다. 한컴 프로그램·라이선스·글꼴은 이 저장소에 포함하지 않습니다.
-2. [최신 릴리스](https://github.com/y5496694/Narae_hangul_office/releases/latest)의 `Narae-Hangul-Office-0.10.0-windows-x64.zip`을 내려받아 압축을 풉니다. 또는 이 저장소의 Code → Download ZIP을 사용합니다.
+2. [최신 릴리스](https://github.com/y5496694/Narae_hangul_office/releases/latest)의 `Narae-Hangul-Office-0.11.0-windows-x64.zip`을 내려받아 압축을 풉니다. 또는 이 저장소의 Code → Download ZIP을 사용합니다.
 3. 폴더 안의 **`설치.cmd`를 한 번 실행**합니다. Node.js·Python·Electron·엔진 라이브러리·공식 Claude 로그인 도구를 앱 전용 폴더에 자동 설치합니다. **Node.js나 Python을 따로 설치할 필요가 없습니다.** 첫 설치에는 인터넷이 필요하며 관리자 권한은 필요 없습니다.
 4. 바탕화면의 **나래 한글 오피스**를 실행합니다.
 
@@ -82,7 +82,7 @@ npm start
 
 ## AI 에이전트용 CLI · 스킬
 
-설치하면 `narae-office.cmd`와 Codex용 `narae-hangul-office` 스킬도 함께 준비됩니다. 이전 `narae-hangul` 이름은 새 CLI로 연결합니다. CLI의 문서 작업에는 AI 로그인·API 키가 필요 없습니다. 외부 AI가 작업 JSON을 작성해 실행할 수 있습니다.
+설치하면 `narae-office.cmd`와 Codex용 `narae-hangul-office` 스킬도 함께 준비됩니다. 나래한글 독립 CLI는 별도 저장소와 `narae-hangul` 스킬로 유지합니다. CLI의 문서 작업에는 AI 로그인·API 키가 필요 없습니다. 외부 AI가 작업 JSON을 작성해 실행할 수 있습니다.
 
 ```powershell
 & "$env:LOCALAPPDATA\Programs\NaraeHangulOffice\narae-office.cmd" doctor
@@ -90,3 +90,7 @@ npm start
 ```
 
 [스킬 문서](skills/narae-hangul-office/SKILL.md) · [작업 JSON 명세와 예시](skills/narae-hangul-office/references/jobs.md). 별도 설치 위치는 `NARAE_OFFICE_ROOT`로 지정합니다. `install-skill` 명령으로 현재 설치 위치를 스킬에 다시 등록할 수 있습니다. 스킬 갱신 전 변경 파일을 백업하고, 새 채팅에서 발견됩니다.
+
+## 0.11 CLI 개선과 독립성
+
+나래한글 독립 CLI와 오피스 CLI를 별도로 유지합니다. 오피스 설치기는 narae-hangul-office 스킬만 설치합니다. 독립 CLI는 [narae_hangul](https://github.com/y5496694/narae_hangul)을 사용하세요. 긴 한국어 stdout의 UTF-8 버퍼 경계 깨짐을 수정했습니다. CLI inspect의 기본 응답은 compact이며 본문을 중복 반환하지 않습니다. --full은 이전 전체 서식 응답, --offset/--limit는 문단 범위를 반환하며 hasMore를 확인합니다.

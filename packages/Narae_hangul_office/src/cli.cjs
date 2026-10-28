@@ -68,25 +68,27 @@ async function execute(job,{base=process.cwd(),home=process.env.NARAE_OFFICE_HOM
    if(action==='inspect'){
     const before=hash(req.path),data=await native.savedFileOperation(req.path,{},()=>doc({...req,action:'inspect'}));
     if(hash(req.path)!==before)throw new Error('읽는 동안 원본이 변경되었습니다. 다시 읽으세요.');
-    const paragraphs=data.blocks.map(p=>({...p,editable_text:p.editable,text_style:p.textStyle,paragraph_style:p.paragraphStyle}));
-    return {...data,input:req.path,input_sha256:data.hash,input_unchanged:true,format:path.extname(req.path).slice(1),paragraphs,counts:{paragraphs:paragraphs.length,tables:data.tables.length},warnings:data.limitations||[]};
+    return {...require('./cli-output.cjs').inspection(data,req),input:req.path,input_sha256:data.hash,input_unchanged:true,format:path.extname(req.path).slice(1),warnings:data.limitations||[]};
    }
    throw new Error('지원하지 않는 action입니다. schema 명령을 확인하세요.');
   });
  }finally{native.close();}
 }
-const usage='narae-office doctor | schema | install-skill | run <job.json|-> [--result result.json] | inspect <file> | live-read <file> | open <file> | list | export <file> --pdf <new.pdf>\ncreate/edit/live-edit: run 작업 JSON을 사용하세요. 모든 결과는 JSON, 실패 종료코드는 1입니다.';
+const usage='narae-office doctor | schema | install-skill | run <job.json|-> [--result result.json] | inspect <file> [--full] [--offset N --limit N] | live-read <file> | open <file> | list | export <file> --pdf <new.pdf>\ncreate/edit/live-edit: run 작업 JSON을 사용하세요. 기본 읽기는 compact JSON이며 --full로 전체 서식을 받습니다. 실패 종료코드는 1입니다.';
 async function main(argv=process.argv.slice(2)){
  let output,response;
  try{
   if(!argv.length||['help','--help','-h'].includes(argv[0])){process.stdout.write(usage+'\n');return 0;}
   const args=[...argv],action=args.shift(),take=name=>{const i=args.indexOf(name);if(i<0)return undefined;if(!args[i+1])throw new Error(name+' 값이 필요합니다.');return args.splice(i,2)[1];};
-  const result=take('--result');let job,base=process.cwd(),jobFile;
+  const result=take('--result'),fullIndex=args.indexOf('--full'),full=fullIndex>=0;
+  if(full)args.splice(fullIndex,1);
+  const offset=take('--offset'),limit=take('--limit');let job,base=process.cwd(),jobFile;
   if(action==='run'){
    const file=args.shift();if(!file)throw new Error('작업 JSON 경로 또는 -를 지정하세요.');
    if(file!=='-'){jobFile=path.resolve(file);base=path.dirname(jobFile);}
    job=JSON.parse(fs.readFileSync(jobFile||0,'utf8').replace(/^\uFEFF/,''));
   }else{const pdf=take('--pdf');job={schema:1,action};if(!['doctor','schema','list','install-skill'].includes(action))job.path=args.shift();if(pdf)job.target=pdf;}
+  if(full)job.full=true;if(offset!==undefined)job.offset=Number(offset);if(limit!==undefined)job.limit=Number(limit);
   if(args.length)throw new Error('알 수 없는 인자: '+args.join(' '));
   output=resultPath(result,job,base,jobFile);
   response={success:true,...await execute(job,{base})};

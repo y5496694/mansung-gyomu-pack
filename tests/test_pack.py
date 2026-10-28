@@ -27,6 +27,12 @@ class PackTests(unittest.TestCase):
             self.assertTrue((skills / "narae-gyomu-ezedu/scripts/easyedu_schedule.py").is_file())
             self.assertTrue((skills / "narae-gyomu-hiclass/references/ui-workflows.md").is_file())
             self.assertTrue((skills / "narae-gyomu-classtime/scripts/timetable.py").is_file())
+            self.assertTrue((skills / "narae-hangul/scripts/engine/hangeul/automation.py").is_file())
+            self.assertTrue((skills / "narae-hangul-office/scripts/narae.py").is_file())
+            runtime_files = [skills / name / "runtime.json" for name in
+                             ("narae-hangul", "narae-hangul-office")]
+            for runtime in runtime_files:
+                runtime.write_bytes(b'{"runtime":"local-independent-setting"}\n')
             timetable_files = [skills / "narae-gyomu-classtime" / name for name in
                                ("sources.local.json", "mapping.local.json", "data/current.json")]
             for local in timetable_files:
@@ -48,6 +54,8 @@ class PackTests(unittest.TestCase):
             self.assertEqual(extra.read_text(), "keep")
             for local in timetable_files:
                 self.assertEqual(local.read_bytes(), b'{"local":"preserve"}\n')
+            for runtime in runtime_files:
+                self.assertEqual(runtime.read_bytes(), b'{"runtime":"local-independent-setting"}\n')
             subprocess.run(command, check=True, capture_output=True)
             self.assertEqual(len(list((sandbox / "skill-backups").iterdir())), 1)
 

@@ -45,3 +45,5 @@
 ```
 
 한컴의 실제 PDF 출력 기능을 사용한다. 원본은 전후 해시를 대조한다. `narae-office.cmd export 안내.hwpx --pdf 안내.pdf`도 가능. `doctor`는 런타임·한컴 경로, `list`는 열린 문서 목록, `open <file>`은 문서를 한글에서 연다. CLI가 중단되어 `cache/cli-locks` 잠금이 남으면 owner.json PID가 종료된 것을 확인한 뒤 해당 잠금 폴더만 삭제하고 재실행한다.
+
+기본 CLI inspect는 중복 없는 compact 응답이다. 문단 id/text/서식과 표 인덱스를 반환하며 blocks 별칭은 --full에서만 제공한다. --offset N --limit N으로 범위를 선택하고 counts·hasMore를 확인한다. 작업 JSON에서는 full, offset, limit를 지정한다. narae-hangul 독립 CLI와는 별도로 설치되며, 오피스는 해당 스킬을 덮어쓰지 않는다.

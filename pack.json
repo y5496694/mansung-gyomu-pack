@@ -21,9 +21,16 @@
         {
           "path": "skills/narae-hangul-office",
           "name": "narae-hangul-office"
-        },
+        }
+      ]
+    },
+    {
+      "id": "narae_hangul",
+      "repository": "y5496694/narae_hangul",
+      "branch": "main",
+      "skills": [
         {
-          "path": "skills/narae-hangul",
+          "path": "1_나래엔진/narae-hangul",
           "name": "narae-hangul"
         }
       ]

@@ -9,10 +9,10 @@ from routing import load_overrides, render_skill, skill_entries, skill_files
 from validate import main as validate
 
 
-def install(skills_directory):
+def install(skills_directory, backup_root=None):
     validate()
     skills_directory = skills_directory.resolve()
-    backup = skills_directory.parent / "skill-backups" / ("mansung-" + datetime.now().strftime("%Y%m%d-%H%M%S-%f"))
+    backup = (backup_root or skills_directory.parent / "skill-backups") / ("mansung-" + datetime.now().strftime("%Y%m%d-%H%M%S-%f"))
     copied = kept = 0
     overrides = load_overrides()
     for name, skill, selected in skill_entries(read_json(ROOT / "pack.json")):
@@ -50,8 +50,9 @@ def main():
     parser = argparse.ArgumentParser()
     default_home = Path(os.environ.get("CODEX_HOME") or Path.home() / ".codex")
     parser.add_argument("--skills-directory", type=Path, default=default_home / "skills")
+    parser.add_argument("--backup-root", type=Path, help="Root folder for replaced skill backups")
     args = parser.parse_args()
-    install(args.skills_directory)
+    install(args.skills_directory, args.backup_root)
 
 
 if __name__ == "__main__":
