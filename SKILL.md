@@ -14,7 +14,7 @@ description: "만승 교무팩 필독·업무 분류. 이 팩의 학교 업무�
 | 일정, 스케줄·스케쥴, 오늘/이번 주 일정, 학교·개인 일정 | **이지에듀** | `narae-gyomu-ezedu/SKILL.md` |
 | 학교 시간표, 시간표, 학급·교사 수업, 교시·과목·시수 | **classtime** | `narae-gyomu-classtime/SKILL.md` |
 | 학부모 소통·학부모 공지·공지사항·안내·알림장·가정통신문 | **하이클래스** | `narae-gyomu-hiclass/SKILL.md` |
-| HWP, HWPX, 한글 파일·문서의 **읽기·열람·내용 추출·요약·작성·편집·변환** | **나래한글** | `narae-hangul/SKILL.md` |
+| HWP, HWPX, 한글 파일·문서의 **읽기·열람·내용 추출·요약·작성·편집·변환** | **나래 한글 오피스** | `narae-hangul-office/SKILL.md` |
 | 쪽지, 대화, 연락, 교직원 메시지 | **CBE CLI / 충북소통메신저** | `cbe-messenger/SKILL.md` |
 | 공문, 기안, 복무, 출장, 결재, 접수, 나이스·에듀파인·업무포털 | **교무나래 포탈(배포명: 나래교무 업무포털)** | `narae-gyomu-work-portal/SKILL.md` → 해당 하위 스킬 |
 
@@ -29,7 +29,7 @@ description: "만승 교무팩 필독·업무 분류. 이 팩의 학교 업무�
 
 ## 한글 문서를 읽을 때도 나래한글 필수
 
-“이 HWP 읽어줘”, “첨부 HWPX 요약”, “한글 문서에서 표 뽑아줘”에도 **`narae-hangul/SKILL.md`를 읽고 포함된 `scripts/narae.py`를 실제 실행**한다. 사용자가 “나래한글”이라고 말해야만 적용되는 규칙이 아니다.
+“이 HWP 읽어줘”, “첨부 HWPX 요약”, “한글 문서에서 표 뽑아줘”에도 **`narae-hangul-office/SKILL.md`를 읽고 포함된 `scripts/narae.py`를 실제 실행**한다. 사용자가 “나래한글”이라고 말해야만 적용되는 규칙이 아니다.
 
 읽기·요약의 첫 단계는 `references/jobs.md`의 `action: inspect`다. 예를 들어 작업 JSON에 `{"schema": 1, "action": "inspect", "input": "문서의 절대 경로"}`를 쓰고 `python <현재 스킬 폴더>/scripts/narae.py run <작업.json> --result <결과.json>`으로 실행한다. 실제 결과의 본문·표를 근거로 답하고 누락·추출 실패를 밝힌다. 읽기 요청에서는 원본을 수정하지 않는다.
 

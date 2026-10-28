@@ -76,6 +76,13 @@ def main():
     changed = []
     packages = ROOT / "packages"
     packages.mkdir(exist_ok=True)
+    stale = set(previous) - {source['id'] for source in manifest['sources']}
+    for name in stale:
+        target = packages / name
+        if not re.fullmatch(r'[A-Za-z0-9_-]+', name) or target.is_symlink() or target.resolve().parent != packages.resolve():
+            raise ValueError('Invalid retired package path')
+        if target.exists() and file_hashes(target) != previous[name]['files']:
+            raise ValueError('Retired package contains local changes: ' + name)
     with tempfile.TemporaryDirectory(prefix="mansung-sync-") as temporary:
         staging = Path(temporary)
         for source in manifest["sources"]:
@@ -117,6 +124,10 @@ def main():
             if target.exists():
                 shutil.rmtree(target)
             shutil.copytree(snapshot, target)
+        for name in stale:
+            target = packages / name
+            if target.exists():
+                shutil.rmtree(target)
         write_json(lock_path, updated)
     print(f"Synchronized {len(changed)} package(s).")
 

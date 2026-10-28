@@ -5,50 +5,95 @@
     {
       "name": "mansung-gyomu-pack",
       "path": ".",
-      "files": ["SKILL.md", "references/routing.md", "agents/openai.yaml"]
+      "files": [
+        "SKILL.md",
+        "references/routing.md",
+        "agents/openai.yaml"
+      ]
     }
   ],
   "sources": [
     {
-      "id": "narae_hangul",
-      "repository": "y5496694/narae_hangul",
+      "id": "Narae_hangul_office",
+      "repository": "y5496694/Narae_hangul_office",
       "branch": "main",
-      "skills": [{"path": "1_나래엔진/narae-hangul", "name": "narae-hangul"}]
+      "skills": [
+        {
+          "path": "skills/narae-hangul-office",
+          "name": "narae-hangul-office"
+        },
+        {
+          "path": "skills/narae-hangul",
+          "name": "narae-hangul"
+        }
+      ]
     },
     {
       "id": "narae_gyomoo_portal",
       "repository": "y5496694/narae_gyomoo_portal",
       "branch": "main",
       "skills": [
-        {"path": "skills/narae-gyomu-work-portal", "name": "narae-gyomu-work-portal"},
-        {"path": "skills/narae-gyomu-neis", "name": "narae-gyomu-neis"},
-        {"path": "skills/narae-gyomu-edufine", "name": "narae-gyomu-edufine"},
-        {"path": "skills/wxs-cli", "name": "wxs-cli"}
+        {
+          "path": "skills/narae-gyomu-work-portal",
+          "name": "narae-gyomu-work-portal"
+        },
+        {
+          "path": "skills/narae-gyomu-neis",
+          "name": "narae-gyomu-neis"
+        },
+        {
+          "path": "skills/narae-gyomu-edufine",
+          "name": "narae-gyomu-edufine"
+        },
+        {
+          "path": "skills/wxs-cli",
+          "name": "wxs-cli"
+        }
       ]
     },
     {
       "id": "CBE_CLI",
       "repository": "y5496694/CBE_CLI",
       "branch": "main",
-      "skills": [{"path": "skills/cbe-messenger", "name": "cbe-messenger"}]
+      "skills": [
+        {
+          "path": "skills/cbe-messenger",
+          "name": "cbe-messenger"
+        }
+      ]
     },
     {
       "id": "narae-gyomoo_ezedu",
       "repository": "y5496694/narae-gyomoo_ezedu",
       "branch": "main",
-      "skills": [{"path": ".", "name": "narae-gyomu-ezedu"}]
+      "skills": [
+        {
+          "path": ".",
+          "name": "narae-gyomu-ezedu"
+        }
+      ]
     },
     {
       "id": "narae_gyomoo_highclass",
       "repository": "y5496694/narae_gyomoo_highclass",
       "branch": "main",
-      "skills": [{"path": "skills/narae-gyomu-hiclass", "name": "narae-gyomu-hiclass"}]
+      "skills": [
+        {
+          "path": "skills/narae-gyomu-hiclass",
+          "name": "narae-gyomu-hiclass"
+        }
+      ]
     },
     {
       "id": "narae_gyomoo_classtime",
       "repository": "y5496694/narae_gyomoo_classtime",
       "branch": "main",
-      "skills": [{"path": ".", "name": "narae-gyomu-classtime"}]
+      "skills": [
+        {
+          "path": ".",
+          "name": "narae-gyomu-classtime"
+        }
+      ]
     }
   ]
 }

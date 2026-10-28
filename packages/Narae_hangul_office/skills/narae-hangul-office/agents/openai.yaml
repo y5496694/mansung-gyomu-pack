@@ -1,0 +1,4 @@
+interface:
+  display_name: "나래 한글 오피스"
+  short_description: "CLI로 한글 HWP/HWPX 문서를 읽고 작성·편집하고 PDF로 출력"
+  default_prompt: "Use $narae-hangul-office to read, create, or edit this HWP/HWPX document with the local CLI."
