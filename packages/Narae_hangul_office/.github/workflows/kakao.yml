@@ -1,0 +1,43 @@
+name: Kakao PC link checks
+on:
+  push:
+    branches: [main, 'feat/kakao-pc-link']
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  windows:
+    runs-on: windows-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Prepare isolated test dependencies
+        shell: pwsh
+        run: |
+          npm ci
+          python -m pip install -r requirements.txt
+          "NARAE_OFFICE_PYTHON=$((Get-Command python).Source)" >> $env:GITHUB_ENV
+      - name: Unit and security regression
+        run: npm test
+      - name: Real desktop and document-engine integration with synthetic ingress and AI
+        env:
+          NARAE_QA_ROOT: ${{ runner.temp }}/narae-kakao-qa
+        run: npm run test:kakao:desktop
+      - name: Package complete source candidate
+        run: npm run package
+      - name: Upload sanitized synthetic verification only
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: kakao-pc-verification
+          path: |
+            ${{ runner.temp }}/narae-kakao-qa/**/result.json
+            ${{ runner.temp }}/narae-kakao-qa/**/paired-ui.png
+          if-no-files-found: warn

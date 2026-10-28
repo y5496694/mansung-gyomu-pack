@@ -1,0 +1,5 @@
+const fs=require('node:fs'),path=require('node:path');
+const valid=file=>{try{return path.basename(file).toLowerCase()==='hwp.exe'&&fs.statSync(file).isFile();}catch{return false;}};
+function candidates(roots){const files=[];for(const root of roots){const queue=[{folder:root,depth:0}];while(queue.length){const {folder,depth}=queue.shift();const executable=path.join(folder,'Hwp.exe');if(valid(executable))files.push(executable);if(depth>=3)continue;let entries;try{entries=fs.readdirSync(folder,{withFileTypes:true});}catch{continue;}for(const entry of entries)if(entry.isDirectory()&&!entry.isSymbolicLink()&&(depth===0?/^(Office|HOffice|Hwp)/i.test(entry.name):/^(HOffice|Hwp|Bin)/i.test(entry.name)))queue.push({folder:path.join(folder,entry.name),depth:depth+1});}}return [...new Set(files.map(file=>path.resolve(file)))].sort((a,b)=>rank(b)-rank(a)||b.localeCompare(a));}
+function rank(file){const year=file.match(/Office[\s_-]*(20\d{2})/i);if(year)return Number(year[1])*1000;return Number(file.match(/HOffice(\d+)/i)?.[1]||0);}
+module.exports={valid,candidates,rank};

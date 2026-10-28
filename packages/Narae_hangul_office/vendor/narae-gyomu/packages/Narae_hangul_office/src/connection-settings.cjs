@@ -1,0 +1,23 @@
+const endpoints={openai:'https://api.openai.com/v1/responses',anthropic:'https://api.anthropic.com/v1/messages'};
+function normalize(raw,defaults={}){
+ const provider=['openai','anthropic'].includes(raw.provider)?raw.provider:'openai',connectionMode=['oauth','api'].includes(raw.connectionMode)?raw.connectionMode:'oauth';
+ const aiConnections=raw.aiConnections||{'openai:api':{endpoint:raw.endpoint||endpoints.openai,model:raw.model||''}};
+ const selected=aiConnections[provider+':'+connectionMode]||{};
+ return {...defaults,...raw,provider,connectionMode,aiConnections,model:selected.model||'',endpoint:connectionMode==='oauth'?endpoints[provider]:(selected.endpoint||endpoints[provider])};
+}
+function update(current,request){
+ const provider=request.provider??current.provider,connectionMode=request.connectionMode??(request.apiKey?.trim()?'api':current.connectionMode);
+ if(!['openai','anthropic'].includes(provider)||!['oauth','api'].includes(connectionMode))throw new Error('AI 제공자와 연결 방식을 확인하세요.');
+ const aiConnections=structuredClone(current.aiConnections),id=provider+':'+connectionMode,selected=aiConnections[id]||{};
+ const endpoint=connectionMode==='oauth'?endpoints[provider]:(request.endpoint??selected.endpoint??endpoints[provider]);
+ const url=new URL(endpoint);if(url.username||url.password||(url.protocol!=='https:'&&!(url.protocol==='http:'&&['127.0.0.1','localhost','[::1]'].includes(url.hostname))))throw new Error('HTTPS 또는 로컬 서버 주소를 입력하세요.');
+ const model=typeof request.model==='string'?request.model.trim():selected.model||'';
+ aiConnections[id]={endpoint:url.href,model};return {...current,provider,connectionMode,aiConnections,endpoint:url.href,model,...(typeof request.anthropicWorkspace==='string'?{anthropicWorkspace:request.anthropicWorkspace.trim()}:{})};
+}
+function files(current){
+ const {provider,connectionMode,aiConnections,anthropicWorkspace,...legacy}=current,openai=aiConnections['openai:api']||{};
+ // Earlier releases read settings.json and gpt-key.bin as an OpenAI pair.
+ // Keep that pair coherent; active Claude/OAuth choices live separately.
+ return {legacy:{...legacy,endpoint:openai.endpoint||endpoints.openai,model:openai.model||''},ai:{provider,connectionMode,aiConnections,...(anthropicWorkspace?{anthropicWorkspace}:{})}};
+}
+module.exports={normalize,update,endpoints,files};

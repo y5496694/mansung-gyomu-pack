@@ -1,0 +1,94 @@
+{
+  "retrievedAt": "2026-10-18T23:05:03.307Z",
+  "scope": "Real Chrome Naver browsing + local model sentence selection; NOT general autonomous-agent completion",
+  "model": {
+    "requested": "qwen3:0.6b",
+    "provider": "ollama",
+    "usage": [
+      {
+        "model": "qwen3:0.6b",
+        "provider": "ollama",
+        "promptTokens": 721,
+        "completionTokens": 8
+      },
+      {
+        "model": "qwen3:0.6b",
+        "provider": "ollama",
+        "promptTokens": 891,
+        "completionTokens": 8
+      },
+      {
+        "model": "qwen3:0.6b",
+        "provider": "ollama",
+        "promptTokens": 768,
+        "completionTokens": 10
+      }
+    ]
+  },
+  "verification": {
+    "actualBrowser": true,
+    "distinctUrls": true,
+    "articleBodiesRead": true,
+    "literalEvidenceValidated": true,
+    "autonomousNavigation": false
+  },
+  "articles": [
+    {
+      "url": "https://n.news.naver.com/mnews/article/023/0004004529",
+      "title": "中, 첨단 AI 해외 이전 통제… 美와 기술 패권 경쟁 가속",
+      "publisher": "조선일보",
+      "published": "2026-10-19 00:35:16",
+      "summary": "수출 금지·제한 목록 추가 초안 발표 키미 K3·큐원3.8맥스 등 해당될 듯 미국과 중국의 인공지능(AI) 패권 경쟁이 첨단 반도체를 넘어 AI 모델과 핵심 기술 자체를 통제하는 단계로 확전하고 있다.",
+      "evidence": "수출 금지·제한 목록 추가 초안 발표 키미 K3·큐원3.8맥스 등 해당될 듯",
+      "selectedIndices": [
+        0,
+        1
+      ],
+      "candidateCount": 12,
+      "summaryMethod": "model-selected-source-sentences",
+      "sourceChars": 1251,
+      "readChars": 1251,
+      "sourceTruncated": false,
+      "sourceSha256": "d2aa3f9afb75e9d0b509bd91d19565015aef4cf474be485a970dab3752058650",
+      "mode": "local-model-summary"
+    },
+    {
+      "url": "https://n.news.naver.com/mnews/article/003/0014260329",
+      "title": "아이폰 듀오, 지금 예약해도 내년 1월…월가 \"내년 최대 2500만대 팔릴 것\"",
+      "publisher": "뉴시스",
+      "published": "2026-10-18 09:44:46",
+      "summary": "329만원부터인 첫 폴더블 아이폰…애플 \"사전예약 수요 이례적\" 지금 예약하면 내년 1월 말 배송…기존 아이폰 교체 수요 기대 [서울=뉴시스] 애플이 아이폰 듀오 공식 출시 한달여 전인 18일 국내에서 첫 공개하고 있다.아이폰 듀오는 애플의 첫 폴더블로 오는 10월 16일 사전 주문을 시작해 23일 정식 출시된다. [서울=뉴시스]윤정민 기자 = 애플의 첫 폴더블 스마트폰 '아이폰 듀오'의 배송 예상일이 사전예약 첫날부터 정식 출시일보다 석 달가량 뒤로 밀렸다.",
+      "evidence": "329만원부터인 첫 폴더블 아이폰…애플 \"사전예약 수요 이례적\" 지금 예약하면 내년 1월 말 배송…기존 아이폰 교체 수요 기대 [서울=뉴시스] 애플이 아이폰 듀오",
+      "selectedIndices": [
+        0,
+        1
+      ],
+      "candidateCount": 12,
+      "summaryMethod": "model-selected-source-sentences",
+      "sourceChars": 1345,
+      "readChars": 1345,
+      "sourceTruncated": false,
+      "sourceSha256": "089058d48233004a84be05feb164f2672c58c476b1678d7f5ee848abbcefc050",
+      "mode": "local-model-summary"
+    },
+    {
+      "url": "https://n.news.naver.com/mnews/article/001/0016383522",
+      "title": "LG U+, 순직 소방관 추모 러닝 행사…2천300명 모여",
+      "publisher": "연합뉴스",
+      "published": "2026-10-18 11:05:24",
+      "summary": "(서울=연합뉴스) 김주환 기자 = LG유플러스는 순직 소방관 추모 러닝 행사 'U+119 메모리얼런 2026'에 일반 참가자와 현직 소방관, 순직 소방관 유가족, 주요 관계자 등 2천300여명이 참여했다고 18일 밝혔다. 올해로 2회째를 맞은 'U+119 메모리얼런'은 국민의 생명과 안전을 위해 헌신한 순직 소방관을 추모하고 소방가족을 지원하기 위해 마련한 국민 참여형 행사다.",
+      "evidence": "(서울=연합뉴스) 김주환 기자 = LG유플러스는 순직 소방관 추모 러닝 행사 'U+119 메모리얼런 2026'에 일반 참가자와 현직 소방관, 순직 소방관 유가족,",
+      "selectedIndices": [
+        0,
+        2
+      ],
+      "candidateCount": 9,
+      "summaryMethod": "model-selected-source-sentences",
+      "sourceChars": 920,
+      "readChars": 920,
+      "sourceTruncated": false,
+      "sourceSha256": "cd5fd12be5b4b0e695c42ce00ce761f2fcf6d2e91337181c01634ecc586ed237",
+      "mode": "local-model-summary"
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "name": "narae-browser",
+  "version": "0.1.0",
+  "description": "나래 브라우저: small-model friendly browser control CLI with compact JSON observations",
+  "type": "module",
+  "bin": {
+    "narae-browser": "bin/narae-browser.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "test": "node --test tests/*.test.mjs",
+    "test:e2e": "node --test tests/browser.e2e.mjs",
+    "format": "prettier --write src bin tests tools package.json",
+    "format:check": "prettier --check src bin tests tools package.json"
+  },
+  "files": [
+    "bin",
+    "src",
+    "SKILL.md",
+    "README.md",
+    "examples",
+    "docs",
+    "narae-browser.cmd"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/y5496694/narae_browser#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/y5496694/narae_browser.git"
+  },
+  "bugs": {
+    "url": "https://github.com/y5496694/narae_browser/issues"
+  },
+  "dependencies": {
+    "playwright-core": "^1.64.1"
+  },
+  "devDependencies": {
+    "prettier": "^3.9.10"
+  }
+}

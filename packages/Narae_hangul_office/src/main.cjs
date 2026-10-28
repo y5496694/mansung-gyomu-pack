@@ -41,9 +41,48 @@ const execute=async(name,args,signal)=>{
  throw new Error('지원하지 않는 문서 작업입니다.');
 };
 function emit(event){if(window&&!window.isDestroyed())window.webContents.send('narae:event',event);}
+const {KakaoConnector}=require('./kakao-connector.cjs'),{RemotePolicy}=require('./remote-policy.cjs');
+let remote,remoteSetupError='';
+const remotePolicy=new RemotePolicy({workspace:()=>settings.workspace,notify:approval=>{if(remote){remote.approval=approval;remote.changed();}}});
+const {AgentConversations}=require('./agent-conversations.cjs'),{OfficeIntegrations}=require('./office-integrations.cjs');
+const conversations=new AgentConversations(home);
+const integrations=new OfficeIntegrations({home,root,python,workspace:()=>settings.workspace,settings:()=>settings,policy:remotePolicy});
+let integrationSession='local',resetting=Promise.resolve();
+const agentSession=()=>remote?.state==='approved'&&remote.credentials?remote.credentials.id:'local';
+function agentState(){return {...conversations.read(agentSession()),session:agentSession(),running:Boolean(controller),model:settings.model,linked:remote?.state==='approved',channel:{name:'나래',searchId:'narae_bot',url:'https://pf.kakao.com/_xjgxfWX',chatUrl:'https://pf.kakao.com/_xjgxfWX/chat'}};}
+function agentChanged(){emit({type:'agentConversation',agent:agentState()});}
+async function agentChat(prompt,{signal,sessionId=agentSession(),origin='pc',progress=()=>{}}={}){
+ idle();if(typeof prompt!=='string'||!prompt.trim()||prompt.length>4000)throw new Error('요청을 1~4000자로 입력하세요.');
+ const config=structuredClone(settings);if(!config.model)throw new Error('AI 설정에서 모델을 선택하세요.');
+ const localController=new AbortController();controller=localController;const relayAbort=()=>localController.abort();signal?.addEventListener('abort',relayAbort,{once:true});if(signal?.aborted)relayAbort();const localSignal=localController.signal;
+ let denied;const previous=conversations.history(sessionId);conversations.append(sessionId,'user',prompt,origin);agentChanged();
+ try{
+  await resetting;if(localSignal.aborted)throw new Error('REMOTE_CANCELLED');
+  const request=async body=>provider.requestResponse({settings:config,credential:await credential(config),apiKey:config.connectionMode==='api'?keys[config.provider].get():undefined,signal:localSignal,body});
+  const executeShared=async(name,args,toolSignal)=>{if(denied)throw denied;try{return name.startsWith('gyomu_')?await integrations.execute(name,args,toolSignal):await remotePolicy.run(name,args,toolSignal,execute);}catch(error){if(error.code==='LOCAL_APPROVAL_DENIED')denied=error;throw error;}};
+  const text=await runAgent({prompt,settings:config,request,execute:executeShared,signal:localSignal,history:previous,additionalTools:await integrations.tools(),agentInstructions:'이 대화는 에이전트(실험) 탭과 사용자의 나래 카카오 채널이 공유합니다. 문서·CBE_CLI·나래 브라우저·나래교무포탈·나래교무 도구로 PC 업무를 처리합니다. 업무 전 gyomu_skill_read로 절차를 확인하세요. 로그인·인증정보는 요청하지 말고 PC에서 사용자가 직접 입력하게 하세요. 문서 변경·브라우저 조작·메시지 발송은 구체적인 PC 승인 후에만 수행됩니다. 미리보기와 실제 완료를 구분하세요. 원격 문서는 작업 폴더 안에서만 사용하세요.',send:event=>{emit({...event,scope:'agent'});if(event.type==='tool'||event.type==='status'){progress(remotePolicy.status()?'PC에서 변경 승인을 기다리고 있어.':'나래 오피스 에이전트가 요청을 처리하고 있어.');}}});
+  if(denied)throw denied;if(localSignal.aborted)throw new Error('REMOTE_CANCELLED');conversations.append(sessionId,'assistant',text,origin);return text;
+ }catch(error){conversations.append(sessionId,'error',error.code==='LOCAL_APPROVAL_DENIED'?'PC에서 작업을 거절했습니다.':localSignal.aborted?'작업을 중단했습니다. 이미 수행한 변경은 유지됩니다.':'AI 생성에 실패했습니다. 오류 코드: NARAE_AGENT',origin);throw error;
+ }finally{signal?.removeEventListener('abort',relayAbort);controller=null;remotePolicy.close();agentChanged();}
+}
+async function remoteChat(prompt,options){if(!/^[a-f0-9]{32}$/.test(options.sessionId))throw new Error('REMOTE_SESSION');return agentChat(prompt,{...options,origin:'kakao'});}
+try{remote=new KakaoConnector({store:new KeyStore(home,python,'kakao-device'),ledgerFile:path.join(home,'data/kakao-jobs.json'),execute:remoteChat,notify:event=>{const session=agentSession();if(integrationSession!==session){if(integrationSession!=='local'){controller?.abort();resetting=resetting.then(()=>integrations.reset());}integrationSession=session;}emit(event);agentChanged();},canRun:()=>!controller,conversation:session=>conversations.read(session),allowLoopback:process.env.NARAE_KAKAO_ALLOW_LOOPBACK==='1'});integrationSession=agentSession();}catch{remoteSetupError='카카오 기기 저장소를 읽지 못했습니다. 연결 해제 후 다시 연결하세요.';}
+function remoteState(){return remote?remote.status():{state:'disconnected',error:remoteSetupError};}
+function requireRemote(){if(!remote)throw new Error(remoteSetupError||'카카오 연결기를 초기화하지 못했습니다.');return remote;}
 async function preview(args){const file=document(args.path),hash=createHash('sha256').update(fs.readFileSync(file)).digest('hex'),pdf=path.join(home,'cache',hash+'.pdf');return native.savedFileOperation(file,{},async()=>{if(!fs.existsSync(pdf))await runPython(python,home,'documents.py',{action:'previewNativeHangul',path:file,target:pdf});return runPython(python,home,'documents.py',{action:'inspect',path:pdf,page:args.page||0});});}
 const methods={
  state:()=>metadata(),configure,
+ agentState,
+ agentSend:async({prompt})=>{try{return await agentChat(prompt);}finally{await remote?.syncConversation().catch(()=>{});}},
+ agentTools:()=>integrations.tools(),
+ openNaraeChannel:()=>shell.openExternal('https://pf.kakao.com/_xjgxfWX/chat'),
+ remoteState,
+ remotePair:args=>{idle();return requireRemote().pair(args);},
+ remoteApprove:()=>{idle();return requireRemote().approve();},
+ remoteUnlink:async()=>{controller?.abort();await integrations.reset();if(remote)return remote.unlink();new KeyStore(home,python,'kakao-device').remove();remoteSetupError='저장소를 초기화했습니다. 앱을 다시 실행한 뒤 연결하세요.';return remoteState();},
+ remoteRefresh:()=>requireRemote().refresh(),
+ remoteDecide:args=>remotePolicy.decide(args),
+ remoteCancel:()=>{requireRemote().controller?.abort();return remoteState();},
  chooseFolder:async()=>{idle();const result=await dialog.showOpenDialog(window,{properties:['openDirectory','createDirectory'],defaultPath:settings.workspace});if(!result.canceled)persist({...settings,workspace:fs.realpathSync(result.filePaths[0])});return metadata();},
  chooseFile:async()=>{const result=await dialog.showOpenDialog(window,{properties:['openFile'],filters:[{name:'한글 문서',extensions:['hwp','hwpx']}]});if(result.canceled)return null;const file=fs.realpathSync(result.filePaths[0]);grants.add(file.toLowerCase());return selected(file);},
  openRecent:async({path:file})=>{if(!recent.includes(file))throw new Error('최근 문서 목록에 없습니다.');grants.add(fs.realpathSync(file).toLowerCase());return selected(file);},
@@ -68,5 +107,5 @@ const methods={
  }
 };
 ipcMain.handle('narae:call',async(event,name,args)=>{if(!window||event.sender!==window.webContents||event.senderFrame!==window.webContents.mainFrame||!Object.hasOwn(methods,name))throw new Error('허용되지 않은 요청');return methods[name](args||{});});
-app.whenReady().then(()=>{window=new BrowserWindow({width:1420,height:940,minWidth:1000,minHeight:680,title:'나래 한글 오피스',backgroundColor:'#f5f6f8',webPreferences:{preload:path.join(__dirname,'preload.cjs'),contextIsolation:true,nodeIntegration:false,sandbox:true}});window.setMenuBarVisibility(false);window.webContents.setWindowOpenHandler(()=>({action:'deny'}));window.webContents.on('will-navigate',event=>event.preventDefault());window.loadFile(path.join(root,'ui/index.html'));});
-app.on('window-all-closed',()=>app.quit());app.on('before-quit',()=>{controller?.abort();oauth.cancel();native.close();});
+app.whenReady().then(()=>{window=new BrowserWindow({width:1420,height:940,minWidth:1000,minHeight:680,title:'나래 한글 오피스',backgroundColor:'#f5f6f8',webPreferences:{preload:path.join(__dirname,'preload.cjs'),contextIsolation:true,nodeIntegration:false,sandbox:true}});window.setMenuBarVisibility(false);window.webContents.setWindowOpenHandler(()=>({action:'deny'}));window.webContents.on('will-navigate',event=>event.preventDefault());window.loadFile(path.join(root,'ui/index.html'));remote?.start();});
+app.on('window-all-closed',()=>app.quit());app.on('before-quit',()=>{remote?.close();remotePolicy.close();controller?.abort();void integrations.close();oauth.cancel();native.close();});
