@@ -1,4 +1,4 @@
-name: Kakao PC link checks
+name: Remote links and local AI checks
 on:
   push:
     branches: [main, 'feat/kakao-pc-link']
@@ -30,6 +30,10 @@ jobs:
         env:
           NARAE_QA_ROOT: ${{ runner.temp }}/narae-kakao-qa
         run: npm run test:kakao:desktop
+      - name: Local AI and Telegram desktop integration
+        env:
+          NARAE_QA_ROOT: ${{ runner.temp }}/narae-local-qa
+        run: npm run test:local:desktop
       - name: Package complete source candidate
         run: npm run package
       - name: Upload sanitized synthetic verification only
@@ -40,4 +44,6 @@ jobs:
           path: |
             ${{ runner.temp }}/narae-kakao-qa/**/result.json
             ${{ runner.temp }}/narae-kakao-qa/**/paired-ui.png
+            ${{ runner.temp }}/narae-local-qa/**/result.json
+            ${{ runner.temp }}/narae-local-qa/**/models.png
           if-no-files-found: warn

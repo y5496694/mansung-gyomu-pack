@@ -12,7 +12,7 @@ $running=@(Get-CimInstance Win32_Process | Where-Object {$_.ExecutablePath -and 
 if($running.Count){throw '나래 한글 오피스를 닫은 뒤 다시 설치하세요.'}
 New-Item -ItemType Directory -Path $InstallRoot -Force | Out-Null
 if($sourceRoot -ne $InstallRoot){
-    foreach($name in @('src','ui','vendor','skills','scripts','docs','package.json','package-lock.json','requirements.txt','LICENSE','README.md','THIRD_PARTY_NOTICES.md','narae-office.cmd')){
+    foreach($name in @('src','ui','vendor','skills','scripts','docs','resources','package.json','package-lock.json','requirements.txt','LICENSE','README.md','THIRD_PARTY_NOTICES.md','narae-office.cmd')){
         $source=Join-Path $sourceRoot $name
         if(Test-Path -LiteralPath $source){Copy-Item -LiteralPath $source -Destination $InstallRoot -Recurse -Force}
     }
@@ -35,6 +35,7 @@ try {
     & $python -I -m pip install --only-binary=:all: --no-warn-script-location --disable-pip-version-check -r (Join-Path $InstallRoot 'requirements.txt');if($LASTEXITCODE -ne 0){throw 'Python 라이브러리 설치 실패'}
     & (Join-Path $InstallRoot 'scripts\install-ant.ps1') -AppRoot $InstallRoot
     & $python -I -c "import pythoncom,win32crypt,PySide6,pypdfium2,lxml;print('Python 의존성 확인 완료')";if($LASTEXITCODE -ne 0){throw 'Python 환경 확인 실패'}
+    & $node (Join-Path $InstallRoot 'src\local-runtime.cjs');if($LASTEXITCODE -ne 0){throw '로컬 AI 실행기 설치 실패'}
     & $node (Join-Path $InstallRoot 'scripts\install-skills.cjs');if($LASTEXITCODE -ne 0){throw '에이전트 스킬 설치 실패'}
     $executable=Join-Path $InstallRoot 'node_modules\electron\dist\electron.exe'
     if(-not (Test-Path -LiteralPath $executable)){throw 'Electron 실행 파일 누락'}

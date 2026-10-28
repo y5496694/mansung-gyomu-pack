@@ -14,3 +14,7 @@ tools/
 runtime/
 installation.json
 *.vbs
+
+*.gguf
+*.safetensors
+*.pt

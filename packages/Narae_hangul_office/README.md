@@ -9,8 +9,8 @@
 ## 설치
 
 1. Windows 10/11 x64에 **한컴오피스 한글이 먼저 설치되어 있어야 합니다.** 한 번 직접 실행해 초기 설정을 마칩니다. 한컴 프로그램·라이선스·글꼴은 이 저장소에 포함하지 않습니다.
-2. [최신 릴리스](https://github.com/y5496694/Narae_hangul_office/releases/latest)의 `Narae-Hangul-Office-0.11.0-windows-x64.zip`을 내려받아 압축을 풉니다. 또는 이 저장소의 Code → Download ZIP을 사용합니다.
-3. 폴더 안의 **`설치.cmd`를 한 번 실행**합니다. Node.js·Python·Electron·엔진 라이브러리·공식 Claude 로그인 도구를 앱 전용 폴더에 자동 설치합니다. **Node.js나 Python을 따로 설치할 필요가 없습니다.** 첫 설치에는 인터넷이 필요하며 관리자 권한은 필요 없습니다.
+2. 텔레그램·로컬 AI가 포함된 [0.13.0-preview.1 릴리스](https://github.com/y5496694/Narae_hangul_office/releases/tag/v0.13.0-preview.1)의 `Narae-Hangul-Office-0.13.0-preview.1-windows-x64.zip`을 내려받아 압축을 풉니다. 또는 이 저장소의 Code → Download ZIP을 사용합니다.
+3. 폴더 안의 **`설치.cmd`를 한 번 실행**합니다. Node.js·Python·Electron·엔진 라이브러리·공식 Claude 로그인 도구·로컬 AI CPU 실행기를 앱 전용 폴더에 자동 설치합니다. **Node.js나 Python을 따로 설치할 필요가 없습니다.** 첫 설치에는 인터넷이 필요하며 관리자 권한은 필요 없습니다.
 4. 바탕화면의 **나래 한글 오피스**를 실행합니다.
 
 기본 설치 위치는 `%LOCALAPPDATA%\Programs\NaraeHangulOffice`, 데이터 위치는 `%LOCALAPPDATA%\NaraeHangulOffice`입니다. 설치 위치에 공백·한글이 있어도 사용할 수 있습니다. 다른 드라이브에 설치하려면:
@@ -96,3 +96,15 @@ npm start
 ## 0.11 CLI 개선과 독립성
 
 나래한글 독립 CLI와 오피스 CLI를 별도로 유지합니다. 오피스 설치기는 narae-hangul-office 스킬만 설치합니다. 독립 CLI는 [narae_hangul](https://github.com/y5496694/narae_hangul)을 사용하세요. 긴 한국어 stdout의 UTF-8 버퍼 경계 깨짐을 수정했습니다. CLI inspect의 기본 응답은 compact이며 본문을 중복 반환하지 않습니다. --full은 이전 전체 서식 응답, --offset/--limit는 문단 범위를 반환하며 hasMore를 확인합니다.
+
+## 텔레그램 · 나래AI 모델
+
+상단 **텔레그램**에서 본인 봇을 연결해 문서 요청·첨부·결과 파일을 주고받을 수 있습니다. PC 승인과 개인 채팅 연결을 적용하며 기존 카카오톡 기능도 유지합니다.
+
+**나래AI 모델**에서 **설치 → 사용**으로 실제 학습한 모델을 선택합니다. AI 실행기는 설치.cmd에서 자동 준비하며, 모델은 Hugging Face에서 필요할 때 받습니다. 로컬 AI는 계정·API 키 없이 문서·통합 에이전트에 연결됩니다. 기존 나래교무 모델 가져오기와 Ollama·LM Studio 등 외부 로컬 서버 연결도 제공합니다.
+
+- [나래1 · 0.6B](https://huggingface.co/inhow/Narae1-Qwen3-0.6B-SFT-v1)
+- [EXAONE 나래2 · 2.4B · 연구·평가용](https://huggingface.co/inhow/EXAONE-Narae2-2.4B-Tool-SFT-v2)
+- [나래3 · 4B](https://huggingface.co/inhow/Narae3-Qwen3-4B-LoRA-v1)
+
+[설치·연결·사용 방법과 검증 범위](docs/텔레그램과-나래AI.md). 나래AI는 실험 모델이며 사용자 작업의 정확성과 복잡한 업무의 자동 완수를 보장하지 않습니다.

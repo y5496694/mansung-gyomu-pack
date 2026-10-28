@@ -10,6 +10,13 @@ const tools=[
  {name:'list_files',description:'작업 폴더의 HWP/HWPX 파일을 조회합니다.',parameters:schema({})}
 ].map(tool=>({type:'function',strict:false,...tool}));
 function inside(root,file){const relative=path.relative(root,file);return relative===''||relative!=='..'&&!relative.startsWith('..'+path.sep)&&!path.isAbsolute(relative);}
+function localCreationResult(prompt,settings,calls,name,output){
+ // Confirm one explicit file from the engine; small models can otherwise repeat
+ // a successful creation. Multi-step requests still go through the agent loop.
+ if(settings.provider!=='local'||calls.length!==1||name!=='create_document'||!output?.modeledContentVerified||!output.path)return null;
+ if((prompt.match(/\.(?:hwpx|hwp)\b/gi)||[]).length!==1||!/만들|작성|생성/.test(prompt)||/수정|편집|고쳐|읽고|요약|검토|비교|PDF|전송|보내|첨부해|이어서|그다음|그 다음|여러|각각|두 개|2개/i.test(prompt))return null;
+ return '문서 파일을 만들었습니다.\n'+output.path+'\n나래한글 엔진에서 저장한 내용을 다시 읽어 대조했습니다.';
+}
 async function runAgent({prompt,context,settings,request,execute,send,signal,history=[],additionalTools=[],agentInstructions=''}){
  const availableTools=[...tools,...additionalTools];
  const input=history.slice(-12).filter(item=>['user','assistant'].includes(item.role)).map(item=>({role:item.role,content:item.content}));
@@ -23,8 +30,8 @@ async function runAgent({prompt,context,settings,request,execute,send,signal,his
   if(text){final=text;send({type:'text',text});}
   const calls=(result.output||[]).filter(item=>item.type==='function_call');
   if(!calls.length){if(!final)throw new Error('AI 텍스트 응답이 없습니다.');return final;}
-  for(const call of calls){let output;try{if(!availableTools.some(tool=>tool.name===call.name))throw new Error('지원하지 않는 도구');const args=JSON.parse(call.arguments||'{}');send({type:'tool',name:call.name,args});output=await execute(call.name,args,signal);send({type:'toolDone',name:call.name,path:output?.path});}catch(error){output={error:error.message};send({type:'error',text:error.message});}input.push({type:'function_call_output',call_id:call.call_id,output:JSON.stringify(output)});}
+  for(const call of calls){let output;try{if(!availableTools.some(tool=>tool.name===call.name))throw new Error('지원하지 않는 도구');const args=JSON.parse(call.arguments||'{}');send({type:'tool',name:call.name,args});output=await execute(call.name,args,signal);send({type:'toolDone',name:call.name,path:output?.path});}catch(error){output={error:error.message};send({type:'error',text:error.message});}input.push({type:'function_call_output',call_id:call.call_id,output:JSON.stringify(output)});const confirmed=localCreationResult(prompt,settings,calls,call.name,output);if(confirmed){send({type:'text',text:confirmed});return confirmed;}}
  }
  throw new Error('작업 횟수 제한에 도달했습니다. 현재 문서와 백업을 확인하세요.');
 }
-module.exports={runAgent,tools,inside};
+module.exports={runAgent,tools,inside,localCreationResult};

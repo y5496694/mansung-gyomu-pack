@@ -26,3 +26,9 @@ The source archive does not bundle Electron, Python wheels or ant executables. T
 `vendor/narae-gyomu` includes the pinned Narae gyomu orchestrator and original source for CBE_CLI, Narae browser and Narae gyomu portal. Their original LICENSE, notices and source-lock files are retained beside the code. `OFFICE_VENDOR_LOCK.json` records the copied bytes; nested `sources.lock.json` identifies upstream source versions. No school credentials, messages, proprietary messenger or office binaries are distributed. Playwright Core (Apache-2.0) uses an installed compatible browser for the isolated browser integration. See the preserved component notices for their respective authors and terms.
 
 본 제품은 한컴의 HWP 문서 파일(.hwp) 공개 문서를 참고하여 개발하였습니다. 공개 문서: https://www.store.hancom.com/support/downloadCenter/hwpOwpml
+
+## 선택 설치 로컬 AI
+
+llama.cpp CPU runtime b11669: https://github.com/ggml-org/llama.cpp · MIT. 공식 배포 ZIP과 실행 파일의 SHA256을 검사해 별도로 설치합니다.
+
+모델 가중치는 앱 소스와 별도이며 각 원본 조건을 따릅니다. 나래1·3은 Qwen Apache-2.0, 나래2는 EXAONE 1.1 NC 연구·평가용입니다. 원문 이용조건은 resources/model-licenses 및 각 Hugging Face 모델 저장소의 LICENSE에 유지합니다. 앱의 MIT가 모델 이용조건을 대체하지 않습니다.
