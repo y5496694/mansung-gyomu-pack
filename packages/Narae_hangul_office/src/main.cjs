@@ -78,12 +78,14 @@ async function preview(args){const file=document(args.path),hash=createHash('sha
 const methods={
  state:()=>metadata(),configure,
  localAIState:()=>localAI.status(),
+ localAIDirectory:async()=>{idle();if(localAI.busy||localAI.child)throw new Error('실행 중인 AI를 먼저 중지하세요.');const picked=await dialog.showOpenDialog(window,{properties:['openDirectory','createDirectory'],title:'AI 모델 저장 폴더 선택',defaultPath:localAI.dir});return picked.canceled?localAI.status():localAI.configure({directory:picked.filePaths[0]});},
+ localAIAutoStart:({enabled})=>localAI.setAutoStart(enabled===true),
  localAILicense:({id})=>{localAI.model(id);const names={narae1:'Qwen3-0.6B-LICENSE.txt',narae2:'EXAONE-3.5-LICENSE.txt',narae3:'Qwen3-4B-LICENSE.txt'};return fs.readFileSync(path.join(root,'resources/model-licenses',names[id]),'utf8');},
  localAIExternal:async({endpoint,model})=>{idle();const next=connections.update(settings,{provider:'local',endpoint,model,localSource:'external'}),items=await localAI.listModels(next);if(!model&&items[0])next.model=items[0].id;if(!items.some(m=>m.id===next.model))throw new Error('서버에 설치된 모델 ID를 입력하세요: '+items.map(m=>m.id).join(', '));next.aiConnections['local:local'].model=next.model;await localAI.stop();persist(next);agentChanged();return metadata();},
  localAIInstall:args=>{idle();return localAI.install(args.id,args);},
  localAIImport:async args=>{idle();const picked=await dialog.showOpenDialog(window,{properties:['openDirectory'],title:'base.gguf와 adapter.gguf가 있는 모델 폴더 선택'});if(picked.canceled)return localAI.status();return localAI.install(args.id,{...args,source:fs.realpathSync(picked.filePaths[0])});},
- localAIUse:async({id})=>{idle();await localAI.activate(id);persist(connections.update(settings,{provider:'local',model:id,localSource:'managed'}));agentChanged();return metadata();},
- localAIStop:async()=>{idle();await localAI.stop();return localAI.status();},
+ localAIUse:async({id})=>{idle();await localAI.activate(id);localAI.setAutoStart(true);persist(connections.update(settings,{provider:'local',model:id,localSource:'managed'}));agentChanged();return metadata();},
+ localAIStop:async()=>{idle();if(localAI.busy)throw new Error('AI 준비가 끝난 뒤 중지하세요.');localAI.setAutoStart(false);await localAI.stop();return localAI.status();},
  localAICancel:()=>localAI.cancelInstall(),
  telegramState:()=>({...telegram?.status(),approval:remotePolicy.status()}),
  telegramBotFather:()=>shell.openExternal('https://t.me/BotFather'),
@@ -127,5 +129,5 @@ const methods={
  }
 };
 ipcMain.handle('narae:call',async(event,name,args)=>{if(!window||event.sender!==window.webContents||event.senderFrame!==window.webContents.mainFrame||!Object.hasOwn(methods,name))throw new Error('허용되지 않은 요청');return methods[name](args||{});});
-app.whenReady().then(()=>{window=new BrowserWindow({width:1420,height:940,minWidth:1000,minHeight:680,title:'나래 한글 오피스',backgroundColor:'#f5f6f8',webPreferences:{preload:path.join(__dirname,'preload.cjs'),contextIsolation:true,nodeIntegration:false,sandbox:true}});window.setMenuBarVisibility(false);window.webContents.setWindowOpenHandler(()=>({action:'deny'}));window.webContents.on('will-navigate',event=>event.preventDefault());window.loadFile(path.join(root,'ui/index.html'));remote?.start();telegram?.start();});
+app.whenReady().then(async()=>{app.setAppUserModelId('Inhow.NaraeHangulOffice');window=new BrowserWindow({width:1420,height:940,minWidth:1000,minHeight:680,title:'나래 한글 오피스',icon:path.join(root,'ui/assets/narae-office.ico'),backgroundColor:'#f4f7fb',webPreferences:{preload:path.join(__dirname,'preload.cjs'),contextIsolation:true,nodeIntegration:false,sandbox:true}});window.setMenuBarVisibility(false);window.webContents.setWindowOpenHandler(()=>({action:'deny'}));window.webContents.on('will-navigate',event=>event.preventDefault());await window.loadFile(path.join(root,'ui/index.html'));remote?.start();telegram?.start();if(localAI.autoStart&&settings.provider==='local'&&settings.localSource==='managed'&&localAI.catalog.models.some(m=>m.id===settings.model&&localAI.installed(m)))void localAI.activate(settings.model).catch(()=>{});});
 app.on('window-all-closed',()=>app.quit());app.on('before-quit',()=>{remote?.close();telegram?.close();void localAI.close();remotePolicy.close();controller?.abort();void integrations.close();oauth.cancel();native.close();});

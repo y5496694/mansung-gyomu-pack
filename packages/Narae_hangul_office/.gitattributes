@@ -2,6 +2,7 @@
 *.cmd text eol=crlf
 *.ps1 text eol=crlf
 *.png binary
+*.ico binary
 # Vendored sources are pinned by exact-byte upstream SHA256; never normalize their line endings.
 vendor/narae-gyomu/** -text
 # Preserve the upstream license text verbatim, including its spacing.

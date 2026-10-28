@@ -45,7 +45,7 @@ try {
         $shortcutShell=New-Object -ComObject WScript.Shell
         foreach($directory in @([Environment]::GetFolderPath('Desktop'),[Environment]::GetFolderPath('Programs'))){
             $shortcut=$shortcutShell.CreateShortcut((Join-Path $directory '나래 한글 오피스.lnk'))
-            $shortcut.TargetPath=$executable;$shortcut.Arguments='"'+$InstallRoot+'"';$shortcut.WorkingDirectory=$InstallRoot;$shortcut.Description='나래한글 엔진 기반 · 한컴오피스 한글 연동';$shortcut.Save()
+            $shortcut.TargetPath=$executable;$shortcut.Arguments='"'+$InstallRoot+'"';$shortcut.WorkingDirectory=$InstallRoot;$shortcut.Description='나래한글 엔진 기반 · 한컴오피스 한글 연동';$shortcut.IconLocation=(Join-Path $InstallRoot 'ui\assets\narae-office.ico')+',0';$shortcut.Save()
         }
     }
     [ordered]@{version=(Get-Content -LiteralPath 'package.json' -Raw -Encoding UTF8 | ConvertFrom-Json).version;installedAt=(Get-Date).ToString('o');root=$InstallRoot;python=$python;runtime=$executable;managedNode=$runtime.nodeVersion;managedPython=$runtime.pythonVersion;systemDependenciesRequired=$false} | ConvertTo-Json | Set-Content -LiteralPath (Join-Path $InstallRoot 'installation.json') -Encoding UTF8
