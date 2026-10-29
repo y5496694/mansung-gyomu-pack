@@ -1,6 +1,6 @@
 {
   "repository": "https://github.com/y5496694/narae-gyomu",
-  "commit": "17e360f02b3403040a70413386a89ae3d6bdbf7c",
+  "commit": "12d15efa37f892b55d25da02261bc0d07f839569",
   "files": {
     "package.json": "f17b52095ac22be5155ee9c7486d93a4ad3010c85e73a9386d5a8b85bc716fdb",
     "LICENSE": "f759e09eadb37ee4d39fa51b538c6941b6e5b2189020352b5371372ae154eb74",
@@ -9,15 +9,15 @@
     "sources.lock.json": "0efd03cc1087119902ca6af59a306006d14b591057fee496feafcf43e88df025",
     "SKILL.md": "ac90eac8ac21c31a2666330b37db8ea5023c3781e17ca5f2391ce0f4a3a86e34",
     "src/agent.mjs": "c9a3c5ab38bbd6e124b550bbc444f266d5c61bbe7fe20c08755f1a78b6d3d7de",
-    "src/catalog.mjs": "f615a5bc6bda65c9f690d79daf6e4d1b87ed2c019a0e4a407fb569aad780c1f9",
+    "src/catalog.mjs": "4b1c6487e1e878d647c2a605413ff20b1415734f81e5691155e190b326f844c5",
     "src/completion.mjs": "61844606af18060950277a3397db606db14ac7b0294c683ae30740290feb0d45",
     "src/models.mjs": "6b8b69bbfafaab08db52a6e8a496ac6f97a5df086561b81206d00f72f686450c",
     "src/paths.mjs": "203c1c410f4e4f955fb2cb9068570c1f470f0690eb3b3d32ac47b2bad2c0c9c9",
     "src/process.mjs": "c63af14b5f308b9a1985b56f40ebf1c91431aba70d9ba9e2d0066ca02f834339",
     "src/school-browser.mjs": "1e25bb7443201fb6a0213eb7a69e72a0e108e3f506e4ab25798e850761c23d94",
     "src/server.mjs": "cfd202b9a9f16de752cdaab17795cfdc95ef432e6c7e08f87f7a346e733edb77",
-    "src/tools.mjs": "04de8abb8ebdc99805042edaaf762d607f481ac5abfa4d87c41a819daab6fcba",
-    "skills/narae-gyomu/SKILL.md": "9396729456f24179d0caa566f215d086dec6eeedd9933499954bf985cac28b7e",
+    "src/tools.mjs": "1d987c5c8631f8854096ffac1f325063fee644bebcbb109b67b3c2d0b685e1c2",
+    "skills/narae-gyomu/SKILL.md": "94fc6ba1d6460145926ebba7a4dd0df9db8cb02e551a91043a14fd125b2f6392",
     "skills/narae-gyomu/references/cli.md": "4957330b30c90f76d79e03cf3de856985db10c7cb5a5969eec37edc48f378bf4",
     "skills/narae-gyomu/references/workflows.md": "db56a1a8900eae82047d7a4b6b5971948626bc959555eefbe147781497a186b6",
     "packages/narae_browser/.gitattributes": "61ed2c4effbbe5060e2a745e9e8416080aa5cc7bc0e3eda2cd1bc7feefc994ff",
@@ -211,6 +211,7 @@
     "packages/Narae_hangul_office/vendor/hangeul/windows_bitmap.cs": "5e2216bbf741981dd31bfa44663664a57a8ce539d8d39f502b5215de924e6e8f",
     "packages/Narae_hangul_office/vendor/NARAE_LICENSE": "c966202ce1edd0f91e689ff60382f60d5a76328628e14d81ccfaea7698722a62",
     "packages/Narae_hangul_office/설치.cmd": "d62e8b2e262428b34eb506aca091e4b519ec79e80fc8fcc06d73c2cb36b553a3",
-    "packages/Narae_hangul_office/실행.cmd": "e89a844d259b7bd0de82fb3b09f9bf6ab18874166b41f8878968ca9c471561c9"
+    "packages/Narae_hangul_office/실행.cmd": "e89a844d259b7bd0de82fb3b09f9bf6ab18874166b41f8878968ca9c471561c9",
+    "src/wxs-capture.mjs": "ae077af70289f8e9ccbfad7f21d2300f61ada9ef2f8b73433e5223255c2721e3"
   }
 }

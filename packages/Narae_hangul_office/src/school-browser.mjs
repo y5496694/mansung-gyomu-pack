@@ -1,12 +1,23 @@
 // Office integration layer; preserve the vendored browser snapshot.
 import {SchoolBrowser} from '../vendor/narae-gyomu/src/school-browser.mjs';
-import {bound,Fault} from '../vendor/narae-gyomu/packages/narae_browser/src/browser.mjs';
+import {bound,Fault,browserPath} from '../vendor/narae-gyomu/packages/narae_browser/src/browser.mjs';
+import {chromium} from 'playwright-core';
 export class OfficeSchoolBrowser extends SchoolBrowser {
+ constructor({profile}={}){super();this.profile=profile;this.closed=false;}
+ async start({headed=false}={}){
+  if(!this.profile){const result=await super.start({headed});this.context.on('close',()=>{this.closed=true;});return result;}
+  this.context=await chromium.launchPersistentContext(this.profile,{headless:!headed,chromiumSandbox:true,executablePath:browserPath(),viewport:{width:1280,height:900},locale:'ko-KR',acceptDownloads:false,serviceWorkers:'block'});
+  this.context.on('close',()=>{this.closed=true;});
+  this.browser={close:()=>this.context.close()};this.context.setDefaultTimeout(12000);
+  const watch=p=>{if(this.pages.includes(p))return;this.pages.push(p);p.on('framenavigated',f=>{if(f===p.mainFrame()&&p===this.page)this.invalidate();});p.on('pageerror',e=>{this.errors.push(e.message.slice(0,200));this.errors=this.errors.slice(-10);});p.on('dialog',d=>d.dismiss().catch(()=>{}));};
+  this.context.on('page',watch);for(const p of this.context.pages())watch(p);this.page=this.pages[0]||await this.context.newPage();
+  return {browser:'chromium',headless:!headed,isolated:true,persistent:true};
+ }
  async snapshot(args={}){
   const version='s'+ ++this.serial;this.refs.clear();
   const result=await this.scope().evaluate(({version,limit,chars,offset,filter})=>{
    const visible=e=>{const r=e.getBoundingClientRect(),s=getComputedStyle(e);return r.width>0&&r.height>0&&s.display!=='none'&&s.visibility!=='hidden'&&!e.closest('[aria-hidden=true],[inert]');};
-   const dialogs=[...document.querySelectorAll('dialog[open],[role=dialog],[aria-modal=true]')].filter(visible),dialog=dialogs.at(-1),root=dialog||document.body;
+   const dialogs=[...document.querySelectorAll('dialog[open],[role=dialog],[aria-modal=true],.modal-hidden')].filter(visible),dialog=dialogs.at(-1),root=dialog||document.body;
    const labelled=e=>(e.getAttribute('aria-labelledby')||'').split(/\s+/).map(id=>document.getElementById(id)?.innerText||'').join(' ').trim();
    const name=e=>(e.getAttribute('aria-label')||labelled(e)||e.labels?.[0]?.innerText||e.getAttribute('placeholder')||e.getAttribute('title')||e.innerText||e.getAttribute('name')||'').replace(/\s+/g,' ').trim().slice(0,180);
    const query='a[href],button,input:not([type=hidden]),textarea,select,[role=button],[role=link],[role=combobox],[role=option],[role=treeitem],[role=menuitem],[role=tab],[role=checkbox],[role=radio],[contenteditable=true]';

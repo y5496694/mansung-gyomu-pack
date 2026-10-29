@@ -1,7 +1,11 @@
 'use strict';
 const fs=require('node:fs'),path=require('node:path');
+const {messengerTask,messengerTools,messengerStep}=require('./messenger-task.cjs');
+const {edufineTask,edufineTools,edufineStep}=require('./edufine-task.cjs');
 const school=/나이스|NEIS|복무|조퇴|연가|근무상황|개인결재선|기안문서상신|업무\s*포[털탈]/i;
 function taskFor(prompt,history=[],now=new Date()){
+ const messenger=messengerTask(prompt,history);if(messenger)return messenger;
+ const edufine=edufineTask(prompt,history,now);if(edufine)return edufine;
  let text=prompt;
  if(!school.test(text)&&/^(?:응|네|예|좋아|계속|진행|다음|로그인.*완료|했어|됐어|해줘|해 봐|다시|사유|날짜|시간|내일|모레|20\d{2}|검토자|결재자)/.test(text.trim())&&!/문서.*(?:만들|작성)|\.hwpx?|메신저/.test(text))text=(history.slice(-8).findLast(i=>i.role==='user'&&school.test(i.content))?.content||'')+'\n'+text;
  if(!school.test(text))return null;
@@ -10,9 +14,9 @@ function taskFor(prompt,history=[],now=new Date()){
  const times=[...text.matchAll(/\b([0-2]?\d):([0-5]\d)\b/g)].filter(m=>Number(m[1])<24).map(m=>m[1].padStart(2,'0')+':'+m[2]);
  let day=text.match(/\b(20\d{2})[-.]\s*(\d{1,2})[-.]\s*(\d{1,2})\b/);day=day?`${day[1]}-${day[2].padStart(2,'0')}-${day[3].padStart(2,'0')}`:/내일|모레|오늘/.test(text)?new Date(new Date(date+'T00:00:00Z').getTime()+(/모레/.test(text)?2:/내일/.test(text)?1:0)*86400000).toISOString().slice(0,10):null;
  const reason=text.match(/사유(?:는|[:：])\s*([^,\n.]+)/)?.[1].trim();
- return {area:neis?'neis':'portal',mixed,draft:/초안|준비|신청|올려|등록/.test(text),plan:{date:day,start:times.length===2?times[0]:null,end:times.length===2?times[1]:null,reason,type:/조퇴/.test(text)?'조퇴':null},observe:!/(?:사용법|방법|절차|설명해|가능해|할 수 있)/.test(prompt),instructions:`현재 기준일은 ${date}, 시간대 Asia/Seoul이다. 내일/모레는 이 날짜로 계산한다. 아래 절차는 이미 제공되었으므로 같은 스킬을 반복 조회하지 않는다.\n`+fs.readFileSync(path.join(__dirname,'../resources/agent-skills/neis.md'),'utf8')};
+ return {area:neis?'neis':'portal',openPortal:/업무\s*포[털탈]/.test(prompt)&&/열어|띄워|접속|들어가/.test(prompt),openOnly:!neis&&!/에듀파인|공람|공문|기안/.test(prompt),mixed,draft:/초안|준비|신청|올려|등록/.test(text),plan:{date:day,start:times.length===2?times[0]:null,end:times.length===2?times[1]:null,reason,type:/조퇴/.test(text)?'조퇴':null},observe:!/(?:사용법|방법|절차|설명해|가능해[?？]?$|할 수 있(?:어|나요|습니까)[?？]?$)/.test(prompt),instructions:`현재 기준일은 ${date}, 시간대 Asia/Seoul이다. 내일/모레는 이 날짜로 계산한다. 아래 절차는 이미 제공되었으므로 같은 스킬을 반복 조회하지 않는다.\n`+fs.readFileSync(path.join(__dirname,'../resources/agent-skills/neis.md'),'utf8')};
 }
-function taskTools(task,all){if(!task||task.mixed)return all;return all.filter(t=>['gyomu_browser','gyomu_portal_open','gyomu_skill_read','gyomu_system_status'].includes(t.name));}
+function taskTools(task,all){if(task?.area==='edufine')return edufineTools(all);if(task?.area==='cbe')return messengerTools(all);if(!task||task.mixed)return all;return all.filter(t=>['gyomu_browser','gyomu_portal_open','gyomu_skill_read','gyomu_system_status'].includes(t.name));}
 function formReady(plan,observed){
  const fields=(observed.elements||[]).map(e=>({label:e.label.replace(/[\s()]/g,''),value:String(e.value??e.display??'').trim()}));
  const matches=(pattern,value)=>{const found=fields.filter(e=>pattern.test(e.label));return Boolean(value&&found.length&&found.every(e=>{const current=e.value.replace(/[\s./:\-시분]/g,''),expected=value.replace(/[\s./:\-]/g,'');return current===expected||/^\d{1,2}$/.test(current)&&/^\d{1,2}$/.test(expected)&&Number(current)===Number(expected);}));};
@@ -20,11 +24,19 @@ function formReady(plan,observed){
  return matches(/근무상황소분류|^소분류$/,plan.type)&&matches(/^(?:신청일자|신청기간시작일자|신청기간종료일자|시작일자|종료일자)$/,plan.date)&&time('시작',plan.start)&&time('종료',plan.end)&&fields.some(e=>/^(?:사유|용무)$/.test(e.label)&&e.value===plan.reason);
 }
 function taskStep(task,input,all){
+ if(task?.area==='cbe')return messengerStep(task,input,all);
+ if(task?.area==='edufine')return edufineStep(task,input,all);
  if(!task)return {tools:all,instructions:''};
  if(!task.observe)return {tools:[],instructions:'사용 절차를 설명하는 요청이다. 제공된 절차로 답하고 실제 화면을 조작하지 않는다.'};
  const tools=structuredClone(all);let observed,routeApplied=false;
  for(const item of input){if(item.type!=='function_call_output')continue;const call=input.find(c=>c.type==='function_call'&&c.call_id===item.call_id);if(call?.name!=='gyomu_browser'&&call?.name!=='gyomu_portal_open')continue;try{const value=JSON.parse(item.output),args=JSON.parse(call.arguments||'{}'),before=observed?.elements?.find(e=>e.ref===args.ref);if(!value.error){if(args.action==='click'&&/^(?:결재선\s*)?지정$/.test(before?.label||'')&&/기안문서상신/.test(value.dialog||''))routeApplied=true;observed=value;}}catch{}}
  const browser=tools.find(t=>t.name==='gyomu_browser');if(!browser?.parameters?.properties)return {tools,instructions:''};
+ if(task.openPortal){
+  const opened=input.find(i=>i.type==='function_call'&&i.name==='gyomu_portal_open');
+  if(!opened)return {tools:tools.filter(t=>t.name==='gyomu_portal_open'),required:true,instructions:'사용자가 업무포털을 열어 달라고 요청했다. gyomu_portal_open을 실제 실행한다. 열었다는 말로 대신하지 않는다.'};
+  const result=input.find(i=>i.type==='function_call_output'&&i.call_id===opened.call_id);let value;try{value=JSON.parse(result?.output||'{}');}catch{}
+  if(task.openOnly&&value?.url?.startsWith('https://')&&!value.error)return {tools:[],receipt:'업무포털 전용 브라우저를 열었습니다. 현재 페이지: '+(value.title||new URL(value.url).hostname)+'\n그 창에서 직접 로그인해 주세요. 로그인·인증 정보는 읽거나 입력하지 않았습니다.'};
+ }
  const normalize=s=>String(s||'').replace(/[\s./:\-]/g,'');
  if(task.draft&&!task.mixed&&routeApplied&&observed.tables?.length&&[task.plan.date,task.plan.start,task.plan.end,task.plan.reason].every(v=>v&&normalize(observed.text).includes(normalize(v))))return {tools:[],instructions:'',receipt:`연가/조퇴 초안의 입력값과 결재선을 최종 준비 화면에서 확인했습니다.\n${task.plan.date} ${task.plan.start}~${task.plan.end} · 사유: ${task.plan.reason}\n결재선: ${observed.tables.join('\n')}\n최종 상신하지 않았습니다. 화면의 준비 상태를 유지합니다. 별도 임시저장 여부는 확인하지 않았습니다.`};
  let action,refs,instructions='';
@@ -56,7 +68,8 @@ function taskStep(task,input,all){
  // selectOption is only valid on a real HTML select, never a WebSquare div.
  if(observed?.elements){
   const refs=observed.elements.filter(e=>!e.disabled&&!(task.draft&&/근무상황신청/.test(observed.dialog||'')&&!formReady(task.plan,observed)&&e.label.replace(/\s/g,'')==='승인요청')).map(e=>e.ref);
-  browser.parameters.properties.ref={type:'string',enum:refs};
+  if(refs.length)browser.parameters.properties.ref={type:'string',enum:refs};
+  else {delete browser.parameters.properties.ref;browser.parameters.properties.action.enum=browser.parameters.properties.action.enum.filter(a=>!['click','fill','select','check','uncheck','press'].includes(a));}
   if(!observed.elements.some(e=>e.tag==='select'))browser.parameters.properties.action.enum=browser.parameters.properties.action.enum.filter(a=>a!=='select');
   // Selectors and URLs cannot be guessed as a substitute for observed refs.
   delete browser.parameters.properties.selector;

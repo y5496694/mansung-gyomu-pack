@@ -30,7 +30,7 @@ narae-gyomu chat "도구 준비 상태를 확인해줘" --json
 | 웹 탐색·업무포털 화면 | `browser`, `portal.open` | `skill.read`의 portal/neis/edufine |
 | HWP/HWPX 읽기·요약·작성·편집 | `hangul.inspect/create/edit/run` | hangul, hangul-jobs |
 | 교직원 찾기·쪽지·대화·연락 | `cbe.search/notes/chats/prepare` | cbe |
-| 열린 공문 본문·첨부·기안 입력·임시저장 | `wxs`, `wxs.prepare/save` | wxs |
+| 열린 공문 본문·첨부·기안 입력·임시저장 | `wxs`, `wxs.read/prepare/save` | wxs |
 
 복합 요청은 단계별로 해당 도구를 함께 사용한다. 포털의 열린 WXS 본문은 WXS CLI, 독립 HWP/HWPX 첨부는 나래한글이다. 학부모 소통·이지에듀·시간표는 이 네 도구 팩의 추가 구현으로 간주하지 않는다.
 
@@ -47,6 +47,8 @@ narae-gyomu chat "도구 준비 상태를 확인해줘" --json
 ## 연락·공문 적용
 
 교직원은 내 조직 우선 검색하고, 다른 소속이 지정되면 범위를 맞춘다. 동명이인이면 소속·직책을 확인한다. 본문과 파일은 사용자가 정한 그대로 준비한다. `cbe.prepare`는 사전 점검이며 발송이 아니다. 준비된 수신자·본문을 사용자가 확인한 뒤 화면에서 적용하거나 명시적인 `confirm PENDING_ID`를 실행한다. 이미 처리한 준비 ID는 재실행되지 않는다. `sent:true`·`verified:true`를 확인해야 실제 전송 완료다. 결과가 불명확하면 기록을 조회하며 재전송하지 않는다.
+
+공람 본문은 `wxs.read`의 `operation:prepare`, `expected_title:현재 목록의 정확한 제목`으로 먼저 읽기 대기를 준비한다. `ready:true` 뒤 같은 제목 한 건만 웹에서 연다. 이어 `operation:result`, `id:준비 결과 ID`로 실제 본문·첨부 저장 결과와 `closed:true`를 확인한다. `pending:true`면 완료로 처리하지 않고 결과를 다시 확인한다. 인증 대기 결과는 창을 보존하고 본문 미확인으로 남긴다. 모든 저장 첨부는 `wxs.attachment`의 `path:실제 저장 경로`로 내용까지 확인한다. `hasMore:true`면 `nextOffset`으로 이어 읽는다. 원본 팩의 형식별 읽기 의존성이 필요하며 나래 한글 오피스 설치.cmd는 이를 함께 설치한다. 추출 완료는 모델의 내용 검토 완료와 다르다. 그림·스캔·시각 확인 대기와 미지원 형식은 미확인으로 보고한다.
 
 WXS의 입력·임시저장도 미리보기와 실제 적용을 구분한다. 실제 창·제목·내용을 대조하며 **최종 상신·결재 승인·공문 발송은 현재 지원하지 않는다.** 단순 설치·점검·스킬 수정 요청으로 학교 시스템에 로그인하거나 시험 메시지·공문을 만들지 않는다.
 

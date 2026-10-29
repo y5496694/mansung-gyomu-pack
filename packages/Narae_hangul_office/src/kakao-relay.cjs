@@ -74,7 +74,7 @@ class KakaoRelay{
  }
  async route(req,url,body){this.expire();
   if(req.method==='GET'&&url.pathname==='/health')return {status:'ok',service:'narae-kakao-relay',protocol:1};
-  if(req.method==='POST'&&url.pathname.startsWith('/kakao/')){if(!equal(url.pathname.slice(7),this.secret))fail(404,'NOT_FOUND');return this.skill(body);}
+  if(req.method==='POST'&&url.pathname.startsWith('/kakao/')){const authorized=url.pathname==='/kakao/skill'?equal(req.headers['x-narae-skill-key'],this.secret):equal(url.pathname.slice(7),this.secret);if(!authorized)fail(404,'NOT_FOUND');return this.skill(body);}
   if(req.method==='POST'&&url.pathname==='/v1/pairings'){
    const uid=String(body.uid||'').trim().toUpperCase(),name=String(body.name||'').trim();if(!this.data.users[uid]||!name||name.length>60)fail(400,'PAIRING_INPUT');
    if(Object.values(this.data.devices).filter(d=>d.uid===uid&&['pending','confirmed'].includes(d.state)).length>=5)fail(429,'PAIRING_LIMIT');

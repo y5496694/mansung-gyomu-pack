@@ -51,6 +51,20 @@ PC는 HTTPS 서버로 아웃바운드 연결하며 PC 인바운드 포트를 열
 
 `/health`는 공개 상태 확인, `/v1/pairings`는 미승인 신청, `/v1/device/*`는 기기별 Bearer 인증 경로입니다. 공개 관리자 API·임의 셸·페이지 JavaScript 실행 API는 없습니다. 단일 서버 프로세스가 JSON 상태 파일을 소유하는 미리보기 구조입니다. 대규모 운영에는 DB 트랜잭션·잠금·보존/삭제 정책이 추가로 필요합니다.
 
+## 기존 도메인의 하위 경로
+
+중계 주소는 `https://example.com/narae-relay`처럼 경로를 포함할 수 있습니다. 프록시는 이 경로를 제거한 뒤 중계 서버에 전달합니다. PC 실행기는 같은 접두어로 `/v1/...`를 호출합니다. query·fragment·URL 안의 계정 정보는 허용하지 않습니다.
+
+챗봇 관리자센터에는 고정 URL `https://example.com/narae-relay/kakao/skill`과 요청 헤더 `X-Narae-Skill-Key`를 등록하는 방법을 권장합니다. 헤더 값은 서버의 비공개 `skill-secret.txt` 값입니다. 비밀을 공개 파일·화면 캡처·일반 로그에 남기지 않습니다. 기존 비밀 경로도 호환되지만 그 경로의 access log를 남기지 않아야 합니다.
+
+1. **스킬**에서 URL과 헤더를 저장하고 테스트합니다.
+2. **시나리오 → 기본 시나리오 → 폴백 블록**에 이 스킬을 연결하고 응답을 **스킬데이터 사용**으로 설정합니다. 임의 업무 발화가 이 경로로 PC에 전달됩니다.
+3. `내 UID`, `연결 상태`, `대화 확인`, `결과 확인`, `중단`을 별도 블록으로 만들었다면 같은 스킬을 연결합니다.
+4. 운영 채널이 나래인지 확인하고 **스킬과 블록을 함께 배포**합니다. 저장만으로 운영 채널에 반영되지 않습니다. 콜백 권한이 없는 봇도 결과 확인 버튼으로 조회할 수 있습니다.
+5. 휴대폰의 실제 나래 채널에서 `내 UID`를 보내고 PC 연결 절차를 완료합니다. 모의 payload 응답은 실제 카카오 왕복의 증거가 아닙니다.
+
+공식 절차: [블록에 스킬 적용](https://kakaobusiness.gitbook.io/main/tool/chatbot/skill_guide/apply_skill_to_block), [운영 배포](https://kakaobusiness.gitbook.io/main/tool/chatbot/main_notions/deploy), [콜백 설정](https://kakaobusiness.gitbook.io/main/tool/chatbot/skill_guide/ai_chatbot_callback_guide).
+
 ## 데이터·안전·장시간 작업
 
 - 기기 토큰·AI 자격은 Windows 사용자 DPAPI로 보관하고 토큰을 화면에 노출하지 않습니다.

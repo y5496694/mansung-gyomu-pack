@@ -70,7 +70,7 @@ class LocalAI{
   const user=(body.input||[]).findLast(i=>i.role==='user'),names=typeof user?.content==='string'?[...user.content.matchAll(/["“]([^"“”\r\n]+\.(?:hwpx|hwp))["”]/gi)]:[];
   if(settings.workspace&&names.length===1&&path.basename(names[0][1])===names[0][1]){const create=tools.find(t=>t.name==='create_document');if(create?.parameters?.properties?.path)create.parameters.properties.path.enum=[path.join(settings.workspace,names[0][1]).replaceAll('\\','/')];}
   const messages=messagesFor({...body,tools});if(managed)await this.fitMessages(messages,signal);
-  const result=await this.api(url+'/chat/completions',{model,messages,temperature:0,seed:719,max_tokens:2048,stream:false,response_format:{type:'json_schema',json_schema:{name:'narae_action',schema:plannerSchema(tools,body.tool_choice==='required')}}},signal,180000,managed);
+  const result=await this.api(url+'/chat/completions',{model,messages,temperature:0,seed:719,max_tokens:Math.min(2048,Math.max(128,body.max_output_tokens||2048)),stream:false,response_format:{type:'json_schema',json_schema:{name:'narae_action',schema:plannerSchema(tools,body.tool_choice==='required')}}},signal,180000,managed);
   if(result.model!==model)throw new Error('요청과 다른 로컬 모델의 응답입니다.');const response=responseFrom(result,tools),next=response.output[0];let readOnly=false;if(next.name==='gyomu_browser')readOnly=['snapshot','read','tabs','frames','wait'].includes(JSON.parse(next.arguments).action);if(next.type==='function_call'&&!readOnly&&prior.slice(-2).length===2&&prior.slice(-2).every(i=>i.name===next.name&&i.arguments===next.arguments))throw fault('LOCAL_REPEATED_ACTION','로컬 AI가 같은 작업을 반복해 중지했습니다. 마지막 확인 화면에서 이어서 요청하세요.');return response;
  }
  cancelInstall(){this.abort?.abort();}

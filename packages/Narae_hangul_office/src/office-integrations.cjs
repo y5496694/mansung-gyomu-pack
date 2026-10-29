@@ -14,7 +14,7 @@ class OfficeIntegrations{
   const subprocess=(exe,args,options={})=>run(exe,args,{...options,env:{...options.env,...(exe===process.execPath?{ELECTRON_RUN_AS_NODE:'1'}:{})}});
   this.instance=new Tools({status:()=>({provider:this.settings().provider,model:this.settings().model,source:'office-ai',localModelsStarted:false})},{headed:this.headed,subprocess});
   const {OfficeSchoolBrowser}=await import(pathToFileURL(path.join(__dirname,'school-browser.mjs')).href);
-  this.instance.browserCall=async args=>{if(!this.instance.browser){const browser=new OfficeSchoolBrowser();try{await browser.start({headed:this.headed});this.instance.browser=browser;}catch(error){await browser.browser?.close();throw error;}}return this.instance.browser.execute(args);};
+  this.instance.browserCall=async args=>{if(!this.instance.browser||this.instance.browser.closed){const session=this.session||'local';if(!/^(?:local|[a-f0-9]{32})$/.test(session))throw new Error('브라우저 대화 세션을 확인하세요.');const browser=new OfficeSchoolBrowser({profile:this.headed?path.join(this.home,'data/gyomu-browser',session):undefined});try{await browser.start({headed:this.headed});this.instance.browser=browser;}catch(error){await browser.browser?.close();throw error;}}return this.instance.browser.execute(args);};
   this.catalog=tools.filter(t=>!t.name.startsWith('hangul.')&&t.name!=='files.list').map(t=>({type:'function',strict:false,name:'gyomu_'+t.name.replaceAll('.','_'),description:t.description+(t.name.endsWith('.prepare')||t.name==='wxs.save'?' 준비 후 PC에서 실제 미리보기를 승인한 경우에만 적용합니다.':''),parameters:t.parameters,original:t.name}));return this;
  }
  async tools(){await this.ready();return this.catalog.map(({original,...tool})=>tool);}
@@ -31,6 +31,7 @@ class OfficeIntegrations{
    if(!['snapshot','read','tabs','frames','frame','scroll','wait'].includes(args.action)){await this.policy.approve('나래 브라우저 · '+args.action,args,signal);if(['fill','press'].includes(args.action))await this.noCredentialInput(args);}
   }
   if(tool.original==='portal.open')await this.policy.approve('업무포털 열기',args,signal);
+  if(tool.original==='wxs.read'&&args.operation==='prepare')this.instance.captures.directory=path.join(this.workspace(),'나래-공문조회');
   const result=await this.instance.call(tool.original,args,{signal});
   if(result?.pendingId){
    const pending=this.instance.pending.get(result.pendingId);if(!pending||pending.status!=='prepared')throw new Error('미리보기를 확인할 수 없습니다.');

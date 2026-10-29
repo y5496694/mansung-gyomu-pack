@@ -1,0 +1,29 @@
+'use strict';
+const fs=require('node:fs'),path=require('node:path');
+function edufineTask(prompt,history=[],now=new Date()){
+ let text=prompt;if(!/에듀파인|공람|문서진행|공문|기안/.test(text)&&/^(계속|로그인.*완료|진행|다음)/.test(text))text=(history.slice(-6).findLast(i=>i.role==='user'&&/에듀파인|공람|문서진행|공문|기안/.test(i.content))?.content||'')+'\n'+text;
+ if(!/에듀파인|공람|문서진행|공문|기안/.test(text)||/나이스|복무|조퇴|연가/.test(text))return null;
+ const date=new Intl.DateTimeFormat('sv-SE',{timeZone:'Asia/Seoul',year:'numeric',month:'2-digit',day:'2-digit'}).format(now),[y,m,d]=date.split('-').map(Number),previous=new Date(Date.UTC(y,m-1,0)),start=new Date(Date.UTC(previous.getUTCFullYear(),previous.getUTCMonth(),Math.min(d,previous.getUTCDate()))).toISOString().slice(0,10);
+ return {area:'edufine',observe:true,draft:false,plan:{},writing:/기안.{0,12}(?:작성|만들)|초안.{0,12}(?:작성|만들|저장)/.test(text),summary:/요약|본문|열람|읽어/.test(text),instructions:`현재 기준일 ${date}, Asia/Seoul. 공람 기본 조회 기간 ${start}~${date}.\n`+fs.readFileSync(path.join(__dirname,'../resources/agent-skills/edufine.md'),'utf8')};
+}
+function edufineTools(all){return all.filter(t=>['gyomu_browser','gyomu_portal_open','gyomu_skill_read','gyomu_system_status'].includes(t.name)||t.name.startsWith('gyomu_wxs'));}
+function edufineStep(task,input,all){
+ const tools=structuredClone(edufineTools(all)),observed=[];let capture,screen;
+ for(const item of input){if(item.type!=='function_call_output')continue;const call=input.find(c=>c.type==='function_call'&&c.call_id===item.call_id);if(!call)continue;try{const value=JSON.parse(item.output),args=JSON.parse(call.arguments||'{}');observed.push({name:call.name,args,value});if(['gyomu_browser','gyomu_portal_open'].includes(call.name)&&!value.error)screen=value;if(call.name==='gyomu_wxs_read'&&args.operation==='prepare'&&value.ready)capture=value;if(call.name==='gyomu_wxs_read'&&args.operation==='result'&&!value.pending)capture=null;}catch{}}
+ const last=observed.at(-1),required=(name,values,instructions)=>{const tool=tools.find(t=>t.name===name);if(!tool)return {tools,instructions};for(const [key,value]of Object.entries(values))tool.parameters.properties[key]={...(tool.parameters.properties[key]||{}),enum:Array.isArray(value)?value:[value]};tool.parameters.required=[...new Set([...(tool.parameters.required||[]),...Object.keys(values)])];return {tools:[tool],required:true,instructions};};
+ if(last?.name==='gyomu_browser'&&last.value.error)return required('gyomu_browser',{action:'snapshot'},'앞 조작에 실패했다. 현재 화면과 팝업을 새로 관찰하고 배경 ref를 반복 누르지 않는다.');
+ if(screen?.dialog){const close=screen.elements?.find(e=>!e.disabled&&/^(닫기|창 닫기|공지사항 닫기|close|×)$/i.test(e.label.trim()));if(close)return required('gyomu_browser',{action:'click',ref:close.ref},'현재 팝업이 배경 메뉴를 가린다. 관찰한 닫기 버튼을 먼저 누른다.');}
+ if((task.summary||task.writing)&&screen?.title==='업무포털 메인'&&!screen.dialog){const menu=screen.elements?.find(e=>e.label==='K-에듀파인');if(menu)return required('gyomu_browser',{action:'click',ref:menu.ref},'이미 로그인된 업무포털이다. 실제 K-에듀파인 메뉴를 눌러 업무 화면으로 이동한다.');}
+ if(screen?.elements?.length===0&&screen.frames?.length)return required('gyomu_browser',{action:'frames'},'현재 본문은 프레임 안에 있다. 실제 frames 목록부터 확인한다.');
+ if(last?.name==='gyomu_browser'&&last.args.action==='frames'){const indexes=(last.value.frames||[]).filter(f=>f.index>0&&!f.active&&f.url&&f.url!=='about:blank').map(f=>f.index);if(indexes.length)return required('gyomu_browser',{action:'frame',index:indexes},'관찰한 실제 업무 프레임 index로 이동한다.');}
+ if(capture&&(last?.name==='gyomu_browser'&&last.args.action==='click'||last?.name==='gyomu_wxs_read'&&last.value.pending))return required('gyomu_wxs_read',{operation:'result',id:capture.id},'준비한 같은 id의 result로 본문·첨부·closed 상태를 먼저 확인한다.');
+ if(last?.name==='gyomu_wxs_read'&&last.value.document?.body?.hasMore)return required('gyomu_wxs_read',{operation:'result',id:last.args.id,offset:last.value.document.body.nextOffset},'이 공문 본문의 남은 텍스트를 먼저 이어 읽는다.');
+ const reads=observed.filter(o=>o.name==='gyomu_wxs_read'&&o.value.document),files=reads.flatMap(o=>o.value.document.attachments?.files||[]).filter(f=>f.exported),attachmentReads=observed.filter(o=>o.name==='gyomu_wxs_attachment'&&!o.value.error);
+ const unread=files.filter(f=>!attachmentReads.some(o=>o.args.path===f.path));if(unread.length)return required('gyomu_wxs_attachment',{path:unread.map(f=>f.path)},'저장한 모든 첨부의 실제 내용을 읽는다. 파일명만으로 요약하지 않는다.');
+ if(last?.name==='gyomu_wxs_attachment'&&last.value.hasMore)return required('gyomu_wxs_attachment',{path:last.args.path,offset:last.value.nextOffset},'이 첨부의 남은 텍스트를 이어 읽는다.');
+ const login=screen&&/로그인|SSO LOGIN/i.test(screen.title||'')&&/login|Login_Server|sso/i.test(screen.url||'');if(login)return {tools:[],instructions:'현재 실제 로그인 페이지다. 사용자에게 이 전용 창에서 직접 로그인하도록 안내하고 기다린다. 로그인 완료라고 추정하거나 인증 정보를 요청하지 않는다.'};
+ const browser=tools.find(t=>t.name==='gyomu_browser');if(browser?.parameters&&screen?.elements){const refs=screen.elements.filter(e=>!e.disabled).map(e=>e.ref);delete browser.parameters.properties.selector;if(refs.length)browser.parameters.properties.ref={type:'string',enum:refs};else{delete browser.parameters.properties.ref;browser.parameters.properties.action.enum=browser.parameters.properties.action.enum.filter(a=>!['click','fill','select','check','uncheck','press'].includes(a));}}
+ const noDocuments=/0\s*건|조회된\s*(?:문서|자료|데이터).*없/.test(screen?.text||''),saved=observed.some(o=>['gyomu_wxs_prepare','gyomu_wxs_save'].includes(o.name)&&o.value.ok===true&&(o.value.result?.saved===true||o.value.result?.save?.saved===true)),reopened=saved&&last?.name==='gyomu_wxs'&&last.args.operation==='draft-status';
+ return {tools,...((task.summary&&!reads.length&&!noDocuments||task.writing&&!reopened)?{required:true}:{}),instructions:'현재 실제 화면에서 다음 한 단계를 실행한다. 목록만 읽고 본문 요약을 완료하지 않는다. 기안은 실제 임시저장 후 목록에서 다시 열어 draft-status로 대조한다. 오류·인증 대기·첨부 미확인은 구분해 보고한다.'};
+}
+module.exports={edufineTask,edufineTools,edufineStep};

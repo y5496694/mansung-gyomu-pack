@@ -1,6 +1,6 @@
 'use strict';
 const fs=require('node:fs'),path=require('node:path');
-function relayOrigin(value,allowLoopback=false){let u;try{u=new URL(value);}catch{throw new Error('중계 서버 HTTPS 주소를 입력하세요.');}const loopback=['127.0.0.1','localhost','[::1]'].includes(u.hostname);if((u.protocol!=='https:'&&!(allowLoopback&&loopback&&u.protocol==='http:'))||u.username||u.password||u.search||u.hash||u.pathname!=='/')throw new Error('중계 서버의 HTTPS 기본 주소만 입력하세요.');return u.origin;}
+function relayOrigin(value,allowLoopback=false){let u;try{u=new URL(value);}catch{throw new Error('중계 서버 HTTPS 주소를 입력하세요.');}const loopback=['127.0.0.1','localhost','[::1]'].includes(u.hostname);if((u.protocol!=='https:'&&!(allowLoopback&&loopback&&u.protocol==='http:'))||u.username||u.password||u.search||u.hash||!/^\/(?:[a-zA-Z0-9_-]+\/)*[a-zA-Z0-9_-]*$/.test(u.pathname))throw new Error('중계 서버의 HTTPS 기본 주소와 경로만 입력하세요.');return u.origin+u.pathname.replace(/\/$/,'');}
 class KakaoConnector{
  constructor({store,ledgerFile,execute,notify=()=>{},fetchImpl=fetch,allowLoopback=false,interval=2000,canRun=()=>true,conversation=()=>null}){
   this.canRun=canRun;this.conversation=conversation;this.synced=new Map();
