@@ -7,6 +7,16 @@ test('verified downloads reject partial/corrupt files and retain existing comple
 test('local settings do not reuse OAuth, cloud keys or cloud endpoints',()=>{
  const cloud=connections.normalize({});const local=connections.update(cloud,{provider:'local',model:'narae1'});assert.equal(local.connectionMode,'local');assert.match(local.endpoint,/127.0.0.1/);assert.equal(connections.update(local,{provider:'openai'}).connectionMode,'oauth');assert.throws(()=>loopback('http://example.com/v1'));assert.throws(()=>loopback('https://127.0.0.1/v1'));assert.throws(()=>loopback('http://user:secret@127.0.0.1/v1'));
 });
+test('managed models and other local server settings survive provider switches and restart independently',()=>{
+ const legacy={provider:'local',localSource:'managed',connectionMode:'local',aiConnections:{'local:local':{endpoint:'http://127.0.0.1:11434/v1',model:'narae1'}}};
+ let current=connections.normalize(legacy);current=connections.update(current,{provider:'local',localSource:'external',endpoint:'http://127.0.0.1:12345/v1',model:'server-model'});
+ current=connections.update(current,{provider:'openai',connectionMode:'api',model:'gpt-test'});current=connections.update(current,{provider:'local',localSource:'managed'});assert.equal(current.model,'narae1');assert(!current.endpoint.includes('12345'));
+ current=connections.normalize(JSON.parse(JSON.stringify(current)));current=connections.update(current,{provider:'local',localSource:'external'});assert.equal(current.model,'server-model');assert.equal(current.endpoint,'http://127.0.0.1:12345/v1');
+ assert.equal(connections.update(current,{provider:'openai',connectionMode:'api'}).model,'gpt-test');assert.equal(legacy.aiConnections['local:local'].model,'narae1');
+});
+test('Narae3 recommendation does not select a model or change an existing model preference',async()=>{
+ const home=fs.mkdtempSync(path.join(os.tmpdir(),'narae-recommended-'));try{const ai=new LocalAI({root:path.resolve(__dirname,'..'),home});assert.deepEqual(ai.status().models.filter(m=>m.recommended).map(m=>m.id),['narae3']);assert.equal(ai.status().active,null);assert.equal(connections.normalize({}).provider,'openai');const chosen=connections.update(connections.normalize({}),{provider:'local',model:'narae1'});assert.equal(connections.normalize(chosen).model,'narae1');await ai.close();}finally{fs.rmSync(home,{recursive:true,force:true});}
+});
 test('local planner refuses truncation and unknown tools instead of claiming completion',()=>{
  const result=content=>({choices:[{finish_reason:'stop',message:{content:JSON.stringify(content)}}]});assert.equal(responseFrom(result({type:'tool',name:'read_document',args:{path:'a.hwpx'}}),[{name:'read_document'}]).output[0].name,'read_document');assert.throws(()=>responseFrom(result({type:'tool',name:'shell',args:{}}),[]));assert.throws(()=>responseFrom({choices:[{finish_reason:'length'}]},[]));
 });

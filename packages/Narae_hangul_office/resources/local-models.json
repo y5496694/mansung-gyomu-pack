@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "default": "narae1",
+  "recommended": "narae3",
   "models": [
     {
       "id": "narae1",

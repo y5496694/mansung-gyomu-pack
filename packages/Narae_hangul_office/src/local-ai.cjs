@@ -26,7 +26,7 @@ class LocalAI{
  model(id){const m=this.catalog.models.find(m=>m.id===id);if(!m)throw new Error('나래1·나래2·나래3 중 선택하세요.');return m;}
  file(m,key){return path.join(this.dir,m.id,key+'.gguf');}
  installed(m){try{const marker=JSON.parse(fs.readFileSync(path.join(this.dir,m.id,'installed.json'),'utf8'));return ['base','adapter'].every(k=>marker[k]===m[k].sha256&&fs.statSync(this.file(m,k)).size===m[k].bytes);}catch{return false;}}
- status(){return {active:this.active?.id||null,busy:this.busy,progress:this.progress,error:this.error,directory:this.dir,autoStart:this.autoStart,models:this.catalog.models.map(m=>({id:m.id,label:m.label,alias:m.alias,size:m.size,note:m.note,license:m.license,researchOnly:m.researchOnly,experimental:m.experimental,bytes:m.base.bytes+m.adapter.bytes,installed:this.installed(m),published:Boolean(m.repoId&&m.revision),repoId:m.repoId}))};}
+ status(){return {active:this.active?.id||null,busy:this.busy,progress:this.progress,error:this.error,directory:this.dir,autoStart:this.autoStart,models:this.catalog.models.map(m=>({id:m.id,label:m.label,alias:m.alias,size:m.size,note:m.note,license:m.license,researchOnly:m.researchOnly,experimental:m.experimental,recommended:m.id===this.catalog.recommended,bytes:m.base.bytes+m.adapter.bytes,installed:this.installed(m),published:Boolean(m.repoId&&m.revision),repoId:m.repoId}))};}
  changed(){this.notify({type:'localAI',localAI:this.status()});}
  async install(id,{researchAccepted=false,source}={}){
   if(this.busy)throw new Error('다른 AI 설치 또는 전환을 기다리세요.');const m=this.model(id);if(m.researchOnly&&!researchAccepted)throw new Error('나래2의 EXAONE 연구·평가용 이용조건을 확인하세요.');
