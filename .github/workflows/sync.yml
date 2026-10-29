@@ -27,7 +27,10 @@ jobs:
       - name: Commit validated snapshots
         shell: bash
         run: |
-          git add --all packages sources.lock.json
+          # Upstream snapshots may contain their own .gitignore files. Keep every
+          # validated manifest entry, including files ignored by those rules.
+          git add --force --all packages
+          git add sources.lock.json
           if git diff --cached --quiet; then
             echo 'Already up to date.'
             exit 0
