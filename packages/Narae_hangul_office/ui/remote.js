@@ -13,7 +13,7 @@
  }
  window.naraeSettings.onOpen('kakao',async()=>show(await call('remoteState')));
  el('remotePairForm').onsubmit=action(async event=>{event.preventDefault();if(!el('remoteConsent').checked)return;show(await call('remotePair',{uid:el('remoteUid').value,name:el('remoteName').value,relay:el('remoteRelay').value}));});
- el('remoteRefresh').onclick=action(async()=>show(await call('remoteRefresh')));el('remoteApprove').onclick=action(async()=>show(await call('remoteApprove')));el('remoteUnlink').onclick=action(async()=>show(await call('remoteUnlink')));el('remoteCancel').onclick=action(async()=>show(await call('remoteCancel')));
+ el('remoteRefresh').onclick=action(async()=>show(await call('remoteRefresh')));el('remoteApprove').onclick=action(async()=>{const button=el('remoteApprove');button.disabled=true;el('remoteNotice').textContent='진행 중인 AI 작업을 안전하게 마친 뒤 연결을 승인합니다…';try{show(await call('remoteApprove'));}finally{button.disabled=false;}});el('remoteUnlink').onclick=action(async()=>show(await call('remoteUnlink')));el('remoteCancel').onclick=action(async()=>show(await call('remoteCancel')));
 
 
  window.narae.onEvent(event=>{if(event.type==='remote')show(event.remote);});call('remoteState').then(show).catch(error=>{el('remoteNotice').textContent=error.message;});

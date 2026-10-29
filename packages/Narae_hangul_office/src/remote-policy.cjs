@@ -23,6 +23,7 @@ class RemotePolicy{
  prepare(name,args){const tool=tools.find(t=>t.name===name);if(!tool||!args||typeof args!=='object'||Array.isArray(args))throw new Error('지원하지 않는 원격 도구입니다.');validate(args,tool.parameters);const copy=structuredClone(args);if(name!=='list_files'){if(typeof copy.path!=='string')throw new Error('문서 경로가 필요합니다.');copy.path=this.allowed(copy.path);}if(name==='export_pdf'){if(typeof copy.target!=='string')throw new Error('출력 경로가 필요합니다.');copy.target=this.allowed(copy.target);if(fs.existsSync(copy.target))throw new Error('PDF는 새 이름으로 저장하세요.');}if(name==='create_document'&&fs.existsSync(copy.path))throw new Error('기존 파일을 덮어쓰지 말고 새 이름으로 작성하세요.');if(copy.blocks)validate(copy.blocks,require('./hwp-file-contracts.cjs').blocks);const images=items=>{for(const item of items||[]){if(item.type==='image')item.path=this.allowed(item.path);for(const row of item.rows||[])for(const cell of row)images(cell.blocks);}};images(copy.blocks);return copy;}
  status(){return this.pending?.view||null;}
  decide({id,digest,allow}){const p=this.pending;if(!p||p.view.id!==id||p.view.digest!==digest||Date.now()>=p.view.expires)throw new Error('승인 요청이 만료됐거나 다른 작업입니다.');p.finish(allow===true);return {decided:true};}
+ applyAutoAllow(){const p=this.pending;if(!p||this.autoAllow()!==true)return false;p.finish(Date.now()<p.view.expires);return true;}
  async approve(name,args,signal){
   if(signal?.aborted)throw new Error('작업을 중단했습니다.');if(this.pending)throw new Error('앞선 변경 승인을 기다리고 있습니다.');
   if(this.autoAllow()===true)return;

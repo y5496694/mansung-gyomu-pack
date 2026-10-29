@@ -8,18 +8,19 @@ app.setName('나래 한글 오피스');app.setPath('userData',path.join(home,'da
 const python=require('./runtime-python.cjs').resolvePython(root);
 const load=(file,fallback)=>{try{return JSON.parse(fs.readFileSync(path.join(home,'data',file),'utf8'));}catch{return fallback;}};
 const save=(file,value)=>{const target=path.join(home,'data',file),temp=target+'.'+randomUUID()+'.tmp';fs.writeFileSync(temp,JSON.stringify(value,null,2));fs.renameSync(temp,target);};
-let settings=connections.normalize(load('settings.json',{}),{workspace:path.join(home,'Documents')}),recent=load('recent.json',[]),history=load('conversation.json',[]),window,controller;
+let settings=connections.normalize(load('settings.json',{}),{workspace:path.join(home,'Documents')}),recent=load('recent.json',[]),history=load('conversation.json',[]),window,controller,connectionChange,taskDone=Promise.resolve();
 fs.mkdirSync(settings.workspace,{recursive:true});
 const grants=new Set(),keys={openai:new KeyStore(home,python,'gpt-key'),anthropic:new KeyStore(home,python,'claude-key')},oauth=new OAuth({home,python,openBrowser:url=>shell.openExternal(url)}),native=new NativeDocuments(home,python);
 const authorise=file=>{if(typeof file!=='string'||!path.isAbsolute(file))throw new Error('절대 파일 경로가 필요합니다.');file=path.resolve(file);const allowed=target=>inside(settings.workspace,target)||grants.has(target.toLowerCase());if(!allowed(file))throw new Error('먼저 앱에서 문서를 선택하세요.');if(fs.existsSync(file)&&!allowed(fs.realpathSync(file)))throw new Error('연결된 경로가 작업 범위 밖입니다.');return file;};
 const document=file=>{file=authorise(file);require('./format-policy.cjs').assertDocument(file);return file;};
 function output(file){file=path.isAbsolute(file)?path.resolve(file):path.resolve(settings.workspace,file);if(!inside(settings.workspace,file))throw new Error('새 파일은 작업 폴더 안에 저장하세요.');let parent=path.dirname(file);while(!fs.existsSync(parent))parent=path.dirname(parent);if(!inside(fs.realpathSync(settings.workspace),fs.realpathSync(parent)))throw new Error('출력 폴더의 연결 경로가 작업 범위 밖입니다.');if(fs.existsSync(file)&&!inside(fs.realpathSync(settings.workspace),fs.realpathSync(file)))throw new Error('출력 파일의 연결 경로가 작업 범위 밖입니다.');return file;}
 function metadata(){let auth,error;try{auth=oauth.state();}catch{auth={profiles:[],selected:{}};error='계정 저장소를 읽을 수 없습니다. 현재 Windows 사용자로 다시 연결하세요.';}return {version:require('../package.json').version,settings,auth,authError:error,hasKey:Object.fromEntries(Object.entries(keys).map(([name,key])=>{try{return[name,Boolean(key.get())];}catch{return[name,false];}})),recent,history,home,pythonAvailable:fs.existsSync(python),hancom:require('./hancom.cjs').discoverHancom(),running:Boolean(controller)};}
-function idle(){if(controller)throw new Error('AI 작업을 마치거나 중지한 뒤 연결 설정을 바꾸세요.');}
+function idle(){if(connectionChange)throw new Error('카카오톡 연결 승인을 처리하고 있습니다. 잠시 뒤 다시 요청하세요.');if(controller)throw new Error('AI 작업을 마치거나 중지한 뒤 연결 설정을 바꾸세요.');}
+function startTask(){idle();const active=new AbortController();let finish;taskDone=new Promise(resolve=>{finish=resolve;});controller=active;active.finish=()=>{if(controller===active)controller=null;finish();};return active;}
 async function credential(config){return config.connectionMode==='oauth'?oauth.credential(config.provider):undefined;}
 async function models(){const config=structuredClone(settings);if(config.provider==='local')return localAI.listModels(config);return provider.listModels({settings:config,credential:await credential(config),apiKey:config.connectionMode==='api'?keys[config.provider].get():undefined});}
 function persist(next){settings=next;save('settings.json',settings);}
-async function configure(args={}){idle();if(oauth.pending)throw new Error('진행 중인 로그인을 마치거나 취소하세요.');const next=connections.update(settings,args);if(typeof args.hwpAutoSave==='boolean')next.hwpAutoSave=args.hwpAutoSave;if(typeof args.toolAutoAllow==='boolean')next.toolAutoAllow=args.toolAutoAllow;if(args.apiKey?.trim()&&keys[next.provider])keys[next.provider].set(args.apiKey.trim());persist(next);return metadata();}
+async function configure(args={}){const changesAI=Object.keys(args).some(key=>!['hwpAutoSave','toolAutoAllow','keepSchoolSession'].includes(key));if(changesAI){idle();if(oauth.pending)throw new Error('진행 중인 로그인을 마치거나 취소하세요.');}const next=changesAI?connections.update(settings,args):{...settings};if(typeof args.hwpAutoSave==='boolean')next.hwpAutoSave=args.hwpAutoSave;if(typeof args.toolAutoAllow==='boolean')next.toolAutoAllow=args.toolAutoAllow;if(typeof args.keepSchoolSession==='boolean')next.keepSchoolSession=args.keepSchoolSession;if(args.apiKey?.trim()&&keys[next.provider])keys[next.provider].set(args.apiKey.trim());persist(next);if(args.toolAutoAllow===true)remotePolicy.applyAutoAllow();return metadata();}
 async function selected(file){file=document(file);recent=[file,...recent.filter(item=>item!==file)].slice(0,30);save('recent.json',recent);return {path:file,name:path.basename(file),hash:createHash('sha256').update(fs.readFileSync(file)).digest('hex')};}
 const execute=async(name,args,signal)=>{
  if(signal?.aborted)throw new Error('작업을 중지했습니다.');
@@ -51,7 +52,7 @@ const approvalView=approval=>approval?{...approval,channel:approvalChannel}:null
 const remotePolicy=new RemotePolicy({workspace:()=>settings.workspace,autoAllow:()=>settings.toolAutoAllow===true,notify:approval=>{const view=approvalView(approval);emit({type:'approval',approval:view});if(remote){remote.approval=view;remote.changed();}}});
 const {AgentConversations}=require('./agent-conversations.cjs'),{OfficeIntegrations}=require('./office-integrations.cjs');
 const conversations=new AgentConversations(home);
-const integrations=new OfficeIntegrations({home,root,python,workspace:()=>settings.workspace,settings:()=>settings,policy:remotePolicy});
+const integrations=new OfficeIntegrations({home,root,python,workspace:()=>settings.workspace,settings:()=>settings,policy:remotePolicy,busy:()=>Boolean(controller),notify:emit});
 let integrationSession='local',resetting=Promise.resolve();
 const agentSession=()=>activeAgentChannel==='telegram'&&telegram?.session()?telegram.session():remote?.state==='approved'&&remote.credentials?remote.credentials.id:'local';
 function agentState(){return {...conversations.read(agentSession()),session:agentSession(),running:Boolean(controller),model:settings.model,linked:agentSession()!=='local',viewChannel:activeAgentChannel,telegramLinked:Boolean(telegram?.session()),channel:{name:'나래',searchId:'narae_bot',url:'https://pf.kakao.com/_xjgxfWX',chatUrl:'https://pf.kakao.com/_xjgxfWX/chat'}};}
@@ -59,22 +60,30 @@ function agentChanged(){emit({type:'agentConversation',agent:agentState()});}
 async function agentChat(prompt,{signal,sessionId=agentSession(),origin='pc',progress=()=>{}}={}){
  idle();if(typeof prompt!=='string'||!prompt.trim()||prompt.length>4000)throw new Error('요청을 1~4000자로 입력하세요.');
  const config=structuredClone(settings);if(!config.model)throw new Error('AI 설정에서 모델을 선택하세요.');
- approvalChannel=origin==='telegram'||origin==='pc'&&activeAgentChannel==='telegram'?'telegram':'kakao';const localController=new AbortController();controller=localController;const relayAbort=()=>localController.abort();signal?.addEventListener('abort',relayAbort,{once:true});if(signal?.aborted)relayAbort();const localSignal=localController.signal;
- let denied;const files=[];if(integrationSession!==sessionId){resetting=resetting.then(()=>integrations.reset());integrationSession=sessionId;}const previous=conversations.history(sessionId);conversations.append(sessionId,'user',prompt,origin);agentChanged();
+ approvalChannel=origin==='telegram'||origin==='pc'&&activeAgentChannel==='telegram'?'telegram':'kakao';const localController=startTask();const relayAbort=()=>localController.abort();signal?.addEventListener('abort',relayAbort,{once:true});if(signal?.aborted)relayAbort();const localSignal=localController.signal;
+ let denied;const files=[];
  try{
+  if(integrationSession!==sessionId){resetting=resetting.then(()=>integrations.reset());integrationSession=sessionId;}const previous=conversations.history(sessionId);conversations.append(sessionId,'user',prompt,origin);agentChanged();
   await resetting;if(localSignal.aborted)throw new Error('REMOTE_CANCELLED');integrations.session=sessionId;
   const request=body=>requestAI(config,body,localSignal);
   const executeShared=async(name,args,toolSignal)=>{if(denied)throw denied;try{const value=name.startsWith('gyomu_')?await integrations.execute(name,args,toolSignal):await remotePolicy.run(name,args,toolSignal,execute);if(origin==='telegram'&&['create_document','edit_document','edit_live_document','export_pdf'].includes(name))files.push(value.path||args.target||args.path);return value;}catch(error){if(error.code==='LOCAL_APPROVAL_DENIED')denied=error;throw error;}};
   const text=await runAgent({prompt,settings:config,request,execute:executeShared,signal:localSignal,history:previous,additionalTools:await integrations.tools(),agentInstructions:'이 대화는 에이전트(실험) 탭과 연결한 사용자의 원격 채널에서 이어집니다. 문서·CBE_CLI·나래 브라우저·나래교무포탈·나래교무 도구로 PC 업무를 처리합니다. 업무 전 gyomu_skill_read로 절차를 확인하세요. 로그인·인증정보는 요청하지 말고 PC에서 사용자가 직접 입력하게 하세요. 문서 변경·브라우저 조작·메시지 발송은 PC의 도구 실행 승인 설정을 따릅니다. 미리보기와 실제 완료를 구분하세요. 원격 문서는 작업 폴더 안에서만 사용하세요.',send:event=>{emit({...event,scope:'agent'});if(event.type==='tool'||event.type==='status'){progress(remotePolicy.status()?'PC에서 변경 승인을 기다리고 있어.':'나래 오피스 에이전트가 요청을 처리하고 있어.');}}});
   if(denied)throw denied;if(localSignal.aborted)throw new Error('REMOTE_CANCELLED');conversations.append(sessionId,'assistant',text,origin);return origin==='telegram'?{text,files}:text;
  }catch(error){conversations.append(sessionId,'error',error.code==='LOCAL_APPROVAL_DENIED'?'PC에서 작업을 거절했습니다.':localSignal.aborted?'작업을 중단했습니다. 이미 수행한 변경은 유지됩니다.':require('./agent-errors.cjs').failure(home,error,config),origin);throw error;
- }finally{signal?.removeEventListener('abort',relayAbort);controller=null;remotePolicy.close();agentChanged();}
+ }finally{signal?.removeEventListener('abort',relayAbort);remotePolicy.close();localController.finish();agentChanged();}
 }
 async function remoteChat(prompt,options){if(!/^[a-f0-9]{32}$/.test(options.sessionId))throw new Error('REMOTE_SESSION');return agentChat(prompt,{...options,origin:'kakao'});}
-try{remote=new KakaoConnector({store:new KeyStore(home,python,'kakao-device'),ledgerFile:path.join(home,'data/kakao-jobs.json'),execute:remoteChat,notify:event=>{const session=agentSession();if(integrationSession!==session){if(integrationSession!=='local'){controller?.abort();resetting=resetting.then(()=>integrations.reset());}integrationSession=session;}emit(event);agentChanged();},canRun:()=>!controller,conversation:session=>conversations.read(session),allowLoopback:process.env.NARAE_KAKAO_ALLOW_LOOPBACK==='1'});integrationSession=agentSession();}catch{remoteSetupError='카카오 기기 저장소를 읽지 못했습니다. 연결 해제 후 다시 연결하세요.';}
-try{const {TelegramBot}=require('./telegram-bot.cjs');telegram=new TelegramBot({home,store:new KeyStore(home,python,'telegram-bot'),workspace:()=>settings.workspace,execute:agentChat,canRun:()=>!controller,notify:event=>{if(event.telegram.linked)activeAgentChannel='telegram';emit(event);agentChanged();}});}catch{emit({type:'error',text:'텔레그램 저장소를 읽을 수 없습니다. 현재 Windows 사용자로 다시 연결하세요.'});}
+try{remote=new KakaoConnector({store:new KeyStore(home,python,'kakao-device'),ledgerFile:path.join(home,'data/kakao-jobs.json'),execute:remoteChat,notify:event=>{const session=agentSession();if(integrationSession!==session){if(integrationSession!=='local'){controller?.abort();resetting=resetting.then(()=>integrations.reset());}integrationSession=session;}emit(event);agentChanged();},canRun:()=>!controller&&!connectionChange,conversation:session=>conversations.read(session),allowLoopback:process.env.NARAE_KAKAO_ALLOW_LOOPBACK==='1'});integrationSession=agentSession();}catch{remoteSetupError='카카오 기기 저장소를 읽지 못했습니다. 연결 해제 후 다시 연결하세요.';}
+try{const {TelegramBot}=require('./telegram-bot.cjs');telegram=new TelegramBot({home,store:new KeyStore(home,python,'telegram-bot'),workspace:()=>settings.workspace,execute:agentChat,canRun:()=>!controller&&!connectionChange,notify:event=>{if(event.telegram.linked)activeAgentChannel='telegram';emit(event);agentChanged();}});}catch{emit({type:'error',text:'텔레그램 저장소를 읽을 수 없습니다. 현재 Windows 사용자로 다시 연결하세요.'});}
 function remoteState(){return remote?remote.status():{state:'disconnected',error:remoteSetupError};}
 function requireRemote(){if(!remote)throw new Error(remoteSetupError||'카카오 연결기를 초기화하지 못했습니다.');return remote;}
+async function approveRemote(){
+ if(connectionChange)return connectionChange;
+ connectionChange=(async()=>{const connector=requireRemote(),state=await connector.refresh();if(state.state==='approved')return state;if(state.state!=='confirmed')throw new Error('먼저 카톡에 PC 화면의 연결 코드를 보내 주세요.');
+  if(controller){emit({type:'status',scope:'agent',text:'카카오톡 연결을 위해 진행 중인 AI 작업을 중지하고 있습니다…'});const finished=taskDone;controller.abort();remotePolicy.close();await finished;}
+  return connector.approve();})();
+ try{return await connectionChange;}finally{connectionChange=null;}
+}
 async function preview(args){const file=document(args.path),hash=createHash('sha256').update(fs.readFileSync(file)).digest('hex'),pdf=path.join(home,'cache',hash+'.pdf');return native.savedFileOperation(file,{},async()=>{if(!fs.existsSync(pdf))await runPython(python,home,'documents.py',{action:'previewNativeHangul',path:file,target:pdf});return runPython(python,home,'documents.py',{action:'inspect',path:pdf,page:args.page||0});});}
 const methods={
  state:()=>metadata(),configure,approvalState:()=>approvalView(remotePolicy.status()),
@@ -100,8 +109,8 @@ const methods={
  agentTools:()=>integrations.tools(),
  openNaraeChannel:()=>shell.openExternal('https://pf.kakao.com/_xjgxfWX/chat'),
  remoteState,
- remotePair:args=>{idle();return requireRemote().pair(args);},
- remoteApprove:()=>{idle();return requireRemote().approve();},
+ remotePair:args=>requireRemote().pair(args),
+ remoteApprove:approveRemote,
  remoteUnlink:async()=>{controller?.abort();await integrations.reset();if(remote)return remote.unlink();new KeyStore(home,python,'kakao-device').remove();remoteSetupError='저장소를 초기화했습니다. 앱을 다시 실행한 뒤 연결하세요.';return remoteState();},
  remoteRefresh:()=>requireRemote().refresh(),
  remoteDecide:args=>remotePolicy.decide(args),
@@ -125,8 +134,8 @@ const methods={
  send:async({prompt,path:file})=>{
   idle();if(typeof prompt!=='string'||!prompt.trim()||prompt.length>50000)throw new Error('요청을 1~50000자로 입력하세요.');if(file)document(file);
   const config=structuredClone(settings);if(!config.model)throw new Error('AI 설정에서 모델을 선택하세요.');
-  controller=new AbortController();const signal=controller.signal;
-  try{const request=body=>requestAI(config,body,signal);const text=await runAgent({prompt,context:file,settings:config,request,execute,send:emit,signal,history});history.push({role:'user',content:prompt},{role:'assistant',content:text});history=history.slice(-100);save('conversation.json',history);return text;}finally{controller=null;emit({type:'done'});}
+  const active=startTask(),signal=active.signal;
+  try{const request=body=>requestAI(config,body,signal);const text=await runAgent({prompt,context:file,settings:config,request,execute,send:emit,signal,history});if(signal.aborted)throw new Error('작업을 중지했습니다.');history.push({role:'user',content:prompt},{role:'assistant',content:text});history=history.slice(-100);save('conversation.json',history);return text;}finally{active.finish();emit({type:'done'});}
  }
 };
 ipcMain.handle('narae:call',async(event,name,args)=>{if(!window||event.sender!==window.webContents||event.senderFrame!==window.webContents.mainFrame||!Object.hasOwn(methods,name))throw new Error('허용되지 않은 요청');return methods[name](args||{});});

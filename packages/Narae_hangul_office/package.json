@@ -1,7 +1,7 @@
 {
   "name": "narae-hangul-office",
   "productName": "나래 한글 오피스",
-  "version": "0.13.0-preview.6",
+  "version": "0.13.0-preview.7",
   "description": "나래한글 엔진 기반 · 한컴오피스 한글 연동 · 한 번에 설치하는 AI 문서 작업 공간",
   "license": "MIT",
   "author": "인호우",
@@ -10,7 +10,7 @@
   "main": "src/main.cjs",
   "scripts": {
     "start": "electron .",
-    "test": "node --test tests/*.test.cjs",
+    "test": "node --test --test-concurrency=1 tests/*.test.cjs",
     "package": "node scripts/package.cjs",
     "cli": "node src/cli.cjs",
     "relay:kakao": "node src/kakao-relay.cjs",

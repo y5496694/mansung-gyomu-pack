@@ -1,9 +1,10 @@
 'use strict';
 const fs=require('node:fs'),path=require('node:path'),{pathToFileURL}=require('node:url');
 const {validate}=require('./remote-policy.cjs');
+const {SchoolSessionKeeper,sessionTool}=require('./school-session.cjs');
 const vendor=path.resolve(__dirname,'../vendor/narae-gyomu');
 class OfficeIntegrations{
- constructor({home,root,python,workspace,policy,settings,headed=true}){Object.assign(this,{home,root,python,workspace,policy,settings,headed});this.instance=null;this.catalog=[];}
+ constructor({home,root,python,workspace,policy,settings,headed=true,busy=()=>true,notify=()=>{}}){Object.assign(this,{home,root,python,workspace,policy,settings,headed,busy,notify});this.instance=null;this.catalog=[];}
  async ready(){if(this.initializing)return this.initializing;this.initializing=this.initialize();return this.initializing;}
  async initialize(){
   const data=path.join(this.home,'data/gyomu'),runtime=path.join(this.home,'data/gyomu-runtime');
@@ -14,12 +15,15 @@ class OfficeIntegrations{
   const subprocess=(exe,args,options={})=>run(exe,args,{...options,env:{...options.env,...(exe===process.execPath?{ELECTRON_RUN_AS_NODE:'1'}:{})}});
   this.instance=new Tools({status:()=>({provider:this.settings().provider,model:this.settings().model,source:'office-ai',localModelsStarted:false})},{headed:this.headed,subprocess});
   const {OfficeSchoolBrowser}=await import(pathToFileURL(path.join(__dirname,'school-browser.mjs')).href);
-  this.instance.browserCall=async args=>{if(!this.instance.browser||this.instance.browser.closed){const session=this.session||'local';if(!/^(?:local|[a-f0-9]{32})$/.test(session))throw new Error('브라우저 대화 세션을 확인하세요.');const browser=new OfficeSchoolBrowser({profile:this.headed?path.join(this.home,'data/gyomu-browser',session):undefined});try{await browser.start({headed:this.headed});this.instance.browser=browser;}catch(error){await browser.browser?.close();throw error;}}return this.instance.browser.execute(args);};
-  this.catalog=tools.filter(t=>!t.name.startsWith('hangul.')&&t.name!=='files.list').map(t=>({type:'function',strict:false,name:'gyomu_'+t.name.replaceAll('.','_'),description:t.description+(t.name.endsWith('.prepare')||t.name==='wxs.save'?' 준비 후 PC에서 실제 미리보기를 승인한 경우에만 적용합니다.':''),parameters:t.parameters,original:t.name}));return this;
+  this.instance.browserCall=async args=>{if(!this.instance.browser||this.instance.browser.closed){if(['snapshot','read','tabs','frames'].includes(args.action))return {notStarted:true,url:'about:blank',title:'열린 업무 브라우저 없음',text:'',elements:[],tabs:[],frames:[],untrusted:true};const session=this.session||'local';if(!/^(?:local|[a-f0-9]{32})$/.test(session))throw new Error('브라우저 대화 세션을 확인하세요.');const browser=new OfficeSchoolBrowser({profile:this.headed?path.join(this.home,'data/gyomu-browser',session):undefined});try{await browser.start({headed:this.headed});this.instance.browser=browser;}catch(error){await browser.browser?.close();throw error;}}return this.instance.browser.execute(args);};
+  this.catalog=tools.filter(t=>!t.name.startsWith('hangul.')&&t.name!=='files.list').map(t=>({type:'function',strict:false,name:'gyomu_'+t.name.replaceAll('.','_'),description:t.description+(t.name.endsWith('.prepare')||t.name==='wxs.save'?' 준비 후 PC에서 실제 미리보기를 승인한 경우에만 적용합니다.':''),parameters:t.parameters,original:t.name}));this.catalog.push(sessionTool);this.keeper=new SchoolSessionKeeper({browser:()=>this.instance.browser,enabled:()=>this.settings().keepSchoolSession!==false,busy:this.busy,notify:state=>{if(state.results.length){fs.mkdirSync(path.join(this.home,'logs'),{recursive:true});fs.appendFileSync(path.join(this.home,'logs/school-session.jsonl'),JSON.stringify({at:state.lastAt,results:state.results})+'\n');}this.notify({type:'schoolSession',state});}});this.keeper.start();return this;
  }
  async tools(){await this.ready();return this.catalog.map(({original,...tool})=>tool);}
  async execute(name,args,signal){
   await this.ready();if(signal?.aborted)throw new Error('작업을 중단했습니다.');const tool=this.catalog.find(t=>t.name===name);if(!tool)throw new Error('지원하지 않는 통합 도구입니다.');validate(args,tool.parameters);args=structuredClone(args);
+  if(this.browserRequest!==signal){this.browserRequest=signal;this.instance.browser?.resetTask?.();}
+  if(tool.original==='portal.session')return args.operation==='extend'?this.keeper.tick(true,signal):this.keeper.status();
+  await this.keeper?.pending;
   if(tool.original==='skill.read'&&args.document){const resolved=path.resolve('/',args.document);if(path.isAbsolute(args.document)||args.document.split(/[\\/]/).includes('..')||!resolved)throw new Error('스킬 내부 참조 문서만 읽을 수 있습니다.');}
   const register=file=>{const allowed=this.policy.allowed(file);this.instance.register([allowed]);return allowed;};
   if(args.files)args.files=args.files.map(register);
@@ -41,6 +45,6 @@ class OfficeIntegrations{
  }
  async noCredentialInput(args){const browser=this.instance.browser;if(!browser)throw new Error('먼저 브라우저 화면을 관찰하세요.');const sensitive=e=>{const t=String(e?.getAttribute?.('type')||'').toLowerCase(),a=e?.getAttribute?.('autocomplete')||'';return t==='password'||t==='file'||/password|one-time-code/.test(a);};const blocked=args.ref?await browser.ref(args.ref).locator.evaluate(sensitive):await browser.page.evaluate(()=>{const e=document.activeElement;return e?.type==='password'||e?.type==='file'||/password|one-time-code/.test(e?.autocomplete||'');});if(blocked)throw new Error('로그인·인증·파일 선택은 PC에서 직접 진행하세요.');if(args.action==='press'&&!/^(Enter|Tab|Escape|ArrowUp|ArrowDown|ArrowLeft|ArrowRight|Home|End|PageUp|PageDown|Backspace|Delete|Space|Shift\+Tab|Control\+a|Meta\+a)$/.test(args.key||''))throw new Error('키보드 입력은 기본 탐색 키만 지원합니다.');}
  async reset(){if(this.instance){await this.instance.close();this.instance.people.clear();this.instance.windows.clear();this.instance.pending.clear();this.instance.approvedFiles.clear();}}
- async close(){await this.instance?.close();}
+ async close(){await this.keeper?.close();await this.instance?.close();}
 }
 module.exports={OfficeIntegrations};
