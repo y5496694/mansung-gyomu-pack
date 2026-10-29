@@ -35,7 +35,7 @@ class OfficeIntegrations{
    if(!['snapshot','read','tabs','frames','frame','scroll','wait'].includes(args.action)){await this.policy.approve('나래 브라우저 · '+args.action,args,signal);if(['fill','press'].includes(args.action))await this.noCredentialInput(args);}
   }
   if(tool.original==='portal.open')await this.policy.approve('업무포털 열기',args,signal);
-  if(tool.original==='wxs.read'&&args.operation==='prepare')this.instance.captures.directory=path.join(this.workspace(),'나래-공문조회');
+  if(tool.original==='wxs.read'&&['prepare','open'].includes(args.operation))this.instance.captures.directory=path.join(this.workspace(),'나래-공문조회');
   const result=await this.instance.call(tool.original,args,{signal});
   if(result?.pendingId){
    const pending=this.instance.pending.get(result.pendingId);if(!pending||pending.status!=='prepared')throw new Error('미리보기를 확인할 수 없습니다.');

@@ -1,4 +1,5 @@
-const {app,BrowserWindow,ipcMain,dialog,shell}=require('electron');
+const {app,BrowserWindow,ipcMain,dialog,shell,Tray,Menu,globalShortcut,screen}=require('electron');
+const desktopShell=require('./desktop-shell.cjs');let desktop;
 require('./network-trust.cjs').useSystemTrust();
 const fs=require('node:fs'),path=require('node:path'),{createHash,randomUUID}=require('node:crypto');
 const connections=require('./connection-settings.cjs'),provider=require('./provider.cjs'),{KeyStore}=require('./key-store.cjs'),{OAuth}=require('./oauth.cjs'),{NativeDocuments}=require('./native-documents.cjs'),{runPython}=require('./python.cjs'),{runAgent,inside}=require('./agent.cjs');
@@ -8,7 +9,7 @@ app.setName('나래 한글 오피스');app.setPath('userData',path.join(home,'da
 const python=require('./runtime-python.cjs').resolvePython(root);
 const load=(file,fallback)=>{try{return JSON.parse(fs.readFileSync(path.join(home,'data',file),'utf8'));}catch{return fallback;}};
 const save=(file,value)=>{const target=path.join(home,'data',file),temp=target+'.'+randomUUID()+'.tmp';fs.writeFileSync(temp,JSON.stringify(value,null,2));fs.renameSync(temp,target);};
-let settings=connections.normalize(load('settings.json',{}),{workspace:path.join(home,'Documents')}),recent=load('recent.json',[]),history=load('conversation.json',[]),window,controller,connectionChange,taskDone=Promise.resolve();
+let settings=connections.normalize(load('settings.json',{}),{workspace:path.join(home,'Documents'),...desktopShell.defaults}),recent=load('recent.json',[]),history=load('conversation.json',[]),window,controller,connectionChange,taskDone=Promise.resolve();
 fs.mkdirSync(settings.workspace,{recursive:true});
 const grants=new Set(),keys={openai:new KeyStore(home,python,'gpt-key'),anthropic:new KeyStore(home,python,'claude-key')},oauth=new OAuth({home,python,openBrowser:url=>shell.openExternal(url)}),native=new NativeDocuments(home,python);
 const authorise=file=>{if(typeof file!=='string'||!path.isAbsolute(file))throw new Error('절대 파일 경로가 필요합니다.');file=path.resolve(file);const allowed=target=>inside(settings.workspace,target)||grants.has(target.toLowerCase());if(!allowed(file))throw new Error('먼저 앱에서 문서를 선택하세요.');if(fs.existsSync(file)&&!allowed(fs.realpathSync(file)))throw new Error('연결된 경로가 작업 범위 밖입니다.');return file;};
@@ -20,7 +21,7 @@ function startTask(){idle();const active=new AbortController();let finish;taskDo
 async function credential(config){return config.connectionMode==='oauth'?oauth.credential(config.provider):undefined;}
 async function models(){const config=structuredClone(settings);if(config.provider==='local')return localAI.listModels(config);return provider.listModels({settings:config,credential:await credential(config),apiKey:config.connectionMode==='api'?keys[config.provider].get():undefined});}
 function persist(next){settings=next;save('settings.json',settings);}
-async function configure(args={}){const changesAI=Object.keys(args).some(key=>!['hwpAutoSave','toolAutoAllow','keepSchoolSession'].includes(key));if(changesAI){idle();if(oauth.pending)throw new Error('진행 중인 로그인을 마치거나 취소하세요.');}const next=changesAI?connections.update(settings,args):{...settings};if(typeof args.hwpAutoSave==='boolean')next.hwpAutoSave=args.hwpAutoSave;if(typeof args.toolAutoAllow==='boolean')next.toolAutoAllow=args.toolAutoAllow;if(typeof args.keepSchoolSession==='boolean')next.keepSchoolSession=args.keepSchoolSession;if(args.apiKey?.trim()&&keys[next.provider])keys[next.provider].set(args.apiKey.trim());persist(next);if(args.toolAutoAllow===true)remotePolicy.applyAutoAllow();return metadata();}
+async function configure(args={}){const changesAI=Object.keys(args).some(key=>!['hwpAutoSave','toolAutoAllow','keepSchoolSession',...desktopShell.fields].includes(key));if(changesAI){idle();if(oauth.pending)throw new Error('진행 중인 로그인을 마치거나 취소하세요.');}const next=changesAI?connections.update(settings,args):{...settings};if(typeof args.hwpAutoSave==='boolean')next.hwpAutoSave=args.hwpAutoSave;if(typeof args.toolAutoAllow==='boolean')next.toolAutoAllow=args.toolAutoAllow;if(typeof args.keepSchoolSession==='boolean')next.keepSchoolSession=args.keepSchoolSession;if(desktopShell.fields.some(key=>Object.hasOwn(args,key)))Object.assign(next,desktop.configure({...settings,...Object.fromEntries(desktopShell.fields.filter(key=>Object.hasOwn(args,key)).map(key=>[key,args[key]]))}));if(args.apiKey?.trim()&&keys[next.provider])keys[next.provider].set(args.apiKey.trim());persist(next);if(args.toolAutoAllow===true)remotePolicy.applyAutoAllow();return metadata();}
 async function selected(file){file=document(file);recent=[file,...recent.filter(item=>item!==file)].slice(0,30);save('recent.json',recent);return {path:file,name:path.basename(file),hash:createHash('sha256').update(fs.readFileSync(file)).digest('hex')};}
 const execute=async(name,args,signal)=>{
  if(signal?.aborted)throw new Error('작업을 중지했습니다.');
@@ -41,7 +42,7 @@ const execute=async(name,args,signal)=>{
  if(name==='export_pdf')return native.savedFileOperation(file,{},()=>runPython(python,home,'documents.py',{action:'export',path:file,target:output(args.target)},signal));
  throw new Error('지원하지 않는 문서 작업입니다.');
 };
-function emit(event){if(window&&!window.isDestroyed())window.webContents.send('narae:event',event);}
+function emit(event){if(window&&!window.isDestroyed()){if(event.type==='approval'&&event.approval&&!window.isVisible())desktop?.show('agent');window.webContents.send('narae:event',event);}}
 const {KakaoConnector}=require('./kakao-connector.cjs'),{RemotePolicy}=require('./remote-policy.cjs');
 let remote,telegram,remoteSetupError='',activeAgentChannel='kakao',approvalChannel='kakao';
 const {LocalAI}=require('./local-ai.cjs');
@@ -87,6 +88,7 @@ async function approveRemote(){
 async function preview(args){const file=document(args.path),hash=createHash('sha256').update(fs.readFileSync(file)).digest('hex'),pdf=path.join(home,'cache',hash+'.pdf');return native.savedFileOperation(file,{},async()=>{if(!fs.existsSync(pdf))await runPython(python,home,'documents.py',{action:'previewNativeHangul',path:file,target:pdf});return runPython(python,home,'documents.py',{action:'inspect',path:pdf,page:args.page||0});});}
 const methods={
  state:()=>metadata(),configure,approvalState:()=>approvalView(remotePolicy.status()),
+ windowState:()=>desktop?.state(),showWindow:({mode='full'})=>{desktop.show(mode);return desktop.state();},hideWindow:()=>window.hide(),
  localAIState:()=>localAI.status(),
  localAIDirectory:async()=>{idle();if(localAI.busy||localAI.child)throw new Error('실행 중인 AI를 먼저 중지하세요.');const picked=await dialog.showOpenDialog(window,{properties:['openDirectory','createDirectory'],title:'AI 모델 저장 폴더 선택',defaultPath:localAI.dir});return picked.canceled?localAI.status():localAI.configure({directory:picked.filePaths[0]});},
  localAIAutoStart:({enabled})=>localAI.setAutoStart(enabled===true),
@@ -139,5 +141,5 @@ const methods={
  }
 };
 ipcMain.handle('narae:call',async(event,name,args)=>{if(!window||event.sender!==window.webContents||event.senderFrame!==window.webContents.mainFrame||!Object.hasOwn(methods,name))throw new Error('허용되지 않은 요청');return methods[name](args||{});});
-app.whenReady().then(async()=>{app.setAppUserModelId('Inhow.NaraeHangulOffice');window=new BrowserWindow({width:1420,height:940,minWidth:1000,minHeight:680,title:'나래 한글 오피스',icon:path.join(root,'ui/assets/narae-office.ico'),backgroundColor:'#f4f7fb',webPreferences:{preload:path.join(__dirname,'preload.cjs'),contextIsolation:true,nodeIntegration:false,sandbox:true}});window.setMenuBarVisibility(false);window.webContents.setWindowOpenHandler(()=>({action:'deny'}));window.webContents.on('will-navigate',event=>event.preventDefault());await window.loadFile(path.join(root,'ui/index.html'));remote?.start();telegram?.start();if(localAI.autoStart&&settings.provider==='local'&&settings.localSource==='managed'&&localAI.catalog.models.some(m=>m.id===settings.model&&localAI.installed(m)))void localAI.activate(settings.model).catch(()=>{});});
-app.on('window-all-closed',()=>app.quit());let quitting=false;app.on('before-quit',event=>{if(quitting)return;event.preventDefault();quitting=true;remote?.close();telegram?.close();remotePolicy.close();controller?.abort();oauth.cancel();native.close();void Promise.allSettled([localAI.close(),integrations.close()]).finally(()=>app.quit());});
+app.whenReady().then(async()=>{app.setAppUserModelId('Inhow.NaraeHangulOffice');window=new BrowserWindow({width:1420,height:940,minWidth:1000,minHeight:680,title:'나래 한글 오피스',icon:path.join(root,'ui/assets/narae-office.ico'),backgroundColor:'#f4f7fb',webPreferences:{preload:path.join(__dirname,'preload.cjs'),contextIsolation:true,nodeIntegration:false,sandbox:true}});window.setMenuBarVisibility(false);window.webContents.setWindowOpenHandler(()=>({action:'deny'}));window.webContents.on('will-navigate',event=>event.preventDefault());desktop=new desktopShell.DesktopShell({window,app,Tray,Menu,globalShortcut,screen,icon:path.join(root,'ui/assets/narae-office.ico'),settings:()=>settings,notify:emit});await window.loadFile(path.join(root,'ui/index.html'));remote?.start();telegram?.start();if(localAI.autoStart&&settings.provider==='local'&&settings.localSource==='managed'&&localAI.catalog.models.some(m=>m.id===settings.model&&localAI.installed(m)))void localAI.activate(settings.model).catch(()=>{});});
+app.on('activate',()=>desktop?.show('full'));app.on('window-all-closed',()=>app.quit());let quitting=false;app.on('before-quit',event=>{if(quitting)return;event.preventDefault();quitting=true;desktop?.dispose();remote?.close();telegram?.close();remotePolicy.close();controller?.abort();oauth.cancel();native.close();void Promise.allSettled([localAI.close(),integrations.close()]).finally(()=>app.quit());});

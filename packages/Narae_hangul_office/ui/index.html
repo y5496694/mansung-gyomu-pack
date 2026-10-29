@@ -11,6 +11,7 @@
 <link rel="stylesheet" href="agent.css">
 <link rel="stylesheet" href="brand.css">
 <link rel="stylesheet" href="settings.css">
+<link rel="stylesheet" href="quick-window.css">
 </head>
 <body>
 <header><div class="brand">
@@ -22,6 +23,7 @@
 <span id="connectionBadge" class="badge">로컬 작업 공간</span><button id="settingsButton" class="settings-icon" type="button" aria-label="설정" title="설정"><svg viewbox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="m9 3-.6 2.1-1.8 1L4.5 5.6l-2 3.5L4 10.7v2.1l-1.5 1.6 2 3.5 2.1-.5 1.8 1L9 21h4l.6-2.6 1.8-1 2.1.5 2-3.5-1.5-1.6v-2.1l1.5-1.6-2-3.5-2.1.5-1.8-1L13 3Z"></path><circle cx="11" cy="12" r="3"></circle></svg></button>
 </div></header>
 <nav class="workspace-tabs" role="tablist" aria-label="작업 공간"><button id="documentTab" role="tab" aria-selected="true" aria-controls="documentWorkspace">한글 문서</button><button id="agentTab" role="tab" aria-selected="false" aria-controls="agentWorkspace" tabindex="-1">나래 에이전트</button></nav>
+<div id="quickToolbar" hidden><span id="quickDocumentName">선택한 문서 없음</span><div id="quickDocumentActions"><button id="quickOpen" type="button">문서 열기</button><button id="quickNew" type="button">새 문서</button></div><button id="quickExpand" type="button" title="전체 창으로 전환">전체 창 ↗</button></div>
 <main id="documentWorkspace" role="tabpanel" aria-labelledby="documentTab">
 <aside><button id="openFile" class="primary">＋ 문서 열기</button><button id="newDocument">새 한글 문서</button><h2>최근 문서</h2>
 <div id="recent"></div>
@@ -126,6 +128,8 @@
    <section id="generalSettingsPanel" class="settings-panel" role="tabpanel" aria-labelledby="settingsGeneralTab"><h3>일반</h3>
 <p class="muted">문서 작업과 저장 방식을 설정하세요.</p>
 <form id="generalSettingsForm">
+<label class="check-label"><input id="closeToTray" type="checkbox" checked>창을 닫으면 트레이에서 백그라운드 실행</label><p class="muted">카카오톡·텔레그램 연결과 업무 세션 연장을 유지합니다. 완전히 종료하려면 트레이 아이콘 메뉴에서 종료하세요.</p>
+<div class="shortcut-settings"><label>작은 한글 명령 창<input id="hangulShortcut" type="text" readonly autocomplete="off" aria-describedby="shortcutHelp" placeholder="눌러서 단축키 입력"></label><button id="clearHangulShortcut" type="button">사용 안 함</button><label>작은 에이전트 명령 창<input id="agentShortcut" type="text" readonly autocomplete="off" aria-describedby="shortcutHelp" placeholder="눌러서 단축키 입력"></label><button id="clearAgentShortcut" type="button">사용 안 함</button></div><p id="shortcutHelp" class="muted">입력칸을 선택하고 Ctrl·Alt 등을 포함한 키 조합을 누른 뒤 저장하세요. 다른 프로그램을 쓰는 중에도 호출할 수 있습니다.</p><p id="shortcutStatus" role="status"></p>
 <label class="check-label"><input id="toolAutoAllow" type="checkbox">모든 도구 실행 자동 허용 · 승인창 없이 실행</label><p class="muted">문서 변경, 브라우저 조작, 메신저 발송에 적용합니다. 설정은 이 PC에 저장됩니다.</p>
 <label class="check-label"><input id="keepSchoolSession" type="checkbox" checked>업무포털·에듀파인 자동 세션 연장</label><p class="muted">다음 요청을 기다리는 동안 10분마다 기존 창의 연장 버튼을 누르고 남은 시간을 확인합니다. 작업 중에는 잠시 대기하며, 앱을 종료하거나 로그아웃하면 연장하지 않습니다.</p>
 <label>작업 폴더<span id="workspace" class="path-label"></span></label><button id="chooseFolder" type="button">작업 폴더 변경</button><label class="check-label"><input id="autoSave" type="checkbox" checked>AI의 열린 한글 편집 후 자동 저장</label><p class="muted">문서와 대화는 이 컴퓨터에 보관합니다.</p>
@@ -199,6 +203,6 @@
  </div>
 </dialog>
 <dialog id="approvalDialog" aria-labelledby="approvalTitle"><div class="approval-heading"><img src="assets/narae-office.png" width="40" height="40" alt=""><div><small>나래 에이전트</small><h2 id="approvalTitle">도구 실행 승인</h2></div><button id="approvalClose" type="button" aria-label="거절하고 닫기">×</button></div><p>요청한 작업과 내용을 확인해 주세요.</p><section id="remoteApproval" hidden><pre id="remoteApprovalDetails"></pre><div class="button-row"><button id="remoteDeny" type="button">거절</button><button id="remoteAllow" type="button" class="primary">이 작업 허용</button></div></section><section id="telegramApproval" hidden><pre id="telegramApprovalDetails"></pre><div class="button-row"><button id="telegramDeny" type="button">거절</button><button id="telegramAllow" type="button" class="primary">이 작업 허용</button></div></section><p id="approvalError" role="alert"></p><small>설정 → 일반에서 모든 도구 실행 자동 허용을 선택할 수 있습니다.</small></dialog>
-<script src="settings.js"></script><script src="app.js"></script><script src="remote.js"></script><script src="agent.js"></script><script src="local-ai.js"></script><script src="telegram.js"></script><script src="approval.js"></script>
+<script src="settings.js"></script><script src="app.js"></script><script src="remote.js"></script><script src="agent.js"></script><script src="local-ai.js"></script><script src="telegram.js"></script><script src="approval.js"></script><script src="quick-window.js"></script>
 </body>
 </html>

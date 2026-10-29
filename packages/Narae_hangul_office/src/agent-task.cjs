@@ -4,7 +4,7 @@ const {messengerTask,messengerTools,messengerStep}=require('./messenger-task.cjs
 const {edufineTask,edufineTools,edufineStep}=require('./edufine-task.cjs');
 const school=/나이스|NEIS|복무|조퇴|연가|근무상황|개인결재선|기안문서상신|업무\s*포[털탈]/i;
 function taskFor(prompt,history=[],now=new Date()){
- if(/업무\s*포[털탈]|에듀파인|gyomu_portal_session/.test(prompt)&&/세션|시간.*연장|로그인.*유지|operation.*extend/.test(prompt))return {area:'session',observe:false,operation:/연장|extend/.test(prompt)?'extend':'status',instructions:'기존 업무 창의 세션만 확인한다. 새 창이나 로그인을 만들지 않는다.'};
+ if(/업무\s*포[털탈]|에듀파인|gyomu_portal_session/.test(prompt)&&/(?:세션(?:을|의)?\s*(?:시간(?:을)?\s*)?(?:자동\s*)?(?:연장|유지|상태|확인)|남은\s*시간|로그인(?:을)?\s*유지|gyomu_portal_session)/.test(prompt))return {area:'session',observe:false,operation:/연장|extend/.test(prompt)?'extend':'status',instructions:'기존 업무 창의 세션만 확인한다. 새 창이나 로그인을 만들지 않는다.'};
  const messenger=messengerTask(prompt,history);if(messenger)return messenger;
  const edufine=edufineTask(prompt,history,now);if(edufine)return edufine;
  let text=prompt;

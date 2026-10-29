@@ -32,7 +32,7 @@ export class Tools {
     this.people = new Map(); this.jobs = new Map();
     this.windows = new Set();
     this.viewers = new Set();
-    this.python = path.join(HOME, readJSON(path.join(HOME, 'runtime.json')).python);
+    this.python = path.resolve(HOME, readJSON(path.join(HOME, 'runtime.json')).python);
     this.pythonEnv={LOCALAPPDATA:path.join(DATA,'native/Local'),APPDATA:path.join(DATA,'native/Roaming')};
     this.captures=new WxsCapture({python:this.python,entry:wxsEntry,directory:path.join(DATA,'jobs/wxs-reads'),env:this.pythonEnv});
     this.attachmentReads=new Map();
@@ -239,7 +239,8 @@ export class Tools {
       }
       case 'wxs.read': {
         if(a.operation==='prepare')return this.captures.prepare(a.expected_title,signal);
-        if(a.operation!=='result')throw new Fault('WXS_OPERATION','prepare 또는 result를 선택하세요.');
+        if(a.operation==='open')return this.captures.prepare(a.expected_title,signal,this.windowId(a.hwnd));
+        if(a.operation!=='result')throw new Fault('WXS_OPERATION','prepare, open 또는 result를 선택하세요.');
         const result=this.captures.result(a.id,a);
         for(const file of result.document?.attachments?.files||[])if(file.exported&&file.path)this.register([file.path]);
         return result;

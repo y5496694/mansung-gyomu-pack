@@ -38,6 +38,16 @@
 
 `live-read`는 파일이 닫혀 있으면 한글에서 연다. `liveRevision`이 다르면 편집을 거절한다. 문단 내 원문을 정확히 선택하며 기본 후보 수 1, occurrence는 0부터다. `set_style`은 문단 전체 원문, font_size/font_family/bold/italic/underline/text_color/align 지원. 기본 저장, `save:false`면 한글에 미저장 상태로 남긴다. 원본 파일 백업을 반환한다. 명령 후에도 사용자가 볼 문서 창은 유지한다.
 
+## 투명 서명 삽입
+
+`insert-signature`는 실제 획이 있는 RGBA PNG를 한글 사본에 삽입한다. 먼저 `inspect`로 최신 해시와 원문을 확인한다. 원본을 덮어쓰지 않으며 결과 파일은 같은 HWP/HWPX 확장자를 사용한다.
+
+```json
+{"schema":1,"action":"insert-signature","input":"신청서.hwp","output":"서명한_신청서.hwp","expected_input_sha256":"직전 inspect 해시","image_path":"서명.png","anchor_text":"(서명)","expected_count":1,"occurrence":0,"x_mm":175,"y_mm":235,"width_mm":16}
+```
+
+`x_mm`,`y_mm`는 앵커가 있는 쪽의 종이 왼쪽·위쪽 기준이다. `width_mm` 기본 20mm, `height_mm` 생략 시 종횡비를 유지한다. 정확한 원문 후보 수를 확인하며 원문은 지우지 않는다. `TreatAsChar=0`(글자처럼 취급 해제), `TextWrap=2`(글 뒤로)를 적용하고 실제 저장 사본을 다시 열어 그림 개수·앵커·위치·크기·본문·쪽 수를 확인한다. `saved:true,verified:true`만 완료다. 사용자가 직접 제공·작성해 승인한 서명만 사용한다. PNG·결과 JSON·서명한 개인 문서는 공개 저장소에 올리지 않는다.
+
 ## PDF·진단
 
 ```json

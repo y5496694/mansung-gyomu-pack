@@ -36,6 +36,8 @@ jobs:
         run: npm run test:local:desktop
       - name: Unified settings and agent layout
         run: npm run test:settings:desktop
+      - name: Tray lifecycle and compact command windows
+        run: node tests/quick-window-desktop.cjs
       - name: Independent approval dialog and automatic tool permission
         run: node tests/approvals-desktop.cjs
       - name: Package complete source candidate

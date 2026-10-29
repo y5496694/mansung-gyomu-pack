@@ -177,6 +177,9 @@ def dispatch(req):
     if action=='create':return create(req)
     if action=='inspect':return inspect(req)
     if action=='save':return save(req)
+    if action=='insert_signature':
+        from hwp_signature import insert_signature
+        return insert_signature(req)
     if action=='export':return export(req)
     if action in {'previewNativeHangul','previewHangul'}:
         from hangul_preview import export_pages
