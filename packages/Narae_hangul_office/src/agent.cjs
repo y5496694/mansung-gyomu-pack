@@ -29,12 +29,15 @@ async function runAgent({prompt,context,settings,request,execute,send,signal,his
  for(let turn=0;turn<(task?48:24);turn++){
   if(signal.aborted)throw new Error('작업을 중지했습니다. 완료된 변경은 유지됩니다.');send({type:'status',text:turn?'결과를 확인하고 있습니다…':'AI에 요청하고 있습니다…'});
   const step=taskStep(task,input,availableTools);
-  const result=await request({instructions:(task?'당신은 선생님의 업무를 돕는 나래 에이전트입니다. 한국어로 답하세요. 도구 결과로 확인한 사실만 보고하세요.':instructions)+'\n'+agentInstructions+'\n'+(task?.instructions||'')+'\n다음 단계: '+step.instructions,input,tools:step.tools,parallel_tool_calls:false,store:false});input.push(...result.output||[]);
-  const text=(result.output||[]).filter(item=>item.type==='message').flatMap(item=>item.content||[]).filter(item=>item.type==='output_text').map(item=>item.text).join('\n');
+  if(step.receipt){send({type:'text',text:step.receipt});return step.receipt;}
+  const result=await request({instructions:(task?'당신은 선생님의 업무를 돕는 나래 에이전트입니다. 한국어로 답하세요. 도구 결과로 확인한 사실만 보고하세요.':instructions)+'\n'+agentInstructions+'\n'+(task?.instructions||'')+'\n다음 단계: '+step.instructions,input,tools:step.tools,...(step.required?{tool_choice:'required'}:{}),parallel_tool_calls:false,store:false});input.push(...result.output||[]);
+  if(step.required&&!(result.output||[]).some(i=>i.type==='function_call'))throw new Error('필수 준비 단계의 도구 실행이 확인되지 않아 중지했습니다. 완료로 처리하지 않습니다.');
+  let text=(result.output||[]).filter(item=>item.type==='message').flatMap(item=>item.content||[]).filter(item=>item.type==='output_text').map(item=>item.text).join('\n');
+  if(task?.draft&&task.plan.type&&!task.mixed&&/(?:신청|초안|입력|결재선).{0,20}(?:완료|지정했습니다|확인했습니다)/.test(text))text='요청한 입력값과 결재선을 최종 준비 화면에서 모두 확인하지 못해 완료로 처리하지 않았습니다. 현재 화면에서 확인을 이어가야 합니다. 최종 상신은 실행하지 않았습니다.';
   if(text){final=text;send({type:'text',text});}
   const calls=(result.output||[]).filter(item=>item.type==='function_call');
   if(!calls.length){if(!final)throw new Error('AI 텍스트 응답이 없습니다.');return final;}
-  for(const call of calls){let output;try{if(!availableTools.some(tool=>tool.name===call.name))throw new Error('지원하지 않는 도구');const args=JSON.parse(call.arguments||'{}');send({type:'tool',name:call.name,args});output=await execute(call.name,args,signal);send({type:'toolDone',name:call.name,path:output?.path});}catch(error){output={error:error.message};send({type:'error',text:error.message});}input.push({type:'function_call_output',call_id:call.call_id,output:JSON.stringify(output)});const confirmed=localCreationResult(prompt,settings,calls,call.name,output);if(confirmed){send({type:'text',text:confirmed});return confirmed;}}
+  for(const call of calls){let output;try{const tool=step.tools.find(tool=>tool.name===call.name);if(!tool)throw new Error('현재 단계에서 지원하지 않는 도구');const args=JSON.parse(call.arguments||'{}');if(tool.parameters)require('./remote-policy.cjs').validate(args,tool.parameters);send({type:'tool',name:call.name,args});output=await execute(call.name,args,signal);send({type:'toolDone',name:call.name,path:output?.path});}catch(error){output={error:error.message};send({type:'error',text:error.message});}input.push({type:'function_call_output',call_id:call.call_id,output:JSON.stringify(output)});const confirmed=localCreationResult(prompt,settings,calls,call.name,output);if(confirmed){send({type:'text',text:confirmed});return confirmed;}}
  }
  throw new Error('작업 횟수 제한에 도달했습니다. 현재 문서와 백업을 확인하세요.');
 }
