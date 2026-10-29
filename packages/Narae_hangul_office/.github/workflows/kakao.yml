@@ -36,6 +36,8 @@ jobs:
         run: npm run test:local:desktop
       - name: Unified settings and agent layout
         run: npm run test:settings:desktop
+      - name: Independent approval dialog and automatic tool permission
+        run: node tests/approvals-desktop.cjs
       - name: Package complete source candidate
         run: npm run package
       - name: Upload sanitized synthetic verification only

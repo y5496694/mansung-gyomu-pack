@@ -13,6 +13,8 @@ class OfficeIntegrations{
   const [{Tools},{tools},{run}]=await Promise.all(['tools','catalog','process'].map(name=>import(pathToFileURL(path.join(vendor,'src',name+'.mjs')).href)));
   const subprocess=(exe,args,options={})=>run(exe,args,{...options,env:{...options.env,...(exe===process.execPath?{ELECTRON_RUN_AS_NODE:'1'}:{})}});
   this.instance=new Tools({status:()=>({provider:this.settings().provider,model:this.settings().model,source:'office-ai',localModelsStarted:false})},{headed:this.headed,subprocess});
+  const {OfficeSchoolBrowser}=await import(pathToFileURL(path.join(__dirname,'school-browser.mjs')).href);
+  this.instance.browserCall=async args=>{if(!this.instance.browser){const browser=new OfficeSchoolBrowser();try{await browser.start({headed:this.headed});this.instance.browser=browser;}catch(error){await browser.browser?.close();throw error;}}return this.instance.browser.execute(args);};
   this.catalog=tools.filter(t=>!t.name.startsWith('hangul.')&&t.name!=='files.list').map(t=>({type:'function',strict:false,name:'gyomu_'+t.name.replaceAll('.','_'),description:t.description+(t.name.endsWith('.prepare')||t.name==='wxs.save'?' 준비 후 PC에서 실제 미리보기를 승인한 경우에만 적용합니다.':''),parameters:t.parameters,original:t.name}));return this;
  }
  async tools(){await this.ready();return this.catalog.map(({original,...tool})=>tool);}
