@@ -1,8 +1,8 @@
 {
   "name": "cbe-messenger-cli",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "private": true,
-  "description": "충북소통메신저의 조직 검색, 쪽지·대화 조회, 백그라운드 대화·쪽지·첨부파일 전송을 위한 Windows CLI",
+  "description": "충북소통메신저의 조직 검색, 쪽지·대화 조회, 쪽지 첨부 다운로드, 백그라운드 대화·쪽지·첨부파일 전송을 위한 Windows CLI",
   "type": "module",
   "bin": {"cbe": "cli.mjs"},
   "engines": {"node": ">=22.19"},

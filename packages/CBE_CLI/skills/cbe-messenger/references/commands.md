@@ -16,13 +16,30 @@ node $cbeEntry notes send --to USER_ID1,USER_ID2 --text '사용자가 요청한 
 
 - `--box`: `all`, `received`, `sent`, `unread`, `important`, `self`, `reserved`。
 - `--search-type`: `send`(보낸 사람, 기본값), `receive`(받는 사람), `title`, `content`。
-- 본문 조회는 `text`, 첨부파일 메타데이터는 `files`에 반환한다. 파일 다운로드는 구현하지 않았다.
+- 본문 조회는 `text`, 첨부파일 ID·이름·크기·유효기간은 `files`에 반환한다. 아래 다운로드 명령으로 저장한다.
 - 쪽지의 후속 페이지는 **첫 페이지 첫 행의 날짜**를 기준으로 한다. `--page 2`부터 `--offset`이 없으면 CLI가 첫 페이지를 조회해 기준값을 구한다. 동일 시점으로 페이지를 조회하려면 첫 페이지 JSON의 `offset`을 이후 호출에 넘기고 같은 `--limit`·검색 조건을 유지한다.
 
 ```powershell
 $first = node $cbeEntry notes list --limit 20 --json | ConvertFrom-Json
 node $cbeEntry notes list --page 2 --limit 20 --offset $first.offset --json
 ```
+
+## 쪽지 첨부 다운로드
+
+```powershell
+node $cbeEntry notes download NOTE_ID --out-dir 'D:\Codex\downloads\cbe\작업폴더' --json
+node $cbeEntry notes download NOTE_ID --attachment ATTACHMENT_ID --out-dir 'D:\Codex\downloads\cbe\작업폴더' --json
+node $cbeEntry notes download NOTE_ID --type S --reserved --out-dir 'D:\Codex\downloads\cbe\작업폴더' --json
+```
+
+`ATTACHMENT_ID`는 `notes read`의 `files[].id`다. 생략 시 첨부 전체를 저장하며 `--out-dir`은 필수다. 현재 쪽지 첨부만 지원한다. `--file`은 업로드용 옵션이므로 다운로드에는 사용하지 않는다.
+
+- 앱 안에서 다운로드 권한(P07)을 확인하고 인증된 GET을 수행한다. 자격증명이나 파일 서버 인증 URL은 결과에 포함하지 않는다.
+- 유효기간 만료·삭제·보안·회수 첨부를 거절한다. 창을 열거나 받은 파일을 실행하지 않는다.
+- 파일별 최대 256MiB, 기존 파일 덮어쓰기 금지. 중복된 원본 이름은 첨부 ID별로 다른 디렉터리에 받는다.
+- `downloaded:true`, `verified:true`는 HTTP 응답·크기·수신 바이트와 저장 파일의 SHA-256 대조 성공을 뜻한다. 원격 서명 검증은 아니다.
+- 일부 실패는 `partial:true`, `files`에 이미 저장한 목록, `retry:false`를 반환한다. 같은 폴더에 전체 다운로드를 반복하지 않고 미저장 첨부만 선택하거나 다른 폴더를 사용한다.
+- 0.6.0은 총 55개 모의 테스트와 실제 쪽지 HWP·HWPX·XLSX 다운로드를 검증했다.
 
 ## 대화와 사용자
 

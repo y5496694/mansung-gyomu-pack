@@ -1,6 +1,7 @@
-import { randomUUID } from 'node:crypto';
-import { open, realpath } from 'node:fs/promises';
-import { basename } from 'node:path';
+import { randomUUID, createHash } from 'node:crypto';
+import { open, realpath, mkdir, lstat, unlink, copyFile, readFile } from 'node:fs/promises';
+import { constants } from 'node:fs';
+import { basename, resolve, join } from 'node:path';
 
 const ORIGIN = 'http://stmsg.cbe.go.kr:7880';
 const MAIN_PATH = '/ezmaru/pc/main';
@@ -100,6 +101,49 @@ function startUpload(key,account,fields){
   state.submitted=true;
   xhr.send(form);
   return true;
+}
+
+// Keep authenticated file-server URLs inside CEF. Only response bytes leave it.
+function startDownload(key,account,file,maxBytes){
+  if(window[key])throw Error('download already started');
+  if(common_activityData.getData('nurUuid')!==account)throw Error('account changed');
+  if(common_activityData.getData('permission').PC.P07!=='Y')throw Error('download restricted');
+  var server=common_activityData.getData('fileServerUrl');
+  if(!/^http:\/\/stmsg\.cbe\.go\.kr:7880\/file\/(?:v2\/)?[-A-Za-z0-9]+$/.test(server))throw Error('unexpected file server');
+  var encoded=Base64.encode(file.name).replace(/\//g,'*').replace(/\+/g,'@');
+  var xhr=new XMLHttpRequest(),state={done:false,xhr:xhr};window[key]=state;
+  function fail(message){if(window[key]===state){state.done=true;state.error=message;state.bytes=null;}}
+  xhr.open('GET',server+file.url+'/'+encoded,true);xhr.responseType='arraybuffer';xhr.timeout=120000;
+  xhr.onprogress=function(e){if(e.loaded>maxBytes){fail('첨부파일은 256MiB까지 다운로드할 수 있습니다.');xhr.abort();}};
+  xhr.onload=function(){
+    if(window[key]!==state)return;
+    if(xhr.status!==200){fail('첨부파일 다운로드 실패: HTTP '+xhr.status);return;}
+    var contentType=xhr.getResponseHeader('Content-Type')||'',length=xhr.getResponseHeader('Content-Length');
+    if((/text\/html/i.test(contentType)&&! /\.html?$/i.test(file.name))||(/application\/json/i.test(contentType)&&! /\.json$/i.test(file.name))){fail('파일 대신 오류 또는 로그인 응답을 받았습니다.');return;}
+    if(!xhr.response||typeof xhr.response.byteLength!=='number'){fail('첨부파일 응답 형식이 올바르지 않습니다.');return;}
+    var size=xhr.response.byteLength;
+    if(size>maxBytes){fail('첨부파일은 256MiB까지 다운로드할 수 있습니다.');return;}
+    if(length!==null&&(!/^\d+$/.test(length)||Number(length)!==size)){fail('첨부파일 응답 크기가 일치하지 않습니다.');return;}
+    if(common_activityData.getData('nurUuid')!==account){fail('다운로드 중 로그인 계정이 변경되었습니다.');return;}
+    state.bytes=new Uint8Array(xhr.response);state.size=size;state.contentLength=length===null?null:Number(length);state.done=true;state.xhr=null;
+  };
+  xhr.onerror=function(){fail('첨부파일 다운로드 연결 오류.');};
+  xhr.ontimeout=function(){fail('첨부파일 다운로드 시간 초과.');};
+  xhr.onabort=function(){fail('첨부파일 다운로드 중단.');};
+  xhr.send();return true;
+}
+
+function downloadChunk(key,offset,length,account){
+  var state=window[key];
+  if(common_activityData.getData('nurUuid')!==account||!state||!state.done||state.error||!state.bytes)throw Error('invalid download state');
+  var end=Math.min(offset+length,state.size),parts=[];
+  for(var start=offset;start<end;start+=8192)parts.push(String.fromCharCode.apply(null,state.bytes.subarray(start,Math.min(start+8192,end))));
+  return btoa(parts.join(''));
+}
+
+function downloadName(name){
+  if(typeof name!=='string'||!name||name.length>240||/[<>:"/\\|?*\x00-\x1f\x7f]/.test(name)||/[. ]$/.test(name)||/^(con|prn|aux|nul|com[1-9]|lpt[1-9])(?:\.|$)/i.test(name))throw Error('안전한 원본 파일명으로 저장할 수 없는 첨부파일입니다.');
+  return name;
 }
 
 export async function attachmentFiles(paths=[]){
@@ -335,7 +379,64 @@ export class Messenger {
     const d=await this.query('/pc/note/noteDetail',{nteCode:id,nteReservYn:reserved?'Y':'N',activeWindow:'false',noteType:type});
     const n=d.LIST;
     const hidden=n.NTE_SECURITY_YN==='Y'||n.NTE_WITHDRAW_YN==='Y';
-    return {...noteSummary(n),text:hidden?'[보안 또는 회수된 쪽지: 앱에서 확인]':plain(n.NTE_CONTENT||n.NTE_CONTENT_HTML),recipients:(Array.isArray(n.RECEIVE_USER)?n.RECEIVE_USER:[]).map(u=>({id:u.NUR_UUID||u.NRU_UID,name:u.NUR_NIC||u.NRU_NIC||''})),files:hidden?[]:(n.ATTACH_IMAGE||[]).map(f=>({name:f.NNF_ORI_NAME,size:f.NNF_FILE_SIZE,valid:f.VALID_YN})),readDate:n.NRU_READ_DATE||null};
+    return {...noteSummary(n),text:hidden?'[보안 또는 회수된 쪽지: 앱에서 확인]':plain(n.NTE_CONTENT||n.NTE_CONTENT_HTML),recipients:(Array.isArray(n.RECEIVE_USER)?n.RECEIVE_USER:[]).map(u=>({id:u.NUR_UUID||u.NRU_UID,name:u.NUR_NIC||u.NRU_NIC||''})),files:hidden?[]:(n.ATTACH_IMAGE||[]).map(f=>({id:f.NNF_CODE,name:f.NNF_ORI_NAME,size:f.NNF_FILE_SIZE,valid:f.VALID_YN,validUntil:f.VALID_DATE})),readDate:n.NRU_READ_DATE||null};
+  }
+  async downloadNote(id,{type='R',reserved=false,attachmentId,outDir}={}){
+    if(!isId(id)||!['R','S'].includes(type)||!outDir?.trim()||(attachmentId!==undefined&&!isId(attachmentId)))throw Error('쪽지 ID, 첨부 ID 및 --out-dir을 확인하세요.');
+    const d=await this.query('/pc/note/noteDetail',{nteCode:id,nteReservYn:reserved?'Y':'N',activeWindow:'false',noteType:type}),n=d.LIST;
+    if(n?.NTE_CODE!==id)throw Error('요청한 쪽지와 서버 응답이 일치하지 않습니다.');
+    if(n.NTE_SECURITY_YN==='Y'||n.NTE_WITHDRAW_YN==='Y')throw Error('보안 또는 회수된 쪽지의 첨부파일은 다운로드하지 않습니다.');
+    if(!Array.isArray(n.ATTACH_IMAGE))throw Error('쪽지 첨부 목록을 확인할 수 없습니다.');
+    const selected=n.ATTACH_IMAGE.filter(f=>attachmentId===undefined||f.NNF_CODE===attachmentId);
+    if(!selected.length)throw Error('해당 첨부파일이 없습니다. notes read 결과의 files[].id를 확인하세요.');
+    const settings=JSON.parse(await this.evaluate(`JSON.stringify({account:common_activityData.getData('nurUuid'),allowed:common_activityData.getData('permission').PC.P07,now:common_controller.getTodayString()})`));
+    if(!isId(settings.account)||settings.allowed!=='Y')throw Error('앱에서 첨부파일 다운로드 권한이 제한되었습니다.');
+    const files=selected.map(f=>{
+      if(!isId(f.NNF_CODE)||f.NNF_NCODE!==id||f.VALID_YN!=='Y'||f.DELETE_YN==='Y'||(f.VALID_DATE&&(!/^\d{14,17}$/.test(f.VALID_DATE)||!/^\d{14,17}$/.test(settings.now)||f.VALID_DATE<settings.now)))throw Error('만료·삭제되었거나 소속을 확인할 수 없는 첨부파일입니다.');
+      if(typeof f.NNF_FILEURL!=='string'||!/^\/upload\/note\/[-A-Za-z0-9_.]+$/.test(f.NNF_FILEURL)||['.','..'].includes(f.NNF_FILEURL.split('/').at(-1)))throw Error('지원하지 않는 첨부파일 경로입니다.');
+      return {id:f.NNF_CODE,name:downloadName(f.NNF_ORI_NAME),url:f.NNF_FILEURL};
+    });
+    if(new Set(files.map(f=>f.name.toLocaleLowerCase())).size!==files.length)throw Error('첨부파일 이름이 중복됩니다. --attachment로 하나씩 선택해 다른 폴더에 저장하세요.');
+    await mkdir(resolve(outDir),{recursive:true});const directory=await realpath(resolve(outDir));
+    for(const file of files){try{await lstat(join(directory,file.name));throw Error('이미 존재하는 파일을 덮어쓰지 않습니다: '+file.name);}catch(e){if(e.code!=='ENOENT')throw e;}}
+    const result={noteId:id,downloaded:false,verified:false,files:[],background:true};
+    try{
+      for(const file of files)result.files.push(await this.downloadAttachment(file,directory,settings.account));
+      return {...result,downloaded:true,verified:true};
+    }catch(error){error.receipt={...result,partial:result.files.length>0,retry:false};throw error;}
+  }
+  async downloadAttachment(file,directory,account){
+    const key='__cbeCliDownload_'+randomUUID().replaceAll('-',''),temp=join(directory,'.cbe-download-'+randomUUID()+'.part'),target=join(directory,file.name);
+    let handle;
+    try{
+      handle=await open(temp,'wx');
+      await this.evaluate(`(${startDownload.toString()})(${[key,account,file,256*1024*1024].map(v=>JSON.stringify(v)).join(',')})`);
+      const deadline=Date.now()+125000;let state;
+      while(Date.now()<deadline){
+        state=JSON.parse(await this.evaluate(`JSON.stringify({done:window[${JSON.stringify(key)}].done,error:window[${JSON.stringify(key)}].error,size:window[${JSON.stringify(key)}].size,contentLength:window[${JSON.stringify(key)}].contentLength})`));
+        if(state.done)break;
+        await new Promise(r=>setTimeout(r,100));
+      }
+      if(!state?.done)throw Error('첨부파일 다운로드 시간이 초과되었습니다.');
+      if(state.error)throw Error(state.error);
+      if(!Number.isSafeInteger(state.size)||state.size<0||state.size>256*1024*1024)throw Error('첨부파일 크기를 확인할 수 없습니다.');
+      const digest=createHash('sha256');
+      for(let offset=0;offset<state.size;){
+        const count=Math.min(192*1024,state.size-offset),encoded=await this.evaluate(`(${downloadChunk.toString()})(${[key,offset,count,account].map(v=>JSON.stringify(v)).join(',')})`);
+        const bytes=Buffer.from(encoded,'base64');if(bytes.length!==count)throw Error('첨부파일 전송 바이트 수가 일치하지 않습니다.');
+        await handle.writeFile(bytes);digest.update(bytes);offset+=bytes.length;
+      }
+      const stat=await handle.stat();if(stat.size!==state.size)throw Error('저장된 파일 크기가 일치하지 않습니다.');
+      await handle.close();handle=null;
+      const sha256=digest.digest('hex');
+      if(createHash('sha256').update(await readFile(temp)).digest('hex')!==sha256)throw Error('저장된 파일 해시가 일치하지 않습니다.');
+      await copyFile(temp,target,constants.COPYFILE_EXCL);
+      return {id:file.id,name:file.name,path:target,size:stat.size,sha256,contentLength:state.contentLength??null,verified:true};
+    }finally{
+      if(handle)await handle.close();
+      await unlink(temp).catch(e=>{if(e.code!=='ENOENT')throw e;});
+      await this.evaluate(`(function(){var k=${JSON.stringify(key)},s=window[k];if(s&&s.xhr)s.xhr.abort();delete window[k];return true;})()`).catch(()=>{});
+    }
   }
   async chats({page=1,limit=30,search='',box='ALL',offset='0'}={}) {
     const d=await this.query('/pc/message/sessionlist',{pageNo:page,pageSize:limit,searchValue:search,searchType:'nic',nelStatus:box,offset});

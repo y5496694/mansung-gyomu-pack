@@ -5,13 +5,14 @@ import { resolve } from 'node:path';
 import { realpathSync } from 'node:fs';
 import { Messenger } from './messenger.mjs';
 
-const HELP=`충북소통메신저 CLI 0.5.0 — 로그인된 앱에 연결
+const HELP=`충북소통메신저 CLI 0.6.0 — 로그인된 앱에 연결
 
 사용법:
   cbe status
   cbe notes list [--box received|sent|unread|important|self|reserved|all]
                  [--search "검색어"] [--search-type send|receive|title|content]
   cbe notes read <쪽지ID> [--type R|S] [--reserved]
+  cbe notes download <쪽지ID> --out-dir "저장폴더" [--attachment 첨부ID] [--type R|S] [--reserved]
   cbe notes send --to <사용자ID[,사용자ID...]> [--text "내용"] [--title "제목"] [--file "경로"]
   cbe chats list [--search "참여자 또는 방 이름"]
   cbe chats read <대화방ID>
@@ -36,6 +37,8 @@ const HELP=`충북소통메신저 CLI 0.5.0 — 로그인된 앱에 연결
   --dry-run       전송 명령의 수신자·설정만 확인 (실제 전송·방 생성 없음)
   --confirm-many  앱에서 추가 수신자 확인이 필요한 쪽지 전송 허용
   --file 경로     첨부할 로컬 파일 (여러 파일은 --file을 반복, 본문 생략 가능)
+  --out-dir 경로  쪽지 첨부 다운로드 폴더 (생략 불가, 기존 파일은 덮어쓰지 않음)
+  --attachment ID notes read의 files[].id 중 하나만 다운로드 (생략하면 전체)
   --help          도움말
 
 앱을 실행하고 로그인해 두세요. 비밀번호·키를 파일에 저장하지 않습니다.
@@ -47,6 +50,7 @@ chats send는 기존 1:1 방을 사용하고, 없으면 첫 메시지와 함께 
 chats create는 1명이면 1:1, 2명 이상이면 새 그룹을 만들며 본인을 자동 포함합니다.
 쪽지·대화에 --file로 파일을 첨부합니다. 대화 본문과 파일은 각각 별도 메시지로 전송됩니다.
 --dry-run은 파일 읽기·권한·개수·용량을 점검하고 업로드하지 않습니다. 예약·보안 전송은 미지원입니다.
+notes download는 만료·삭제·보안·회수 첨부를 차단하고 파일별 256MiB까지 저장·SHA-256 검증합니다.
 `;
 
 export function positive(value,name,max=Number.MAX_SAFE_INTEGER) {
@@ -60,6 +64,7 @@ export function printResult(result,json) {
   if(json){console.log(JSON.stringify(result,null,2));return;}
   if(result.sent===true&&result.verified!==true){console.log(clean(JSON.stringify(result,null,2)));return;}
   if(result.dryRun){console.log(clean(JSON.stringify(result,null,2)));return;}
+  if(result.downloaded===true&&result.verified===true){for(const file of result.files)console.log(clean(`저장 완료: ${file.path}\n${file.size} bytes · SHA-256 ${file.sha256}`));return;}
   if(result.sent===true){console.log(clean(`서버 기록 확인 완료 · ${result.noteId?'쪽지':'대화'} ID: ${result.noteId||result.messageId}\n${result.room?'방 ID: '+result.room+'\n':''}수신자: ${result.recipients.map(u=>u.name+' ('+u.id+')').join(', ')}\n\n${result.text}`));for(const file of result.files||[])console.log(clean(`첨부: ${file.name} (${file.size} bytes)`));return;}
   if(result.items){
     if(result.scope)console.log(`검색 범위: ${result.scope==='my'?'내 조직':'전체 조직'}${result.fallback?' (내 조직에 일치하는 이름 없음)':''}`);
@@ -76,14 +81,14 @@ export function printResult(result,json) {
   }
   if(result.text!==undefined){
     console.log(clean(`${result.title||'(제목 없음)'}\nID: ${result.id}\n보낸 사람: ${result.sender||''}\n날짜: ${result.date||''}\n\n${result.text}`));
-    for(const file of result.files||[])console.log(clean(`첨부: ${file.name} (${file.size} bytes)`));
+    for(const file of result.files||[])console.log(clean(`첨부: ${file.name} (${file.size})${file.id?' · ID: '+file.id:''}`));
     return;
   }
   console.log(clean(JSON.stringify(result,null,2)));
 }
 
 export async function run(argv=process.argv.slice(2)) {
-  const {values:v,positionals:p}=parseArgs({args:argv,allowPositionals:true,strict:true,options:{help:{type:'boolean',short:'h'},json:{type:'boolean'},port:{type:'string',default:'9000'},page:{type:'string',default:'1'},limit:{type:'string',default:'30'},offset:{type:'string',default:'0'},search:{type:'string',default:''},'search-type':{type:'string',default:'send'},box:{type:'string',default:'all'},type:{type:'string',default:'R'},reserved:{type:'boolean'},to:{type:'string'},text:{type:'string'},title:{type:'string'},file:{type:'string',multiple:true,default:[]},'dry-run':{type:'boolean'},'confirm-many':{type:'boolean'},scope:{type:'string',default:'auto'}}});
+  const {values:v,positionals:p}=parseArgs({args:argv,allowPositionals:true,strict:true,options:{help:{type:'boolean',short:'h'},json:{type:'boolean'},port:{type:'string',default:'9000'},page:{type:'string',default:'1'},limit:{type:'string',default:'30'},offset:{type:'string',default:'0'},search:{type:'string',default:''},'search-type':{type:'string',default:'send'},box:{type:'string',default:'all'},type:{type:'string',default:'R'},reserved:{type:'boolean'},to:{type:'string'},text:{type:'string'},title:{type:'string'},file:{type:'string',multiple:true,default:[]},'out-dir':{type:'string'},attachment:{type:'string'},'dry-run':{type:'boolean'},'confirm-many':{type:'boolean'},scope:{type:'string',default:'auto'}}});
   if(v.help||!p.length){console.log(HELP);return;}
   const options={page:positive(v.page,'--page'),limit:positive(v.limit,'--limit',100),search:v.search,offset:v.offset};
   const port=positive(v.port,'--port',65535);
@@ -92,8 +97,12 @@ export async function run(argv=process.argv.slice(2)) {
   if(!['send','receive','title','content'].includes(v['search-type']))throw new Error('--search-type은 send, receive, title, content 중 하나입니다.');
   if(!['auto','my','all'].includes(v.scope))throw new Error('--scope는 auto, my, all 중 하나입니다.');
   const group=p[0],action=p[1]||'list';
-  if(v.reserved&&!((group==='notes'&&action==='read')||(group==='open'&&action==='note')))throw new Error('--reserved는 notes read 또는 open note에서만 사용하세요. 예약 전송은 지원하지 않습니다.');
-  const idCommands=(group==='open'&&action!=='main')||(['notes','chats'].includes(group)&&action==='read')||(group==='users'&&action==='show');
+  const downloading=group==='notes'&&action==='download';
+  if(downloading&&!v['out-dir']?.trim())throw new Error('notes download에는 --out-dir 저장폴더가 필요합니다.');
+  if(!downloading&&(v['out-dir']!==undefined||v.attachment!==undefined))throw new Error('--out-dir과 --attachment는 notes download에서만 사용하세요.');
+  if(v.attachment!==undefined&&!/^[a-f0-9]{24}$/i.test(v.attachment))throw new Error('--attachment에는 notes read에서 확인한 files[].id를 입력하세요.');
+  if(v.reserved&&!((group==='notes'&&['read','download'].includes(action))||(group==='open'&&action==='note')))throw new Error('--reserved는 notes read, notes download 또는 open note에서만 사용하세요. 예약 전송은 지원하지 않습니다.');
+  const idCommands=(group==='open'&&action!=='main')||(['notes','chats'].includes(group)&&action==='read')||downloading||(group==='users'&&action==='show');
   if(idCommands)requiredId(p[2]);
   if(group==='compose')requiredId(v.to);
   const sending=['notes','chats'].includes(group)&&['send','create'].includes(action);
@@ -101,7 +110,7 @@ export async function run(argv=process.argv.slice(2)) {
   if((v['dry-run']||v['confirm-many']||v.title!==undefined||v.file.length)&&!sending)throw new Error('--dry-run, --confirm-many, --title, --file은 전송 명령에서만 사용하세요.');
   if(v['confirm-many']&&!(group==='notes'&&action==='send'))throw new Error('--confirm-many는 notes send에서만 사용하세요.');
   if(group==='users'&&action==='search'&&!p[2]?.trim())throw new Error('사용자 검색어를 입력하세요.');
-  const valid=(group==='status'&&p.length===1)||(['notes','chats'].includes(group)&&((action==='list'&&p.length<=2)||(action==='read'&&p.length===3)))||(['notes','chats'].includes(group)&&action==='send'&&p.length===2)||(group==='chats'&&action==='create'&&p.length===2)||(group==='users'&&['search','show'].includes(action)&&p.length===3)||(group==='memos'&&action==='list'&&p.length<=2)||(group==='open'&&((action==='main'&&p.length===2)||(['note','chat','profile'].includes(action)&&p.length===3)))||(group==='compose'&&p.length===1);
+  const valid=(group==='status'&&p.length===1)||(['notes','chats'].includes(group)&&((action==='list'&&p.length<=2)||(action==='read'&&p.length===3)))||(downloading&&p.length===3)||(['notes','chats'].includes(group)&&action==='send'&&p.length===2)||(group==='chats'&&action==='create'&&p.length===2)||(group==='users'&&['search','show'].includes(action)&&p.length===3)||(group==='memos'&&action==='list'&&p.length<=2)||(group==='open'&&((action==='main'&&p.length===2)||(['note','chat','profile'].includes(action)&&p.length===3)))||(group==='compose'&&p.length===1);
   if(!valid)throw new Error('지원하지 않는 명령입니다. cbe --help를 확인하세요.');
   const boxes={all:'ALL',received:'R',sent:'S',unread:'N',important:'I',self:'M',reserved:'B'};
   if(group==='notes'&&action==='list'&&!(v.box in boxes))throw new Error('지원하지 않는 --box 값입니다.');
@@ -113,6 +122,7 @@ export async function run(argv=process.argv.slice(2)) {
     if(group==='status')result=await client.status();
     else if(group==='notes'&&action==='list')result=await client.notes({...options,box:boxes[v.box],searchType:v['search-type']});
     else if(group==='notes'&&action==='send')result=await client.sendNote(v.to,v.text,{title:v.title,dryRun:!!v['dry-run'],confirmMany:!!v['confirm-many'],files:v.file});
+    else if(downloading)result=await client.downloadNote(p[2],{type:v.type,reserved:!!v.reserved,attachmentId:v.attachment,outDir:v['out-dir']});
     else if(group==='notes')result=await client.note(p[2],v.type,!!v.reserved);
     else if(group==='chats'&&action==='list')result=await client.chats({...options,box:boxes[v.box]});
     else if(group==='chats'&&['send','create'].includes(action))result=await client[action==='send'?'sendChat':'createChat'](v.to,v.text,{title:v.title,dryRun:!!v['dry-run'],files:v.file});
