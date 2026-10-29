@@ -12,8 +12,8 @@
    const details=document.createElement('details'),heading=document.createElement('summary'),license=document.createElement('pre');heading.textContent='이용조건 · 모델 정보';license.textContent=m.alias+'\n'+m.license;details.append(heading,license);details.ontoggle=()=>{if(details.open)call('localAILicense',{id:m.id}).then(text=>license.textContent=text).catch(error=>license.textContent=error.message);};card.append(buttons,details);cards.append(card);
   }
  }
- el('localAIButton').onclick=()=>action(async()=>{show(await call('localAIState'));const config=await call('state');el('localAIEndpoint').value=config.settings.provider==='local'?config.settings.endpoint:'http://127.0.0.1:11434/v1';el('localAIExternalModel').value=config.settings.localSource==='external'?config.settings.model:'';el('localAIDialog').showModal();});
- el('localAIClose').onclick=()=>el('localAIDialog').close();el('localAIStop').onclick=()=>action(async()=>show(await call('localAIStop')));el('localAICancel').onclick=()=>action(()=>call('localAICancel'));
+ window.naraeSettings.onOpen('local',async()=>{show(await call('localAIState'));const config=await call('state');el('localAIEndpoint').value=config.settings.provider==='local'?config.settings.endpoint:'http://127.0.0.1:11434/v1';el('localAIExternalModel').value=config.settings.localSource==='external'?config.settings.model:'';});
+ el('localAIStop').onclick=()=>action(async()=>show(await call('localAIStop')));el('localAICancel').onclick=()=>action(()=>call('localAICancel'));
  el('localAIChooseDirectory').onclick=()=>action(async()=>show(await call('localAIDirectory')));el('localAIAutoStart').onchange=()=>action(async()=>show(await call('localAIAutoStart',{enabled:el('localAIAutoStart').checked})));
  el('localAIExternal').onclick=()=>action(async()=>{sync(await call('localAIExternal',{endpoint:el('localAIEndpoint').value,model:el('localAIExternalModel').value}));el('localAIStatus').textContent='외부 로컬 서버를 사용합니다.';});
  window.narae.onEvent(event=>{if(event.type==='localAI')show(event.localAI);});

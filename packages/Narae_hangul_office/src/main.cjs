@@ -42,12 +42,13 @@ const execute=async(name,args,signal)=>{
 };
 function emit(event){if(window&&!window.isDestroyed())window.webContents.send('narae:event',event);}
 const {KakaoConnector}=require('./kakao-connector.cjs'),{RemotePolicy}=require('./remote-policy.cjs');
-let remote,telegram,remoteSetupError='',activeAgentChannel='kakao';
+let remote,telegram,remoteSetupError='',activeAgentChannel='kakao',approvalChannel='kakao';
 const {LocalAI}=require('./local-ai.cjs');
 const localAI=new LocalAI({root,home,notify:emit});
 const requestAI=(config,body,signal)=>config.provider==='local'?localAI.request({settings:config,body,signal}):cloudRequest(config,body,signal);
 async function cloudRequest(config,body,signal){return provider.requestResponse({settings:config,credential:await credential(config),apiKey:config.connectionMode==='api'?keys[config.provider].get():undefined,signal,body});}
-const remotePolicy=new RemotePolicy({workspace:()=>settings.workspace,notify:approval=>{emit({type:'approval',approval});if(remote){remote.approval=approval;remote.changed();}}});
+const approvalView=approval=>approval?{...approval,channel:approvalChannel}:null;
+const remotePolicy=new RemotePolicy({workspace:()=>settings.workspace,notify:approval=>{const view=approvalView(approval);emit({type:'approval',approval:view});if(remote){remote.approval=view;remote.changed();}}});
 const {AgentConversations}=require('./agent-conversations.cjs'),{OfficeIntegrations}=require('./office-integrations.cjs');
 const conversations=new AgentConversations(home);
 const integrations=new OfficeIntegrations({home,root,python,workspace:()=>settings.workspace,settings:()=>settings,policy:remotePolicy});
@@ -58,7 +59,7 @@ function agentChanged(){emit({type:'agentConversation',agent:agentState()});}
 async function agentChat(prompt,{signal,sessionId=agentSession(),origin='pc',progress=()=>{}}={}){
  idle();if(typeof prompt!=='string'||!prompt.trim()||prompt.length>4000)throw new Error('요청을 1~4000자로 입력하세요.');
  const config=structuredClone(settings);if(!config.model)throw new Error('AI 설정에서 모델을 선택하세요.');
- const localController=new AbortController();controller=localController;const relayAbort=()=>localController.abort();signal?.addEventListener('abort',relayAbort,{once:true});if(signal?.aborted)relayAbort();const localSignal=localController.signal;
+ approvalChannel=origin==='telegram'||origin==='pc'&&activeAgentChannel==='telegram'?'telegram':'kakao';const localController=new AbortController();controller=localController;const relayAbort=()=>localController.abort();signal?.addEventListener('abort',relayAbort,{once:true});if(signal?.aborted)relayAbort();const localSignal=localController.signal;
  let denied;const files=[];if(integrationSession!==sessionId){resetting=resetting.then(()=>integrations.reset());integrationSession=sessionId;}const previous=conversations.history(sessionId);conversations.append(sessionId,'user',prompt,origin);agentChanged();
  try{
   await resetting;if(localSignal.aborted)throw new Error('REMOTE_CANCELLED');
@@ -87,7 +88,7 @@ const methods={
  localAIUse:async({id})=>{idle();await localAI.activate(id);localAI.setAutoStart(true);persist(connections.update(settings,{provider:'local',model:id,localSource:'managed'}));agentChanged();return metadata();},
  localAIStop:async()=>{idle();if(localAI.busy)throw new Error('AI 준비가 끝난 뒤 중지하세요.');localAI.setAutoStart(false);await localAI.stop();return localAI.status();},
  localAICancel:()=>localAI.cancelInstall(),
- telegramState:()=>({...telegram?.status(),approval:remotePolicy.status()}),
+ telegramState:()=>({...telegram?.status(),approval:approvalView(remotePolicy.status())}),
  telegramBotFather:()=>shell.openExternal('https://t.me/BotFather'),
  telegramConnect:async({token})=>{idle();if(!telegram)throw new Error('텔레그램 저장소를 초기화하지 못했습니다.');return telegram.connect(token);},
  telegramPair:()=>telegram.pair(),

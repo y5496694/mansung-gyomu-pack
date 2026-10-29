@@ -34,6 +34,8 @@ jobs:
         env:
           NARAE_QA_ROOT: ${{ runner.temp }}/narae-local-qa
         run: npm run test:local:desktop
+      - name: Unified settings and agent layout
+        run: npm run test:settings:desktop
       - name: Package complete source candidate
         run: npm run package
       - name: Upload sanitized synthetic verification only
