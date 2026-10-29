@@ -118,10 +118,12 @@ export class Tools {
         result = await this.wxs(['draft','--hwnd',action.args.hwnd,'--config',action.args.file,'--apply'],signal);
       }
       else if (action.kind === 'wxs-save') result = await this.wxs(['save-draft','--hwnd',action.args.hwnd,'--expected-title',action.args.expected_title,'--name',action.args.name,'--apply'],signal);
+      else if (action.kind === 'wxs-final') result = await this.wxs([...action.args.argv,'--apply','--confirm-final-action','--expected-fingerprint',action.args.fingerprint,'--receipt',action.args.receipt],signal);
+      else if (action.kind === 'wxs-final-confirm') result = await this.wxs(['final-confirm','--receipt',action.args.receipt,'--expected-message',action.args.expected_message,'--confirm-final-action'],signal);
       if (action.kind === 'cbe' && (result.sent !== true || result.verified !== true))
         throw new Fault('SEND_NOT_VERIFIED', '전송 완료가 확인되지 않았습니다. 같은 메시지를 다시 보내지 마세요.', result);
-      action.status = 'completed'; action.result = result;
-      return {ok: true, kind: action.kind, result};
+      action.status = action.kind.startsWith('wxs-final') ? 'verification_required' : 'completed'; action.result = result;
+      return {ok: true, kind: action.kind, result, ...(action.kind === 'wxs-final' ? {receiptId: action.id} : {})};
     } catch (e) {action.status = 'uncertain'; action.error = e.message; throw e;}
     finally {writeJSON(path.join(DATA,'jobs',`pending-${id}.json`),action);}
   }
@@ -264,6 +266,26 @@ export class Tools {
         const file = path.join(TMP,`wxs-${crypto.randomUUID()}.json`); writeJSON(file,config);
         const plan = await this.wxs(['draft','--hwnd',a.hwnd,'--config',file],signal);
         return this.pendingAction('wxs-draft',{hwnd:a.hwnd,file,configSha256:await digest(file)},plan);
+      }
+      case 'wxs.final.prepare': {
+        this.windowId(a.hwnd);
+        if (!['submit','approve'].includes(a.operation)) throw new Fault('WXS_OPERATION','submit 또는 approve를 선택하세요.');
+        const argv = ['final-action','--hwnd',a.hwnd,'--operation',a.operation,'--expected-title',a.expected_title,'--button-label',a.button_label];
+        const preview = await this.wxs(argv,signal);
+        if (preview.status !== 'prepared' || !preview.fingerprint) throw new Fault('WXS_FINAL_PREVIEW','문서 지문을 확인하지 못했습니다.');
+        const receipt = path.join(DATA,'jobs',`wxs-final-${crypto.randomUUID()}.json`);
+        return this.pendingAction('wxs-final',{argv,fingerprint:preview.fingerprint,receipt},preview);
+      }
+      case 'wxs.final.dialog': {
+        const previous = this.pending.get(a.receipt_id);
+        if (previous?.kind !== 'wxs-final' || previous.status !== 'verification_required') throw new Fault('WXS_FINAL_RECEIPT','직전 최종 실행의 receiptId가 필요합니다.');
+        return this.wxs(['final-dialog','--receipt',previous.args.receipt],signal);
+      }
+      case 'wxs.final.confirm': {
+        const previous = this.pending.get(a.receipt_id);
+        if (previous?.kind !== 'wxs-final' || previous.status !== 'verification_required') throw new Fault('WXS_FINAL_RECEIPT','직전 최종 실행의 receiptId가 필요합니다.');
+        if (!a.expected_message?.trim()) throw new Fault('WXS_FINAL_MESSAGE','현재 창의 정확한 문구를 지정하세요.');
+        return this.pendingAction('wxs-final-confirm',{receipt:previous.args.receipt,expected_message:a.expected_message},{receiptId:a.receipt_id,expected_message:a.expected_message,completed:false});
       }
       case 'wxs.save': {
         this.windowId(a.hwnd);

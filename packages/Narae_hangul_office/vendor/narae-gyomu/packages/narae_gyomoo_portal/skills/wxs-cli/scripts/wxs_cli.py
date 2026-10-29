@@ -29,6 +29,12 @@ def parser():
     close = commands.add_parser("close-readonly", help="Close one unchanged read-only WXS window")
     close.add_argument("--hwnd", type=lambda value: int(value, 0), required=True)
     close.add_argument("--expected-title", required=True)
+    capture = commands.add_parser("capture", help="Render actual draft body pages without changing the document")
+    capture.add_argument("--hwnd", type=lambda value: int(value, 0), required=True)
+    capture.add_argument("--expected-title", required=True)
+    capture.add_argument("--directory", type=Path, required=True)
+    capture.add_argument("--dpi", type=int, default=150)
+    capture.add_argument("--out", type=Path)
     for name in ("inspect", "text", "attachments", "attachment-status", "export-attachments", "draft-status", "draft", "save-draft"):
         command = commands.add_parser(name)
         command.add_argument("--hwnd", type=lambda value: int(value, 0),
@@ -47,6 +53,22 @@ def parser():
         if name in ("draft", "save-draft"):
             command.add_argument("--apply", action="store_true", help="Apply the requested draft operations")
             command.add_argument("--replace-existing", action="store_true", help="Permit replacing this exact temporary-draft name")
+    final = commands.add_parser("final-action", help="Preview or explicitly apply one observed submit/approve button")
+    final.add_argument("--hwnd", type=lambda value: int(value, 0), required=True)
+    final.add_argument("--operation", choices=("submit", "approve"), required=True)
+    final.add_argument("--expected-title", required=True)
+    final.add_argument("--button-label", required=True)
+    final.add_argument("--apply", action="store_true")
+    final.add_argument("--confirm-final-action", action="store_true")
+    final.add_argument("--expected-fingerprint")
+    final.add_argument("--receipt", type=Path)
+    final.add_argument("--out", type=Path)
+    dialog = commands.add_parser("final-dialog", help="Read the attempted final action's actual native message without accepting it")
+    dialog.add_argument("--receipt", type=Path, required=True)
+    confirm = commands.add_parser("final-confirm", help="Accept one exact observed operation-specific native confirmation")
+    confirm.add_argument("--receipt", type=Path, required=True)
+    confirm.add_argument("--expected-message", required=True)
+    confirm.add_argument("--confirm-final-action", action="store_true")
     return root
 
 
@@ -60,6 +82,11 @@ def run(args):
                 "python_bits": 64 if sys.maxsize > 2**32 else 32,
                 "dependencies": {name: importlib.util.find_spec(name) is not None for name in ("pythoncom", "win32gui", "win32com")},
                 "requires": "Installed WXS Client, logged-in session, and an open document on the same Windows desktop"}
+    if args.command == "final-action" and args.apply:
+        if not args.confirm_final_action or not args.expected_fingerprint or not args.receipt:
+            raise ValueError("Applying a final action requires --confirm-final-action, --expected-fingerprint and --receipt")
+    if args.command == "final-confirm" and not args.confirm_final_action:
+        raise ValueError("Native final confirmation requires --confirm-final-action")
     config = load_config(args.config) if args.command == "draft" else None
     if args.command == "save-draft":
         string(args.name, "name")
@@ -86,7 +113,27 @@ def run(args):
                 return read_next(args, native)
             window = native.select_window(args)
             return close_readonly(window, args.expected_title, native)
+        if args.command == "final-dialog":
+            import wxs_runtime
+            from wxs_final import inspect_dialog
+            return inspect_dialog(args.receipt, wxs_runtime)
+        if args.command == "final-confirm":
+            import wxs_runtime
+            from wxs_final import confirm
+            return confirm(args.receipt, args.expected_message, args.confirm_final_action, wxs_runtime)
         window = native.select_window(args)
+        if args.command == "final-action":
+            from wxs_runtime import Session
+            from wxs_final import prepare, apply
+            session = Session(window)
+            preview = prepare(session, args.operation, args.expected_title, args.button_label)
+            if not args.apply:
+                return preview
+            return apply(session, preview, args.expected_fingerprint, args.receipt, args.confirm_final_action)
+        if args.command == "capture":
+            from wxs_document import capture_pages
+            from wxs_runtime import Session
+            return capture_pages(Session(window), args.expected_title, args.directory, args.dpi)
         if args.command == "export-attachments":
             from wxs_read import export_attachments
             return export_attachments(window, args.expected_title, args.directory, native)

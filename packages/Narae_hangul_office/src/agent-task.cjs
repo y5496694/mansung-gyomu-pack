@@ -2,10 +2,12 @@
 const fs=require('node:fs'),path=require('node:path');
 const {messengerTask,messengerTools,messengerStep}=require('./messenger-task.cjs');
 const {edufineTask,edufineTools,edufineStep}=require('./edufine-task.cjs');
+const {schoolFinalTask,schoolFinalTools,schoolFinalStep}=require('./school-final-task.cjs');
 const school=/나이스|NEIS|복무|조퇴|연가|근무상황|개인결재선|기안문서상신|업무\s*포[털탈]/i;
 function taskFor(prompt,history=[],now=new Date()){
  if(/업무\s*포[털탈]|에듀파인|gyomu_portal_session/.test(prompt)&&/(?:세션(?:을|의)?\s*(?:시간(?:을)?\s*)?(?:자동\s*)?(?:연장|유지|상태|확인)|남은\s*시간|로그인(?:을)?\s*유지|gyomu_portal_session)/.test(prompt))return {area:'session',observe:false,operation:/연장|extend/.test(prompt)?'extend':'status',instructions:'기존 업무 창의 세션만 확인한다. 새 창이나 로그인을 만들지 않는다.'};
  const messenger=messengerTask(prompt,history);if(messenger)return messenger;
+ const final=schoolFinalTask(prompt,history);if(final)return final;
  const edufine=edufineTask(prompt,history,now);if(edufine)return edufine;
  let text=prompt;
  if(!school.test(text)&&/^(?:응|네|예|좋아|계속|진행|다음|로그인.*완료|했어|됐어|해줘|해 봐|다시|사유|날짜|시간|내일|모레|20\d{2}|검토자|결재자)/.test(text.trim())&&!/문서.*(?:만들|작성)|\.hwpx?|메신저/.test(text))text=(history.slice(-8).findLast(i=>i.role==='user'&&school.test(i.content))?.content||'')+'\n'+text;
@@ -17,7 +19,7 @@ function taskFor(prompt,history=[],now=new Date()){
  const reason=text.match(/사유(?:는|[:：])\s*([^,\n.]+)/)?.[1].trim();
  return {area:neis?'neis':'portal',openPortal:/업무\s*포[털탈]/.test(prompt)&&/열어|띄워|접속|들어가/.test(prompt),loginIntent:/인증서.*로그인/.test(prompt)&&/눌러|누르|클릭/.test(prompt),openOnly:!neis&&!/에듀파인|공람|공문|기안/.test(prompt),mixed,draft:/초안|준비|신청|올려|등록/.test(text),plan:{date:day,start:times.length===2?times[0]:null,end:times.length===2?times[1]:null,reason,type:/조퇴/.test(text)?'조퇴':null},observe:!/(?:사용법|방법|절차|설명해|가능해[?？]?$|할 수 있(?:어|나요|습니까)[?？]?$)/.test(prompt),instructions:`현재 기준일은 ${date}, 시간대 Asia/Seoul이다. 내일/모레는 이 날짜로 계산한다. 아래 절차는 이미 제공되었으므로 같은 스킬을 반복 조회하지 않는다.\n`+fs.readFileSync(path.join(__dirname,'../resources/agent-skills/neis.md'),'utf8')};
 }
-function taskTools(task,all){if(task?.area==='session')return all.filter(t=>t.name==='gyomu_portal_session');if(task?.area==='edufine')return edufineTools(all,task);if(task?.area==='cbe')return messengerTools(all);if(!task||task.mixed)return all;return all.filter(t=>['gyomu_browser','gyomu_portal_open','gyomu_portal_session','gyomu_skill_read','gyomu_system_status'].includes(t.name));}
+function taskTools(task,all){if(task?.area==='school-final')return schoolFinalTools(all);if(task?.area==='session')return all.filter(t=>t.name==='gyomu_portal_session');if(task?.area==='edufine')return edufineTools(all,task);if(task?.area==='cbe')return messengerTools(all);if(!task||task.mixed)return all;return all.filter(t=>['gyomu_browser','gyomu_portal_open','gyomu_portal_session','gyomu_skill_read','gyomu_system_status'].includes(t.name));}
 function formReady(plan,observed){
  const fields=(observed.elements||[]).map(e=>({label:e.label.replace(/[\s()]/g,''),value:String(e.value??e.display??'').trim()}));
  const matches=(pattern,value)=>{const found=fields.filter(e=>pattern.test(e.label));return Boolean(value&&found.length&&found.every(e=>{const current=e.value.replace(/[\s./:\-시분]/g,''),expected=value.replace(/[\s./:\-]/g,'');return current===expected||/^\d{1,2}$/.test(current)&&/^\d{1,2}$/.test(expected)&&Number(current)===Number(expected);}));};
@@ -25,6 +27,7 @@ function formReady(plan,observed){
  return matches(/근무상황소분류|^소분류$/,plan.type)&&matches(/^(?:신청일자|신청기간시작일자|신청기간종료일자|시작일자|종료일자)$/,plan.date)&&time('시작',plan.start)&&time('종료',plan.end)&&fields.some(e=>/^(?:사유|용무)$/.test(e.label)&&e.value===plan.reason);
 }
 function taskStep(task,input,all){
+ if(task?.area==='school-final')return schoolFinalStep(task,input,all);
  if(task?.area==='session'){const call=input.find(i=>i.type==='function_call'&&i.name==='gyomu_portal_session'),tool=structuredClone(all.find(t=>t.name==='gyomu_portal_session'));if(!call&&tool){tool.parameters.properties.operation={type:'string',enum:[task.operation]};return {tools:[tool],required:true,instructions:'gyomu_portal_session으로 실제 '+task.operation+'를 한 번 실행한다.'};}if(!call)return {tools:[],receipt:'이 실행 환경의 세션 연장 도구가 아직 준비되지 않았습니다.'};let value;try{value=JSON.parse(input.find(i=>i.type==='function_call_output'&&i.call_id===call.call_id)?.output||'{}');}catch{}return {tools:[],receipt:value?.error?'세션 연장을 확인하지 못했습니다. 추가 창이나 로그인은 실행하지 않았습니다.':`자동 세션 연장: ${value?.enabled?'켜짐':'꺼짐'} · ${value?.intervalMinutes||10}분 간격\n`+((value?.results||[]).map(r=>r.host+': '+(r.verified?'연장 확인 · '+r.afterSeconds+'초':r.status)).join('\n')||'아직 확인된 연장 결과가 없습니다. 로그인된 기존 업무 창만 사용합니다.')};}
  if(task?.area==='cbe')return messengerStep(task,input,all);
  if(task?.area==='edufine')return edufineStep(task,input,all);

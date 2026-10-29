@@ -1,8 +1,71 @@
 // Extend the frozen Narae browser engine with school iframe/form observations.
 import {BrowserEngine, bound, Fault} from '../packages/narae_browser/src/browser.mjs';
+import {createHash} from 'node:crypto';
+
+function finalDOM(element) {
+  const visible = e => {const r=e.getBoundingClientRect(),s=getComputedStyle(e);return r.width>0&&r.height>0&&s.display!=='none'&&s.visibility!=='hidden';};
+  const dialogs = [...document.querySelectorAll('dialog[open],[role=dialog],[aria-modal=true]')].filter(visible);
+  const root = element?.closest?.('[role=dialog],dialog,[aria-modal=true]') || dialogs.at(-1) || document.body;
+  return {text: root.innerText, fields: [...root.querySelectorAll('input:not([type=password]):not([type=file]):not([type=hidden]),textarea,select')]
+    .map(e => [e.id,e.name,e.type,e.value,Boolean(e.checked),Boolean(e.disabled)])};
+}
+const finalDigest = state => createHash('sha256').update(JSON.stringify(state)).digest('hex');
+
+export function finalOperation(label) {
+  const name = label.replace(/\s+/g, '').replace(/[.!…]+$/, '');
+  if (/^(?:최종)?(?:상신|결재올림)(?:하기)?$/.test(name)) return 'submit';
+  if (/^(?:최종)?(?:결재|결재승인|승인)(?:하기)?$/.test(name)) return 'approve';
+  if (/^(?:최종)?(?:공람확인|공람완료|발송|전송|삭제)(?:하기|합니다|요청)?$/.test(name)) return 'unsupported';
+  return null;
+}
 
 export class SchoolBrowser extends BrowserEngine {
-  constructor() {super(); this.frame = null;}
+  constructor() {super(); this.frame = null; this.finalAttempts = new Set();}
+  installFinalDialogs() {
+    const watch = page => {
+      page.removeAllListeners('dialog');
+      page.on('dialog', async dialog => {
+        const auth = this.finalAuthorization;
+        const accepted = Boolean(auth && auth.page === page && !auth.dialog && dialog.type() === 'confirm' &&
+          auth.text && dialog.message() === auth.text && !/삭제|발송|전송|반려|인증|암호|서명/.test(dialog.message()) &&
+          (auth.operation === 'submit' ? /상신|결재올림/ : /결재|승인/).test(dialog.message()));
+        if (auth && auth.page === page && !auth.dialog) auth.dialog = {type:dialog.type(),message: dialog.message(), accepted};
+        await (accepted ? dialog.accept() : dialog.dismiss()).catch(() => {});
+      });
+    };
+    this.context.on('page', watch);
+    for (const page of this.context.pages()) watch(page);
+  }
+  async start(options) {const result = await super.start(options); this.installFinalDialogs(); return result;}
+  async withFinalState(result) {return {...result,finalState:finalDigest(await this.scope().evaluate(finalDOM))};}
+  async finalClick(command, entry, operation) {
+    if (operation === 'unsupported') throw new Fault('UNSUPPORTED_FINAL_ACTION', '발송·삭제·공람 처리는 이번 지원 범위가 아닙니다.');
+    if (command.confirmFinalAction !== true || !command.expectedDocument?.trim() ||
+        command.expectedLabel !== entry.label || command.expectedUrl !== this.scope().url() || !command.expectedState)
+      throw new Fault('FINAL_ACTION_CONFIRMATION_REQUIRED', '명시적 상신·결재 요청 후 confirmFinalAction, expectedDocument, expectedLabel, expectedUrl을 지정하세요.');
+    const {locator} = this.ref(command.ref);
+    if (finalDigest(await locator.evaluate(finalDOM)) !== command.expectedState)
+      throw new Fault('FINAL_ACTION_TARGET_CHANGED', '미리보기 이후 문서·입력값·결재선이 바뀌었습니다. 다시 확인하세요.');
+    const current = await locator.evaluate(e => ({label: (e.getAttribute('aria-label') || e.innerText || e.value || e.getAttribute('title') || '').replace(/\s+/g, ' ').trim(),
+      disabled: Boolean(e.disabled) || e.getAttribute('aria-disabled') === 'true',
+      text: (e.closest('[role=dialog],dialog') || document.body).innerText}));
+    if (current.disabled || current.label !== entry.label || !current.text.includes(command.expectedDocument))
+      throw new Fault('FINAL_ACTION_TARGET_CHANGED', '현재 문서·버튼·입력 내용을 다시 확인하세요.');
+    const key = JSON.stringify([this.scope().url(), operation, command.expectedDocument]);
+    if (this.finalAttempts.has(key)) throw new Fault('FINAL_ACTION_ALREADY_ATTEMPTED', '이미 시도한 처리입니다. 서버 상태를 확인하고 중복 실행하지 마세요.');
+    this.finalAttempts.add(key);
+    const auth = {page: this.page, operation, text: command.confirmationText};
+    this.finalAuthorization = auth;
+    try {
+      await locator.click({noWaitAfter: true});
+      this.invalidate();
+      const result = await this.snapshot(command);
+      // A dismissed native confirm proves cancellation, not a successful submission.
+      if (auth.dialog?.type === 'confirm' && !auth.dialog.accepted) this.finalAttempts.delete(key);
+      return {...result, finalAction: {operation, attempted: true, completed: false,
+        verificationRequired: true, ...(auth.dialog ? {nativeDialog: auth.dialog} : {})}};
+    } finally {this.finalAuthorization = null;}
+  }
   scope() {
     if (this.frame?.isDetached()) this.frame = null;
     return this.frame || this.page.mainFrame();
@@ -22,7 +85,7 @@ export class SchoolBrowser extends BrowserEngine {
       for (const e of nodes) {
         if (!visible(e)) continue;
         const tag = e.tagName.toLowerCase(), type = e.getAttribute('type') || '';
-        const label = (e.getAttribute('aria-label') || e.labels?.[0]?.innerText || e.getAttribute('placeholder') ||
+        const label = (e.getAttribute('aria-label') || (/^(button|submit)$/.test(type) ? e.value : '') || e.labels?.[0]?.innerText || e.getAttribute('placeholder') ||
           e.innerText || e.getAttribute('title') || e.getAttribute('name') || '').replace(/\s+/g, ' ').trim().slice(0, 180);
         if (filter && !label.includes(filter)) continue;
         const ref = `${version}/e${elements.length + 1}`;
@@ -40,7 +103,7 @@ export class SchoolBrowser extends BrowserEngine {
     }, {version, limit: bound(args.limit, 1, 100, 35), chars: bound(args.chars, 100, 12000, 2000),
       offset: bound(args.offset, 0, 10000, 0), filter: args.filter || ''});
     for (const entry of result.elements) this.refs.set(entry.ref, entry);
-    return {version, frameIndex: this.page.frames().indexOf(this.scope()), ...result, untrusted: true};
+    return this.withFinalState({version, frameIndex: this.page.frames().indexOf(this.scope()), ...result, untrusted: true});
   }
   async read(args = {}) {
     return this.scope().evaluate(({chars, offset, selector}) => {
@@ -62,8 +125,9 @@ export class SchoolBrowser extends BrowserEngine {
     }
     if (command.action === 'click') {
       const {entry} = this.ref(command.ref);
-      if (/^(?:최종\s*)?(?:상신|결재올림|결재\s*승인|공람\s*확인|공람\s*완료|발송|전송|삭제|승인)$/.test(entry.label.trim()))
-        throw new Fault('UNSUPPORTED_FINAL_ACTION', '이 최종 처리는 자동화 범위에 없습니다. 화면에서 직접 처리하세요.');
+      const navigation = /^(treeitem|tab|menuitem)$/.test(entry.role);
+      const operation = navigation ? null : finalOperation(entry.label);
+      if (operation) return this.finalClick(command, entry, operation);
     }
     if (command.action === 'press' && !['Tab', 'Shift+Tab', 'Escape', 'ArrowDown', 'ArrowUp', 'PageDown', 'PageUp'].includes(command.key))
       throw new Fault('UNSUPPORTED_KEY', '현재 자동 키 입력은 이동·선택·닫기 키만 지원합니다. 검색 버튼의 실제 ref를 사용하세요.');
