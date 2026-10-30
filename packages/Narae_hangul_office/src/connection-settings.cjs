@@ -4,8 +4,8 @@ function normalize(raw,defaults={}){
  const localSource=raw.localSource==='external'?'external':'managed',aiConnections=structuredClone(raw.aiConnections||{'openai:api':{endpoint:raw.endpoint||endpoints.openai,model:raw.model||''}});
  // Migrate the previously shared local slot to its known source without guessing the other source.
  if(aiConnections['local:local']&&!aiConnections['local:'+localSource])aiConnections['local:'+localSource]=structuredClone(aiConnections['local:local']);
- const selected=aiConnections[provider==='local'?'local:'+localSource:provider+':'+connectionMode]||{};
- return {...defaults,...raw,provider,connectionMode,aiConnections,model:selected.model||'',endpoint:connectionMode==='oauth'?endpoints[provider]:(selected.endpoint||endpoints[provider]||'http://127.0.0.1:11434/v1'),localSource,browserMode:raw.browserMode==='extension'?'extension':'isolated'};
+ const selected=aiConnections[provider==='local'?'local:'+localSource:provider+':'+connectionMode]||{},browserExistingOptIn=raw.browserExistingOptIn===true&&raw.browserMode==='extension';
+ return {...defaults,...raw,provider,connectionMode,aiConnections,model:selected.model||'',endpoint:connectionMode==='oauth'?endpoints[provider]:(selected.endpoint||endpoints[provider]||'http://127.0.0.1:11434/v1'),localSource,browserExistingOptIn,browserMode:browserExistingOptIn?'extension':'isolated'};
 }
 function update(current,request){
  const provider=request.provider??current.provider,connectionMode=provider==='local'?'local':request.connectionMode??(request.apiKey?.trim()?'api':current.connectionMode==='local'?'oauth':current.connectionMode);

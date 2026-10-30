@@ -1,5 +1,6 @@
 'use strict';
 const fields={token:'PLAYWRIGHT_MCP_EXTENSION_TOKEN',browser:'PLAYWRIGHT_MCP_BROWSER',profile:'PLAYWRIGHT_MCP_PROFILE_DIR_NAME'};
+function requireSetup(mode,environment={},optIn=false){if(!['isolated','extension'].includes(mode))throw new Error('브라우저 연결 방식을 선택하세요.');if(mode==='extension'&&optIn!==true)throw new Error('설정 → 일반에서 기존 Chrome의 열린 탭 사용을 체크하세요.');if(mode==='extension'&&!environment[fields.token])throw new Error('기존 Chrome을 사용하려면 설정 → 일반에서 확장을 설치하고 연결 토큰을 저장하세요.');}
 function normalize(values){
  if(!values||typeof values!=='object'||Array.isArray(values)||Object.keys(values).some(key=>!Object.values(fields).includes(key)))throw new Error('지원하는 브라우저 연결 환경 변수만 입력하세요.');
  const result={};for(const [key,value]of Object.entries(values)){if(typeof value!=='string'||value.length>4096||/[\r\n\0]/.test(value))throw new Error('브라우저 연결 환경 변수 값을 확인하세요.');if(value.trim())result[key]=value.trim();}
@@ -19,4 +20,4 @@ class BrowserEnvironment{
   const value=normalize(next),changed=JSON.stringify(value)!==JSON.stringify(before);if(changed){if(Object.keys(value).length)this.store.set(JSON.stringify(value));else this.store.remove();}return {changed,...this.state()};
  }
 }
-module.exports={BrowserEnvironment,normalize,fields};
+module.exports={BrowserEnvironment,normalize,fields,requireSetup};

@@ -1,6 +1,8 @@
 # 나래 한글 오피스
 
-설정 → 일반 → **브라우저 연결**에서 전용 업무 창 또는 기존 Chrome을 선택합니다. 기존 Chrome을 사용하려면 **Chrome 연결 확장 설치**로 공식 Playwright 확장을 설치한 뒤 확장의 연결 토큰을 **PLAYWRIGHT_MCP_EXTENSION_TOKEN** 입력란에 붙여넣고 저장하세요. Chrome/Edge와 프로필도 같은 곳에서 지정할 수 있습니다. 저장한 값은 다음 브라우저 작업부터 자동 적용되며, Windows 사용자 환경 변수에 이미 저장된 토큰도 재사용합니다. 토큰 없이 직접 사용할 탭을 선택해 연결할 수도 있습니다.
+기본은 **나래 전용 브라우저**입니다. 기존 Chrome의 탭을 사용하려면 설정 → 일반에서 **기존 Chrome의 열린 탭 사용**을 체크하고, 나타난 **Chrome 연결 확장 설치**로 공식 Playwright 확장을 설치하세요. 확장의 연결 토큰을 **PLAYWRIGHT_MCP_EXTENSION_TOKEN** 입력란에 붙여넣고 저장하면 기존 탭을 사용할 수 있습니다. Chrome/Edge와 프로필도 같은 곳에서 지정할 수 있습니다. 체크하지 않으면 저장된 토큰이나 Windows 환경변수가 있어도 전용 브라우저를 사용합니다.
+
+이전 버전에서 기존 Chrome을 사용하던 설치본도 이번 업데이트 후 전용 브라우저가 기본으로 적용됩니다. 기존 탭을 계속 사용하려면 위 체크박스를 다시 선택하세요. 저장한 확장 토큰은 유지됩니다.
 
 오피스에 입력한 값은 현재 Windows 사용자만 읽도록 로컬에 암호화해 저장합니다. 토큰은 다시 표시하지 않으며 PC 전체 환경 변수를 바꾸지 않습니다. 연결 해제와 앱 종료는 사용자의 Chrome·탭을 닫지 않고 기존 로그인 상태를 유지합니다. 확장 인증 직후 연결된 탭이 없으면 요청한 주소를 같은 Chrome 프로필에서 엽니다.
 
@@ -15,7 +17,7 @@
 ## 설치
 
 1. Windows 10/11 x64에 **한컴오피스 한글이 먼저 설치되어 있어야 합니다.** 한 번 직접 실행해 초기 설정을 마칩니다. 한컴 프로그램·라이선스·글꼴은 이 저장소에 포함하지 않습니다.
-2. 텔레그램·로컬 AI가 포함된 [0.13.0-preview.9 릴리스](https://github.com/y5496694/Narae_hangul_office/releases/tag/v0.13.0-preview.9)의 `Narae-Hangul-Office-0.13.0-preview.9-windows-x64.zip`을 내려받아 압축을 풉니다. 또는 이 저장소의 Code → Download ZIP을 사용합니다.
+2. [0.13.0-preview.14 릴리스](https://github.com/y5496694/Narae_hangul_office/releases/tag/v0.13.0-preview.14)의 `Narae-Hangul-Office-0.13.0-preview.14-windows-x64.zip`을 내려받아 압축을 풉니다. 또는 이 저장소의 Code → Download ZIP을 사용합니다.
 3. 폴더 안의 **`설치.cmd`를 한 번 실행**합니다. Node.js·Python·Electron·엔진 라이브러리·공식 Claude 로그인 도구·로컬 AI CPU 실행기를 앱 전용 폴더에 자동 설치합니다. **Node.js나 Python을 따로 설치할 필요가 없습니다.** 첫 설치에는 인터넷이 필요하며 관리자 권한은 필요 없습니다.
 4. 바탕화면의 **나래 한글 오피스**를 실행합니다.
 

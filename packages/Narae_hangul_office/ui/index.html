@@ -132,14 +132,17 @@
 <div class="shortcut-settings"><label>작은 한글 명령 창<input id="hangulShortcut" type="text" readonly autocomplete="off" aria-describedby="shortcutHelp" placeholder="눌러서 단축키 입력"></label><button id="clearHangulShortcut" type="button">사용 안 함</button><label>작은 에이전트 명령 창<input id="agentShortcut" type="text" readonly autocomplete="off" aria-describedby="shortcutHelp" placeholder="눌러서 단축키 입력"></label><button id="clearAgentShortcut" type="button">사용 안 함</button></div><p id="shortcutHelp" class="muted">입력칸을 선택하고 Ctrl·Alt 등을 포함한 키 조합을 누른 뒤 저장하세요. 다른 프로그램을 쓰는 중에도 호출할 수 있습니다.</p><p id="shortcutStatus" role="status"></p>
 <label class="check-label"><input id="toolAutoAllow" type="checkbox">모든 도구 실행 자동 허용 · 승인창 없이 실행</label><p class="muted">문서 변경, 브라우저 조작, 메신저 발송에 적용합니다. 설정은 이 PC에 저장됩니다.</p>
 <label class="check-label"><input id="keepSchoolSession" type="checkbox" checked>업무포털·에듀파인 자동 세션 연장</label><p class="muted">다음 요청을 기다리는 동안 10분마다 기존 창의 연장 버튼을 누르고 남은 시간을 확인합니다. 작업 중에는 잠시 대기하며, 앱을 종료하거나 로그아웃하면 연장하지 않습니다.</p>
-<label>브라우저 연결<select id="browserMode"><option value="isolated">전용 업무 창</option><option value="extension">기존 Chrome의 열린 탭</option></select></label>
-<p class="muted">기존 Chrome은 확장을 한 번 설치한 뒤 연결 화면에서 사용할 탭을 선택하세요. 연결을 해제해도 Chrome과 열린 탭은 남습니다.</p>
+<h4>업무 브라우저</h4><p class="muted">기본은 나래 전용 브라우저입니다. 평소 사용하던 Chrome의 탭과 분리해서 업무를 진행합니다.</p>
+<label class="check-label"><input id="browserUseExisting" type="checkbox" aria-controls="browserExtensionFields">기존 Chrome의 열린 탭 사용 · 확장 설정 필요</label>
+<section id="browserExtensionFields" hidden aria-label="기존 Chrome 확장 연결 설정">
+<p class="muted">이 옵션을 체크하고 확장 연결을 설정한 경우에만 기존 탭을 사용합니다. 연결을 해제해도 Chrome과 열린 탭은 남습니다.</p>
 <ol class="muted"><li>아래 설치 버튼으로 Playwright 확장을 Chrome에 추가합니다.</li><li>Chrome의 확장 아이콘 → Playwright 상태 화면에서 <code>PLAYWRIGHT_MCP_EXTENSION_TOKEN</code> 값을 복사합니다.</li><li>아래에 붙여 넣고 저장하면 다음 브라우저 작업부터 해당 설정으로 자동 연결합니다.</li></ol>
 <label>PLAYWRIGHT_MCP_EXTENSION_TOKEN<input id="browserExtensionToken" type="password" autocomplete="new-password" spellcheck="false" placeholder="확장 토큰 값 또는 변수=값 붙여넣기"></label>
 <label>PLAYWRIGHT_MCP_BROWSER<select id="browserEnvironmentBrowser"><option value="">자동 · 현재 환경 설정</option><option value="chrome">Chrome</option><option value="msedge">Edge</option></select></label>
 <label>PLAYWRIGHT_MCP_PROFILE_DIR_NAME<input id="browserEnvironmentProfile" type="text" autocomplete="off" placeholder="선택 사항 · Default 또는 Profile 1"></label><p class="muted">프로필을 지정하려면 chrome://version의 프로필 경로에서 마지막 이름을 입력하세요. 토큰은 같은 프로필의 값을 사용합니다. 입력값은 이 PC에 암호화해 저장하며, 비워 둔 토큰은 기존 값을 유지합니다.</p>
 <div class="button-row"><button id="browserEnvironmentSave" type="button">연결 환경변수 저장</button><button id="browserEnvironmentClear" type="button">오피스에 저장한 토큰 삭제</button></div><p id="browserEnvironmentStatus" role="status"></p>
-<div class="button-row"><button id="browserExtensionInstall" type="button">Chrome 연결 확장 설치</button><button id="browserConnect" type="button">브라우저 연결</button><button id="browserDisconnect" type="button">연결 해제</button></div><p id="browserConnectionStatus" role="status"></p>
+<button id="browserExtensionInstall" type="button">Chrome 연결 확장 설치</button></section>
+<div class="button-row"><button id="browserConnect" type="button">브라우저 연결</button><button id="browserDisconnect" type="button">연결 해제</button></div><p id="browserConnectionStatus" role="status"></p>
 <label>작업 폴더<span id="workspace" class="path-label"></span></label><button id="chooseFolder" type="button">작업 폴더 변경</button><label class="check-label"><input id="autoSave" type="checkbox" checked>AI의 열린 한글 편집 후 자동 저장</label><p class="muted">문서와 대화는 이 컴퓨터에 보관합니다.</p>
 <button id="settingsDataFolder" type="button">저장 폴더 열기</button><p id="generalSettingsStatus" role="status"></p>
 <button type="submit" class="primary save-settings">일반 설정 저장</button>
