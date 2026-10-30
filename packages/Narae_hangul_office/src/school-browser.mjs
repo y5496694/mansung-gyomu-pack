@@ -4,9 +4,10 @@ import {bound,Fault,browserPath} from '../vendor/narae-gyomu/packages/narae_brow
 import {chromium} from 'playwright-core';
 import session from './school-session.cjs';
 export class OfficeSchoolBrowser extends SchoolBrowser {
- constructor({profile}={}){super();this.profile=profile;this.closed=false;}
+ constructor({profile,connection='isolated',connectionDirectory,endpoint}={}){super();Object.assign(this,{profile,connection,connectionDirectory,endpoint});this.closed=false;}
  resetTask(){this.launchAttempts=new Set();this.clickAttempts=new Map();}
  async start({headed=false}={}){
+  if(this.connection!=='isolated'){const result=await super.start({headed:true,connection:this.connection,endpoint:this.endpoint,directory:this.connectionDirectory});this.browser.on('disconnected',()=>{this.closed=true;});this.context.on('close',()=>{this.closed=true;});return result;}
   if(!this.profile){const result=await super.start({headed});this.context.on('close',()=>{this.closed=true;});return result;}
   this.context=await chromium.launchPersistentContext(this.profile,{headless:!headed,chromiumSandbox:true,executablePath:browserPath(),args:['--hide-crash-restore-bubble','--restore-last-session'],viewport:{width:1280,height:900},locale:'ko-KR',acceptDownloads:false,serviceWorkers:'block'});
   this.context.on('close',()=>{this.closed=true;});

@@ -112,6 +112,11 @@ export const schema = {
     error: { code: "string", message: "string" },
   },
   commands: {
+    attach: {
+      connection: "extension (default) or cdp",
+      browser: "chrome or msedge",
+      note: "CLI setup only; select an existing tab in the extension. close disconnects without closing Chrome.",
+    },
     open: { url: "https://..." },
     snapshot: { limit: 35, chars: 1600 },
     read: { chars: 5000, offset: 0, selector: "optional CSS" },

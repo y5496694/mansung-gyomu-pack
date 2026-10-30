@@ -7,5 +7,5 @@
 - OpenAI-compatible local models (Ollama/llama.cpp/LM Studio): bounded JSON agent loop without dependence on native tool calling; explicit hosts and read-only model actions; page data is untrusted.
 - Naver news acceptance: real browser collects three distinct article URLs, extracts actual article bodies, local small model summarizes each with source URL and saved evidence; failure never becomes fabricated news.
 - Acceptance distinguishes deterministic browser workflow + model summarization from a model autonomously selecting browser actions.
-- No user Chrome profile reuse, browser security bypass, CAPTCHA solving, login credential export, arbitrary JS/shell tool, or default remote service exposure.
+- Existing Chrome tabs are available only through an explicit extension/CDP connection; no profile-file copying, browser security bypass, CAPTCHA solving, login credential export, arbitrary JS/shell tool, or default remote service exposure.
 - Test local deterministic fixture interaction, persistence, stale refs, structured errors, daemon auth, output caps, model JSON/error validation, URL/host policies and Naver live workflow separately.

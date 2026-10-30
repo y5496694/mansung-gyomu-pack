@@ -2,6 +2,7 @@ import { chromium } from "playwright-core";
 import fs from "node:fs";
 import path from "node:path";
 import os from "node:os";
+import { connectExistingBrowser } from "./existing-browser.mjs";
 export class Fault extends Error {
   constructor(code, message) {
     super(message);
@@ -76,7 +77,9 @@ export class BrowserEngine {
     this.policy = null;
     this.errors = [];
   }
-  async start({ headed = false } = {}) {
+  async start({ headed = false, connection = "isolated", ...options } = {}) {
+    if (connection !== "isolated")
+      return this.attach({ connection, ...options });
     this.browser = await chromium.launch({
       headless: !headed,
       executablePath: browserPath(),
@@ -114,6 +117,55 @@ export class BrowserEngine {
     });
     this.page = await this.context.newPage();
     return { browser: "chromium", headless: !headed, isolated: true };
+  }
+  async attach(options = {}) {
+    if (this.browser)
+      throw new Fault(
+        "BROWSER_ALREADY_CONNECTED",
+        "먼저 현재 브라우저 연결을 종료하세요.",
+      );
+    const browser = await connectExistingBrowser({
+      directory: path.join(sessionRoot(), "connections"),
+      ...options,
+    });
+    this.browser = browser;
+    this.attached = true;
+    this.connection = options.connection || "extension";
+    this.context = browser.contexts()[0];
+    const watch = (page) => {
+      if (this.pages.includes(page)) return;
+      this.pages.push(page);
+      page.on("framenavigated", (frame) => {
+        if (frame === page.mainFrame() && page === this.page) this.invalidate();
+      });
+    };
+    try {
+      if (!this.context)
+        throw new Fault(
+          "CHROME_NO_CONTEXT",
+          "연결된 Chrome 창을 확인하지 못했습니다.",
+        );
+      this.context.setDefaultTimeout(12000);
+      this.context.on("page", watch);
+      for (const page of this.context.pages()) watch(page);
+      this.page = this.pages.findLast((page) => /^https?:/.test(page.url()));
+      if (!this.page)
+        throw new Fault(
+          "CHROME_NO_WEB_TAB",
+          "연결 화면에서 열려 있는 웹사이트 탭을 선택하세요.",
+        );
+      return {
+        browser: "chromium",
+        attached: true,
+        isolated: false,
+        connection: this.connection,
+        ...(await this.execute({ action: "tabs" })),
+      };
+    } catch (error) {
+      await browser.close().catch(() => {});
+      this.browser = null;
+      throw error;
+    }
   }
   invalidate() {
     this.serial++;
@@ -265,6 +317,11 @@ export class BrowserEngine {
     if (typeof action !== "string")
       throw new Fault("INVALID_COMMAND", "action is required");
     if (action === "policy") {
+      if (this.attached)
+        throw new Fault(
+          "ISOLATED_POLICY_REQUIRED",
+          "뉴스·읽기 전용 agent는 전용 브라우저 세션을 사용하세요.",
+        );
       if (
         !Array.isArray(command.hosts) ||
         !command.hosts.length ||
@@ -278,10 +335,42 @@ export class BrowserEngine {
     }
     if (action === "close") {
       await this.browser?.close();
-      return { closed: true };
+      return {
+        closed: true,
+        ...(this.attached
+          ? { detached: true, userBrowserPreserved: true }
+          : {}),
+      };
     }
+    if (action === "tabs")
+      return {
+        tabs: await Promise.all(
+          this.pages
+            .filter(
+              (p) =>
+                !p.isClosed() && (!this.attached || /^https?:/.test(p.url())),
+            )
+            .map(async (p, index) => ({
+              index,
+              url: p.url(),
+              title: await p.title(),
+              active: p === this.page,
+            })),
+        ),
+      };
     if (!this.page || this.page.isClosed()) {
-      this.page = await this.context.newPage();
+      if (this.attached) {
+        this.page = this.pages.find(
+          (p) => !p.isClosed() && /^https?:/.test(p.url()),
+        );
+        if (!this.page)
+          throw new Fault(
+            "ATTACHED_TAB_CLOSED",
+            "연결된 웹 탭이 닫혔습니다. Chrome에서 다시 연결하세요.",
+          );
+      } else {
+        this.page = await this.context.newPage();
+      }
       this.invalidate();
     }
     switch (action) {
@@ -388,7 +477,9 @@ export class BrowserEngine {
           ),
         };
       case "tab": {
-        const pages = this.pages.filter((p) => !p.isClosed());
+        const pages = this.pages.filter(
+          (p) => !p.isClosed() && (!this.attached || /^https?:/.test(p.url())),
+        );
         const index = bound(command.index, 0, pages.length - 1, 0);
         this.page = pages[index];
         await this.page.bringToFront();

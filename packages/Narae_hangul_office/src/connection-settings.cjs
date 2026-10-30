@@ -5,7 +5,7 @@ function normalize(raw,defaults={}){
  // Migrate the previously shared local slot to its known source without guessing the other source.
  if(aiConnections['local:local']&&!aiConnections['local:'+localSource])aiConnections['local:'+localSource]=structuredClone(aiConnections['local:local']);
  const selected=aiConnections[provider==='local'?'local:'+localSource:provider+':'+connectionMode]||{};
- return {...defaults,...raw,provider,connectionMode,aiConnections,model:selected.model||'',endpoint:connectionMode==='oauth'?endpoints[provider]:(selected.endpoint||endpoints[provider]||'http://127.0.0.1:11434/v1'),localSource};
+ return {...defaults,...raw,provider,connectionMode,aiConnections,model:selected.model||'',endpoint:connectionMode==='oauth'?endpoints[provider]:(selected.endpoint||endpoints[provider]||'http://127.0.0.1:11434/v1'),localSource,browserMode:raw.browserMode==='extension'?'extension':'isolated'};
 }
 function update(current,request){
  const provider=request.provider??current.provider,connectionMode=provider==='local'?'local':request.connectionMode??(request.apiKey?.trim()?'api':current.connectionMode==='local'?'oauth':current.connectionMode);

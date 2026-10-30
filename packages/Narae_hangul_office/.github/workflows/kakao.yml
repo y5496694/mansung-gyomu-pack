@@ -36,6 +36,8 @@ jobs:
         run: npm run test:local:desktop
       - name: Unified settings and agent layout
         run: npm run test:settings:desktop
+      - name: Existing Chrome connection settings with synthetic tabs
+        run: node tests/browser-settings-desktop.cjs
       - name: Tray lifecycle and compact command windows
         run: node tests/quick-window-desktop.cjs
       - name: Independent approval dialog and automatic tool permission

@@ -7,8 +7,11 @@ import { Fault, browserPath } from "../src/browser.mjs";
 import { command, sessionPaths } from "../src/session.mjs";
 import { actionFromArgs, schema } from "../src/protocol.mjs";
 import { news, agent } from "../src/workflows.mjs";
-const help = `나래 브라우저 / narae-browser 0.1.0
+import { extensionInstallURL } from "../src/existing-browser.mjs";
+const help = `나래 브라우저 / narae-browser 0.2.0
   narae-browser doctor | schema
+  narae-browser attach --session NAME [--connection extension|cdp] [--browser chrome|msedge]
+  narae-browser extension   (existing Chrome connection setup)
   narae-browser open URL [--session NAME] [--headed]
   narae-browser snapshot [--limit 35] [--chars 1600]
   narae-browser click REF | fill REF TEXT | select REF VALUE | press KEY
@@ -41,6 +44,10 @@ const booleans = new Set(["headed", "extractive", "full-page", "json", "help"]),
     "section",
     "evidence-dir",
     "summary-mode",
+    "connection",
+    "browser",
+    "profile",
+    "cdp-endpoint",
   ]);
 function parse(argv) {
   const flags = {},
@@ -103,11 +110,28 @@ try {
         summaryMode: flags["summary-mode"],
         extractive: !!flags.extractive,
         evidenceDir: flags["evidence-dir"],
+        connection:
+          flags.connection || (name === "attach" ? "extension" : undefined),
+        channel: flags.browser || "chrome",
+        profile: flags.profile,
+        endpoint: flags["cdp-endpoint"],
       },
       session = flags.session || "default";
     sessionPaths(session);
     let data;
     if (name === "schema") data = schema;
+    else if (name === "extension")
+      data = {
+        installURL: extensionInstallURL,
+        instructions:
+          "확장을 설치한 Chrome에서 attach를 실행하고 연결할 기존 탭을 선택하세요. close는 Chrome을 닫지 않고 연결만 종료합니다.",
+      };
+    else if (name === "attach")
+      data = {
+        attached: true,
+        connection: options.connection,
+        ...(await command(session, { action: "tabs" }, options)),
+      };
     else if (name === "doctor")
       data = {
         node: process.version,

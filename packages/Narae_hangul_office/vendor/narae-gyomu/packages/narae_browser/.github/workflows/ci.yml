@@ -20,4 +20,5 @@ jobs:
       - run: npm test
       - run: node bin/narae-browser.mjs doctor
       - run: npm run test:e2e
+      - run: node --test tests/existing-browser.e2e.mjs
       - run: npm pack --dry-run

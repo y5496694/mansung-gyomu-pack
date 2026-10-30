@@ -44,6 +44,23 @@ narae-browser press Enter --session work
 - `--headed`는 **새 세션을 시작할 때** 브라우저 창을 띄웁니다. 기존 headless 세션은 먼저 `close`해야 합니다.
 - ref는 축약 DOM 관찰 결과입니다. 완전한 접근성 트리·화면 픽셀 인식이나 캔버스 내부 객체 인식은 아닙니다.
 
+## 이미 열린 Chrome 연결
+
+전용 창을 새로 여는 대신 사용 중인 Chrome/Edge의 탭과 로그인 상태를 이어 쓸 수 있습니다. `narae-browser extension`이 안내하는 공식 Playwright 확장을 한 번 설치한 뒤 실행합니다.
+
+```powershell
+narae-browser attach --session work
+# 확장 연결 화면에서 제어할 기존 웹 탭 선택
+narae-browser snapshot --session work
+narae-browser tabs --session work
+narae-browser tab 0 --session work
+narae-browser close --session work
+```
+
+`close`와 유휴 종료는 연결만 해제하며 사용자 Chrome·탭·로그인 상태를 닫거나 삭제하지 않습니다. 기존 탭 선택이 취소되거나 확장이 없으면 오류를 반환하며 별도 창으로 자동 전환하지 않습니다. Edge는 `--browser msedge`, 특정 프로필은 `--profile "Profile 1"`로 지정합니다. 다른 방식으로 실행 중인 같은 세션은 먼저 `close`합니다.
+
+이미 디버깅 연결을 허용한 로컬 브라우저에는 `attach --connection cdp --cdp-endpoint http://127.0.0.1:9222 --session work`도 지원합니다. 이 명령은 Chrome을 재실행하거나 일반 프로필의 디버깅 설정을 바꾸지 않습니다. 기본 뉴스·읽기 전용 agent 실행은 전용 세션을 유지합니다.
+
 ## 테스트 목표: 네이버 뉴스 3개 요약
 
 로컬 Ollama가 실행 중인 환경에서:

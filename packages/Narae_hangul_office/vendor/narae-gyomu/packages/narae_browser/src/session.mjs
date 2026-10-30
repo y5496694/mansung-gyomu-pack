@@ -48,6 +48,14 @@ export async function connect(session = "default", options = {}) {
   if (state) {
     try {
       await rpc(state, { action: "tabs" });
+      if (
+        options.connection &&
+        (state.connection || "isolated") !== options.connection
+      )
+        throw new Fault(
+          "BROWSER_MODE_MISMATCH",
+          "이 세션은 다른 브라우저 방식으로 연결돼 있습니다. 먼저 close하고 다시 연결하세요.",
+        );
       return state;
     } catch (e) {
       if (e.code && !["DAEMON_ERROR"].includes(e.code)) throw e;
@@ -71,13 +79,25 @@ export async function connect(session = "default", options = {}) {
     fs.rmSync(path.join(p.dir, "failure.json"), { force: true });
     const child = spawn(
       process.execPath,
-      [entry, "--daemon", session, ...(options.headed ? ["--headed"] : [])],
+      [
+        entry,
+        "--daemon",
+        session,
+        ...(options.headed ? ["--headed"] : []),
+        "--connection",
+        options.connection || "isolated",
+        "--channel",
+        options.channel || "chrome",
+        ...(options.profile ? ["--profile", options.profile] : []),
+        ...(options.endpoint ? ["--endpoint", options.endpoint] : []),
+      ],
       { detached: true, stdio: "ignore", windowsHide: true, env: process.env },
     );
     child.unref();
   }
   try {
-    const deadline = Date.now() + 45000;
+    const deadline =
+      Date.now() + (options.connection === "extension" ? 120000 : 45000);
     while (Date.now() < deadline) {
       state = readState(p.state);
       if (state) {
@@ -146,7 +166,20 @@ async function daemon(session) {
     timer.unref();
   }
   try {
-    await engine.start({ headed: process.argv.includes("--headed") });
+    const option = (name) => process.argv[process.argv.indexOf(name) + 1];
+    const connection = option("--connection") || "isolated";
+    await engine.start({
+      headed: process.argv.includes("--headed"),
+      connection,
+      channel: option("--channel"),
+      profile: process.argv.includes("--profile")
+        ? option("--profile")
+        : undefined,
+      endpoint: process.argv.includes("--endpoint")
+        ? option("--endpoint")
+        : undefined,
+      directory: path.join(paths.dir, "connection"),
+    });
     server = http.createServer(async (req, res) => {
       res.setHeader("content-type", "application/json; charset=utf-8");
       res.setHeader("cache-control", "no-store");
@@ -205,6 +238,7 @@ async function daemon(session) {
         port: server.address().port,
         token,
         version: 1,
+        connection,
       }),
       { mode: 0o600 },
     );

@@ -1,6 +1,6 @@
 {
   "name": "narae-browser",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "나래 브라우저: small-model friendly browser control CLI with compact JSON observations",
   "type": "module",
   "bin": {
@@ -34,7 +34,7 @@
     "url": "https://github.com/y5496694/narae_browser/issues"
   },
   "dependencies": {
-    "playwright-core": "^1.64.1"
+    "playwright-core": "1.64.1"
   },
   "devDependencies": {
     "prettier": "^3.9.10"
