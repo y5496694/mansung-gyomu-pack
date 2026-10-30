@@ -31,6 +31,7 @@ export class Tools {
     this.browser = null; this.pending = new Map(); this.approvedFiles = new Map();
     this.people = new Map(); this.jobs = new Map();
     this.windows = new Set();
+    this.wxsOptionDialogs = new Map();
     this.viewers = new Set();
     this.python = path.resolve(HOME, readJSON(path.join(HOME, 'runtime.json')).python);
     this.pythonEnv={LOCALAPPDATA:path.join(DATA,'native/Local'),APPDATA:path.join(DATA,'native/Roaming')};
@@ -238,6 +239,19 @@ export class Tools {
         const result=await this.wxs(args,signal);
         if(a.operation==='windows')for(const window of result.windows || [])this.windows.add(BigInt(window.hwnd).toString());
         return result;
+      }
+      case 'wxs.options': {
+        const hwnd=BigInt(this.windowId(a.hwnd)).toString();
+        if(typeof a.expected_title!=='string'||a.expected_title.length>500||!['approval','task','disclosure'].includes(a.section))throw new Fault('WXS_OPTIONS','현재 초안의 정확한 제목과 조회 영역을 지정하세요.');
+        const key=JSON.stringify([hwnd,a.expected_title,a.section]),known=this.wxsOptionDialogs.get(key),dialog=a.dialog_hwnd===undefined?known:String(a.dialog_hwnd);
+        if(a.dialog_hwnd!==undefined&&dialog!==known)throw new Fault('WXS_DIALOG_NOT_OBSERVED','같은 초안·영역에서 조회한 선택창 HWND만 재사용하세요.');
+        if(a.close&&(!known||a.section!=='approval'))throw new Fault('WXS_OPTIONS_CLOSE','관찰한 변경 없는 결재선 선택창만 닫을 수 있습니다.');
+        const argv=['draft-options','--hwnd',hwnd,'--expected-title',a.expected_title,'--section',a.section,...(dialog?['--dialog-hwnd',dialog]:[]),...(a.close?['--close']:[])],result=await this.wxs(argv,signal);
+        if(result.window?.hwnd)this.wxsOptionDialogs.set(key,String(result.window.hwnd));
+        if(result.closed)this.wxsOptionDialogs.delete(key);
+        if(!Array.isArray(result.options?.candidates))return {...result,readOnly:true};
+        const query=typeof a.query==='string'?a.query.trim():'',candidates=result.options.candidates.filter(row=>!query||(typeof row==='string'?row:JSON.stringify(row)).includes(query)),offset=Math.max(0,Number(a.offset)||0),limit=Math.min(100,Math.max(1,Number(a.limit)||20)),items=candidates.slice(offset,offset+limit);
+        return {...result,options:{...result.options,candidates:items},dialog_hwnd:String(result.window.hwnd),query,offset,totalCandidates:candidates.length,nextOffset:offset+items.length,hasMore:candidates.length>offset+items.length,readOnly:true};
       }
       case 'wxs.read': {
         if(a.operation==='prepare')return this.captures.prepare(a.expected_title,signal);

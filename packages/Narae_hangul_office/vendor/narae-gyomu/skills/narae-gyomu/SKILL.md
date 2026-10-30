@@ -30,7 +30,7 @@ narae-gyomu chat "도구 준비 상태를 확인해줘" --json
 | 웹 탐색·업무포털 화면 | `browser`, `portal.open` | `skill.read`의 portal/neis/edufine |
 | HWP/HWPX 읽기·요약·작성·편집 | `hangul.inspect/create/edit/run` | hangul, hangul-jobs |
 | 교직원 찾기·쪽지·대화·연락 | `cbe.search/notes/chats/prepare` | cbe |
-| 열린 공문 본문·첨부·기안 입력·임시저장 | `wxs`, `wxs.read/prepare/save` | wxs |
+| 열린 공문 본문·첨부·기안 후보 조회·입력·임시저장 | `wxs`, `wxs.read/options/prepare/save` | wxs |
 
 복합 요청은 단계별로 해당 도구를 함께 사용한다. 포털의 열린 WXS 본문은 WXS CLI, 독립 HWP/HWPX 첨부는 나래한글이다. 학부모 소통·이지에듀·시간표는 이 네 도구 팩의 추가 구현으로 간주하지 않는다.
 

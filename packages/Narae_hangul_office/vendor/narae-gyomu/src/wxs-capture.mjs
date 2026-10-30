@@ -12,14 +12,15 @@ export class WxsCapture {
     if([...this.jobs.values()].some(j=>!j.done))throw new Error('진행 중인 공문 읽기 결과부터 확인하세요.');
     if(hwnd!==undefined&&!/^[1-9]\d*$/.test(String(hwnd)))throw new Error('실제 windows 결과의 HWND가 필요합니다.');
     const id=crypto.randomUUID(),dir=path.join(this.directory,id);fs.mkdirSync(dir,{recursive:true});
-    const job={id,expected_title:expectedTitle,output:path.join(dir,'document.json'),ready:false,done:false};this.jobs.set(id,job);
-    const child=this.spawnReader(this.python,['-s','-X','utf8',this.entry,hwnd===undefined?'read-next':'read-open',...(hwnd===undefined?[]:['--hwnd',String(hwnd)]),'--expected-title',expectedTitle,'--out',job.output,'--background','--attachments-dir',path.join(dir,'attachments'),'--timeout','300'],{windowsHide:true,env:{...process.env,...this.env},stdio:['ignore','pipe','pipe']});job.child=child;
+    const job={id,expected_title:expectedTitle,output:path.join(dir,'document.json'),cancel:path.join(dir,'cancel'),ready:false,done:false};this.jobs.set(id,job);
+    const child=this.spawnReader(this.python,['-s','-X','utf8',this.entry,hwnd===undefined?'read-next':'read-open',...(hwnd===undefined?[]:['--hwnd',String(hwnd)]),'--expected-title',expectedTitle,'--out',job.output,'--background','--cancel-file',job.cancel,'--attachments-dir',path.join(dir,'attachments'),'--timeout','300'],{windowsHide:true,env:{...process.env,...this.env},stdio:['ignore','pipe','pipe']});job.child=child;
     let buffer='';
     await new Promise((resolve,reject)=>{
-      const timer=setTimeout(()=>{if(!job.ready){child.kill();reject(new Error('WXS 읽기 대기 준비 시간이 초과되었습니다. 문서를 열지 마세요.'));}},15000);
-      const abort=()=>{if(!job.ready){child.kill();reject(new Error('공문 읽기 준비를 중단했습니다.'));}};signal?.addEventListener('abort',abort,{once:true});
+      const cancel=()=>{try{fs.writeFileSync(job.cancel,'cancel\n',{flag:'wx'});}catch(error){if(error.code!=='EEXIST')job.error='공문 읽기 취소 요청을 저장하지 못했습니다.';}};
+      const timer=setTimeout(()=>{if(!job.ready){cancel();reject(new Error('WXS 읽기 대기 준비 시간이 초과되었습니다. 문서를 열지 마세요.'));}},15000);
+      const abort=()=>{if(!job.done)cancel();if(!job.ready)reject(new Error('공문 읽기 준비를 중단했습니다.'));};signal?.addEventListener('abort',abort,{once:true});
       const finish=()=>{clearTimeout(timer);signal?.removeEventListener('abort',abort);};
-      child.stdout.on('data',chunk=>{buffer+=chunk.toString('utf8');if(buffer.length>65536)buffer=buffer.slice(-65536);const lines=buffer.split(/\r?\n/);buffer=lines.pop();for(const line of lines){try{if(JSON.parse(line).ready===true){job.ready=true;finish();resolve();}}catch{}}});
+      child.stdout.on('data',chunk=>{buffer+=chunk.toString('utf8');if(buffer.length>65536)buffer=buffer.slice(-65536);const lines=buffer.split(/\r?\n/);buffer=lines.pop();for(const line of lines){try{if(JSON.parse(line).ready===true){job.ready=true;clearTimeout(timer);resolve();}}catch{}}});
       child.stderr.on('data',()=>{});
       child.on('error',error=>{job.done=true;job.error=error.message;finish();reject(error);});
       child.on('exit',code=>{job.done=true;job.code=code;finish();if(!job.ready)reject(new Error('WXS 읽기 대기 준비에 실패했습니다. 문서를 열지 마세요.'));});

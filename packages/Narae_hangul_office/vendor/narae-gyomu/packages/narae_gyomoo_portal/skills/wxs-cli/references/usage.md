@@ -35,9 +35,12 @@ python $wxsCli windows
 | `read-open --hwnd 값 --expected-title 제목 --out 새JSON --background --attachments-dir 새폴더` | 이미 열린 작업 소유 문서의 명시적 hwnd를 읽고 닫기 |
 | `close-readonly --hwnd 값 --expected-title 제목` | 제목·pid·읽기 전용·수정 없음 확인 후 한 창 닫기 |
 | `draft-status --hwnd 값` | 표준 양식의 본문·제목·공개 제한·경로·수신자 등 |
+| `draft-options --hwnd 값 --expected-title 제목 --section approval\|task\|disclosure` | 실제 결재·과제 후보 또는 공개 구분 조회. 열린 선택창 재개는 draft 참조 |
 | `draft --config 파일` | 오프라인 설정 검증과 변경 계획 |
 | `draft --config 파일 --hwnd 값 --apply` | 실제 입력, save_name이 있으면 서버 임시저장 |
 | `save-draft --name 이름 --expected-title 현재제목 --hwnd 값 --apply` | 이미 입력한 초안만 임시저장 |
+| `final-process --receipt 기록경로` | 같은 상신 시도에서 열린 문서처리 창과 원문 지문 조회. 적용은 --apply --expected-fingerprint 값 --confirm-final-action |
+| `final-ack --receipt 기록경로 --expected-message 실제문구` | 확인한 성공 안내만 닫기. 상신·결재를 새로 실행하지 않음 |
 
 쓰기 명령은 `--apply`가 없으면 계획만 출력한다. `--replace-existing`은 정확히 같은 임시저장 이름의 교체를 허용한다. 명시적 상신·결재는 `final-action --operation submit|approve --hwnd 값 --expected-title 정확한제목 --button-label 관찰한버튼`으로 준비한다. 실행에는 `--apply --confirm-final-action --expected-fingerprint 미리보기지문 --receipt 새영수증경로`가 모두 필요하다. 실제 관찰한 확인창은 `final-confirm --receipt 해당영수증 --expected-message 정확한문구 --confirm-final-action`으로 한 번만 수락한다. [최종 처리 절차](../../../docs/final-actions.md)를 따른다. UTF-8 JSON, 성공 0·실패 1로 종료하며 클릭은 처리 완료의 증거가 아니다.
 
@@ -62,6 +65,8 @@ python $wxsCli draft --config .\draft.json --hwnd 123456 --apply
 5. [첨부 읽기 도구](attachments.md)로 **저장한 모든 첨부 내용**을 확인하고 본문과 대조한 뒤 보고한다. 이 내용 검토는 WXS를 닫은 뒤에도 진행할 수 있다. `all_exported:false`, `exported:false`, 읽기 실패·OCR 실패·시각 확인 대기는 미확인으로 남긴다. 표시 크기와 실제 크기가 다르면 `size_matches:false`가 남는다. 파일 형식과 실제 내용으로 추가 확인하며 크기 일치만으로 읽기 완료를 판단하지 않는다.
 
 `--background`는 **제목이 확인된 뒤** 해당 창을 숨기는 최선의 처리다. 창 생성 순간·인증서 로그인창의 최초 활성화는 WXS 자체 동작이며 이 옵션이 방지하지 못할 수 있다. 보안 설정을 바꾸거나 다른 앱 포커스를 강제로 되돌리지 않는다. 완전한 무인·비대화형 실행을 보장하지 않는다.
+
+실행기가 취소를 연결할 때는 `--cancel-file 새표식경로`를 전달한다. 취소 시 그 경로에 빈 파일을 만들면 원본 CLI가 대기·본문 로딩 재시도를 중단하고 `status:cancelled`, `body_read:false`를 기록한다. 선택 창은 닫지 않으며 숨겼던 창은 복원한다. 진행 중인 COM 호출을 강제로 종료하지 않으므로 현재 호출이 끝난 뒤 취소가 반영될 수 있다.
 
 인증 대기 문서는 `body_read:false`, `closed:false`, `preserved:true`로 남고 자동 닫기 대상에서 제외된다. 이후 명령은 기존 대기 창을 제외한 새 문서만 선택한다. 사용자 인증 뒤 `windows --include-hidden`으로 숨겨진 창까지 실제 제목을 다시 확인하고 작업 소유 창에 `read-open --hwnd 실제값 ...`를 사용한다. 인증 대기 창에는 닫기 명령을 사용하지 않는다. 세션 유지는 [공통 30분 연장 절차](../../narae-gyomu-work-portal/references/login.md)를 따른다.
 

@@ -14,6 +14,12 @@ def parser():
     root = argparse.ArgumentParser(description=__doc__)
     root.add_argument("--version", action="version", version=VERSION)
     commands = root.add_subparsers(dest="command", required=True)
+    resume = commands.add_parser("final-resume", help="Resume the same receipt once after a proven native route-review rejection")
+    resume.add_argument("--receipt", type=Path, required=True)
+    resume.add_argument("--expected-fingerprint")
+    resume.add_argument("--apply", action="store_true")
+    resume.add_argument("--confirm-final-action", action="store_true")
+    resume.add_argument("--out", type=Path)
     commands.add_parser("doctor", help="Report prerequisites without opening/logging in to applications")
     windows = commands.add_parser("windows", help="List open WXS windows")
     windows.add_argument("--include-hidden", action="store_true", help="Include windows hidden for background reading")
@@ -23,6 +29,7 @@ def parser():
         read.add_argument("--out", type=Path, required=True, help="New JSON body/attachment result file")
         read.add_argument("--timeout", type=int, default=90)
         read.add_argument("--background", action="store_true", help="Hide the matched window while reading; initial activation can still occur")
+        read.add_argument("--cancel-file", type=Path, help="Stop waiting when this local marker exists; preserve the current document")
         read.add_argument("--attachments-dir", type=Path, help="New directory for every attachment, exported through the current app handler")
         if name == "read-open":
             read.add_argument("--hwnd", type=lambda value: int(value, 0), required=True)
@@ -35,6 +42,20 @@ def parser():
     capture.add_argument("--directory", type=Path, required=True)
     capture.add_argument("--dpi", type=int, default=150)
     capture.add_argument("--out", type=Path)
+    export = commands.add_parser("export-document", help="Export a verified HWP comparison copy without changing the open document")
+    export.add_argument("--hwnd", type=lambda value: int(value, 0), required=True)
+    export.add_argument("--expected-title", required=True)
+    export.add_argument("--path", type=Path, required=True)
+    export.add_argument("--out", type=Path)
+    export.add_argument("--restore-readonly-from", type=Path, help="Recover only export flags after matching the earlier full TEXT extraction")
+    replace = commands.add_parser("replace-document", help="Preview or apply a Narae-edited full draft copy while preserving standard fields and metadata")
+    replace.add_argument("--hwnd", type=lambda value: int(value, 0), required=True)
+    replace.add_argument("--expected-title", required=True)
+    replace.add_argument("--source", type=Path, required=True)
+    replace.add_argument("--expected-text-file", type=Path, required=True)
+    replace.add_argument("--expected-fingerprint")
+    replace.add_argument("--apply", action="store_true")
+    replace.add_argument("--out", type=Path)
     options = commands.add_parser("draft-options", help="Observe draft disclosure controls or open the approval selector without selecting people")
     options.add_argument("--hwnd", type=lambda value: int(value, 0), required=True)
     options.add_argument("--expected-title", required=True)
@@ -111,6 +132,8 @@ def run(args):
         raise ValueError("Native final confirmation requires --confirm-final-action")
     if args.command == "final-process" and args.apply and (not args.confirm_final_action or not args.expected_fingerprint):
         raise ValueError("Processing confirmation requires --confirm-final-action and --expected-fingerprint")
+    if args.command == "final-resume" and args.apply and (not args.confirm_final_action or not args.expected_fingerprint):
+        raise ValueError("Route-review resume requires --confirm-final-action and --expected-fingerprint")
     if args.command == "final-process" and args.audit_rejection and args.apply:
         raise ValueError("Rejection audit cannot click or be combined with --apply")
     if args.command == "draft-options" and (args.task_card or args.confirm_route or args.apply):
@@ -148,6 +171,10 @@ def run(args):
             import wxs_runtime
             from wxs_final import inspect_dialog
             return inspect_dialog(args.receipt, wxs_runtime)
+        if args.command == "final-resume":
+            import wxs_runtime
+            from wxs_final import resume_route_review
+            return resume_route_review(args.receipt, args.expected_fingerprint, args.confirm_final_action, wxs_runtime, args.apply)
         if args.command == "final-process":
             import wxs_runtime
             from wxs_final import processing_preview, process, audit_processing_rejection
@@ -197,8 +224,10 @@ def run(args):
                     return {"window": matches[0], "options": session.action("task_options", root=root)}
                 if args.confirm_route:
                     config = load_config(args.confirm_route)
-                    if set(config) - {"expected_title", "title", "approval_route", "attachments"} or config["attachments"] or "approval_route" not in config or config["expected_title"] != args.expected_title or config["title"] != args.expected_title or len(status["approval_rows"]) != 1:
-                        raise ValueError("Route confirmation requires the same drafter-only document and a route-only config")
+                    if set(config) - {"expected_title", "title", "approval_route", "attachments"} or config["attachments"] or "approval_route" not in config or config["expected_title"] != args.expected_title or config["title"] != args.expected_title:
+                        raise ValueError("Route confirmation requires the same document and a route-only config")
+                    if len(status["approval_rows"]) != 1 and not approval_route_matches(status["approval_rows"], config["approval_route"]):
+                        raise ValueError("Existing approval route differs; no replacement or confirmation applied")
                     session.action("approval_route_confirm", {"route": config["approval_route"]}, root)
                     session.wait_closed(matches[0])
                     after = session.status()
@@ -233,6 +262,16 @@ def run(args):
             from wxs_document import capture_pages
             from wxs_runtime import Session
             return capture_pages(Session(window), args.expected_title, args.directory, args.dpi)
+        if args.command == "export-document":
+            from wxs_document import export_document
+            from wxs_runtime import Session
+            return export_document(Session(window), args.expected_title, args.path, args.restore_readonly_from)
+        if args.command == "replace-document":
+            from wxs_runtime import Session
+            from wxs_document import replacement_preview, replace_document
+            session = Session(window)
+            preview = replacement_preview(session, args.expected_title, args.source, args.expected_text_file)
+            return replace_document(session, preview, args.expected_fingerprint) if args.apply else preview
         if args.command == "export-attachments":
             from wxs_read import export_attachments
             return export_attachments(window, args.expected_title, args.directory, native)
