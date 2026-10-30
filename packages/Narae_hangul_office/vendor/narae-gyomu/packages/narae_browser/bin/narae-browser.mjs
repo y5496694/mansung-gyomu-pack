@@ -7,7 +7,10 @@ import { Fault, browserPath } from "../src/browser.mjs";
 import { command, sessionPaths } from "../src/session.mjs";
 import { actionFromArgs, schema } from "../src/protocol.mjs";
 import { news, agent } from "../src/workflows.mjs";
-import { extensionInstallURL } from "../src/existing-browser.mjs";
+import {
+  extensionInstallURL,
+  extensionToken,
+} from "../src/existing-browser.mjs";
 const help = `나래 브라우저 / narae-browser 0.2.0
   narae-browser doctor | schema
   narae-browser attach --session NAME [--connection extension|cdp] [--browser chrome|msedge]
@@ -142,6 +145,7 @@ try {
         ).version,
         modelRequiredForBrowsing: false,
         modelApiKeyConfigured: !!process.env.NARAE_MODEL_API_KEY,
+        extensionTokenConfigured: !!extensionToken(),
       };
     else if (name === "news") data = await news(options);
     else if (name === "agent") data = await agent(pos.join(" "), options);

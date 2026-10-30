@@ -40,20 +40,17 @@ test("attach edits an already open tab, retains its login state and disconnects 
   await new Promise((resolve) => portServer.listen(0, "127.0.0.1", resolve));
   const port = portServer.address().port;
   await new Promise((resolve) => portServer.close(resolve));
+  const profile = fs.mkdtempSync(
+    path.join(os.tmpdir(), "narae-existing-profile-"),
+  );
   let owner, engine;
   try {
-    owner = await chromium.launch({
+    owner = await chromium.launchPersistentContext(profile, {
       executablePath: browserPath(),
       headless: true,
       args: [`--remote-debugging-port=${port}`],
     });
-    const context = await owner.newContext(),
-      first = await context.newPage();
     const url = `http://127.0.0.1:${server.address().port}`;
-    await context.addCookies([
-      { name: "synthetic_login", value: "retained", url },
-    ]);
-    await first.goto(url + "/one");
     // CDP exposes a persistent default context; use its already-open target.
     const defaultBrowser = await chromium.connectOverCDP(
       `http://127.0.0.1:${port}`,
@@ -91,7 +88,7 @@ test("attach edits an already open tab, retains its login state and disconnects 
     );
     const result = await engine.execute({ action: "close" });
     assert.equal(result.userBrowserPreserved, true);
-    assert.equal(owner.isConnected(), true);
+    assert.equal(owner.browser().isConnected(), true);
     assert.equal(userPage.isClosed(), false);
     assert.equal(defaultContext.pages().length, before);
     assert(
@@ -133,10 +130,48 @@ test("attach edits an already open tab, retains its login state and disconnects 
       await run(["close"]).catch(() => {});
       fs.rmSync(home, { recursive: true, force: true });
     }
+    // Token-authorized extension workspaces may initially expose no tabs.
+    // Keep a blank window so Chrome does not end its session-cookie lifetime.
+    const standby = await defaultContext.newPage();
+    for (const page of defaultContext.pages())
+      if (page !== standby) await page.close();
+    engine = new BrowserEngine();
+    const empty = await engine.start({
+      connection: "cdp",
+      endpoint: `http://127.0.0.1:${port}`,
+    });
+    assert.deepEqual(empty.tabs, []);
+    assert.equal(defaultContext.pages().length, 1);
+    await assert.rejects(engine.execute({ action: "snapshot" }), {
+      code: "ATTACHED_TAB_CLOSED",
+    });
+    await assert.rejects(
+      engine.execute({ action: "open", url: "file:///invalid" }),
+      {
+        code: "INVALID_URL",
+      },
+    );
+    assert.equal(defaultContext.pages().length, 1);
+    const opened = await engine.execute({
+      action: "open",
+      url: url + "/reused-profile",
+    });
+    assert.equal(opened.url, url + "/reused-profile");
+    assert.equal(defaultContext.pages().length, 2);
+    assert(
+      (await defaultContext.cookies(url)).some(
+        (cookie) =>
+          cookie.name === "synthetic_login" && cookie.value === "retained",
+      ),
+    );
+    await engine.execute({ action: "close" });
+    assert.equal(defaultContext.pages().length, 2);
     await defaultBrowser.close();
   } finally {
     await engine?.browser?.close().catch(() => {});
     await owner?.close();
+    assert(profile.startsWith(path.resolve(os.tmpdir()) + path.sep));
+    fs.rmSync(profile, { recursive: true, force: true });
     await new Promise((resolve) => server.close(resolve));
   }
 });

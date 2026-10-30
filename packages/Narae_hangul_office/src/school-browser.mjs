@@ -4,10 +4,10 @@ import {bound,Fault,browserPath} from '../vendor/narae-gyomu/packages/narae_brow
 import {chromium} from 'playwright-core';
 import session from './school-session.cjs';
 export class OfficeSchoolBrowser extends SchoolBrowser {
- constructor({profile,connection='isolated',connectionDirectory,endpoint}={}){super();Object.assign(this,{profile,connection,connectionDirectory,endpoint});this.closed=false;}
+ constructor({profile,connection='isolated',connectionDirectory,endpoint,environment={}}={}){super();Object.assign(this,{profile,connection,connectionDirectory,endpoint,environment});this.closed=false;}
  resetTask(){this.launchAttempts=new Set();this.clickAttempts=new Map();}
  async start({headed=false}={}){
-  if(this.connection!=='isolated'){const result=await super.start({headed:true,connection:this.connection,endpoint:this.endpoint,directory:this.connectionDirectory});this.browser.on('disconnected',()=>{this.closed=true;});this.context.on('close',()=>{this.closed=true;});return result;}
+  if(this.connection!=='isolated'){const result=await super.start({headed:true,connection:this.connection,endpoint:this.endpoint,directory:this.connectionDirectory,environment:this.environment});this.browser.on('disconnected',()=>{this.closed=true;});this.context.on('close',()=>{this.closed=true;});return result;}
   if(!this.profile){const result=await super.start({headed});this.context.on('close',()=>{this.closed=true;});return result;}
   this.context=await chromium.launchPersistentContext(this.profile,{headless:!headed,chromiumSandbox:true,executablePath:browserPath(),args:['--hide-crash-restore-bubble','--restore-last-session'],viewport:{width:1280,height:900},locale:'ko-KR',acceptDownloads:false,serviceWorkers:'block'});
   this.context.on('close',()=>{this.closed=true;});
@@ -17,6 +17,7 @@ export class OfficeSchoolBrowser extends SchoolBrowser {
   return {browser:'chromium',headless:!headed,isolated:true,persistent:true};
  }
  async snapshot(args={}){
+  if(this.attached&&(!this.page||this.page.isClosed()))return {attached:true,url:'about:blank',title:'기존 Chrome 연결됨',text:'현재 연결 작업 공간에 웹 탭이 없습니다. 요청한 웹 주소를 기존 Chrome 프로필에서 여세요.',elements:[],frames:[],tabs:[],untrusted:true};
   this.sessionPages||=new Map();try{const u=new URL(this.page.url());if(u.protocol==='https:'&&Object.hasOwn(session.HOSTS,u.hostname))this.sessionPages.set(u.hostname,this.page);}catch{}
   const version='s'+ ++this.serial;this.refs.clear();
   const result=await this.scope().evaluate(({version,limit,chars,offset,filter})=>{
@@ -38,6 +39,7 @@ export class OfficeSchoolBrowser extends SchoolBrowser {
   this.lastObservation=result;return this.withFinalState({version,frameIndex:this.page.frames().indexOf(this.scope()),...result,untrusted:true});
  }
  async execute(command){
+  if(this.attached&&(!this.page||this.page.isClosed())&&['snapshot','read','frames'].includes(command.action))return this.snapshot(command);
   if(command.action==='open'&&new URL(command.url).hostname==='cbe.eduptl.kr'){const existing=this.context.pages().find(p=>!p.isClosed()&&new URL(p.url()).hostname==='cbe.eduptl.kr');if(existing){this.page=existing;this.frame=null;await existing.bringToFront();this.invalidate();return this.snapshot(command);}}
   if(command.action==='frame'){const target=this.page.frames()[command.index];if(target&&/websocket|webReport|내용없음/i.test(target.name()))throw new Fault('UTILITY_FRAME','웹소켓·리포트 보조 프레임입니다. 업무 메뉴가 있는 최상위 frame 0을 사용하세요.');}
   const origin=this.page,popup=command.action==='click'?this.context.waitForEvent('page',{timeout:1500}).catch(()=>null):null;let clickedLabel,queryNavigation;const commitDate=command.action==='fill'&&/등록일자|신청일자|시작일자|종료일자/.test(this.ref(command.ref).entry.label);

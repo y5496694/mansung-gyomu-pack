@@ -149,11 +149,6 @@ export class BrowserEngine {
       this.context.on("page", watch);
       for (const page of this.context.pages()) watch(page);
       this.page = this.pages.findLast((page) => /^https?:/.test(page.url()));
-      if (!this.page)
-        throw new Fault(
-          "CHROME_NO_WEB_TAB",
-          "연결 화면에서 열려 있는 웹사이트 탭을 선택하세요.",
-        );
       return {
         browser: "chromium",
         attached: true,
@@ -363,10 +358,14 @@ export class BrowserEngine {
         this.page = this.pages.find(
           (p) => !p.isClosed() && /^https?:/.test(p.url()),
         );
+        if (!this.page && action === "open") {
+          webUrl(command.url, this.policy?.hosts);
+          this.page = await this.context.newPage();
+        }
         if (!this.page)
           throw new Fault(
             "ATTACHED_TAB_CLOSED",
-            "연결된 웹 탭이 닫혔습니다. Chrome에서 다시 연결하세요.",
+            "연결된 웹 탭이 없습니다. open으로 기존 Chrome에 웹사이트를 여세요.",
           );
       } else {
         this.page = await this.context.newPage();

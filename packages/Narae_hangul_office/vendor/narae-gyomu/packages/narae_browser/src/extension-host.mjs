@@ -30,7 +30,6 @@ process.once("message", async ({ channel, profile, directory }) => {
     browser = info.browser;
     process.send({ ok: true, endpoint: info.endpoint });
   } catch (error) {
-    console.error(error);
     const missing =
       /Extension not found|extension is installed|extension.*not.*install/i.test(
         error.message,

@@ -53,7 +53,11 @@ const approvalView=approval=>approval?{...approval,channel:approvalChannel}:null
 const remotePolicy=new RemotePolicy({workspace:()=>settings.workspace,autoAllow:()=>settings.toolAutoAllow===true,notify:approval=>{const view=approvalView(approval);emit({type:'approval',approval:view});if(remote){remote.approval=view;remote.changed();}}});
 const {AgentConversations}=require('./agent-conversations.cjs'),{OfficeIntegrations}=require('./office-integrations.cjs');
 const conversations=new AgentConversations(home);
-const integrations=new OfficeIntegrations({home,root,python,workspace:()=>settings.workspace,settings:()=>settings,policy:remotePolicy,busy:()=>Boolean(controller)||browserConnectionChange,notify:emit});
+const {BrowserEnvironment}=require('./browser-environment.cjs');
+const browserEnvironmentStore=new BrowserEnvironment(new KeyStore(home,python,'browser-extension-env'));
+async function browserEnvironment(){const values=browserEnvironmentStore.environment();if(!values.PLAYWRIGHT_MCP_EXTENSION_TOKEN){const module=await import(require('node:url').pathToFileURL(path.join(root,'vendor/narae-gyomu/packages/narae_browser/src/existing-browser.mjs')).href);const token=module.extensionToken();if(token)values.PLAYWRIGHT_MCP_EXTENSION_TOKEN=token;}return values;}
+const browserEnvironmentState=async()=>browserEnvironmentStore.state(await browserEnvironment());
+const integrations=new OfficeIntegrations({home,root,python,workspace:()=>settings.workspace,settings:()=>settings,policy:remotePolicy,busy:()=>Boolean(controller)||browserConnectionChange,notify:emit,browserEnvironment});
 let integrationSession='local',resetting=Promise.resolve();
 const agentSession=()=>activeAgentChannel==='telegram'&&telegram?.session()?telegram.session():remote?.state==='approved'&&remote.credentials?remote.credentials.id:'local';
 function agentState(){return {...conversations.read(agentSession()),session:agentSession(),running:Boolean(controller),model:settings.model,linked:agentSession()!=='local',viewChannel:activeAgentChannel,telegramLinked:Boolean(telegram?.session()),channel:{name:'나래',searchId:'narae_bot',url:'https://pf.kakao.com/_xjgxfWX',chatUrl:'https://pf.kakao.com/_xjgxfWX/chat'}};}
@@ -88,6 +92,8 @@ async function approveRemote(){
 async function preview(args){const file=document(args.path),hash=createHash('sha256').update(fs.readFileSync(file)).digest('hex'),pdf=path.join(home,'cache',hash+'.pdf');return native.savedFileOperation(file,{},async()=>{if(!fs.existsSync(pdf))await runPython(python,home,'documents.py',{action:'previewNativeHangul',path:file,target:pdf});return runPython(python,home,'documents.py',{action:'inspect',path:pdf,page:args.page||0});});}
 const methods={
  browserState:()=>integrations.browserState(),
+ browserEnvironmentState,
+ browserEnvironmentSave:async args=>{idle();const result=browserEnvironmentStore.save(args);if(result.changed)await integrations.disconnectBrowser();return browserEnvironmentState();},
  browserExtensionInstall:()=>shell.openExternal('https://chromewebstore.google.com/detail/playwright-extension/mmlmfjhmonkocbjadbfplnigmagldckm'),
  browserConnect:async({mode})=>{idle();browserConnectionChange=true;try{await integrations.connectBrowser(mode);persist({...settings,browserMode:mode});return metadata();}finally{browserConnectionChange=false;}},
  browserDisconnect:async()=>{idle();return integrations.disconnectBrowser();},

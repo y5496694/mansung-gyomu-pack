@@ -24,6 +24,10 @@ description: 실제 Chrome/Edge를 짧은 JSON 명령으로 제어하는 나래 
 
 사용자가 기존 Chrome/Edge를 사용하라고 요청하면 `narae-browser extension`의 설치 안내를 확인하고 `attach --session TASK`를 실행한다. 공식 Playwright 확장에서 사용자가 선택한 기존 탭을 제어하며 새 프로필을 열거나 쿠키를 복사하지 않는다. 이후 같은 세션의 snapshot·tabs·tab과 실제 ref를 사용한다. 연결 실패를 새 창 실행으로 대신하지 않는다. `close`는 기존 Chrome을 닫지 않고 연결만 해제한다. Edge·프로필 및 로컬 CDP 선택은 [기존 Chrome 연결](README.md#이미-열린-chrome-연결)을 따른다. 뉴스·읽기 전용 agent의 전용 세션 정책은 유지한다.
 
+사용자가 저장을 요청한 확장 토큰은 `PLAYWRIGHT_MCP_EXTENSION_TOKEN` 환경 변수를 사용한다. Windows 사용자 환경 변수도 자동으로 읽는다. `doctor`의 `extensionTokenConfigured`로 유무만 확인하며 토큰을 출력하거나 Git에 넣지 않는다. 저장된 값이 있으면 다시 입력을 요청하지 않는다.
+
+확장 인증 후 `attach`의 탭 목록이 비어 있으면 같은 세션에서 `open URL`을 사용한다. 기존 Chrome 프로필에 탭을 열며 별도 프로필이나 새 로그인 세션을 만들지 않는다.
+
 ## 소형 모델로 네이버 뉴스 3개
 
 ```bash
