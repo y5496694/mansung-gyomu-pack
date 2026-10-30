@@ -1,9 +1,14 @@
 // Keep the official extension relay in a disposable helper. Cancelling a tab
 // selection kills this relay, never the user's Chrome process or profile.
 import { createRequire } from "node:module";
+import {
+  prepareConnectionTabs,
+  closeConnectionPages,
+} from "./extension-tabs.mjs";
 const require = createRequire(import.meta.url);
 let browser;
 const close = async () => {
+  if (browser) await closeConnectionPages(browser).catch(() => {});
   await browser?.close().catch(() => {});
   process.exit();
 };
@@ -28,6 +33,7 @@ process.once("message", async ({ channel, profile, directory }) => {
       { title: "나래 브라우저", workspaceDir: directory },
     );
     browser = info.browser;
+    await prepareConnectionTabs(browser).catch(() => {});
     process.send({ ok: true, endpoint: info.endpoint });
   } catch (error) {
     const missing =

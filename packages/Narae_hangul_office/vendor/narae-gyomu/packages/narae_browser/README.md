@@ -70,6 +70,8 @@ narae-browser attach --session work
 
 프로세스 환경 변수를 우선 사용하고, Windows에서 값이 없으면 저장된 사용자 환경 변수를 읽으므로 이미 실행 중인 호출 앱에서도 사용할 수 있습니다. `doctor`의 `extensionTokenConfigured`는 설정 여부만 표시합니다. 토큰은 저장소·명령 인자·세션 JSON에 넣지 않습니다. 토큰을 지우려면 `[Environment]::SetEnvironmentVariable('PLAYWRIGHT_MCP_EXTENSION_TOKEN', $null, 'User')`를 실행합니다.
 
+나래가 연 연결 안내 탭은 첫 `open` 요청의 작업 탭으로 재사용합니다. 연결 대기 중에는 이전 사용자 탭으로 돌아가며, `close`는 작업 웹 탭을 보존하고 남은 나래 연결 안내 탭만 닫습니다. 끊어진 나래 연결의 안내 탭도 다음 연결 때 정리합니다. 다른 클라이언트의 연결·승인 대기와 일반 작업 탭은 보존합니다. Chrome과 공식 확장이 최초 연결 화면을 잠깐 여는 동작은 남습니다.
+
 토큰으로 연결한 확장 작업 공간에 처음에는 탭이 없을 수 있습니다. 이때 `attach`는 빈 탭 목록으로 연결을 유지합니다. `open URL --session work`를 실행하면 기존 Chrome 프로필에 탭을 열어 그 프로필의 로그인 상태를 이어 씁니다.
 
 이미 디버깅 연결을 허용한 로컬 브라우저에는 `attach --connection cdp --cdp-endpoint http://127.0.0.1:9222 --session work`도 지원합니다. 이 명령은 Chrome을 재실행하거나 일반 프로필의 디버깅 설정을 바꾸지 않습니다. 기본 뉴스·읽기 전용 agent 실행은 전용 세션을 유지합니다.

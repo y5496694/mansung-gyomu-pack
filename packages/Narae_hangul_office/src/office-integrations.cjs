@@ -50,7 +50,7 @@ class OfficeIntegrations{
   return result;
  }
  async noCredentialInput(args){const browser=this.instance.browser;if(!browser)throw new Error('먼저 브라우저 화면을 관찰하세요.');const sensitive=e=>{const t=String(e?.getAttribute?.('type')||'').toLowerCase(),a=e?.getAttribute?.('autocomplete')||'';return t==='password'||t==='file'||/password|one-time-code/.test(a);};const blocked=args.ref?await browser.ref(args.ref).locator.evaluate(sensitive):await browser.page.evaluate(()=>{const e=document.activeElement;return e?.type==='password'||e?.type==='file'||/password|one-time-code/.test(e?.autocomplete||'');});if(blocked)throw new Error('로그인·인증·파일 선택은 PC에서 직접 진행하세요.');if(args.action==='press'&&!/^(Enter|Tab|Escape|ArrowUp|ArrowDown|ArrowLeft|ArrowRight|Home|End|PageUp|PageDown|Backspace|Delete|Space|Shift\+Tab|Control\+a|Meta\+a)$/.test(args.key||''))throw new Error('키보드 입력은 기본 탐색 키만 지원합니다.');}
- async reset(){if(this.instance){await this.instance.close();this.instance.people.clear();this.instance.windows.clear();this.instance.pending.clear();this.instance.approvedFiles.clear();}}
+ async reset({keepBrowser=false}={}){if(this.instance){await this.keeper?.pending;const browser=this.instance.browser,keep=keepBrowser&&browser?.attached&&!browser.closed;if(keep)this.instance.browser=null;try{await this.instance.close();}finally{if(keep){this.instance.browser=browser;browser.frame=null;browser.finalAuthorization=null;browser.invalidate?.();browser.resetTask?.();}}this.instance.people.clear();this.instance.windows.clear();this.instance.pending.clear();this.instance.approvedFiles.clear();}}
  async close(){await this.keeper?.close();await this.instance?.close();}
 }
 module.exports={OfficeIntegrations};

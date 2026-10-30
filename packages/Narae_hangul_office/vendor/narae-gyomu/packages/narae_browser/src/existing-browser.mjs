@@ -3,6 +3,7 @@ import { execFileSync, fork } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { reuseConnectionPage } from "./extension-tabs.mjs";
 
 export const extensionInstallURL =
   "https://chromewebstore.google.com/detail/playwright-extension/mmlmfjhmonkocbjadbfplnigmagldckm";
@@ -200,7 +201,7 @@ export async function connectExistingBrowser({
     });
     const browser = await chromium.connect(address, { timeout: 15000 });
     browser.on("disconnected", stop);
-    return browser;
+    return reuseConnectionPage(browser);
   } catch (error) {
     stop();
     throw error;
