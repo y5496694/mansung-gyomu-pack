@@ -2,19 +2,19 @@
 const fs=require('node:fs'),path=require('node:path'),{randomBytes,createHash}=require('node:crypto');
 const {inside,tools}=require('./agent.cjs');
 const READ=new Set(['list_files','read_document','read_live_document']);
-function validate(value,schema,depth=0){
+function validate(value,schema,depth=0,location='args'){
  if(depth>20)throw new Error('원격 도구 인자가 너무 깊습니다.');
- if(schema.anyOf){if(!schema.anyOf.some(option=>{try{validate(value,option,depth+1);return true;}catch{return false;}}))throw new Error('지원하지 않는 변경 인자입니다.');return;}
- if(schema.enum&&!schema.enum.includes(value))throw new Error('지원하지 않는 원격 인자 값입니다.');
+ if(schema.anyOf){if(!schema.anyOf.some(option=>{try{validate(value,option,depth+1,location);return true;}catch{return false;}}))throw new Error('지원하지 않는 변경 인자입니다.');return;}
+ if(schema.enum&&!schema.enum.includes(value))throw new Error(location+': 지원하지 않는 원격 인자 값입니다.');
  if(schema.type==='object'){
   if(!value||typeof value!=='object'||Array.isArray(value))throw new Error('객체 인자가 필요합니다.');
   for(const required of schema.required||[])if(!Object.hasOwn(value,required))throw new Error('필수 인자가 없습니다: '+required);
-  for(const key of Object.keys(value)){if(schema.additionalProperties===false&&!Object.hasOwn(schema.properties||{},key))throw new Error('허용되지 않은 원격 인자입니다: '+key);if(Object.hasOwn(schema.properties||{},key))validate(value[key],schema.properties[key],depth+1);}
+  for(const key of Object.keys(value)){if(schema.additionalProperties===false&&!Object.hasOwn(schema.properties||{},key))throw new Error('허용되지 않은 원격 인자입니다: '+key);if(Object.hasOwn(schema.properties||{},key))validate(value[key],schema.properties[key],depth+1,location+'.'+key);}
  }else if(schema.type==='array'){
   if(!Array.isArray(value)||value.length>1024||(schema.minItems&&value.length<schema.minItems)||(schema.maxItems&&value.length>schema.maxItems))throw new Error('배열 인자를 확인하세요.');
-  for(const item of value)validate(item,schema.items||{},depth+1);
+  for(const [index,item]of value.entries())validate(item,schema.items||{},depth+1,location+'['+index+']');
  }else if(schema.type==='integer'){if(!Number.isSafeInteger(value))throw new Error('정수 인자가 필요합니다.');}
- else if(schema.type&&typeof value!==schema.type)throw new Error('원격 인자의 형식을 확인하세요.');
+ else if(schema.type&&typeof value!==schema.type)throw new Error(location+': 원격 인자의 형식을 확인하세요 ('+schema.type+').');
  if(typeof value==='number'&&(!Number.isFinite(value)||(schema.minimum!==undefined&&value<schema.minimum)))throw new Error('숫자 인자의 범위를 확인하세요.');
 }
 class RemotePolicy{

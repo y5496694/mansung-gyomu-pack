@@ -3,6 +3,11 @@ import {SchoolBrowser,finalOperation} from '../vendor/narae-gyomu/src/school-bro
 import {bound,Fault,browserPath} from '../vendor/narae-gyomu/packages/narae_browser/src/browser.mjs';
 import {chromium} from 'playwright-core';
 import session from './school-session.cjs';
+function calendarChanged(expected){
+ const popup=[...document.querySelectorAll('.cl-calendar.cl-popup')].find(e=>{const r=e.getBoundingClientRect(),s=getComputedStyle(e);return r.width>0&&r.height>0&&s.display!=='none'&&s.visibility!=='hidden';});
+ const state=JSON.stringify(popup?{text:popup.innerText,labels:[...popup.querySelectorAll('[aria-label]')].map(e=>e.getAttribute('aria-label'))}:null);
+ return expected===undefined?state:state!==expected;
+}
 export class OfficeSchoolBrowser extends SchoolBrowser {
  constructor({profile,connection='isolated',connectionDirectory,endpoint,environment={}}={}){super();Object.assign(this,{profile,connection,connectionDirectory,endpoint,environment});this.closed=false;}
  resetTask(){this.launchAttempts=new Set();this.clickAttempts=new Map();}
@@ -43,6 +48,7 @@ export class OfficeSchoolBrowser extends SchoolBrowser {
   if(this.attached&&(!this.page||this.page.isClosed())&&['snapshot','read','frames'].includes(command.action))return this.snapshot(command);
   if(command.action==='open'&&new URL(command.url).hostname==='cbe.eduptl.kr'){const existing=this.context.pages().find(p=>!p.isClosed()&&new URL(p.url()).hostname==='cbe.eduptl.kr');if(existing){this.page=existing;this.frame=null;await existing.bringToFront();this.invalidate();return this.snapshot(command);}}
   if(command.action==='frame'){const target=this.page.frames()[command.index];if(target&&/websocket|webReport|내용없음/i.test(target.name()))throw new Fault('UTILITY_FRAME','웹소켓·리포트 보조 프레임입니다. 업무 메뉴가 있는 최상위 frame 0을 사용하세요.');}
+  const calendarBefore=command.action==='click'&&this.lastObservation?.dialog==='달력'?await this.scope().evaluate(calendarChanged):undefined;
   const origin=this.page,popup=command.action==='click'?this.context.waitForEvent('page',{timeout:1500}).catch(()=>null):null;let clickedLabel,queryNavigation;const commitDate=command.action==='fill'&&/등록일자|신청일자|시작일자|종료일자/.test(this.ref(command.ref).entry.label);
   if(command.action==='click'){
    const {entry,locator}=this.ref(command.ref),label=entry.label.replace(/\s+/g,'');
@@ -60,6 +66,7 @@ export class OfficeSchoolBrowser extends SchoolBrowser {
   if(command.action==='select'&&this.ref(command.ref).entry.tag!=='select')throw new Fault('CUSTOM_COMBOBOX','HTML select가 아닙니다. combobox를 click한 뒤 실제 option ref를 click하세요.');
   const result=await super.execute(command);
   if(result?.actionPending&&result.nativeDialog)return result;
+  if(calendarBefore!==undefined)await this.scope().waitForFunction(calendarChanged,calendarBefore,{timeout:7000,polling:50}).catch(error=>{if(error.name!=='TimeoutError')throw error;throw new Fault('CALENDAR_UPDATE_NOT_OBSERVED','달력 변경을 확인하지 못했습니다. 같은 버튼을 다시 누르지 말고 현재 화면을 새로 관찰하세요.');});
   if(queryNavigation){await queryNavigation;return {...await this.snapshot(command),...(result.finalAction?{finalAction:result.finalAction}:{})};}
   if(commitDate)await this.page.keyboard.press('Tab');
   if(command.action==='frames')return {...await this.snapshot(),frames:result.frames.filter(f=>f.index===0||!/websocket|webReport|내용없음/i.test(f.name||'')),ignoredFrames:result.frames.filter(f=>f.index!==0&&/websocket|webReport|내용없음/i.test(f.name||''))};

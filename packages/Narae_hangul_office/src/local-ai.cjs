@@ -1,6 +1,7 @@
 'use strict';
 const fs=require('node:fs'),path=require('node:path'),net=require('node:net'),{spawn}=require('node:child_process'),{once}=require('node:events'),{randomBytes,randomUUID}=require('node:crypto');
 const {download,verified,sha}=require('./verified-download.cjs'),{ensureRuntime}=require('./local-runtime.cjs');
+const {documentOutput}=require('./planner-document.cjs');
 const pause=ms=>new Promise(resolve=>setTimeout(resolve,ms));
 function loopback(value){const u=new URL(value);if(u.protocol!=='http:'||!['127.0.0.1','localhost','[::1]'].includes(u.hostname)||u.username||u.password||u.search||u.hash)throw new Error('로컬 AI는 http://127.0.0.1:포트/v1 같은 이 컴퓨터 주소를 사용하세요.');return u.href.replace(/\/$/,'').replace(/\/chat\/completions$/,'');}
 function modelURL(model,file){if(!/^[\w.-]+\/[\w.-]+$/.test(model.repoId||'')||! /^[a-f0-9]{40}$/.test(model.revision||''))throw new Error('이 모델의 허깅페이스 배포가 아직 등록되지 않았습니다. 기존 모델 가져오기를 사용하거나 배포 정보를 갱신하세요.');return `https://huggingface.co/${model.repoId}/resolve/${model.revision}/${file.path}?download=true`;}
@@ -18,14 +19,15 @@ function trimOldestTurn(messages){
  }return false;
 }
 function messagesFor(body){const catalog=(body.tools||[]).map(t=>({name:t.name,description:t.description,parameters:shortSchema(t.parameters)}));const messages=[{role:'system',content:body.instructions.replace(/\\/g,'/')+'\n파일 경로는 슬래시(/)로 구분하세요. 응답은 JSON 하나입니다. 도구 실행은 {"type":"tool","name":"도구명","args":{인자}}; 작업을 마쳤거나 답변할 때는 {"type":"final","text":"한국어 답변"}입니다. 관찰된 도구 결과만 완료 근거로 사용하세요. 생략된 결과는 전체 확인으로 보고하지 마세요.\n사용 가능한 도구와 인자:\n'+JSON.stringify(catalog)}];
- for(const item of body.input||[]){let content;if(item.type==='function_call')content=JSON.stringify({type:'tool',name:item.name,args:JSON.parse(item.arguments||'{}')});else if(item.type==='function_call_output')content='도구 관찰 결과: '+item.output;else if(['user','assistant'].includes(item.role))content=typeof item.content==='string'?item.content:JSON.stringify(item.content);else continue;
+ for(const item of body.input||[]){let content;if(item.type==='function_call')content=JSON.stringify({type:'tool',name:item.name,args:JSON.parse(item.arguments||'{}')});else if(item.type==='function_call_output')content='도구 관찰 결과: '+documentOutput(body.input||[],item);else if(['user','assistant'].includes(item.role))content=typeof item.content==='string'?item.content:JSON.stringify(item.content);else continue;
   messages.push({role:item.role==='assistant'||item.type==='function_call'?'assistant':'user',content});
  }while(messages.reduce((n,m)=>n+m.content.length,0)>24000&&trimOldestTurn(messages)){}return messages;
 }
 function responseFrom(result,tools){const choice=result.choices?.[0];if(choice?.finish_reason!=='stop')throw new Error('로컬 AI 응답이 중단되거나 길이 한도에 도달했습니다. 요청을 나누세요.');let action;try{action=JSON.parse(choice.message.content);}catch{throw new Error('로컬 AI가 올바른 작업 JSON을 반환하지 않았습니다.');}
  if(action.type==='final'&&typeof action.text==='string'&&action.text.trim())return {output:[{type:'message',role:'assistant',content:[{type:'output_text',text:action.text}]}]};
  if(action.type!=='tool'||!tools.some(t=>t.name===action.name)||!action.args||typeof action.args!=='object'||Array.isArray(action.args))throw new Error('로컬 AI의 도구 선택을 확인할 수 없습니다.');
- const schema=tools.find(t=>t.name===action.name).parameters;if(schema)require('./remote-policy.cjs').validate(action.args,schema);
+ // Execution validates the arguments and feeds failures back to the model.
+ // This parser never executes a tool; unknown names and malformed envelopes still fail.
  return {output:[{type:'function_call',name:action.name,arguments:JSON.stringify(action.args),call_id:randomUUID()}]};
 }
 class LocalAI{
@@ -54,7 +56,7 @@ class LocalAI{
   try{await this.stop();for(const key of ['base','adapter'])if(!await verified(this.file(m,key),m[key]))throw new Error('설치된 모델 SHA256이 다릅니다. 다시 설치하세요.');
    const exe=await ensureRuntime(this.root),port=await freePort();if(this.closed)throw new Error('작업을 종료했습니다.');this.key=randomBytes(24).toString('hex');this.url='http://127.0.0.1:'+port+'/v1';
    const logs=path.join(this.home,'logs');fs.mkdirSync(logs,{recursive:true});const log=fs.openSync(path.join(logs,'local-ai-'+id+'.log'),'a');
-   const child=spawn(exe,['--model',this.file(m,'base'),'--lora',this.file(m,'adapter'),'--alias',m.alias,'--host','127.0.0.1','--port',String(port),'--api-key',this.key,'--threads','6','--threads-batch','6','--ctx-size','8192','--parallel','1','--no-context-shift','--no-warmup','--no-webui','--chat-template-kwargs','{"enable_thinking":false}'],{windowsHide:true,stdio:['ignore',log,log]});fs.closeSync(log);this.child=child;let spawnError;child.on('error',e=>{spawnError=e;});child.once('exit',()=>{if(this.child===child){this.child=null;this.active=null;this.changed();}});
+   const child=spawn(exe,['--model',this.file(m,'base'),'--lora',this.file(m,'adapter'),'--alias',m.alias,'--host','127.0.0.1','--port',String(port),'--api-key',this.key,'--threads','6','--threads-batch','6','--ctx-size','8192','--parallel','1','--batch-size','512','--ubatch-size','128','--cache-ram','0','--no-context-shift','--no-warmup','--no-webui','--chat-template-kwargs','{"enable_thinking":false}'],{windowsHide:true,stdio:['ignore',log,log]});fs.closeSync(log);this.child=child;let spawnError;child.on('error',e=>{spawnError=e;});child.once('exit',()=>{if(this.child===child){this.child=null;this.active=null;this.changed();}});
    const deadline=Date.now()+180000;for(;;){if(spawnError)throw spawnError;if(this.closed||this.child!==child||child.exitCode!==null||child.signalCode!==null)throw new Error('로컬 AI 실행기가 종료됐습니다. 로그를 확인하세요.');try{const health=await this.api(this.url.replace(/\/v1$/,'')+'/health',undefined,undefined,1500);if(health.status==='ok')break;}catch{}if(Date.now()>deadline)throw new Error('AI 시작 시간이 초과되었습니다.');await pause(250);}
    const adapters=await this.api(this.url.replace(/\/v1$/,'')+'/lora-adapters');if(adapters.length!==1||path.resolve(adapters[0].path)!==path.resolve(this.file(m,'adapter'))||adapters[0].scale!==m.strength)throw new Error('실행 중인 나래 학습 어댑터가 다릅니다.');
    const list=await this.api(this.url+'/models');if(!list.data?.some(x=>x.id===m.alias))throw new Error('실행 중인 AI 이름이 다릅니다.');this.active=m;
