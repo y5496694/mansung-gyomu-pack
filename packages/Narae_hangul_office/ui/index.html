@@ -11,6 +11,7 @@
 <link rel="stylesheet" href="agent.css">
 <link rel="stylesheet" href="brand.css">
 <link rel="stylesheet" href="settings.css">
+<link rel="stylesheet" href="guide.css">
 <link rel="stylesheet" href="quick-window.css">
 </head>
 <body>
@@ -70,6 +71,7 @@
 <img class="agent-logo" src="assets/narae-office.png" alt=""><h2>나래 에이전트</h2>
 <p>선생님의 업무를 도와주는<br>나래 에이전트입니다.</p>
 <p>한글문서, 메신저, 업무포탈<br>업무를 도와드려요.</p>
+<button id="agentUserGuide" type="button" class="text-button">나래3 사용 안내 ›</button>
 </div>
   <div class="agent-sidebar-bottom">
    <div class="agent-preferences">
@@ -117,7 +119,8 @@
 <nav class="settings-tabs" role="tablist" aria-label="설정 항목" aria-orientation="vertical">
    <button id="settingsGeneralTab" type="button" role="tab" data-settings-tab="general" aria-controls="generalSettingsPanel" aria-selected="true">일반</button>
    <button id="settingsAITab" type="button" role="tab" data-settings-tab="ai" aria-controls="aiSettingsPanel" aria-selected="false" tabindex="-1">AI 연결</button>
-   <button id="settingsMessengerTab" type="button" role="tab" data-settings-tab="messenger" aria-controls="messengerSettingsPanel" aria-selected="false" tabindex="-1">메신저</button></nav><small>나에게 맞는 작업 공간</small></aside>
+   <button id="settingsMessengerTab" type="button" role="tab" data-settings-tab="messenger" aria-controls="messengerSettingsPanel" aria-selected="false" tabindex="-1">메신저</button>
+   <button id="settingsGuideTab" type="button" role="tab" data-settings-tab="guide" aria-controls="guideSettingsPanel" aria-selected="false" tabindex="-1">사용 안내</button></nav><small>나에게 맞는 작업 공간</small></aside>
   <div class="settings-main">
 <div class="settings-header">
 <h2 id="settingsTitle">설정</h2>
@@ -125,6 +128,14 @@
 </div>
 <p id="settingsNotice" class="settings-notice" role="alert" hidden></p>
 <div class="settings-content">
+   <section id="guideSettingsPanel" class="settings-panel" role="tabpanel" aria-labelledby="settingsGuideTab" hidden>
+<div class="guide-heading"><span class="eyebrow">나래3와 함께하는 업무</span><h3>무엇을 맡길 수 있나요?</h3><p id="guideIntro"></p><small id="guideVersion"></small></div>
+<div id="guideModelNote" class="guide-note"></div>
+<details class="guide-legend"><summary>검증 수준 읽는 법</summary><dl id="guideLegend"></dl></details>
+<div class="guide-controls"><label for="guideSearch">업무 검색<input id="guideSearch" type="search" placeholder="쪽지 요약, 조퇴, PDF, 첨부…" autocomplete="off"></label><label for="guideCategory">업무 영역<select id="guideCategory"><option value="">전체 영역</option></select></label><button id="guideExpand" type="button" aria-pressed="false">모두 펼치기</button></div>
+<p id="guideResults" class="muted" role="status" aria-live="polite"></p><div id="guideTopics"></div><p id="guideEmpty" hidden>일치하는 안내가 없습니다. 다른 검색어나 전체 영역으로 찾아보세요.</p>
+<p id="guideCopyStatus" class="muted" role="status" aria-live="polite"></p>
+   </section>
    <section id="generalSettingsPanel" class="settings-panel" role="tabpanel" aria-labelledby="settingsGeneralTab"><h3>일반</h3>
 <p class="muted">문서 작업과 저장 방식을 설정하세요.</p>
 <form id="generalSettingsForm">
@@ -214,6 +225,6 @@
  </div>
 </dialog>
 <dialog id="approvalDialog" aria-labelledby="approvalTitle"><div class="approval-heading"><img src="assets/narae-office.png" width="40" height="40" alt=""><div><small>나래 에이전트</small><h2 id="approvalTitle">도구 실행 승인</h2></div><button id="approvalClose" type="button" aria-label="거절하고 닫기">×</button></div><p>요청한 작업과 내용을 확인해 주세요.</p><section id="remoteApproval" hidden><pre id="remoteApprovalDetails"></pre><div class="button-row"><button id="remoteDeny" type="button">거절</button><button id="remoteAllow" type="button" class="primary">이 작업 허용</button></div></section><section id="telegramApproval" hidden><pre id="telegramApprovalDetails"></pre><div class="button-row"><button id="telegramDeny" type="button">거절</button><button id="telegramAllow" type="button" class="primary">이 작업 허용</button></div></section><p id="approvalError" role="alert"></p><small>설정 → 일반에서 모든 도구 실행 자동 허용을 선택할 수 있습니다.</small></dialog>
-<script src="settings.js"></script><script src="browser-settings.js"></script><script src="app.js"></script><script src="remote.js"></script><script src="agent.js"></script><script src="local-ai.js"></script><script src="telegram.js"></script><script src="approval.js"></script><script src="quick-window.js"></script>
+<script src="settings.js"></script><script src="narae3-guide-data.js"></script><script src="guide.js"></script><script src="browser-settings.js"></script><script src="app.js"></script><script src="remote.js"></script><script src="agent.js"></script><script src="local-ai.js"></script><script src="telegram.js"></script><script src="approval.js"></script><script src="quick-window.js"></script>
 </body>
 </html>

@@ -26,6 +26,8 @@ jobs:
           "NARAE_OFFICE_PYTHON=$((Get-Command python).Source)" >> $env:GITHUB_ENV
       - name: Unit and security regression
         run: npm test
+      - name: Offline and public user guide consistency
+        run: npm run guide:check
       - name: Real desktop and document-engine integration with synthetic ingress and AI
         env:
           NARAE_QA_ROOT: ${{ runner.temp }}/narae-kakao-qa

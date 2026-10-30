@@ -1,0 +1,682 @@
+{
+  "schema": 1,
+  "evaluation_date": "2026-10-30 to 2026-10-31 KST",
+  "hardware": {
+    "cpu": "Intel Core i5-13500",
+    "ram_bytes": 16905089024,
+    "gpu": "Intel UHD 770; inference CPU only"
+  },
+  "model_license": "LFM Open License v1.0; separate from MIT Office code",
+  "runtime": "llama.cpp b11960 (0.8.0-dev)",
+  "quantization": "official QAD Q4_0 with F16 vision projector",
+  "model_bytes": 1049615648,
+  "projector_bytes": 378996032,
+  "model_sha256": "621c455376cb96a20891697deb9975c6fb47dd5ea98ed3ad1f3b7e8f24f0b1e6",
+  "projector_sha256": "1d8e6e58eefc093e09d6332f081516e1ddbd5b35cfca7f35463fb270db230b1e",
+  "previous_narae3_test": {
+    "passed": 4,
+    "total": 9,
+    "source": "narae3-office-training-20261030.md",
+    "limits": "Prior run on same teacher-forced synthetic cases, different runtime/settings; templates shared with training; not an autonomous or statistically significant comparison."
+  },
+  "limits": [
+    "Small synthetic set; stylized user-provided logo is one local-only input.",
+    "R2 settings were chosen after R1 failures. Seven repeated vision cases and nine repeated action cases are not blind tests.",
+    "One fresh notice was added before R2 and did not alter weights or prompts after its result.",
+    "Vision schema sends key names and types, never expected answer values.",
+    "PDF pages were rendered to images, with no PDF text extraction or OCR text supplied to the vision model.",
+    "Latency is local non-streaming model API time, excluding earlier PDF rendering and data-URI preparation.",
+    "No live school or messenger action was executed. No fine tuning, Hugging Face model publication, or Office default selection occurred."
+  ],
+  "runs": [
+    {
+      "tag": "lfm3-vl-qad-r1",
+      "model": "LiquidAI/LFM3-VL-2B-GGUF",
+      "revision": "b36554cfd35854b06429900131730cd80f092cdb",
+      "weights_changed": false,
+      "real_actions_executed": false,
+      "profile": {
+        "context": 8192,
+        "threads": 6,
+        "image_max_tokens": 1536,
+        "vision_schema": false,
+        "thinking_budget": null,
+        "vision_max_tokens": 1024,
+        "action_max_tokens": 512
+      },
+      "total": 16,
+      "passed": 5,
+      "vision_passed": 2,
+      "vision_total": 7,
+      "action_passed": 3,
+      "action_total": 9,
+      "peak_rss_bytes": 2873921536,
+      "peak_private_bytes": 2033836032,
+      "median_visual_seconds": 19.794092700001784,
+      "vision_fields_correct": 5,
+      "vision_fields_total": 25,
+      "results": [
+        {
+          "id": "korean-document",
+          "category": "vision",
+          "passed": false,
+          "seconds": 27.95515890000388,
+          "finish": "stop",
+          "error": null,
+          "expected": {
+            "date": "2026-12-04",
+            "start": "09:20",
+            "end": "14:10",
+            "place": "가상숲체험관",
+            "students": 7,
+            "staff": 3,
+            "budget": 154000
+          },
+          "actual": {
+            "체험일": "2026-12-04",
+            "시작": "09:20",
+            "종료": "14:10",
+            "장소": "가상숲체험관",
+            "학생 수": 7,
+            "인솔 교직원 수": 3,
+            "총예산": 154000
+          },
+          "fields": {
+            "date": false,
+            "start": false,
+            "end": false,
+            "place": false,
+            "students": false,
+            "staff": false,
+            "budget": false
+          }
+        },
+        {
+          "id": "document-photo",
+          "category": "vision",
+          "passed": false,
+          "seconds": 15.658056300017051,
+          "finish": "stop",
+          "error": null,
+          "expected": {
+            "date": "2026-12-04",
+            "start": "09:20",
+            "end": "14:10",
+            "place": "가상숲체험관",
+            "students": 7,
+            "staff": 3,
+            "budget": 154000
+          },
+          "actual": {
+            "체험일": "2026-12-04",
+            "운영 시간": "09:20 ~ 14:10",
+            "장소": "가상숲체험관",
+            "참여 학생": "7명",
+            "인솔 교직원": "3명",
+            "총예산": 154000
+          },
+          "fields": {
+            "date": false,
+            "start": false,
+            "end": false,
+            "place": false,
+            "students": false,
+            "staff": false,
+            "budget": false
+          }
+        },
+        {
+          "id": "chart",
+          "category": "vision",
+          "passed": true,
+          "seconds": 19.794092700001784,
+          "finish": "stop",
+          "error": null,
+          "expected": {
+            "highest": "별빛반",
+            "lowest": "달빛반"
+          },
+          "actual": {
+            "highest": "별빛반",
+            "lowest": "달빛반"
+          },
+          "fields": {
+            "highest": true,
+            "lowest": true
+          }
+        },
+        {
+          "id": "shapes",
+          "category": "vision",
+          "passed": true,
+          "seconds": 15.575127699994482,
+          "finish": "stop",
+          "error": null,
+          "expected": {
+            "red_circles": 3,
+            "blue_squares": 2,
+            "green_triangles": 1
+          },
+          "actual": {
+            "red_circles": 3,
+            "blue_squares": 2,
+            "green_triangles": 1
+          },
+          "fields": {
+            "red_circles": true,
+            "blue_squares": true,
+            "green_triangles": true
+          }
+        },
+        {
+          "id": "logo",
+          "category": "vision",
+          "passed": false,
+          "seconds": 55.592863900004886,
+          "finish": "length",
+          "error": "Expecting value: line 1 column 1 (char 0)",
+          "expected": {
+            "word": "나래",
+            "petals": 4
+          },
+          "actual": null,
+          "fields": {}
+        },
+        {
+          "id": "scanned-pdf-pages",
+          "category": "vision",
+          "passed": false,
+          "seconds": 43.18666419998044,
+          "finish": "stop",
+          "error": null,
+          "expected": {
+            "date": "2026-12-04",
+            "budget": 154000,
+            "highest": "별빛반"
+          },
+          "actual": {
+            "체험일": "2026-12-04",
+            "총예산": 154000,
+            "가장 많은 학급": "별빛반"
+          },
+          "fields": {
+            "date": false,
+            "budget": false,
+            "highest": false
+          }
+        },
+        {
+          "id": "absent-fact",
+          "category": "vision",
+          "passed": false,
+          "seconds": 16.950046100013424,
+          "finish": "stop",
+          "error": null,
+          "expected": {
+            "phone": null
+          },
+          "actual": {
+            "answer": null
+          },
+          "fields": {
+            "phone": false
+          }
+        },
+        {
+          "id": "test-notes-9601",
+          "category": "next-action",
+          "passed": false,
+          "seconds": 10.972941899963189,
+          "finish": "stop",
+          "error": null,
+          "expected_type": "tool",
+          "expected_tool": "gyomu_cbe_notes",
+          "actual_type": "final",
+          "actual_tool": null
+        },
+        {
+          "id": "test-document-9602",
+          "category": "next-action",
+          "passed": false,
+          "seconds": 9.209352900041267,
+          "finish": "stop",
+          "error": null,
+          "expected_type": "tool",
+          "expected_tool": "gyomu_wxs_prepare",
+          "actual_type": "tool",
+          "actual_tool": "gyomu_wxs"
+        },
+        {
+          "id": "test-submit-9603",
+          "category": "next-action",
+          "passed": true,
+          "seconds": 12.445958200027235,
+          "finish": "stop",
+          "error": null,
+          "expected_type": "tool",
+          "expected_tool": "gyomu_wxs_final_confirm",
+          "actual_type": "tool",
+          "actual_tool": "gyomu_wxs_final_confirm"
+        },
+        {
+          "id": "test-leave-9604",
+          "category": "next-action",
+          "passed": true,
+          "seconds": 16.76846479997039,
+          "finish": "stop",
+          "error": null,
+          "expected_type": "tool",
+          "expected_tool": "gyomu_browser",
+          "actual_type": "tool",
+          "actual_tool": "gyomu_browser"
+        },
+        {
+          "id": "test-leave-submit-9605",
+          "category": "next-action",
+          "passed": false,
+          "seconds": 23.873155099980067,
+          "finish": "length",
+          "error": "Unterminated string starting at: line 1 column 24 (char 23)",
+          "expected_type": "tool",
+          "expected_tool": "gyomu_browser",
+          "actual_type": null,
+          "actual_tool": null
+        },
+        {
+          "id": "test-dialog-9606",
+          "category": "next-action",
+          "passed": false,
+          "seconds": 21.658688299998175,
+          "finish": "length",
+          "error": "Expecting value: line 1 column 1 (char 0)",
+          "expected_type": "tool",
+          "expected_tool": "gyomu_browser",
+          "actual_type": null,
+          "actual_tool": null
+        },
+        {
+          "id": "test-send-9607",
+          "category": "next-action",
+          "passed": true,
+          "seconds": 8.242383099975996,
+          "finish": "stop",
+          "error": null,
+          "expected_type": "final",
+          "expected_tool": null,
+          "actual_type": "final",
+          "actual_tool": null
+        },
+        {
+          "id": "test-general-0",
+          "category": "next-action",
+          "passed": false,
+          "seconds": 19.19162330002291,
+          "finish": "length",
+          "error": "Expecting value: line 1 column 1 (char 0)",
+          "expected_type": "final",
+          "expected_tool": null,
+          "actual_type": null,
+          "actual_tool": null
+        },
+        {
+          "id": "test-general-1",
+          "category": "next-action",
+          "passed": false,
+          "seconds": 19.13926739996532,
+          "finish": "length",
+          "error": "Expecting value: line 1 column 1 (char 0)",
+          "expected_type": "final",
+          "expected_tool": null,
+          "actual_type": null,
+          "actual_tool": null
+        }
+      ]
+    },
+    {
+      "tag": "lfm3-vl-qad-structured-r2",
+      "model": "LiquidAI/LFM3-VL-2B-GGUF",
+      "revision": "b36554cfd35854b06429900131730cd80f092cdb",
+      "weights_changed": false,
+      "real_actions_executed": false,
+      "profile": {
+        "context": 8192,
+        "threads": 6,
+        "image_max_tokens": 1536,
+        "vision_schema": true,
+        "thinking_budget": 256,
+        "vision_max_tokens": 1024,
+        "action_max_tokens": 512
+      },
+      "total": 17,
+      "passed": 12,
+      "vision_passed": 7,
+      "vision_total": 8,
+      "action_passed": 5,
+      "action_total": 9,
+      "peak_rss_bytes": 2874466304,
+      "peak_private_bytes": 2035249152,
+      "median_visual_seconds": 21.63878440001281,
+      "vision_fields_correct": 31,
+      "vision_fields_total": 32,
+      "results": [
+        {
+          "id": "korean-document",
+          "category": "vision",
+          "passed": true,
+          "seconds": 23.58472659997642,
+          "finish": "stop",
+          "error": null,
+          "expected": {
+            "date": "2026-12-04",
+            "start": "09:20",
+            "end": "14:10",
+            "place": "가상숲체험관",
+            "students": 7,
+            "staff": 3,
+            "budget": 154000
+          },
+          "actual": {
+            "date": "2026-12-04",
+            "start": "09:20",
+            "end": "14:10",
+            "place": "가상숲체험관",
+            "students": 7,
+            "staff": 3,
+            "budget": 154000
+          },
+          "fields": {
+            "date": true,
+            "start": true,
+            "end": true,
+            "place": true,
+            "students": true,
+            "staff": true,
+            "budget": true
+          }
+        },
+        {
+          "id": "document-photo",
+          "category": "vision",
+          "passed": true,
+          "seconds": 15.263626999978442,
+          "finish": "stop",
+          "error": null,
+          "expected": {
+            "date": "2026-12-04",
+            "start": "09:20",
+            "end": "14:10",
+            "place": "가상숲체험관",
+            "students": 7,
+            "staff": 3,
+            "budget": 154000
+          },
+          "actual": {
+            "date": "2026-12-04",
+            "start": "09:20",
+            "end": "14:10",
+            "place": "가상숲체험관",
+            "students": 7,
+            "staff": 3,
+            "budget": 154000
+          },
+          "fields": {
+            "date": true,
+            "start": true,
+            "end": true,
+            "place": true,
+            "students": true,
+            "staff": true,
+            "budget": true
+          }
+        },
+        {
+          "id": "chart",
+          "category": "vision",
+          "passed": true,
+          "seconds": 19.6928422000492,
+          "finish": "stop",
+          "error": null,
+          "expected": {
+            "highest": "별빛반",
+            "lowest": "달빛반"
+          },
+          "actual": {
+            "highest": "별빛반",
+            "lowest": "달빛반"
+          },
+          "fields": {
+            "highest": true,
+            "lowest": true
+          }
+        },
+        {
+          "id": "shapes",
+          "category": "vision",
+          "passed": true,
+          "seconds": 15.264958500047214,
+          "finish": "stop",
+          "error": null,
+          "expected": {
+            "red_circles": 3,
+            "blue_squares": 2,
+            "green_triangles": 1
+          },
+          "actual": {
+            "red_circles": 3,
+            "blue_squares": 2,
+            "green_triangles": 1
+          },
+          "fields": {
+            "red_circles": true,
+            "blue_squares": true,
+            "green_triangles": true
+          }
+        },
+        {
+          "id": "logo",
+          "category": "vision",
+          "passed": false,
+          "seconds": 27.540058200014755,
+          "finish": "stop",
+          "error": null,
+          "expected": {
+            "word": "나래",
+            "petals": 4
+          },
+          "actual": {
+            "word": "lteh",
+            "petals": 4
+          },
+          "fields": {
+            "word": false,
+            "petals": true
+          }
+        },
+        {
+          "id": "scanned-pdf-pages",
+          "category": "vision",
+          "passed": true,
+          "seconds": 38.954793000011705,
+          "finish": "stop",
+          "error": null,
+          "expected": {
+            "date": "2026-12-04",
+            "budget": 154000,
+            "highest": "별빛반"
+          },
+          "actual": {
+            "date": "2026-12-04",
+            "budget": 154000,
+            "highest": "별빛반"
+          },
+          "fields": {
+            "date": true,
+            "budget": true,
+            "highest": true
+          }
+        },
+        {
+          "id": "absent-fact",
+          "category": "vision",
+          "passed": true,
+          "seconds": 16.578238099988084,
+          "finish": "stop",
+          "error": null,
+          "expected": {
+            "phone": null
+          },
+          "actual": {
+            "phone": null
+          },
+          "fields": {
+            "phone": true
+          }
+        },
+        {
+          "id": "heldout-notice",
+          "category": "vision",
+          "passed": true,
+          "seconds": 26.05113789997995,
+          "finish": "stop",
+          "error": null,
+          "expected": {
+            "date": "2027-02-05",
+            "start": "10:40",
+            "end": "12:50",
+            "place": "가상과학놀이터",
+            "students": 9,
+            "staff": 2,
+            "budget": 82500
+          },
+          "actual": {
+            "date": "2027-02-05",
+            "start": "10:40",
+            "end": "12:50",
+            "place": "가상과학놀이터",
+            "students": 9,
+            "staff": 2,
+            "budget": 82500
+          },
+          "fields": {
+            "date": true,
+            "start": true,
+            "end": true,
+            "place": true,
+            "students": true,
+            "staff": true,
+            "budget": true
+          }
+        },
+        {
+          "id": "test-notes-9601",
+          "category": "next-action",
+          "passed": false,
+          "seconds": 10.995319800043944,
+          "finish": "stop",
+          "error": null,
+          "expected_type": "tool",
+          "expected_tool": "gyomu_cbe_notes",
+          "actual_type": "final",
+          "actual_tool": null
+        },
+        {
+          "id": "test-document-9602",
+          "category": "next-action",
+          "passed": false,
+          "seconds": 8.941309299960267,
+          "finish": "stop",
+          "error": null,
+          "expected_type": "tool",
+          "expected_tool": "gyomu_wxs_prepare",
+          "actual_type": "tool",
+          "actual_tool": "gyomu_wxs"
+        },
+        {
+          "id": "test-submit-9603",
+          "category": "next-action",
+          "passed": true,
+          "seconds": 12.263400900003035,
+          "finish": "stop",
+          "error": null,
+          "expected_type": "tool",
+          "expected_tool": "gyomu_wxs_final_confirm",
+          "actual_type": "tool",
+          "actual_tool": "gyomu_wxs_final_confirm"
+        },
+        {
+          "id": "test-leave-9604",
+          "category": "next-action",
+          "passed": true,
+          "seconds": 16.37252829998033,
+          "finish": "stop",
+          "error": null,
+          "expected_type": "tool",
+          "expected_tool": "gyomu_browser",
+          "actual_type": "tool",
+          "actual_tool": "gyomu_browser"
+        },
+        {
+          "id": "test-leave-submit-9605",
+          "category": "next-action",
+          "passed": false,
+          "seconds": 23.033030199992936,
+          "finish": "stop",
+          "error": null,
+          "expected_type": "tool",
+          "expected_tool": "gyomu_browser",
+          "actual_type": "final",
+          "actual_tool": null
+        },
+        {
+          "id": "test-dialog-9606",
+          "category": "next-action",
+          "passed": false,
+          "seconds": 13.762528799998108,
+          "finish": "stop",
+          "error": null,
+          "expected_type": "tool",
+          "expected_tool": "gyomu_browser",
+          "actual_type": "final",
+          "actual_tool": null
+        },
+        {
+          "id": "test-send-9607",
+          "category": "next-action",
+          "passed": true,
+          "seconds": 8.403885899984743,
+          "finish": "stop",
+          "error": null,
+          "expected_type": "final",
+          "expected_tool": null,
+          "actual_type": "final",
+          "actual_tool": null
+        },
+        {
+          "id": "test-general-0",
+          "category": "next-action",
+          "passed": true,
+          "seconds": 10.574083399958909,
+          "finish": "stop",
+          "error": null,
+          "expected_type": "final",
+          "expected_tool": null,
+          "actual_type": "final",
+          "actual_tool": null
+        },
+        {
+          "id": "test-general-1",
+          "category": "next-action",
+          "passed": true,
+          "seconds": 10.460979399969801,
+          "finish": "stop",
+          "error": null,
+          "expected_type": "final",
+          "expected_tool": null,
+          "actual_type": "final",
+          "actual_tool": null
+        }
+      ]
+    }
+  ],
+  "decision": "Keep LFM3-VL-2B as a Narae4 candidate. Image/PDF reader integration is promising; do not claim production teacher-workflow reliability or replace Narae3 solely on these results."
+}
