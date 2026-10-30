@@ -47,7 +47,7 @@ function anthropicBody(body,model){
   else throw new Error('Claude 대화 변환을 지원하지 않는 항목입니다: '+item.type);
  }
  const tools=(body.tools||[]).map(tool=>{if(tool.type==='function')return {name:tool.name,description:tool.description,input_schema:tool.parameters};if(tool.type==='web_search')return {type:'web_search_20250305',name:'web_search',max_uses:5};throw new Error('Claude가 지원하지 않는 호스팅 도구입니다: '+tool.type);});
- return {model,max_tokens:8192,messages,...(body.instructions?{system:body.instructions}:{}),...(tools.length?{tools,tool_choice:{type:'auto',disable_parallel_tool_use:true}}:{})};
+ return {model,max_tokens:8192,messages,...(body.instructions?{system:body.instructions}:{}),...(tools.length?{tools,tool_choice:{type:body.tool_choice==='required'?'any':'auto',disable_parallel_tool_use:true}}:{})};
 }
 function anthropicResult(result){
  if(['max_tokens','pause_turn','refusal'].includes(result.stop_reason))throw new Error('Claude 응답이 완료되지 않았습니다 ('+result.stop_reason+'). 작업 범위를 나눠 다시 요청하세요.');

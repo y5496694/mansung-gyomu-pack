@@ -64,6 +64,7 @@ test("OpenAI-compatible adapter supports local llama.cpp/LM Studio style endpoin
     },
     async (base) => {
       const client = new ModelClient({
+        provider: "openai",
         baseUrl: base + "/v1",
         model: "local-small",
       });
@@ -77,7 +78,7 @@ test("HTTP failure and truncated outputs fail, never fabricate summary or switch
     (req, res) => response(res, {}, 503),
     async (baseUrl) => {
       await assert.rejects(
-        new ModelClient({ baseUrl, model: "x" }).json([]),
+        new ModelClient({ provider: "openai", baseUrl, model: "x" }).json([]),
         (e) => e.code === "MODEL_HTTP",
       );
     },
@@ -89,7 +90,7 @@ test("HTTP failure and truncated outputs fail, never fabricate summary or switch
       }),
     async (baseUrl) => {
       await assert.rejects(
-        new ModelClient({ baseUrl, model: "x" }).json([]),
+        new ModelClient({ provider: "openai", baseUrl, model: "x" }).json([]),
         (e) => e.code === "MODEL_TRUNCATED",
       );
     },

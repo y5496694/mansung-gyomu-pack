@@ -17,6 +17,7 @@ export class OfficeSchoolBrowser extends SchoolBrowser {
   return {browser:'chromium',headless:!headed,isolated:true,persistent:true};
  }
  async snapshot(args={}){
+  if(this.pendingDialog)return super.snapshot(args);
   if(this.attached&&(!this.page||this.page.isClosed()))return {attached:true,url:'about:blank',title:'기존 Chrome 연결됨',text:'현재 연결 작업 공간에 웹 탭이 없습니다. 요청한 웹 주소를 기존 Chrome 프로필에서 여세요.',elements:[],frames:[],tabs:[],untrusted:true};
   this.sessionPages||=new Map();try{const u=new URL(this.page.url());if(u.protocol==='https:'&&Object.hasOwn(session.HOSTS,u.hostname))this.sessionPages.set(u.hostname,this.page);}catch{}
   const version='s'+ ++this.serial;this.refs.clear();
@@ -58,6 +59,7 @@ export class OfficeSchoolBrowser extends SchoolBrowser {
   }
   if(command.action==='select'&&this.ref(command.ref).entry.tag!=='select')throw new Fault('CUSTOM_COMBOBOX','HTML select가 아닙니다. combobox를 click한 뒤 실제 option ref를 click하세요.');
   const result=await super.execute(command);
+  if(result?.actionPending&&result.nativeDialog)return result;
   if(queryNavigation){await queryNavigation;return {...await this.snapshot(command),...(result.finalAction?{finalAction:result.finalAction}:{})};}
   if(commitDate)await this.page.keyboard.press('Tab');
   if(command.action==='frames')return {...await this.snapshot(),frames:result.frames.filter(f=>f.index===0||!/websocket|webReport|내용없음/i.test(f.name||'')),ignoredFrames:result.frames.filter(f=>f.index!==0&&/websocket|webReport|내용없음/i.test(f.name||''))};

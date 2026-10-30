@@ -39,6 +39,7 @@ export class SchoolBrowser extends BrowserEngine {
       page.removeAllListeners('dialog');
       page.on('dialog', async dialog => {
         const auth = this.finalAuthorization;
+        if(!auth){this.pendingDialog={dialog,page,id:'d'+ ++this.dialogSerial,type:dialog.type(),message:dialog.message(),url:page.url()};return;}
         const accepted = Boolean(auth && auth.page === page && !auth.dialog && dialog.type() === 'confirm' &&
           auth.text && dialog.message() === auth.text && !/삭제|발송|전송|반려|인증|암호|서명/.test(dialog.message()) &&
           (auth.operation === 'submit' ? /상신|결재올림/ : auth.operation === 'withdraw' ? /회수/ : /결재|승인/).test(dialog.message()));
@@ -95,6 +96,7 @@ export class SchoolBrowser extends BrowserEngine {
     return {entry, locator: this.scope().locator(`[data-narae-ref="${value}"]`)};
   }
   async snapshot(args = {}) {
+    if(this.pendingDialog)return {url:this.page.url(),nativeDialog:this.dialogState(),actionPending:true,dialog:null,text:'사이트 확인창 응답 대기',elements:[],untrusted:true};
     const version = 's' + ++this.serial;
     this.refs.clear();
     const result = await this.scope().evaluate(({limit, chars, offset, filter, version, selector}) => {
@@ -138,6 +140,8 @@ export class SchoolBrowser extends BrowserEngine {
     }, {chars: bound(args.chars, 100, 20000, 5000), offset: bound(args.offset, 0, 1000000, 0), selector: args.selector || null});
   }
   async execute(command) {
+    if(command.action==='dialog'&&command.decision==='accept'&&/상신|결재|승인|회수|삭제|발송|전송|반려|인증|암호|서명/.test(this.pendingDialog?.message||''))throw new Fault('FINAL_DIALOG_AUTH_REQUIRED','상신·결재·인증 등은 문서와 권한을 확인한 전용 절차로 처리하세요. 확인창만 직접 수락할 수 없습니다.');
+    if(this.pendingDialog&&command.action!=='dialog'&&!['tabs','snapshot'].includes(command.action))throw new Fault('DIALOG_PENDING','현재 사이트 확인창의 실제 ID와 원문으로 먼저 응답하세요. 클릭을 반복하지 마세요.');
     if (['open', 'back', 'tab'].includes(command.action)) this.frame = null;
     if (command.action === 'frames') return {frames: await Promise.all(this.page.frames().map(async (f, index) =>
       ({index, name: f.name(), url: f.url(), active: f === this.scope()})))};
@@ -177,6 +181,7 @@ export class SchoolBrowser extends BrowserEngine {
       await this.scope().locator(command.selector).first().waitFor({state: 'visible', timeout: 12000});
       return {ready: true};
     }
-    return super.execute(command);
+    const result=await super.execute(command);
+    return result?.dialog&&typeof result.dialog==='object'?{...result,nativeDialog:result.dialog,dialog:null}:result;
   }
 }

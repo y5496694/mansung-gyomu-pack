@@ -1,0 +1,7 @@
+node_modules/
+.narae-browser/
+artifacts/
+.env
+*.log
+*.tgz
+coverage/

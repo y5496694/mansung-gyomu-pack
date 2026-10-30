@@ -34,6 +34,7 @@ class OfficeIntegrations{
   const register=file=>{const allowed=this.policy.allowed(file);this.instance.register([allowed]);return allowed;};
   if(args.files)args.files=args.files.map(register);
   if(args.config?.body_file)args.config.body_file=register(args.config.body_file);
+  if(args.config?.body_hwp)args.config.body_hwp.path=register(args.config.body_hwp.path);
   if(args.config?.attachments)args.config.attachments=args.config.attachments.map(register);
   if(tool.original==='browser'){
    if(args.action==='open'){let url;try{url=new URL(args.url);}catch{throw new Error('웹 주소를 확인하세요.');}if(!['https:','http:'].includes(url.protocol)||url.username||url.password)throw new Error('HTTP(S) 웹 주소만 지원합니다.');}

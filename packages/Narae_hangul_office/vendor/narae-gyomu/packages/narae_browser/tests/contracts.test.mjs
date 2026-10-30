@@ -1,6 +1,8 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { webUrl, bound, BrowserEngine } from "../src/browser.mjs";
+import { EventEmitter } from "node:events";
+import { connectionOptions } from "../src/session.mjs";
 import { parseJson, validateSummary, ModelClient } from "../src/model.mjs";
 import {
   actionFromArgs,
@@ -24,6 +26,46 @@ test("bounded numeric inputs reject negative/NaN/unbounded/fractional limits", (
   assert.equal(bound(undefined, 1, 100, 35), 35);
   for (const x of [0, 101, "bad", Infinity, 1.2])
     assert.throws(() => bound(x, 1, 100, 35));
+});
+
+test("only observed navigation converts a destroyed context into a fresh-read result", async () => {
+  const engine = new BrowserEngine(),
+    page = new EventEmitter(),
+    frame = {};
+  page.mainFrame = () => frame;
+  engine.page = page;
+  let calls = 0;
+  const result = await engine.withNavigation(async () => {
+    calls++;
+    page.emit("framenavigated", frame);
+    throw new Error("page.evaluate: Execution context was destroyed");
+  });
+  assert.equal(calls, 1);
+  assert.equal(result.navigationObserved, true);
+  assert.equal(result.refresh, "snapshot");
+  assert.equal(page.listenerCount("framenavigated"), 0);
+  const delayed = await engine.withNavigation(async () => {
+    setTimeout(() => page.emit("framenavigated", frame), 10);
+    throw new Error("Execution context was destroyed");
+  });
+  assert.equal(delayed.navigationObserved, true);
+  await assert.rejects(() =>
+    engine.withNavigation(async () => {
+      throw new Error("Execution context was destroyed");
+    }),
+  );
+  await assert.rejects(() =>
+    engine.withNavigation(async () => {
+      page.emit("framenavigated", {});
+      throw new Error("Execution context was destroyed");
+    }),
+  );
+  await assert.rejects(() =>
+    engine.withNavigation(async () => {
+      page.emit("framenavigated", frame);
+      throw new Error("Unrelated failure");
+    }),
+  );
 });
 
 test("missing read selector fails instead of returning a successful empty body", async () => {
@@ -72,6 +114,10 @@ test("source evidence must be a literal article quote, never a fabricated citati
   );
 });
 test("CLI maps direct short commands to deterministic JSON actions", () => {
+  assert.deepEqual(actionFromArgs("inspect", ["s1/e1"], {}), {
+    action: "inspect",
+    ref: "s1/e1",
+  });
   assert.deepEqual(actionFromArgs("open", ["https://example.com"], {}), {
     action: "open",
     url: "https://example.com",
@@ -83,6 +129,53 @@ test("CLI maps direct short commands to deterministic JSON actions", () => {
   });
   assert.throws(() => actionFromArgs("eval", ["process.exit()"], {}));
   assert.throws(() => actionFromArgs("open", [], {}));
+});
+
+test("session remembers only connection settings, merging defined caller overrides", () => {
+  assert.deepEqual(
+    connectionOptions(
+      {
+        connection: "extension",
+        channel: "msedge",
+        token: "secret",
+        cookie: "secret",
+      },
+      {
+        connection: undefined,
+        channel: undefined,
+        headed: false,
+        model: "ignored",
+      },
+    ),
+    { connection: "extension", channel: "msedge", headed: false },
+  );
+  assert.equal(
+    connectionOptions({ connection: "extension" }, { connection: "isolated" })
+      .connection,
+    "isolated",
+  );
+  assert.deepEqual(
+    actionFromArgs("dialog", [], {
+      decision: "accept",
+      "dialog-id": "d3",
+      "expected-message": "합성 확인?",
+    }),
+    {
+      action: "dialog",
+      decision: "accept",
+      expectedId: "d3",
+      expectedMessage: "합성 확인?",
+    },
+  );
+  for (const action of [
+    "dialog",
+    "check",
+    "uncheck",
+    "hover",
+    "frame",
+    "inspect",
+  ])
+    assert.throws(() => validateAgentAction({ action }, ["example.com"]));
 });
 test("news selection canonicalizes and deduplicates distinct real Naver article IDs", () => {
   const links = [

@@ -76,6 +76,9 @@ export class BrowserEngine {
     this.serial = 0;
     this.policy = null;
     this.errors = [];
+    this.frame = null;
+    this.pendingDialog = null;
+    this.dialogSerial = 0;
   }
   async start({ headed = false, connection = "isolated", ...options } = {}) {
     if (connection !== "isolated")
@@ -100,7 +103,7 @@ export class BrowserEngine {
         this.errors.push(e.message.slice(0, 200));
         this.errors = this.errors.slice(-10);
       });
-      p.on("dialog", (d) => d.dismiss().catch(() => {}));
+      this.watchDialogs(p);
     });
     await this.context.route("**/*", async (route) => {
       const req = route.request();
@@ -135,6 +138,17 @@ export class BrowserEngine {
     const watch = (page) => {
       if (this.pages.includes(page)) return;
       this.pages.push(page);
+      this.watchDialogs(page);
+      page.on("pageerror", (error) => {
+        this.errors.push(error.message.slice(0, 400));
+        this.errors = this.errors.slice(-10);
+      });
+      page.on("console", (message) => {
+        if (message.type() === "error") {
+          this.errors.push(message.text().slice(0, 400));
+          this.errors = this.errors.slice(-10);
+        }
+      });
       page.on("framenavigated", (frame) => {
         if (frame === page.mainFrame() && page === this.page) this.invalidate();
       });
@@ -166,13 +180,176 @@ export class BrowserEngine {
     this.serial++;
     this.refs.clear();
   }
+  activeDocument() {
+    if (this.frame?.isDetached()) {
+      this.frame = null;
+      this.invalidate();
+      throw new Fault(
+        "FRAME_DETACHED",
+        "프레임이 바뀌었습니다. frames에서 다시 선택하세요.",
+      );
+    }
+    return this.frame || this.page;
+  }
+  watchDialogs(page) {
+    page.on("dialog", (dialog) => {
+      if (this.policy) {
+        void dialog.dismiss().catch(() => {});
+        return;
+      }
+      this.pendingDialog = {
+        dialog,
+        page,
+        id: "d" + ++this.dialogSerial,
+        type: dialog.type(),
+        message: dialog.message(),
+        url: page.url(),
+      };
+    });
+  }
+  dialogState() {
+    const current = this.pendingDialog;
+    return current
+      ? {
+          id: current.id,
+          type: current.type,
+          message: current.message,
+          url: current.url,
+          untrusted: true,
+        }
+      : null;
+  }
+  async withDialog(action) {
+    if (this.policy) {
+      await action();
+      return false;
+    }
+    let observed;
+    const appeared = new Promise((resolve) => {
+      observed = () => resolve();
+    });
+    this.page.once("dialog", observed);
+    const pending = Promise.resolve().then(action);
+    // Keep the click alive while returning its dialog so the next serialized
+    // CLI command can resolve it. Never repeat the click to accept a prompt.
+    this.pendingAction = pending;
+    void pending.catch(() => {});
+    try {
+      await Promise.race([pending, appeared]);
+    } finally {
+      this.page.off("dialog", observed);
+    }
+    if (this.pendingDialog) return true;
+    this.pendingAction = null;
+    return false;
+  }
+  async handleDialog(command) {
+    const current = this.pendingDialog;
+    if (!command.decision)
+      return {
+        dialog: this.dialogState(),
+        ...(this.errors.length ? { pageErrors: this.errors } : {}),
+      };
+    if (this.policy)
+      throw new Fault("READ_ONLY", "Agent cannot handle dialogs");
+    if (
+      !current ||
+      command.expectedId !== current.id ||
+      command.expectedMessage !== current.message
+    )
+      throw new Fault(
+        "DIALOG_MISMATCH",
+        "dialog의 현재 ID와 확인한 원문을 정확히 지정하세요.",
+      );
+    if (
+      !["accept", "dismiss"].includes(command.decision) ||
+      !["confirm", "alert"].includes(current.type)
+    )
+      throw new Fault(
+        "DIALOG_UNSUPPORTED",
+        "confirm·alert의 accept·dismiss만 지원합니다.",
+      );
+    this.pendingDialog = null;
+    try {
+      await current.dialog[command.decision]();
+    } catch (error) {
+      this.pendingDialog ||= current;
+      throw error;
+    }
+    let actionError;
+    try {
+      if (!this.pendingDialog && this.pendingAction) {
+        const pending = this.pendingAction;
+        await this.withDialog(() => pending);
+      }
+    } catch (error) {
+      actionError = String(error.message).slice(0, 300);
+    }
+    this.invalidate();
+    return {
+      handled: true,
+      id: current.id,
+      decision: command.decision,
+      dialog: this.dialogState(),
+      ...(actionError ? { actionError } : {}),
+    };
+  }
+  async withNavigation(action) {
+    const frame = this.frame || this.page.mainFrame();
+    let navigated = false;
+    let resolveNavigation;
+    const navigation = new Promise((resolve) => {
+      resolveNavigation = resolve;
+    });
+    const observed = (changed) => {
+      if (changed === frame) {
+        navigated = true;
+        resolveNavigation();
+      }
+    };
+    this.page.on("framenavigated", observed);
+    try {
+      return await action();
+    } catch (error) {
+      if (!/Execution context was destroyed/.test(String(error.message)))
+        throw error;
+      // Chromium can report the destroyed context just before the matching
+      // frame-navigation event reaches Playwright. Wait only for that proof.
+      if (!navigated) {
+        let timer;
+        try {
+          await Promise.race([
+            navigation,
+            new Promise((resolve) => {
+              timer = setTimeout(resolve, 1500);
+            }),
+          ]);
+        } finally {
+          clearTimeout(timer);
+        }
+      }
+      if (!navigated) throw error;
+      this.pendingAction = null;
+      this.invalidate();
+      // The native handler navigated while evaluate was returning. Never
+      // repeat the click: the caller must read the resulting page separately.
+      return {
+        actionDispatched: true,
+        navigationObserved: true,
+        refresh: "snapshot",
+      };
+    } finally {
+      this.page.off("framenavigated", observed);
+    }
+  }
   async snapshot(args = {}) {
     const limit = bound(args.limit, 1, 100, 35),
+      offset = bound(args.offset, 0, 10000, 0),
       chars = bound(args.chars, 100, 12000, 1600),
       version = "s" + ++this.serial;
     this.refs.clear();
-    const result = await this.page.evaluate(
-      ({ limit, chars, version }) => {
+    const result = await this.activeDocument().evaluate(
+      ({ limit, chars, version, selector, filter, offset }) => {
         const visible = (e) => {
           const s = getComputedStyle(e),
             r = e.getBoundingClientRect();
@@ -185,17 +362,39 @@ export class BrowserEngine {
         };
         const list = [];
         const nodes = document.querySelectorAll(
-          "a[href],button,input:not([type=hidden]),textarea,select,[role=button],[role=link],[contenteditable=true]",
+          selector ||
+            "a,button,label[for],input:not([type=hidden]),textarea,select,[role=button],[role=link],[role=treeitem],[role=tab],[role=menuitem],[role=gridcell],[role=option],[role=combobox],[role=checkbox],[role=radio],[contenteditable=true]",
         );
         let i = 0;
         for (const e of nodes) {
-          if (!visible(e)) continue;
+          const nativeCheck = e.matches(
+            "input[type=checkbox],input[type=radio]",
+          );
+          if (
+            !visible(e) &&
+            !(nativeCheck && e.parentElement && visible(e.parentElement))
+          )
+            continue;
           const tag = e.tagName.toLowerCase(),
+            labelled =
+              tag === "label" ? document.getElementById(e.htmlFor) : null,
+            check = nativeCheck
+              ? e
+              : labelled?.matches("input[type=checkbox],input[type=radio]")
+                ? labelled
+                : null,
             role =
+              (check ? check.type : null) ||
               e.getAttribute("role") ||
               (tag === "a" ? "link" : tag === "input" ? "textbox" : tag),
             label = (
               e.getAttribute("aria-label") ||
+              (check
+                ? e.closest("tr")?.innerText ||
+                  check.labels?.[0]?.innerText ||
+                  check.title ||
+                  check.name
+                : "") ||
               e.labels?.[0]?.innerText ||
               e.getAttribute("placeholder") ||
               e.innerText ||
@@ -207,15 +406,18 @@ export class BrowserEngine {
               .trim()
               .slice(0, 120);
           if (!label && tag === "a") continue;
+          if (filter && !label.includes(filter)) continue;
           const ref = version + "/e" + ++i;
           e.setAttribute("data-narae-ref", ref);
           list.push({
             ref,
             role,
             label,
+            id: e.id || "",
+            tag,
+            ...(check ? { checked: check.checked } : {}),
             ...(tag === "a" ? { href: e.href } : {}),
           });
-          if (i >= limit) break;
         }
         const main =
           document.querySelector("#dic_area,article,main,[role=main]") ||
@@ -224,10 +426,18 @@ export class BrowserEngine {
           url: location.href,
           title: document.title,
           text: main.innerText.replace(/\n{3,}/g, "\n\n").slice(0, chars),
-          elements: list,
+          elements: list.slice(offset, offset + limit),
+          totalElements: list.length,
         };
       },
-      { limit, chars, version },
+      {
+        limit,
+        chars,
+        version,
+        offset,
+        selector: args.selector || null,
+        filter: args.filter || null,
+      },
     );
     for (const item of result.elements) this.refs.set(item.ref, item);
     return { version, ...result, untrusted: true };
@@ -239,12 +449,15 @@ export class BrowserEngine {
         "STALE_REF",
         "Unknown/expired reference. Call snapshot and use its ref.",
       );
-    return { entry, locator: this.page.locator(`[data-narae-ref="${value}"]`) };
+    return {
+      entry,
+      locator: this.activeDocument().locator(`[data-narae-ref="${value}"]`),
+    };
   }
   async read(args = {}) {
     const chars = bound(args.chars, 100, 20000, 5000),
       offset = bound(args.offset, 0, 1000000, 0);
-    const result = await this.page.evaluate(
+    const result = await this.activeDocument().evaluate(
       ({ chars, offset, selector }) => {
         const el = selector
           ? document.querySelector(selector)
@@ -311,6 +524,15 @@ export class BrowserEngine {
     const { action } = command;
     if (typeof action !== "string")
       throw new Fault("INVALID_COMMAND", "action is required");
+    if (action === "dialog") return this.handleDialog(command);
+    // Session health checks must remain available while a modal blocks DOM work.
+    if (action === "tabs" && this.pendingDialog)
+      return { tabs: [], dialog: this.dialogState() };
+    if (this.pendingDialog && action !== "close")
+      throw new Fault(
+        "DIALOG_PENDING",
+        "확인창이 열려 있습니다. dialog에서 원문을 확인해 처리하세요.",
+      );
     if (action === "policy") {
       if (this.attached)
         throw new Fault(
@@ -373,8 +595,26 @@ export class BrowserEngine {
       this.invalidate();
     }
     switch (action) {
+      case "frames":
+        return {
+          frames: this.page.frames().map((frame, index) => ({
+            index,
+            name: frame.name(),
+            url: frame.url(),
+            active: frame === (this.frame || this.page.mainFrame()),
+          })),
+        };
+      case "frame": {
+        const frames = this.page.frames();
+        const frame = frames[bound(command.index, 0, frames.length - 1, 0)];
+        if (this.policy) webUrl(frame.url(), this.policy.hosts);
+        this.frame = frame;
+        this.invalidate();
+        return this.snapshot(command);
+      }
       case "open": {
         const url = webUrl(command.url, this.policy?.hosts);
+        this.frame = null;
         this.invalidate();
         const response = await this.page.goto(url, {
           waitUntil: "domcontentloaded",
@@ -388,8 +628,66 @@ export class BrowserEngine {
       }
       case "snapshot":
         return this.snapshot(command);
+      case "inspect": {
+        if (this.policy)
+          throw new Fault(
+            "READ_ONLY",
+            "Agent inspection is limited to visible text",
+          );
+        const { locator } = this.ref(command.ref);
+        return locator.evaluate((element) => {
+          const secret = (e) =>
+            e.type === "password" ||
+            /token|password|passwd|pwd|secret|credential|auth|cookie|session|api.?key|private.?key/i.test(
+              (e.name || "") + " " + (e.id || ""),
+            );
+          const attributes = {};
+          for (const name of [
+            "id",
+            "name",
+            "type",
+            "value",
+            "href",
+            "onclick",
+            "onmousedown",
+            "onmouseup",
+          ])
+            if (element.hasAttribute(name))
+              attributes[name] =
+                name === "value" && secret(element)
+                  ? "[redacted]"
+                  : element.getAttribute(name).slice(0, 1000);
+          return {
+            tag: element.tagName.toLowerCase(),
+            attributes,
+            ...(element.tagName === "FORM"
+              ? {
+                  fields: [...element.elements].slice(0, 100).map((e) => ({
+                    name: e.name || "",
+                    type: e.type || "",
+                    value: secret(e)
+                      ? "[redacted]"
+                      : String(e.value || "").slice(0, 1000),
+                    ...(["checkbox", "radio"].includes(e.type)
+                      ? { checked: e.checked }
+                      : {}),
+                  })),
+                }
+              : {}),
+            untrusted: true,
+          };
+        });
+      }
       case "read":
         return this.read(command);
+      case "hover": {
+        if (this.policy)
+          throw new Fault("READ_ONLY", "Agent cannot hover controls");
+        const { locator } = this.ref(command.ref);
+        await locator.hover({ force: command.force === true });
+        this.invalidate();
+        return this.snapshot(command);
+      }
       case "click": {
         const { entry, locator } = this.ref(command.ref);
         if (this.policy) {
@@ -405,10 +703,54 @@ export class BrowserEngine {
             "STALE_REF",
             "Element no longer exists. Refresh snapshot.",
           );
-        await locator.click();
-        await this.page.waitForLoadState("domcontentloaded");
-        this.invalidate();
-        return this.snapshot(command);
+        if (command.method && !["mouse", "dom"].includes(command.method))
+          throw new Fault(
+            "INVALID_ARGUMENT",
+            "click method must be mouse or dom",
+          );
+        if (this.policy && command.method === "dom")
+          throw new Fault("READ_ONLY", "Agent cannot dispatch DOM clicks");
+        if (
+          command.force === true &&
+          (!(await locator.isVisible()) || !(await locator.isEnabled()))
+        )
+          throw new Fault(
+            "CONTROL_UNAVAILABLE",
+            "보이고 활성화된 컨트롤만 선택할 수 있습니다.",
+          );
+        return this.withNavigation(async () => {
+          if (
+            await this.withDialog(() =>
+              command.method === "dom"
+                ? locator.evaluate((element) => {
+                    if (
+                      element.matches(":disabled") ||
+                      element.getAttribute("aria-disabled") === "true"
+                    )
+                      throw new Error("Control is disabled");
+                    const rect = element.getBoundingClientRect();
+                    const init = {
+                      bubbles: true,
+                      cancelable: true,
+                      view: window,
+                      button: 0,
+                      clientX: rect.x + rect.width / 2,
+                      clientY: rect.y + rect.height / 2,
+                    };
+                    element.dispatchEvent(
+                      new MouseEvent("mousedown", { ...init, buttons: 1 }),
+                    );
+                    element.dispatchEvent(new MouseEvent("mouseup", init));
+                    element.click();
+                  })
+                : locator.click({ force: command.force === true }),
+            )
+          )
+            return { actionPending: true, dialog: this.dialogState() };
+          await this.page.waitForLoadState("domcontentloaded");
+          this.invalidate();
+          return await this.snapshot(command);
+        });
       }
       case "fill": {
         if (this.policy)
@@ -419,6 +761,35 @@ export class BrowserEngine {
         await locator.fill(command.text);
         this.invalidate();
         return { filled: true, refresh: "snapshot" };
+      }
+      case "check":
+      case "uncheck": {
+        if (this.policy)
+          throw new Fault("READ_ONLY", "Agent cannot change selections");
+        const { entry, locator } = this.ref(command.ref);
+        if (
+          !["checkbox", "radio"].includes(entry.role) ||
+          (await locator.count()) !== 1
+        )
+          throw new Fault(
+            "INVALID_CHECKBOX",
+            "현재 snapshot의 선택 컨트롤 ref가 필요합니다.",
+          );
+        const checked = action === "check";
+        const result = await locator.evaluate((element, checked) => {
+          const input = element.matches("input") ? element : element.control;
+          if (
+            !input?.matches("input[type=checkbox],input[type=radio]") ||
+            input.disabled
+          )
+            throw new Error("Selection is unavailable");
+          if (input.checked !== checked) input.click();
+          return input.checked;
+        }, checked);
+        if (result !== checked)
+          throw new Fault("CHECK_FAILED", "선택 상태가 요청과 다릅니다.");
+        this.invalidate();
+        return this.snapshot(command);
       }
       case "select": {
         if (this.policy)
@@ -435,8 +806,12 @@ export class BrowserEngine {
           throw new Fault("INVALID_ARGUMENT", "key required");
         if (command.ref) {
           const { locator } = this.ref(command.ref);
-          await locator.press(command.key);
-        } else await this.page.keyboard.press(command.key);
+          if (await this.withDialog(() => locator.press(command.key)))
+            return { actionPending: true, dialog: this.dialogState() };
+        } else if (
+          await this.withDialog(() => this.page.keyboard.press(command.key))
+        )
+          return { actionPending: true, dialog: this.dialogState() };
         this.invalidate();
         return this.snapshot(command);
       }
@@ -448,7 +823,7 @@ export class BrowserEngine {
       }
       case "wait": {
         if (command.selector)
-          await this.page
+          await this.activeDocument()
             .locator(command.selector)
             .first()
             .waitFor({
@@ -459,6 +834,7 @@ export class BrowserEngine {
         return { ready: true, url: this.page.url() };
       }
       case "back":
+        this.frame = null;
         await this.page.goBack({ waitUntil: "domcontentloaded" });
         this.invalidate();
         return this.snapshot(command);
@@ -481,6 +857,7 @@ export class BrowserEngine {
         );
         const index = bound(command.index, 0, pages.length - 1, 0);
         this.page = pages[index];
+        this.frame = null;
         await this.page.bringToFront();
         this.invalidate();
         return this.snapshot(command);

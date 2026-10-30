@@ -1,13 +1,23 @@
 const string = {type: 'string'}, strings = {type: 'array', items: string}, integer = {type: 'integer'};
 const enumeration = values => ({type: 'string', enum: values});
 export const object = (properties = {}, required = []) => ({type: 'object', properties, required, additionalProperties: false});
+// Match the public WXS config, so small models see field names before execution.
+const reasons={type:'array',items:enumeration([1,2,3,4,5,6,7,8])};
+export const wxsConfig=object({expected_title:string,title:string,body:string,body_file:string,
+  body_hwp:object({path:string,expected_text:string},['path','expected_text']),
+  attachments:strings,task_card:string,save_name:string,private_reasons:reasons,
+  disclosure:object({mode:enumeration(['public','partial','private']),reasons},['mode','reasons']),
+  approval_route:{type:'array',minItems:1,maxItems:10,items:object({name:string,id:string,role:enumeration(['검토','결재'])},['name','role'])},
+  approver:object({name:string,id:string},['name']),recipient:object({search:string,name:string},['search','name']),
+  auto_send:{type:'boolean',enum:[true]}},['expected_title','title']);
 export const tools = [
   {name: 'system.status', label: '연결 상태', description: '선택 AI, 네 도구 설치 경로, 출력 폴더와 실행 환경을 확인한다.', parameters: object()},
   {name: 'skill.read', label: '업무 절차', description: '작업 전에 해당 영역의 절차와 한계를 읽는다. 긴 문서는 offset으로 이어 읽는다.',
     parameters: object({area: enumeration(['overview', 'portal', 'neis', 'edufine', 'wxs', 'hangul', 'hangul-jobs', 'cbe']), document: string, offset: integer}, ['area'])},
   {name: 'browser', label: '나래 브라우저', description: '실제 Chrome/Edge를 제어한다. snapshot의 실제 ref만 사용한다. 명시적으로 요청한 상신·결재·회수는 문서·결재선을 확인한 뒤 confirmFinalAction:true와 expectedDocument/expectedLabel/expectedUrl/expectedState(직전 snapshot.finalState)로 실행한다. 회수는 문서진행에서 선택한 한 행의 expectedDocumentId도 필요하다. 네이티브 확인창은 관찰한 정확한 confirmationText만 수락한다. 클릭만으로 완료 보고하지 않는다. 발송·삭제는 지원하지 않는다.',
-    parameters: object({action: enumeration(['open','snapshot','read','click','fill','select','check','uncheck','press','expand','collapse','scroll','wait','back','tabs','tab','frames','frame']),
+    parameters: object({action: enumeration(['open','snapshot','inspect','read','click','hover','fill','select','check','uncheck','press','expand','collapse','scroll','wait','back','tabs','tab','frames','frame','dialog']),
       url: string, ref: string, text: string, value: string, key: string, index: integer, offset: integer, limit: integer, chars: integer, filter: string, selector: string, pixels: integer,
+      method:enumeration(['pointer','dom']),force:{type:'boolean'},ms:integer,timeout:integer,decision:enumeration(['accept','dismiss']),expectedId:string,expectedMessage:string,
       confirmFinalAction: {type:'boolean'}, expectedDocument: string, expectedDocumentId: string, expectedLabel: string, expectedUrl: string, expectedState: string, confirmationText: string}, ['action'])},
   {name: 'portal.open', label: '업무포털 열기', description: '등록된 교육청 업무포털을 나래 브라우저로 연다. 사용자가 직접 로그인하며 기존 창은 재사용한다. 로그인 성공 여부는 실제 화면으로 확인한다.', parameters: object()},
   {name: 'cbe.search', label: '교직원 찾기', description: '실행·로그인된 CBE에서 이름 검색. 기본 auto는 내 조직 우선, 성공한 0명일 때 전체 조직. 동명이인은 소속·직책을 확인한다.',
@@ -32,7 +42,7 @@ export const tools = [
     parameters: object({operation: enumeration(['doctor','windows','inspect','text','attachments','draft-status']), hwnd: string}, ['operation'])},
   {name:'wxs.options',label:'기안 후보 조회',description:'확인한 초안의 결재자·과제카드 후보와 공개 설정을 원본 CLI로 조회한다. 사람을 선택하거나 문서를 저장하지 않는다. 같은 선택창을 재사용하며 query·offset·limit으로 후보를 나눠 읽는다. close=true는 관찰한 변경 없는 기안자 단독 결재선 선택창만 닫는다.',parameters:object({hwnd:string,expected_title:string,section:enumeration(['approval','task','disclosure']),dialog_hwnd:string,close:{type:'boolean'},query:string,offset:integer,limit:integer},['hwnd','expected_title','section'])},
   {name: 'wxs.prepare', label: '기안 입력 준비', description: '공개 WXS 설정 JSON을 원본 CLI로 점검해 입력 미리보기를 만든다. 사용자가 미리보기에서 적용하며 최종 상신·발송은 하지 않는다.',
-    parameters: object({hwnd: string, config: {type: 'object'}}, ['hwnd','config'])},
+    parameters: object({hwnd: string, config: wxsConfig}, ['hwnd','config'])},
   {name: 'wxs.read', label: '공문 한 건 읽기', description: '새 공문은 prepare(expected_title)의 ready:true 후 같은 제목 한 건만 연다. 초기 승인 등으로 이미 열린 작업 소유 공문은 windows의 실제 hwnd·정확한 expected_title로 open을 실행한다. 새 창을 다시 열지 않는다. result(id)로 본문·모든 첨부 저장·closed 상태를 받는다. 인증 대기 창은 보존한다. pending:true면 같은 result로 확인한다.',
     parameters: object({operation:enumeration(['prepare','open','result']),expected_title:string,hwnd:string,id:string,offset:integer,chars:integer},['operation'])},
   {name:'wxs.attachment',label:'저장 첨부 읽기',description:'원본 팩의 attachment_reader.py로 WXS에서 저장한 독립 첨부 또는 명시적으로 선택한 파일을 읽는다. HWP/HWPX는 나래한글 엔진을 호출한다. offset과 chars로 모든 본문을 이어 읽는다. 시각 확인 대기는 완독이 아니다.',parameters:object({path:string,offset:integer,chars:integer},['path'])},

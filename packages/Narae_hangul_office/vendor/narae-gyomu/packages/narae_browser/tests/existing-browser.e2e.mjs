@@ -126,6 +126,15 @@ test("attach edits an already open tab, retains its login state and disconnects 
       assert(connected.data.tabs.some((tab) => tab.url.endsWith("/existing")));
       assert.equal((await run(["close"])).data.userBrowserPreserved, true);
       assert.equal(userPage.isClosed(), false);
+      // Reconnecting after a stopped/idle daemon must retain the connection mode.
+      const resumed = await run(["tabs"]);
+      assert(resumed.data.tabs.some((tab) => tab.url.endsWith("/existing")));
+      const settings = JSON.parse(
+        fs.readFileSync(path.join(home, "existing", "connection.json"), "utf8"),
+      );
+      assert.equal(settings.connection, "cdp");
+      assert.equal(settings.endpoint, `http://127.0.0.1:${port}`);
+      assert.equal((await run(["close"])).data.userBrowserPreserved, true);
     } finally {
       await run(["close"]).catch(() => {});
       fs.rmSync(home, { recursive: true, force: true });

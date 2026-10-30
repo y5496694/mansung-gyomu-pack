@@ -1,0 +1,8 @@
+{
+  "steps": [
+    {"action":"open","url":"https://example.com"},
+    {"action":"snapshot","limit":15,"chars":800},
+    {"action":"read","chars":1000},
+    {"action":"close"}
+  ]
+}

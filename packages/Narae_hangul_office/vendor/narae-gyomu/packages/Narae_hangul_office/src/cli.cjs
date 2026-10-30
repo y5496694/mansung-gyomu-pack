@@ -15,6 +15,7 @@ function normalize(job,base){
  if(job.target)req.target=absolute(job.target,base);
  req.expectedHash=job.expectedHash||job.expected_input_sha256;
  if(job.overwrite_output===true)req.overwrite=true;
+ if(job.image_path)req.image_path=absolute(job.image_path,base);
  const images=items=>{for(const item of items||[]){if(item.type==='image')item.path=absolute(item.path,base);for(const row of item.rows||[])for(const cell of row)images(cell.blocks);}};
  images(req.blocks);
  if(job.preview)throw new Error('preview 대신 export 작업으로 PDF 사본을 생성하세요.');
@@ -23,7 +24,7 @@ function normalize(job,base){
 function resultPath(file,job,base,jobFile){
  if(!file)return null;
  file=absolute(file,process.cwd());
- const protectedPaths=[jobFile,job.path,job.input,job.output,job.target].filter(Boolean).map(p=>absolute(p,base));
+ const protectedPaths=[jobFile,job.path,job.input,job.output,job.target,job.image_path].filter(Boolean).map(p=>absolute(p,base));
  const visit=value=>{if(!value||typeof value!=='object')return;for(const [key,item] of Object.entries(value)){if(key==='path'&&typeof item==='string')protectedPaths.push(absolute(item,base));else visit(item);}};visit(job.blocks);
  const canonical=p=>{if(fs.existsSync(p))return fs.realpathSync(p).toLowerCase();const parent=path.dirname(p);return path.join(fs.existsSync(parent)?fs.realpathSync(parent):parent,path.basename(p)).toLowerCase();};
  if(protectedPaths.some(p=>canonical(p)===canonical(file)))throw new Error('결과 JSON은 작업 JSON·문서·그림과 다른 경로로 지정하세요.');
@@ -39,7 +40,7 @@ async function lock(home,file,operation){
 }
 async function execute(job,{base=process.cwd(),home=process.env.NARAE_OFFICE_HOME||path.join(process.env.LOCALAPPDATA||os.homedir(),'NaraeHangulOffice'),python=require('./runtime-python.cjs').resolvePython(root)}={}){
  const req=normalize(job,base),action=req.action;
- if(action==='schema')return {schema:1,actions:['doctor','inspect','create','edit','export','open','list','live-read','live-edit','install-skill'],...require('./hwp-file-contracts.cjs')};
+ if(action==='schema')return {schema:1,actions:['doctor','inspect','create','edit','insert-signature','export','open','list','live-read','live-edit','install-skill'],signature:{action:'insert-signature',required:['input','output','expected_input_sha256','image_path','anchor_text','x_mm','y_mm'],optional:['width_mm','height_mm','expected_count','occurrence'],placement:'paper top-left, mm; TreatAsChar=false; TextWrap=BehindText'},...require('./hwp-file-contracts.cjs')};
  if(action==='install-skill')return require('../scripts/install-skills.cjs').install({appRoot:root,directory:req.directory});
  if(action==='doctor'){
   const hancom=require('./hancom.cjs').discoverHancom(),available=fs.existsSync(python);
@@ -60,6 +61,10 @@ async function execute(job,{base=process.cwd(),home=process.env.NARAE_OFFICE_HOM
     return await native.withFileLock(req.path,()=>runPython(python,home,'live_hangul.py',{...req,action:action==='live-read'?'read':'edit',save:req.save!==false,backupDir:path.join(home,'backups')}));
    }
    if(action==='create')return {output:req.path,...await doc({...req,action:'create'})};
+   if(action==='insert-signature'){
+    if(!req.expectedHash)throw new Error('직전 inspect의 input_sha256을 expected_input_sha256으로 지정하세요.');
+    return await native.savedFileOperation(req.path,{editing:true},()=>doc({...req,action:'insert_signature'}));
+   }
    if(action==='edit'){
     if(!req.expectedHash)throw new Error('직전 inspect의 input_sha256 또는 hash를 expected_input_sha256으로 지정하세요.');
     return {input:req.path,output:req.target||req.path,...await native.savedFileOperation(req.path,{editing:true},()=>doc({...req,action:'save'}))};

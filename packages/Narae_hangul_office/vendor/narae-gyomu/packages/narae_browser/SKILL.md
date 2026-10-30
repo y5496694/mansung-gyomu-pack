@@ -28,6 +28,16 @@ description: 실제 Chrome/Edge를 짧은 JSON 명령으로 제어하는 나래 
 
 확장 인증 후 `attach`의 탭 목록이 비어 있으면 같은 세션에서 `open URL`을 사용한다. 기존 Chrome 프로필에 탭을 열며 별도 프로필이나 새 로그인 세션을 만들지 않는다.
 
+## 업무 화면의 확인창·팝업·프레임
+
+confirm·alert, 별도 창, iframe, Nexacro 메뉴나 숨긴 체크박스가 있는 업무는 [실행·복구 절차](docs/dialogs-and-portal.md)를 먼저 읽는다. `actionPending:true`가 오면 클릭을 반복하지 않고 `dialog`에서 반환된 ID와 원문으로 같은 확인창을 처리한다. 이후 `tabs`로 후속 팝업을 찾고, 실제 목록 상태까지 확인한다.
+
+`check`·`uncheck`·`hover`, `frames`·`frame`, snapshot의 `selector`·`filter`·`offset`을 지원한다. 일반 클릭 실패 후 상태를 확인한 경우에만 `--force` 또는 관찰한 Nexacro 명령의 `--method dom`을 선택한다. WXS 본문은 나래교무 포탈의 WXS CLI 범위다.
+
+`navigationObserved:true`는 클릭 중 실제 화면 전환을 관찰했으므로 **재클릭 없이 새 snapshot**을 읽으라는 뜻이다. 서버 업무 완료를 뜻하지 않는다. `inspect REF`는 현재 요소 속성과 form의 제한된 필드값을 읽는 진단이며 비밀번호·일반 인증값을 가린다. 문서 식별값은 공개하지 않고 숨김 필드를 임의로 보완하지 않는다.
+
+같은 이름의 세션은 비밀값 없는 연결 설정을 보관한다. 유휴 종료 뒤에도 같은 기존 Chrome 연결을 사용하며 실패를 새 프로필로 바꾸지 않는다. 탭 목록과 로그인 상태는 현재 화면에서 다시 확인한다. 열린 확인창이 있는 동안에는 유휴 종료하지 않는다.
+
 ## 소형 모델로 네이버 뉴스 3개
 
 ```bash

@@ -276,6 +276,7 @@ export class Tools {
         this.windowId(a.hwnd);
         const config=structuredClone(a.config);
         if(config.body_file)config.body_file=this.input(config.body_file);
+        if(config.body_hwp)config.body_hwp.path=this.input(config.body_hwp.path);
         if(config.attachments)config.attachments=config.attachments.map(file=>this.input(file));
         const file = path.join(TMP,`wxs-${crypto.randomUUID()}.json`); writeJSON(file,config);
         const plan = await this.wxs(['draft','--hwnd',a.hwnd,'--config',file],signal);

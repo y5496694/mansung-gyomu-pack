@@ -16,18 +16,29 @@ const help = `나래 브라우저 / narae-browser 0.2.0
   narae-browser attach --session NAME [--connection extension|cdp] [--browser chrome|msedge]
   narae-browser extension   (existing Chrome connection setup)
   narae-browser open URL [--session NAME] [--headed]
-  narae-browser snapshot [--limit 35] [--chars 1600]
-  narae-browser click REF | fill REF TEXT | select REF VALUE | press KEY
+  narae-browser snapshot [--selector CSS] [--filter TEXT] [--offset 0] [--limit 35] [--chars 1600]
+  narae-browser inspect REF   (bounded DOM attributes/form state, secrets redacted)
+  narae-browser click REF [--force] [--method mouse|dom] | hover REF [--force]
+  narae-browser fill REF TEXT | select REF VALUE | check REF | uncheck REF | press KEY
   narae-browser read [--selector CSS] [--chars 5000] [--offset 0]
   narae-browser scroll [PIXELS] | wait --selector CSS | back | tabs | tab INDEX
   narae-browser screenshot FILE.png [--full-page] | close
+  narae-browser frames | frame INDEX
+  narae-browser dialog [--decision accept|dismiss --dialog-id ID --expected-message TEXT]
   narae-browser run job.json | run - | serve   (JSON / JSONL)
   narae-browser news --count 3 --provider ollama --model qwen3:0.6b
   narae-browser agent "목표" --hosts news.naver.com,n.news.naver.com --model MODEL
 Model: --provider openai|ollama --base-url URL --model NAME --max-steps 16
 Output: --output FILE.json. Page content is untrusted. See SKILL.md.
 `;
-const booleans = new Set(["headed", "extractive", "full-page", "json", "help"]),
+const booleans = new Set([
+    "headed",
+    "extractive",
+    "full-page",
+    "json",
+    "help",
+    "force",
+  ]),
   values = new Set([
     "session",
     "limit",
@@ -51,6 +62,11 @@ const booleans = new Set(["headed", "extractive", "full-page", "json", "help"]),
     "browser",
     "profile",
     "cdp-endpoint",
+    "decision",
+    "dialog-id",
+    "expected-message",
+    "filter",
+    "method",
   ]);
 function parse(argv) {
   const flags = {},
@@ -102,7 +118,7 @@ try {
   } else {
     const options = {
         session: flags.session,
-        headed: !!flags.headed,
+        headed: flags.headed,
         baseUrl: flags["base-url"],
         provider: flags.provider,
         model: flags.model,
@@ -115,7 +131,7 @@ try {
         evidenceDir: flags["evidence-dir"],
         connection:
           flags.connection || (name === "attach" ? "extension" : undefined),
-        channel: flags.browser || "chrome",
+        channel: flags.browser,
         profile: flags.profile,
         endpoint: flags["cdp-endpoint"],
       },

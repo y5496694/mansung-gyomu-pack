@@ -1,0 +1,84 @@
+{
+  "schema": 1,
+  "recommended": "narae3",
+  "models": [
+    {
+      "id": "narae1",
+      "label": "나래1",
+      "alias": "Narae1-Qwen3-0.6B-SFT-v1",
+      "size": "0.6B",
+      "upstream": "Qwen/Qwen3-0.6B",
+      "base": {
+        "path": "base.gguf",
+        "sha256": "7f4030143c1c477224c5434f8272c662a8b042079a0a584f0a27a1684fe2e1fa",
+        "bytes": 522640096
+      },
+      "adapter": {
+        "path": "adapter.gguf",
+        "sha256": "2358980f2da78185741e0ccb4f988cf4dd6a28dcd019e852718266841e7c3ead",
+        "bytes": 1968288
+      },
+      "strength": 1,
+      "actualWeightTraining": true,
+      "optimizerUpdates": 156,
+      "license": "Apache-2.0",
+      "researchOnly": false,
+      "experimental": true,
+      "note": "경량 · SFT v1",
+      "repoId": "inhow/Narae1-Qwen3-0.6B-SFT-v1",
+      "revision": "a7987a6501aed88d9e36d58108394b1464cfecf6"
+    },
+    {
+      "id": "narae2",
+      "label": "나래2",
+      "alias": "EXAONE-Narae2-2.4B-Tool-SFT-v2",
+      "size": "2.4B",
+      "upstream": "LGAI-EXAONE/EXAONE-3.5-2.4B-Instruct",
+      "base": {
+        "path": "base.gguf",
+        "sha256": "d6e077ce2bb2d36ad179739ea96d8b8d387f024b0bedede04741745d21c41b28",
+        "bytes": 1644918560
+      },
+      "adapter": {
+        "path": "adapter.gguf",
+        "sha256": "66b0bfd8efbd6c41d2f26c22212fc6dc0c75ac0a05a27bce56b8f62999764607",
+        "bytes": 3197088
+      },
+      "strength": 1,
+      "actualWeightTraining": true,
+      "optimizerUpdates": 260,
+      "license": "EXAONE-1.1-NC",
+      "researchOnly": true,
+      "experimental": true,
+      "note": "EXAONE · 연구·평가용",
+      "repoId": "inhow/EXAONE-Narae2-2.4B-Tool-SFT-v2",
+      "revision": "33d7721669b046b20d0b2ade37348b3a58373430"
+    },
+    {
+      "id": "narae3",
+      "label": "나래3",
+      "alias": "Narae3-Qwen3-4B-LoRA-v1",
+      "size": "4B",
+      "upstream": "Qwen/Qwen3-4B-Instruct-2507",
+      "base": {
+        "path": "base.gguf",
+        "sha256": "2fde00ce69dd4899c70d020845e2638353015bba0fdf161b3eb965f2bca4464e",
+        "bytes": 2497280736
+      },
+      "adapter": {
+        "path": "adapter.gguf",
+        "sha256": "aed6f97ff68581b31a52821625653bb0edbf3e42583af2408e70c35ad9d7abe7",
+        "bytes": 11016384
+      },
+      "strength": 1,
+      "actualWeightTraining": true,
+      "optimizerUpdates": 41,
+      "license": "Apache-2.0",
+      "researchOnly": false,
+      "experimental": true,
+      "note": "Qwen · LoRA v1",
+      "repoId": "inhow/Narae3-Qwen3-4B-LoRA-v1",
+      "revision": "bce94e974bf0a7f4253bf749d5f4442c20e1a3ef"
+    }
+  ]
+}

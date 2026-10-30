@@ -76,6 +76,12 @@ narae-browser attach --session work
 
 이미 디버깅 연결을 허용한 로컬 브라우저에는 `attach --connection cdp --cdp-endpoint http://127.0.0.1:9222 --session work`도 지원합니다. 이 명령은 Chrome을 재실행하거나 일반 프로필의 디버깅 설정을 바꾸지 않습니다. 기본 뉴스·읽기 전용 agent 실행은 전용 세션을 유지합니다.
 
+## 확인창·팝업이 있는 업무
+
+`dialog`, `frames`·`frame`, `check`·`uncheck`·`hover`를 지원합니다. `snapshot`은 `--selector`, `--filter`, `--offset`으로 관찰 범위를 좁힐 수 있습니다. [확인창·팝업·프레임 실행 절차](docs/dialogs-and-portal.md)에 기존 Chrome 재연결, 문서 회수·의견작성 팝업, Nexacro 메뉴와 정확한 확인창 처리 예제가 있습니다.
+
+클릭 결과가 `actionPending:true`이면 클릭을 반복하지 않고 `dialog`의 실제 ID와 원문을 지정해 같은 확인창을 처리합니다. 연결 설정은 같은 세션의 `connection.json`에 보관하며 유휴 종료 뒤에도 기존 Chrome 방식을 유지합니다. 토큰·쿠키·인증 URL은 이 설정에 보관하지 않습니다. 열린 확인창은 유휴 종료하지 않으며, 완료 여부는 실제 서버 목록으로 확인합니다.
+
 ## 테스트 목표: 네이버 뉴스 3개 요약
 
 로컬 Ollama가 실행 중인 환경에서:

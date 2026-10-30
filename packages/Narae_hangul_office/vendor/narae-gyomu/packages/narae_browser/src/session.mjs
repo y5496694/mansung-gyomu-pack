@@ -13,6 +13,7 @@ export function sessionPaths(session = "default") {
   return {
     dir,
     state: path.join(dir, "daemon.json"),
+    connection: path.join(dir, "connection.json"),
     lock: path.join(dir, "start.lock"),
   };
 }
@@ -22,6 +23,33 @@ function readState(file) {
   } catch {
     return null;
   }
+}
+export function connectionOptions(saved, requested = {}) {
+  const options = {};
+  for (const source of [saved, requested]) {
+    if (!source || typeof source !== "object") continue;
+    for (const key of [
+      "connection",
+      "channel",
+      "profile",
+      "endpoint",
+      "headed",
+    ])
+      if (source[key] !== undefined) options[key] = source[key];
+  }
+  return options;
+}
+function rememberConnection(paths, state, options) {
+  fs.writeFileSync(
+    paths.connection,
+    JSON.stringify(
+      connectionOptions(null, {
+        ...options,
+        connection: state.connection || "isolated",
+      }),
+    ),
+    { mode: 0o600 },
+  );
 }
 export async function rpc(state, command) {
   const r = await fetch(`http://127.0.0.1:${state.port}/command`, {
@@ -44,6 +72,7 @@ export async function rpc(state, command) {
 export async function connect(session = "default", options = {}) {
   const p = sessionPaths(session);
   fs.mkdirSync(p.dir, { recursive: true, mode: 0o700 });
+  options = connectionOptions(readState(p.connection), options);
   let state = readState(p.state);
   if (state) {
     try {
@@ -56,6 +85,7 @@ export async function connect(session = "default", options = {}) {
           "BROWSER_MODE_MISMATCH",
           "이 세션은 다른 브라우저 방식으로 연결돼 있습니다. 먼저 close하고 다시 연결하세요.",
         );
+      rememberConnection(p, state, options);
       return state;
     } catch (e) {
       if (e.code && !["DAEMON_ERROR"].includes(e.code)) throw e;
@@ -103,6 +133,7 @@ export async function connect(session = "default", options = {}) {
       if (state) {
         try {
           await rpc(state, { action: "tabs" });
+          rememberConnection(p, state, options);
           return state;
         } catch {}
       }
@@ -162,7 +193,12 @@ async function daemon(session) {
   }
   function touch() {
     clearTimeout(timer);
-    timer = setTimeout(() => void stop(), 300000);
+    timer = setTimeout(() => {
+      // Preserve an observed modal until it is explicitly handled; detaching
+      // would abandon its action and lose the exact dialog binding.
+      if (engine.pendingDialog) touch();
+      else void stop();
+    }, 300000);
     timer.unref();
   }
   try {

@@ -2,7 +2,8 @@ import test, {after} from 'node:test';
 import assert from 'node:assert/strict';
 import { selectTarget, socketUrl, plain, Messenger } from './messenger.mjs';
 import {positive,run,printResult} from './cli.mjs';
-import {mkdtempSync,writeFileSync,rmSync} from 'node:fs';
+import {mkdtempSync,writeFileSync,rmSync,readFileSync,readdirSync} from 'node:fs';
+import {createHash} from 'node:crypto';
 import {tmpdir} from 'node:os';
 import {join} from 'node:path';
 import {spawnSync} from 'node:child_process';
@@ -331,5 +332,92 @@ test('CLI는 반복 --file과 본문 없는 첨부를 전달하고 조회 명령
   try{
     await run(['notes','send','--to',UID,'--file',localFile('CLI 1.txt'),'--file',localFile('CLI 2.txt'),'--dry-run','--json']);
     assert.equal(state.uploads.length,0);await assert.rejects(()=>run(['notes','list','--file','unused']),/전송 명령/);
+  }finally{Messenger.connect=original;console.log=log;}
+});
+
+function downloadFixture(options={}){
+  const c=new Messenger(),state={urls:[],account:OWN,queries:[]},fileId='aaaaaaaaaaaaaaaaaaaaaaaa';
+  const files=options.files??[{NNF_CODE:fileId,NNF_NCODE:UID,NNF_ORI_NAME:'한글 자료,1.hwp',NNF_FILE_SIZE:'69 KB',NNF_FILEURL:'/upload/note/mock.hwp',VALID_YN:'Y',VALID_DATE:'20270622235900000',DELETE_YN:'N'}];
+  c.query=async(path,params)=>{state.queries.push({path,params});return {RESULT:'SUCCESS',LIST:{NTE_CODE:UID,ATTACH_IMAGE:files,...options.note}};};
+  class MockDownloadXHR {
+    open(method,url,async){assert.equal(method,'GET');assert.equal(async,true);state.urls.push(url);}
+    getResponseHeader(name){return name==='Content-Type'?(options.contentType??'application/octet-stream'):name==='Content-Length'?(options.noLength?null:String(options.length??this.response.byteLength)):null;}
+    send(){
+      if(options.networkError||options.failAt===state.urls.length){this.onerror();return;}
+      const bytes=options.bytes??Buffer.from([0,255,128,13,10,32]);
+      this.response=options.oversize?{byteLength:256*1024*1024+1}:bytes.buffer.slice(bytes.byteOffset,bytes.byteOffset+bytes.byteLength);
+      this.status=options.status??200;if(options.changedAccount)state.account=OTHER;this.onload();
+    }
+    abort(){this.onabort?.();}
+  }
+  const context=vm.createContext({window:{},XMLHttpRequest:MockDownloadXHR,Uint8Array,btoa,
+    Base64:{encode:text=>Buffer.from(text,'utf8').toString('base64')},
+    common_activityData:{getData:key=>({nurUuid:state.account,permission:{PC:{P07:options.allowed??'Y'}},fileServerUrl:options.server??'http://stmsg.cbe.go.kr:7880/file/v2/mockSession'}[key])},
+    common_controller:{getTodayString:()=> '20261029150000000'},
+  });
+  c.evaluate=async expression=>vm.runInContext(expression,context);
+  return {c,state,context,files,fileId};
+}
+function downloadDir(){return mkdtempSync(join(attachmentDir,'download-'));}
+
+test('쪽지 첨부는 로그인된 앱에서 GET하고 한글 파일명·바이트·해시를 검증',async()=>{
+  const {c,state,context}=downloadFixture(),outDir=downloadDir();
+  const result=await c.downloadNote(UID,{outDir});
+  assert.equal(result.downloaded,true);assert.equal(result.verified,true);assert.equal(result.files.length,1);
+  const file=result.files[0],bytes=Buffer.from([0,255,128,13,10,32]);
+  assert.deepEqual(readFileSync(file.path),bytes);assert.equal(file.sha256,createHash('sha256').update(bytes).digest('hex'));
+  assert.equal(file.size,6);assert.equal(file.contentLength,6);
+  assert.equal(state.urls[0].split('/').at(-1),Buffer.from('한글 자료,1.hwp').toString('base64').replaceAll('/','*').replaceAll('+','@'));
+  assert.ok(!JSON.stringify(result).includes('mockSession'));assert.equal(Object.keys(context.window).length,0);
+  assert.deepEqual(state.queries[0].params,{nteCode:UID,nteReservYn:'N',activeWindow:'false',noteType:'R'});
+});
+test('특정 첨부 선택과 보낸·예약 쪽지 옵션을 유지하고 없는 ID는 다운로드하지 않음',async()=>{
+  const {c,state,files}=downloadFixture();
+  await c.downloadNote(UID,{outDir:downloadDir(),type:'S',reserved:true,attachmentId:files[0].NNF_CODE});
+  assert.equal(state.queries[0].params.noteType,'S');assert.equal(state.queries[0].params.nteReservYn,'Y');
+  await assert.rejects(()=>c.downloadNote(UID,{outDir:downloadDir(),attachmentId:OTHER}),/해당 첨부파일/);assert.equal(state.urls.length,1);
+});
+test('기존 파일과 중복 파일명은 다운로드 전 거절하고 덮어쓰지 않음',async()=>{
+  const {c,state,files}=downloadFixture(),outDir=downloadDir();writeFileSync(join(outDir,files[0].NNF_ORI_NAME),'원본');
+  await assert.rejects(()=>c.downloadNote(UID,{outDir}),/덮어쓰지/);assert.equal(readFileSync(join(outDir,files[0].NNF_ORI_NAME),'utf8'),'원본');assert.equal(state.urls.length,0);
+  const duplicate=downloadFixture({files:[files[0],{...files[0],NNF_CODE:OTHER}]});
+  await assert.rejects(()=>duplicate.c.downloadNote(UID,{outDir:downloadDir()}),/중복/);assert.equal(duplicate.state.urls.length,0);
+});
+test('보안·회수·만료·삭제·다른 쪽지 소속 첨부는 다운로드하지 않음',async()=>{
+  for(const note of [{NTE_SECURITY_YN:'Y'},{NTE_WITHDRAW_YN:'Y'},{NTE_CODE:OTHER}]){
+    const {c,state}=downloadFixture({note});await assert.rejects(()=>c.downloadNote(UID,{outDir:downloadDir()}));assert.equal(state.urls.length,0);
+  }
+  const base=downloadFixture().files[0];
+  for(const patch of [{VALID_YN:'N'},{VALID_DATE:'20250101000000000'},{DELETE_YN:'Y'},{NNF_NCODE:OTHER},{NNF_FILEURL:'/upload/note/../secret'},{NNF_FILEURL:'http://evil.invalid/file'},{NNF_ORI_NAME:'..\\secret.hwp'},{NNF_ORI_NAME:'CON.hwp'},{NNF_ORI_NAME:'file.hwp:stream'},{NNF_ORI_NAME:'file.hwp.'}]){
+    const {c,state}=downloadFixture({files:[{...base,...patch}]});await assert.rejects(()=>c.downloadNote(UID,{outDir:downloadDir()}));assert.equal(state.urls.length,0);
+  }
+});
+test('다운로드 권한·파일 서버·로그인 계정 변경을 확인하고 임시 파일을 정리',async()=>{
+  for(const options of [{allowed:'N'},{server:'http://stmsg.cbe.go.kr.evil/file/v2/token'},{changedAccount:true}]){
+    const {c,context}=downloadFixture(options),outDir=downloadDir();await assert.rejects(()=>c.downloadNote(UID,{outDir}));assert.deepEqual(readdirSync(outDir),[]);assert.equal(Object.keys(context.window).length,0);
+  }
+});
+test('HTTP 오류·오류 페이지·크기 불일치·용량 초과는 성공 파일을 남기지 않음',async()=>{
+  for(const options of [{status:403},{contentType:'text/html'},{contentType:'application/json'},{length:999},{networkError:true},{oversize:true}]){
+    const {c,context}=downloadFixture(options),outDir=downloadDir();await assert.rejects(()=>c.downloadNote(UID,{outDir}));assert.deepEqual(readdirSync(outDir),[]);assert.equal(Object.keys(context.window).length,0);
+  }
+});
+test('여러 다운로드와 청크 바이너리·빈 파일은 정확히 저장하고 부분 실패 정보를 보존',async()=>{
+  const bytes=Buffer.alloc(400000);for(let i=0;i<bytes.length;i++)bytes[i]=i%256;
+  for(const content of [bytes,Buffer.alloc(0)]){
+    const {c}=downloadFixture({bytes:content,noLength:true}),r=await c.downloadNote(UID,{outDir:downloadDir()});assert.deepEqual(readFileSync(r.files[0].path),content);assert.equal(r.files[0].contentLength,null);
+  }
+  const base=downloadFixture().files[0],{c}=downloadFixture({files:[base,{...base,NNF_CODE:OTHER,NNF_ORI_NAME:'두 번째.hwp'}],failAt:2}),outDir=downloadDir();
+  await assert.rejects(()=>c.downloadNote(UID,{outDir}),e=>e.receipt.partial===true&&e.receipt.files.length===1&&e.receipt.retry===false);
+  assert.deepEqual(readdirSync(outDir),[base.NNF_ORI_NAME]);
+});
+test('CLI 다운로드 인자를 연결 전에 검사하고 검증된 저장 결과만 출력',async()=>{
+  const original=Messenger.connect,log=console.log;let connected=0;
+  Messenger.connect=async()=>{connected++;throw Error('must not connect');};
+  try{
+    for(const args of [['notes','download',UID],['notes','list','--out-dir','unused'],['notes','download',UID,'--out-dir','unused','--attachment','bad'],['notes','download',UID,'extra','--out-dir','unused']])await assert.rejects(()=>run(args));
+    assert.equal(connected,0);
+    const {c}=downloadFixture();c.close=()=>{};Messenger.connect=async()=>c;console.log=()=>{};
+    await run(['notes','download',UID,'--out-dir',downloadDir(),'--json']);
   }finally{Messenger.connect=original;console.log=log;}
 });

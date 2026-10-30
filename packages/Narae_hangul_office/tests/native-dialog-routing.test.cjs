@@ -1,0 +1,5 @@
+const test=require('node:test'),assert=require('node:assert/strict'),{taskFor,taskStep}=require('../src/agent-task.cjs');
+const tools=[{name:'gyomu_browser',parameters:{type:'object',properties:{action:{type:'string'}}}}];
+function input(message){return [{type:'function_call',name:'gyomu_browser',call_id:'current'},{type:'function_call_output',call_id:'current',output:JSON.stringify({actionPending:true,nativeDialog:{id:'d73',type:'confirm',message}})}];}
+test('native confirmation routing uses only its observed identity rather than reclicking a work button',()=>{const step=taskStep(taskFor('에듀파인 진행 문서 조회'),input('조회 조건을 적용할까요?'),tools);assert.equal(step.required,true);assert.deepEqual(step.tools[0].parameters.properties.action.enum,['dialog']);assert.deepEqual(step.tools[0].parameters.properties.expectedId.enum,['d73']);assert.deepEqual(step.tools[0].parameters.properties.expectedMessage.enum,['조회 조건을 적용할까요?']);});
+test('an unexpected native submission prompt cannot bypass the dedicated final-action route',()=>{const step=taskStep(taskFor('나이스 복무 조회'),input('상신하시겠습니까?'),tools);assert.deepEqual(step.tools[0].parameters.properties.decision.enum,['dismiss']);});

@@ -17,7 +17,7 @@
 ## 설치
 
 1. Windows 10/11 x64에 **한컴오피스 한글이 먼저 설치되어 있어야 합니다.** 한 번 직접 실행해 초기 설정을 마칩니다. 한컴 프로그램·라이선스·글꼴은 이 저장소에 포함하지 않습니다.
-2. [0.13.0-preview.14 릴리스](https://github.com/y5496694/Narae_hangul_office/releases/tag/v0.13.0-preview.14)의 `Narae-Hangul-Office-0.13.0-preview.14-windows-x64.zip`을 내려받아 압축을 풉니다. 또는 이 저장소의 Code → Download ZIP을 사용합니다.
+2. [0.13.0-preview.15 릴리스](https://github.com/y5496694/Narae_hangul_office/releases/tag/v0.13.0-preview.15)의 `Narae-Hangul-Office-0.13.0-preview.15-windows-x64.zip`을 내려받아 압축을 풉니다. 또는 이 저장소의 Code → Download ZIP을 사용합니다.
 3. 폴더 안의 **`설치.cmd`를 한 번 실행**합니다. Node.js·Python·Electron·엔진 라이브러리·공식 Claude 로그인 도구·로컬 AI CPU 실행기를 앱 전용 폴더에 자동 설치합니다. **Node.js나 Python을 따로 설치할 필요가 없습니다.** 첫 설치에는 인터넷이 필요하며 관리자 권한은 필요 없습니다.
 4. 바탕화면의 **나래 한글 오피스**를 실행합니다.
 

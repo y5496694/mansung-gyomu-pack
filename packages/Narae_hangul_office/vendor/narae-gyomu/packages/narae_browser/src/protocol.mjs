@@ -2,16 +2,23 @@ import { Fault, bound, webUrl } from "./browser.mjs";
 export const actions = [
   "open",
   "snapshot",
+  "inspect",
   "read",
   "click",
+  "hover",
   "fill",
   "select",
+  "check",
+  "uncheck",
   "press",
   "scroll",
   "wait",
   "back",
   "tabs",
   "tab",
+  "frames",
+  "frame",
+  "dialog",
   "screenshot",
   "close",
 ];
@@ -25,7 +32,18 @@ export function actionFromArgs(name, pos, flags) {
     return pos[i];
   };
   if (name === "open") c.url = required(0, "url");
-  if (["click", "fill", "select"].includes(name)) c.ref = required(0, "ref");
+  if (
+    [
+      "inspect",
+      "click",
+      "hover",
+      "fill",
+      "select",
+      "check",
+      "uncheck",
+    ].includes(name)
+  )
+    c.ref = required(0, "ref");
   if (name === "fill") c.text = required(1, "text");
   if (name === "select") c.value = required(1, "value");
   if (name === "press") {
@@ -33,12 +51,20 @@ export function actionFromArgs(name, pos, flags) {
     if (flags.ref) c.ref = flags.ref;
   }
   if (name === "screenshot") c.path = required(0, "path");
-  if (name === "tab") c.index = Number(required(0, "index"));
+  if (["tab", "frame"].includes(name)) c.index = Number(required(0, "index"));
+  if (name === "dialog" && flags.decision) {
+    c.decision = flags.decision;
+    c.expectedId = flags["dialog-id"];
+    c.expectedMessage = flags["expected-message"];
+  }
   if (name === "scroll" && pos[0] !== undefined) c.pixels = Number(pos[0]);
   for (const k of ["chars", "limit", "offset", "ms", "timeout"])
     if (flags[k] !== undefined) c[k] = Number(flags[k]);
   if (flags.selector) c.selector = flags.selector;
+  if (flags.filter) c.filter = flags.filter;
   if (flags["full-page"]) c.fullPage = true;
+  if (["click", "hover"].includes(name) && flags.force) c.force = true;
+  if (name === "click" && flags.method) c.method = flags.method;
   return c;
 }
 export function newsLinks(links) {
@@ -118,16 +144,36 @@ export const schema = {
       note: "CLI setup only; select an existing tab in the extension. close disconnects without closing Chrome.",
     },
     open: { url: "https://..." },
-    snapshot: { limit: 35, chars: 1600 },
+    snapshot: {
+      limit: 35,
+      chars: 1600,
+      selector: "optional CSS",
+      filter: "optional label text",
+      offset: 0,
+    },
     read: { chars: 5000, offset: 0, selector: "optional CSS" },
-    click: { ref: "s1/e1" },
+    inspect: {
+      ref: "s1/e1",
+      note: "Read bounded element attributes and form fields; secret values are redacted",
+    },
+    click: { ref: "s1/e1", force: false, method: "mouse (default) or dom" },
+    hover: { ref: "s1/e1", force: false },
     fill: { ref: "s1/e2", text: "value" },
     select: { ref: "s1/e3", value: "option" },
+    check: { ref: "s1/e4" },
+    uncheck: { ref: "s1/e4" },
     press: { key: "Enter", ref: "optional" },
     scroll: { pixels: 600 },
     wait: { selector: "optional CSS", ms: 300 },
     tabs: {},
     tab: { index: 0 },
+    frames: {},
+    frame: { index: 0 },
+    dialog: {
+      decision: "optional accept|dismiss",
+      expectedId: "observed dialog id",
+      expectedMessage: "exact observed message",
+    },
     back: {},
     screenshot: { path: "shot.png", fullPage: false },
     close: {},

@@ -1,4 +1,21 @@
 {
-  "node": {"version":"24.22.1","url":"https://nodejs.org/dist/v24.22.1/node-v24.22.1-win-x64.zip","sha256":"d2046d28c2c3dcd211ac5145c0bf30e2047ef9dfb306693c8c6e2eccd8b95fa5","archiveFolder":"node-v24.22.1-win-x64"},
-  "python": {"version":"3.13.17","url":"https://www.python.org/ftp/python/3.13.17/python-3.13.17-amd64.zip","sha256":"b26ca4b4ee51e157836049934d2b8eabd55939be296f3130254251b6df96ec2f","manifest":"https://www.python.org/ftp/python/3.13.17/windows-3.13.17.json"}
+  "node": {
+    "version": "24.22.1",
+    "url": "https://nodejs.org/dist/v24.22.1/node-v24.22.1-win-x64.zip",
+    "sha256": "d2046d28c2c3dcd211ac5145c0bf30e2047ef9dfb306693c8c6e2eccd8b95fa5",
+    "archiveFolder": "node-v24.22.1-win-x64"
+  },
+  "python": {
+    "version": "3.13.17",
+    "url": "https://www.python.org/ftp/python/3.13.17/python-3.13.17-amd64.zip",
+    "sha256": "b26ca4b4ee51e157836049934d2b8eabd55939be296f3130254251b6df96ec2f",
+    "manifest": "https://www.python.org/ftp/python/3.13.17/windows-3.13.17.json"
+  },
+  "llama": {
+    "version": "b11669",
+    "url": "https://github.com/ggml-org/llama.cpp/releases/download/b11669/llama-b11669-bin-win-cpu-x64.zip",
+    "sha256": "37b3efcf962847ca869745fd4ccf7f5e7e8dacfeff9fa3523b4ca8cdc66d632b",
+    "bytes": 19537886,
+    "executableSha256": "6a4635aeb35656153d4bfeeddf761d24ed84aada9c9108d580737cbed465141b"
+  }
 }
