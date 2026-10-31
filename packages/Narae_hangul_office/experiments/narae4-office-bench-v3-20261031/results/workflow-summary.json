@@ -1,0 +1,60 @@
+{
+  "model": "Narae4-Qwen3.5-2B-Office-Bench-LoRA-v3",
+  "adapterSha256": "241bd7dec6f6c0568d914ac94d31c29ae0273b377cb9a07492ee8bb7e3cfab82",
+  "actualLocalWeights": true,
+  "actualCandidateWeights": true,
+  "syntheticOnly": true,
+  "scriptSha256": "cf320aee5b95cb36313f8c6c55f364e252957fe7ff98b472aa83703a48c2ae8f",
+  "selection": "all",
+  "scope": "School tools are mock observations; HWPX and image tools use real engines. No school login or submission.",
+  "passed": 6,
+  "total": 7,
+  "fullTenTaskPass": false,
+  "releasePassed": false,
+  "defaultAdapterChanged": false,
+  "results": [
+    {
+      "id": "workflow-cbe",
+      "passed": true,
+      "scope": "actual local candidate model + mock school tools",
+      "seconds": 16.746
+    },
+    {
+      "id": "workflow-progress",
+      "passed": true,
+      "scope": "actual local candidate model + mock school tools",
+      "seconds": 6.657
+    },
+    {
+      "id": "workflow-edufine-read",
+      "passed": true,
+      "scope": "actual local candidate model + mock school tools",
+      "seconds": 13.872
+    },
+    {
+      "id": "workflow-draft-save",
+      "passed": true,
+      "scope": "actual local candidate model + mock school tools",
+      "seconds": 25.042
+    },
+    {
+      "id": "workflow-native-create",
+      "passed": true,
+      "scope": "actual local candidate model + native document/image tools",
+      "seconds": 24.488
+    },
+    {
+      "id": "workflow-native-edit",
+      "passed": true,
+      "scope": "actual local candidate model + native document/image tools",
+      "seconds": 24.829
+    },
+    {
+      "id": "workflow-vision",
+      "passed": false,
+      "scope": "actual local candidate model + native document/image tools",
+      "seconds": 74.615,
+      "error": "로컬 AI가 같은 작업을 반복해 중지했습니다. 마지막 확인 화면에서 이어서 요청하세요."
+    }
+  ]
+}

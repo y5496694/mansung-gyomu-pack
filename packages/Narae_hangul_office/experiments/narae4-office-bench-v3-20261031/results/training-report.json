@@ -1,0 +1,173 @@
+{
+  "model": "Narae4-Qwen3.5-2B-Office-Bench-LoRA-v3",
+  "actual_weight_training": true,
+  "base": {
+    "repo": "Qwen/Qwen3.5-2B",
+    "revision": "15852e8c16360a2fea060d615a32b45270f8a8fc",
+    "destination": "D:/Codex/models/Qwen3.5-2B-HF",
+    "files": [
+      {
+        "path": "LICENSE",
+        "bytes": 11544,
+        "sha256": "bbedc3fda3305820b977265f01b8619d87570a6739de3a5582c3464840f1e57a"
+      },
+      {
+        "path": "README.md",
+        "bytes": 62814,
+        "sha256": "c0e83a849c776e6fa843d011f023132d942a0f0140d903205bf1c363adad2275"
+      },
+      {
+        "path": "chat_template.jinja",
+        "bytes": 7755,
+        "sha256": "273d8e0e683b885071fb17e08d71e5f2a5ddfb5309756181681de4f5a1822d80"
+      },
+      {
+        "path": "config.json",
+        "bytes": 2908,
+        "sha256": "ed1c1723241f23f7f4e23430759cbd7dcfb4103cbdfe052bfe7626b57c2615b4"
+      },
+      {
+        "path": "merges.txt",
+        "bytes": 3353259,
+        "sha256": "a9d356d7bdf1ef4949e3e748e95b8e10ad9d4e2e838eddc38a0a7b6b94d1db8d"
+      },
+      {
+        "path": "model.safetensors-00001-of-00001.safetensors",
+        "bytes": 4548221488,
+        "sha256": "aa33250c4fc64891ddfaba3a314fd9542ea371843c387178b425fbcc5ed680b1"
+      },
+      {
+        "path": "model.safetensors.index.json",
+        "bytes": 64460,
+        "sha256": "aca8afed9da75b0f050b408d270766fd77627f1af401e240f61c3b47d0db02f9"
+      },
+      {
+        "path": "preprocessor_config.json",
+        "bytes": 390,
+        "sha256": "27225450ac9c6529872ee1924fcb0962ff5634834f817040f444118116f4e516"
+      },
+      {
+        "path": "tokenizer.json",
+        "bytes": 12807982,
+        "sha256": "5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42"
+      },
+      {
+        "path": "tokenizer_config.json",
+        "bytes": 16709,
+        "sha256": "49e2b6e395f959f077f1e992b338919c0d4a9732fc6e613995e06557f843500c"
+      },
+      {
+        "path": "video_preprocessor_config.json",
+        "bytes": 385,
+        "sha256": "7768af27c1fafa9cc9011c1dc20067e03f8915e03b63504550e11d5066986d13"
+      },
+      {
+        "path": "vocab.json",
+        "bytes": 6722759,
+        "sha256": "ce99b4cb2983d118806ce0a8b777a35b093e2000a503ebde25853284c9dfa003"
+      }
+    ]
+  },
+  "optimizer_steps": 48,
+  "epochs": 3,
+  "train_dialogues": 64,
+  "validation_dialogues": 16,
+  "lora_rank": 16,
+  "lora_alpha": 32,
+  "layers": [
+    23
+  ],
+  "vision_tower_trained": false,
+  "decision_model_trained": false,
+  "dtype": "BF16 frozen prefix; FP32 suffix/head/LoRA",
+  "trainable_parameters": 638976,
+  "tensors_changed": 14,
+  "tensor_l2_changes": {
+    "base_model.model.model.language_model.layers.23.self_attn.q_proj.lora_A.default.weight": 0.04863465204834938,
+    "base_model.model.model.language_model.layers.23.self_attn.q_proj.lora_B.default.weight": 0.060921426862478256,
+    "base_model.model.model.language_model.layers.23.self_attn.k_proj.lora_A.default.weight": 0.04924584925174713,
+    "base_model.model.model.language_model.layers.23.self_attn.k_proj.lora_B.default.weight": 0.02257973700761795,
+    "base_model.model.model.language_model.layers.23.self_attn.v_proj.lora_A.default.weight": 0.05892479419708252,
+    "base_model.model.model.language_model.layers.23.self_attn.v_proj.lora_B.default.weight": 0.022182641550898552,
+    "base_model.model.model.language_model.layers.23.self_attn.o_proj.lora_A.default.weight": 0.06758124381303787,
+    "base_model.model.model.language_model.layers.23.self_attn.o_proj.lora_B.default.weight": 0.04617684334516525,
+    "base_model.model.model.language_model.layers.23.mlp.gate_proj.lora_A.default.weight": 0.05949891731142998,
+    "base_model.model.model.language_model.layers.23.mlp.gate_proj.lora_B.default.weight": 0.07497542351484299,
+    "base_model.model.model.language_model.layers.23.mlp.up_proj.lora_A.default.weight": 0.05949528515338898,
+    "base_model.model.model.language_model.layers.23.mlp.up_proj.lora_B.default.weight": 0.08021492511034012,
+    "base_model.model.model.language_model.layers.23.mlp.down_proj.lora_A.default.weight": 0.10292257368564606,
+    "base_model.model.model.language_model.layers.23.mlp.down_proj.lora_B.default.weight": 0.04726431146264076
+  },
+  "initial_loss": {
+    "train": 0.43140938044234645,
+    "validation": 0.4363908860250376
+  },
+  "final_loss": {
+    "train": 0.3937141233254806,
+    "validation": 0.39979807287454605
+  },
+  "prefix_equivalence": {
+    "full_loss": 0.07714666426181793,
+    "cached_loss": 0.07714666426181793,
+    "future_token_max_diff": 0
+  },
+  "adapter_sha256": "354176601000ef53598c214d9debe1e4aacd2335eedc932d3b9ca26bc4d5d1df",
+  "seconds": 1731.3412504000007,
+  "dataset": {
+    "frozenAt": "2026-10-31T11:55:12.154Z",
+    "syntheticOnly": true,
+    "privateSchoolData": false,
+    "train": 64,
+    "validation": 16,
+    "heldout": 32,
+    "retention": 8,
+    "split": "Different fictional values and prompts within known workflow families; no claims of unseen-domain or live-task generalization.",
+    "startingAdapter": "D:/Codex/training/narae4-office-20261031/outputs/Narae4-Qwen3.5-2B-Office-LoRA-v1/adapter",
+    "startingAdapterSha256": "3380c0dfbee1737fa7f741d5ec475efdbfbba15206e78373a93592f4c745fc4d",
+    "sourceReplaySha256": {
+      "train.jsonl": "9817a559ffd5f05ea927e5f310f94200a0ac60303b02b6bb0a6520ee79247e76",
+      "validation.jsonl": "20fead1470aae4e64487d52dbd6aec66b6b7351b614bd4c081d1cd71b893d911"
+    },
+    "files": {
+      "train.jsonl": "77be176161fb45a595cecd7bf91fd20fa6005cd25758c8a2ce783297d7e8ed0e",
+      "validation.jsonl": "9045ef68fefa18d1d186855a0d97abcdee1af097897a0a855e78b89b38467f4c"
+    },
+    "heldoutSha256": "8d8c8faa58fa4893a7a5b8fe2d4d2fe0846d34e0fca1486ac7e126c2f6d9051f",
+    "hyperparameters": {
+      "learningRate": 0.00002,
+      "epochs": 3,
+      "accumulation": 4,
+      "optimizerSteps": 48,
+      "seed": 719
+    },
+    "coverage": {
+      "tasks": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "scope": "Next decisions and honest evidence; not end-to-end completion. Trip final submission remains unimplemented."
+    },
+    "prepareScriptSha256": "21abb9f7e59e9cdf39efd8c68c1523ad73d48fb233beabdbedbca64d8e80843d"
+  },
+  "versions": {
+    "torch": "2.14.1",
+    "transformers": "5.20.1",
+    "peft": "0.21.2",
+    "safetensors": "0.8.0"
+  },
+  "scripts_sha256": {
+    "after-training.cjs": "1eb3551d5520fe396bc980eaa0ab41bca84358daa9b3088aa375f976bb1e2268",
+    "evaluate.cjs": "0723e7c4e4bcb3b60a6b85b032433fb65c6e1b0673b82d8294bdd8b671c1372c",
+    "export.py": "4dc8bf2976cdbd0c28f1f17b7a3b4995919f7e37c62b808764b76b067174322c",
+    "prepare.cjs": "21abb9f7e59e9cdf39efd8c68c1523ad73d48fb233beabdbedbca64d8e80843d",
+    "train.py": "6dbe4972f1849f2fe9428a487ab374a8e4364f3e6a19f1767ff37606017c08df"
+  }
+}

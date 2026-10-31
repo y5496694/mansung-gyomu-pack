@@ -1,0 +1,162 @@
+{
+  "actualWeightTraining": true,
+  "optimizerSteps": 48,
+  "train": 64,
+  "validation": 16,
+  "trainableParameters": 638976,
+  "tensorsChanged": 14,
+  "initialLoss": {
+    "train": 0.43140938044234645,
+    "validation": 0.4363908860250376
+  },
+  "finalLoss": {
+    "train": 0.3937141233254806,
+    "validation": 0.39979807287454605
+  },
+  "direct": {
+    "total": 32,
+    "baseline": 9,
+    "trained": 8,
+    "original16Baseline": 5,
+    "original16Trained": 4
+  },
+  "retention": {
+    "total": 8,
+    "baseline": 7,
+    "trained": 7
+  },
+  "byKind": [
+    {
+      "kind": "cbe-body",
+      "total": 2,
+      "baseline": 0,
+      "trained": 0
+    },
+    {
+      "kind": "progress",
+      "total": 2,
+      "baseline": 0,
+      "trained": 0
+    },
+    {
+      "kind": "attachment",
+      "total": 2,
+      "baseline": 0,
+      "trained": 0
+    },
+    {
+      "kind": "draft",
+      "total": 2,
+      "baseline": 2,
+      "trained": 2
+    },
+    {
+      "kind": "neis",
+      "total": 2,
+      "baseline": 0,
+      "trained": 0
+    },
+    {
+      "kind": "tracked",
+      "total": 2,
+      "baseline": 2,
+      "trained": 2
+    },
+    {
+      "kind": "partial-summary",
+      "total": 2,
+      "baseline": 1,
+      "trained": 0
+    },
+    {
+      "kind": "progress-summary",
+      "total": 2,
+      "baseline": 0,
+      "trained": 0
+    },
+    {
+      "kind": "portal",
+      "total": 2,
+      "baseline": 2,
+      "trained": 2
+    },
+    {
+      "kind": "portal-uncertain",
+      "total": 2,
+      "baseline": 0,
+      "trained": 0
+    },
+    {
+      "kind": "archive",
+      "total": 2,
+      "baseline": 0,
+      "trained": 0
+    },
+    {
+      "kind": "body-search",
+      "total": 2,
+      "baseline": 0,
+      "trained": 0
+    },
+    {
+      "kind": "send",
+      "total": 2,
+      "baseline": 0,
+      "trained": 1
+    },
+    {
+      "kind": "circulation",
+      "total": 2,
+      "baseline": 0,
+      "trained": 0
+    },
+    {
+      "kind": "other-duty",
+      "total": 2,
+      "baseline": 2,
+      "trained": 1
+    },
+    {
+      "kind": "trip",
+      "total": 2,
+      "baseline": 0,
+      "trained": 0
+    }
+  ],
+  "candidateQualityChecks": {
+    "direct_total_not_lower_than_baseline": false,
+    "original_sixteen_cases_not_lower_than_baseline": false,
+    "retention_not_lower_than_baseline": true,
+    "both_unknown_login_cases_pass": false
+  },
+  "candidateQualityGatePassed": false,
+  "defaultAdapter": "Narae4-Qwen3.5-2B-Office-LoRA-v1",
+  "defaultAdapterChanged": false,
+  "fullTenTaskPass": false,
+  "releasePassed": false,
+  "scope": "Direct next-step choices in fixed synthetic known workflow families, without bounded executor. No live school tasks were executed.",
+  "adapterSha256": "241bd7dec6f6c0568d914ac94d31c29ae0273b377cb9a07492ee8bb7e3cfab82",
+  "exportTensorsBitwiseEqual": true,
+  "trainingSeconds": 1731.3412504000007,
+  "notes": [
+    "The original r1 was aborted before optimizer updates after two exact input overlaps; only r2 is compared.",
+    "Heldout inputs were frozen before training and never used for optimizer updates or checkpoint selection.",
+    "Baseline inference ran after training against the unchanged SHA-verified v1 artifact; both modes use the same fixed suite and runtime configuration.",
+    "The final epoch checkpoint was fixed before evaluation. Vision tower and d1 decision model were not trained.",
+    "A synthetic candidate quality pass is not a full ten-task live release pass."
+  ],
+  "supplemental": {
+    "boundedAgentBasic": {
+      "passed": 5,
+      "total": 5,
+      "scope": "Fixed school workflow executor plus actual local candidate. Not independent raw-model judgment."
+    },
+    "workflow": {
+      "passed": 6,
+      "total": 7,
+      "nativeCreateAndEditPassed": true,
+      "imageReadPassed": false,
+      "imageFailure": "로컬 AI가 같은 작업을 반복해 중지했습니다. 마지막 확인 화면에서 이어서 요청하세요."
+    }
+  }
+}

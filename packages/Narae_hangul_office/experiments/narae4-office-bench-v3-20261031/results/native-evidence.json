@@ -1,0 +1,12 @@
+{
+  "syntheticOnly": true,
+  "nativeCreateVerified": true,
+  "nativeEditTextAndStylePreservationVerified": true,
+  "finalHwpxSha256": "a75c115908fec01cbca01c77cbd7be02f5bcca8ee8bf982cbb4dfc62af58250b",
+  "finalHwpxBytes": 3952,
+  "inspectFiles": {
+    "native-before.json": "80f4ffec8ac656b88ab951356aae534007e2eede5a1c5be627f39744deb31b41",
+    "native-after.json": "64575507d7ef28b0840f625e96aff9788f0902d97f84bacc2bbb6c6c17e6a971"
+  },
+  "documentIsFictional": true
+}

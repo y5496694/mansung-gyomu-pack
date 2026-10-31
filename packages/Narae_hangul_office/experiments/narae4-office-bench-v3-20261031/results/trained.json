@@ -1,0 +1,527 @@
+{
+  "mode": "trained",
+  "baseSha256": "aaf42c8b7c3cab2bf3d69c355048d4a0ee9973d48f16c731c0520ee914699223",
+  "adapterSha256": "241bd7dec6f6c0568d914ac94d31c29ae0273b377cb9a07492ee8bb7e3cfab82",
+  "suiteSha256": "8d8c8faa58fa4893a7a5b8fe2d4d2fe0846d34e0fca1486ac7e126c2f6d9051f",
+  "scope": "Direct model choices without bounded executor; synthetic unseen values in known workflow families",
+  "total": 32,
+  "passed": 8,
+  "results": [
+    {
+      "id": "cbe-body-5",
+      "kind": "cbe-body",
+      "passed": false,
+      "response": {
+        "output": [
+          {
+            "type": "function_call",
+            "name": "gyomu_cbe_notes",
+            "arguments": "{\"operation\":\"read\",\"box\":\"received\",\"id\":\"fixture-7305a\"}",
+            "call_id": "9b0e1cc3-3b10-47bf-9749-a9b0e1fda7a9"
+          }
+        ]
+      },
+      "seconds": 7.468
+    },
+    {
+      "id": "progress-5",
+      "kind": "progress",
+      "passed": false,
+      "response": {
+        "output": [
+          {
+            "type": "function_call",
+            "name": "gyomu_browser",
+            "arguments": "{\"action\":\"read\",\"ref\":\"r51\"}",
+            "call_id": "54680048-70e2-403e-8384-4fa229982197"
+          }
+        ]
+      },
+      "seconds": 9.117
+    },
+    {
+      "id": "attachment-5",
+      "kind": "attachment",
+      "passed": false,
+      "response": {
+        "output": [
+          {
+            "type": "function_call",
+            "name": "gyomu_wxs_read",
+            "arguments": "{\"operation\":\"result\",\"id\":\"fixture-7305\"}",
+            "call_id": "63185820-99c9-41ef-a845-44a3c00b1460"
+          }
+        ]
+      },
+      "seconds": 8.109
+    },
+    {
+      "id": "draft-5",
+      "kind": "draft",
+      "passed": true,
+      "response": {
+        "output": [
+          {
+            "type": "function_call",
+            "name": "gyomu_wxs_save",
+            "arguments": "{\"hwnd\":\"91005\",\"expected_title\":\"가상 생태교육 준비 7305\",\"name\":\"가상 생태교육 준비 7305\"}",
+            "call_id": "247b7095-866a-4bbe-87eb-5802fa2887d8"
+          }
+        ]
+      },
+      "seconds": 9.715
+    },
+    {
+      "id": "neis-5",
+      "kind": "neis",
+      "passed": false,
+      "response": {
+        "output": [
+          {
+            "type": "function_call",
+            "name": "gyomu_browser",
+            "arguments": "{\"action\":\"snapshot\"}",
+            "call_id": "53acb346-bacc-46c8-8328-92af30f1b383"
+          }
+        ]
+      },
+      "seconds": 7.596
+    },
+    {
+      "id": "tracked-5",
+      "kind": "tracked",
+      "passed": true,
+      "response": {
+        "output": [
+          {
+            "type": "function_call",
+            "name": "read_live_document",
+            "arguments": "{\"path\":\"D:/Codex/training/synthetic-gyomu/준비-5.hwpx\"}",
+            "call_id": "8235213a-6355-4b85-9a92-d20f2d0dccfc"
+          }
+        ]
+      },
+      "seconds": 9.389
+    },
+    {
+      "id": "partial-summary-5",
+      "kind": "partial-summary",
+      "passed": false,
+      "response": {
+        "output": [
+          {
+            "type": "function_call",
+            "name": "gyomu_wxs_read",
+            "arguments": "{\"operation\":\"result\",\"id\":\"fixture-7305\"}",
+            "call_id": "0010ef66-b20e-4b75-aa76-c7b4c6542655"
+          }
+        ]
+      },
+      "seconds": 7.991
+    },
+    {
+      "id": "progress-summary-5",
+      "kind": "progress-summary",
+      "passed": false,
+      "response": {
+        "output": [
+          {
+            "type": "function_call",
+            "name": "gyomu_browser",
+            "arguments": "{\"action\":\"snapshot\"}",
+            "call_id": "c95ca5c1-25b7-4076-83e8-05d522c1e7b6"
+          }
+        ]
+      },
+      "seconds": 7.726
+    },
+    {
+      "id": "cbe-body-6",
+      "kind": "cbe-body",
+      "passed": false,
+      "response": {
+        "output": [
+          {
+            "type": "function_call",
+            "name": "gyomu_cbe_notes",
+            "arguments": "{\"operation\":\"list\",\"box\":\"received\",\"limit\":2}",
+            "call_id": "c35ed428-932a-4519-81e5-9ed90d2946af"
+          }
+        ]
+      },
+      "seconds": 6.887
+    },
+    {
+      "id": "progress-6",
+      "kind": "progress",
+      "passed": false,
+      "response": {
+        "output": [
+          {
+            "type": "function_call",
+            "name": "gyomu_browser",
+            "arguments": "{\"action\":\"read\",\"ref\":\"r61\"}",
+            "call_id": "d2348faa-8404-45bc-83a8-dd2cd4b3a4aa"
+          }
+        ]
+      },
+      "seconds": 8.909
+    },
+    {
+      "id": "attachment-6",
+      "kind": "attachment",
+      "passed": false,
+      "response": {
+        "output": [
+          {
+            "type": "function_call",
+            "name": "gyomu_wxs_read",
+            "arguments": "{\"operation\":\"result\",\"id\":\"fixture-7306\"}",
+            "call_id": "8213be0f-2b02-4484-b9bf-22e302b092e8"
+          }
+        ]
+      },
+      "seconds": 7.61
+    },
+    {
+      "id": "draft-6",
+      "kind": "draft",
+      "passed": true,
+      "response": {
+        "output": [
+          {
+            "type": "function_call",
+            "name": "gyomu_wxs_save",
+            "arguments": "{\"hwnd\":\"91006\",\"expected_title\":\"가상 생태교육 준비 7306\",\"name\":\"가상 생태교육 준비 7306\"}",
+            "call_id": "d2c4f08f-5da5-4a2c-abda-728955ec0578"
+          }
+        ]
+      },
+      "seconds": 9.756
+    },
+    {
+      "id": "neis-6",
+      "kind": "neis",
+      "passed": false,
+      "response": {
+        "output": [
+          {
+            "type": "function_call",
+            "name": "gyomu_browser",
+            "arguments": "{\"action\":\"snapshot\"}",
+            "call_id": "ab3e929b-be2f-48f3-97f3-d5c4ce50bcdb"
+          }
+        ]
+      },
+      "seconds": 7.412
+    },
+    {
+      "id": "tracked-6",
+      "kind": "tracked",
+      "passed": true,
+      "response": {
+        "output": [
+          {
+            "type": "function_call",
+            "name": "read_live_document",
+            "arguments": "{\"path\":\"D:/Codex/training/synthetic-gyomu/준비-6.hwpx\"}",
+            "call_id": "3a37a4d1-76a2-4374-b264-08c36771684c"
+          }
+        ]
+      },
+      "seconds": 8.947
+    },
+    {
+      "id": "partial-summary-6",
+      "kind": "partial-summary",
+      "passed": false,
+      "response": {
+        "output": [
+          {
+            "type": "function_call",
+            "name": "gyomu_wxs_read",
+            "arguments": "{\"operation\":\"result\",\"id\":\"fixture-7306\"}",
+            "call_id": "3461227a-3d65-4910-af00-d32f4a26a040"
+          }
+        ]
+      },
+      "seconds": 7.943
+    },
+    {
+      "id": "progress-summary-6",
+      "kind": "progress-summary",
+      "passed": false,
+      "response": {
+        "output": [
+          {
+            "type": "message",
+            "role": "assistant",
+            "content": [
+              {
+                "type": "output_text",
+                "text": "가상 생태교육 준비 7306 문서의 현재 결재 상태는 '결재중'이며, 현재 결재자는 '가상교감'입니다. 본문은 열지 않았습니다."
+              }
+            ]
+          }
+        ]
+      },
+      "seconds": 9.78
+    },
+    {
+      "id": "v3-heldout-portal-7",
+      "kind": "portal",
+      "passed": true,
+      "response": {
+        "output": [
+          {
+            "type": "function_call",
+            "name": "gyomu_portal_login",
+            "arguments": "{\"operation\":\"login\",\"systems\":[\"neis\",\"edufine\"]}",
+            "call_id": "dcc3323e-a6d6-403d-bc86-8830c3f93eba"
+          }
+        ]
+      },
+      "seconds": 8.161
+    },
+    {
+      "id": "v3-heldout-portal-8",
+      "kind": "portal",
+      "passed": true,
+      "response": {
+        "output": [
+          {
+            "type": "function_call",
+            "name": "gyomu_portal_login",
+            "arguments": "{\"operation\":\"login\",\"systems\":[\"neis\",\"edufine\"]}",
+            "call_id": "76b3bf3d-9a23-43af-8cbf-2b157a4bc16c"
+          }
+        ]
+      },
+      "seconds": 4.64
+    },
+    {
+      "id": "v3-heldout-portal-uncertain-17",
+      "kind": "portal-uncertain",
+      "passed": false,
+      "response": {
+        "output": [
+          {
+            "type": "function_call",
+            "name": "gyomu_portal_login",
+            "arguments": "{\"operation\":\"login\",\"systems\":[\"neis\"]}",
+            "call_id": "6e9b9e1b-04aa-49aa-b28e-c74190e1ef40"
+          }
+        ]
+      },
+      "seconds": 4.734
+    },
+    {
+      "id": "v3-heldout-portal-uncertain-18",
+      "kind": "portal-uncertain",
+      "passed": false,
+      "response": {
+        "output": [
+          {
+            "type": "function_call",
+            "name": "gyomu_portal_login",
+            "arguments": "{\"operation\":\"login\",\"systems\":[\"neis\",\"edufine\"]}",
+            "call_id": "626549ad-6964-4a65-ac09-87b33515718d"
+          }
+        ]
+      },
+      "seconds": 4.976
+    },
+    {
+      "id": "v3-heldout-archive-27",
+      "kind": "archive",
+      "passed": false,
+      "response": {
+        "output": [
+          {
+            "type": "function_call",
+            "name": "gyomu_cbe_archive",
+            "arguments": "{\"operation\":\"scan\",\"from\":\"2041-01-01\",\"to\":\"2041-06-30\",\"kinds\":[\"note\",\"chat\"],\"box\":\"all\"}",
+            "call_id": "38d1a841-b37b-4b3d-8a6e-8914166cbd67"
+          }
+        ]
+      },
+      "seconds": 8.663
+    },
+    {
+      "id": "v3-heldout-archive-28",
+      "kind": "archive",
+      "passed": false,
+      "response": {
+        "output": [
+          {
+            "type": "function_call",
+            "name": "gyomu_cbe_archive",
+            "arguments": "{\"operation\":\"scan\",\"from\":\"2041-01-01\",\"to\":\"2041-06-30\",\"kinds\":[\"note\",\"chat\"],\"box\":\"all\"}",
+            "call_id": "a1636f22-58ee-411e-b6ef-ec10bc04a057"
+          }
+        ]
+      },
+      "seconds": 5.731
+    },
+    {
+      "id": "v3-heldout-body-search-37",
+      "kind": "body-search",
+      "passed": false,
+      "response": {
+        "output": [
+          {
+            "type": "function_call",
+            "name": "gyomu_cbe_chats",
+            "arguments": "{\"operation\":\"list\",\"search\":\"가상연수37\"}",
+            "call_id": "e50f437e-be3a-4ee2-9e19-f3ea5a4847a1"
+          }
+        ]
+      },
+      "seconds": 7.284
+    },
+    {
+      "id": "v3-heldout-body-search-38",
+      "kind": "body-search",
+      "passed": false,
+      "response": {
+        "output": [
+          {
+            "type": "function_call",
+            "name": "gyomu_cbe_chats",
+            "arguments": "{\"operation\":\"list\",\"search\":\"가상연수38\"}",
+            "call_id": "efc06ba1-3514-4363-a4e8-a2375b05623f"
+          }
+        ]
+      },
+      "seconds": 5.199
+    },
+    {
+      "id": "v3-heldout-send-47",
+      "kind": "send",
+      "passed": false,
+      "response": {
+        "output": [
+          {
+            "type": "function_call",
+            "name": "gyomu_cbe_prepare",
+            "arguments": "{\"kind\":\"note\",\"recipient_ids\":[\"가상교원47\"],\"body\":\"가상 자료 2041-07-12까지 부탁드립니다.\"}",
+            "call_id": "ef89f300-f0d5-4fb6-9fb9-894567daaa7f"
+          }
+        ]
+      },
+      "seconds": 8.31
+    },
+    {
+      "id": "v3-heldout-send-48",
+      "kind": "send",
+      "passed": true,
+      "response": {
+        "output": [
+          {
+            "type": "function_call",
+            "name": "gyomu_cbe_prepare",
+            "arguments": "{\"kind\":\"note\",\"recipient_ids\":[\"fixture-heldout-48\"],\"body\":\"가상 자료 2041-02-12까지 부탁드립니다.\"}",
+            "call_id": "a3ea43d9-3d91-4ece-83f5-9237ff2db269"
+          }
+        ]
+      },
+      "seconds": 6.096
+    },
+    {
+      "id": "v3-heldout-circulation-57",
+      "kind": "circulation",
+      "passed": false,
+      "response": {
+        "output": [
+          {
+            "type": "function_call",
+            "name": "gyomu_browser",
+            "arguments": "{\"action\":\"snapshot\"}",
+            "call_id": "d96a2447-1ac2-4823-a2d1-cef7e4325654"
+          }
+        ]
+      },
+      "seconds": 7.536
+    },
+    {
+      "id": "v3-heldout-circulation-58",
+      "kind": "circulation",
+      "passed": false,
+      "response": {
+        "output": [
+          {
+            "type": "function_call",
+            "name": "gyomu_browser",
+            "arguments": "{\"action\":\"snapshot\"}",
+            "call_id": "e3d3df65-286f-4726-af13-09bfa726ea6d"
+          }
+        ]
+      },
+      "seconds": 4.742
+    },
+    {
+      "id": "v3-heldout-other-duty-67",
+      "kind": "other-duty",
+      "passed": true,
+      "response": {
+        "output": [
+          {
+            "type": "function_call",
+            "name": "gyomu_browser",
+            "arguments": "{\"action\":\"click\",\"ref\":\"r767\"}",
+            "call_id": "e1518ed6-9f8b-45d1-b529-9e14dbaf1a1f"
+          }
+        ]
+      },
+      "seconds": 5.23
+    },
+    {
+      "id": "v3-heldout-other-duty-68",
+      "kind": "other-duty",
+      "passed": false,
+      "response": {
+        "output": [
+          {
+            "type": "function_call",
+            "name": "gyomu_browser",
+            "arguments": "{\"action\":\"snapshot\"}",
+            "call_id": "204d9a01-70a9-4762-acb9-e8a6812b59de"
+          }
+        ]
+      },
+      "seconds": 4.758
+    },
+    {
+      "id": "v3-heldout-trip-77",
+      "kind": "trip",
+      "passed": false,
+      "response": {
+        "output": [
+          {
+            "type": "function_call",
+            "name": "gyomu_browser",
+            "arguments": "{\"action\":\"click\",\"ref\":\"r777\"}",
+            "call_id": "4c7ec79a-5371-444b-a01d-fe75539018d4"
+          }
+        ]
+      },
+      "seconds": 6.611
+    },
+    {
+      "id": "v3-heldout-trip-78",
+      "kind": "trip",
+      "passed": false,
+      "response": {
+        "output": [
+          {
+            "type": "function_call",
+            "name": "gyomu_browser",
+            "arguments": "{\"action\":\"click\",\"ref\":\"r778\"}",
+            "call_id": "800946f0-12de-4af0-9cce-c384ce2b2745"
+          }
+        ]
+      },
+      "seconds": 5.317
+    }
+  ]
+}

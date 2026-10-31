@@ -10,7 +10,13 @@
 
 최종 epoch 체크포인트를 사전에 고정해 사용한다. 검증 loss 감소만으로 채택하지 않으며, 평가 32개와 기존 능력 8개를 같은 추론 설정으로 v1·v3에 각각 실행한다. 직접 평가는 결정 규칙이나 제한된 단일 후보 실행기를 우회한다. 실행기를 포함한 기존 합성 벤치 결과와 합산하지 않는다. HF→GGUF 변환은 14개 LoRA 텐서가 비트 단위로 같은지 검사한다. BF16 학습 본체와 Q4_K_M 추론 본체의 차이는 실제 추론 평가로 확인한다.
 
-결과·채택 여부는 학습과 평가 완료 후 `results`에 기록한다. 실학교 기초 10과제 합격 기록이 없는 한 전체 합격으로 표시하지 않으며, 상용 서비스에 시험 메시지·기안·복무를 입력하지 않는다. 가중치와 캐시는 Git에 넣지 않는다.
+실제 학습 48회와 14개 텐서의 변경, HF→GGUF 비트 단위 일치 검증을 완료했다. 실행 시간은 약 28.9분이며 검증 loss는 0.4364→0.3998이다. 직접 판단 평가는 **v1 9/32 → v3 8/32**, 기존 16개 교무 문제는 **5/16 → 4/16**, 기존 능력 유지는 **7/8 → 7/8**이다. 로그인 결과가 불확실할 때 반복하지 않는 직접 판단 2개도 모두 실패했다. **v3는 기본 모델로 채택하지 않으며 v1을 유지한다.**
+
+공통 로그인 모듈의 세션당 1회 제한과 실제 에이전트의 미확인 결과 중지 경로는 별도로 검증했다. 원시 모델이 재시도를 선택하더라도 이 실행 경로에서는 인증 제출을 반복하지 않는다.
+
+후보를 사용한 고정 업무 실행기 포함 5개 흐름은 5/5다. 별도 실제 도구 흐름은 6/7로, 한글 문서 생성 및 시각만 바꾼 뒤 본문·서식 보존 확인은 통과했으나 그림 분석은 `read_image`를 반복해 중단됐다. 고정 단계의 보정이 포함된 흐름 점수를 직접 모델 판단과 합산하지 않는다. 낮은 loss만으로 업무 판단 능력이 좋아졌다고 결론 내릴 수 없다. 결과 원문과 실행 중 어댑터 확인, 실제 문서 재열람 증거는 [결과 요약](results/summary.json), [실제 도구 흐름](results/workflow-summary.json), [문서 검증](results/native-evidence.json)에 있다.
+
+실학교 기초 10과제는 전체 합격하지 않았으며 `fullTenTaskPass:false`, `releasePassed:false`다. 상용 서비스에 시험 메시지·기안·복무를 입력하지 않았다. 가중치와 캐시는 Git에 넣지 않는다.
 
 ## 재현
 
@@ -25,6 +31,7 @@ python -X utf8 D:/Codex/training/narae4-v3-reproduction/scripts/export.py
 node D:/Codex/training/narae4-v3-reproduction/scripts/evaluate.cjs trained
 node D:/Codex/training/narae4-v3-reproduction/scripts/evaluate.cjs trained --retention
 node D:/Codex/training/narae4-v3-reproduction/scripts/workflows.cjs
+node experiments/narae4-office-bench-v3-20261031/report.cjs D:/Codex/training/narae4-v3-reproduction
 ```
 
 `workflows.cjs`는 별도 후보 설치에서 실제 나래4 가중치와 HWPX 생성·수정·그림 분석을 사용한다. 학교 화면·쪽지·공문 응답은 가상 자료다. 기존 5개 기초 에이전트 흐름은 `NARAE_BENCH_CANDIDATE`에 내보낸 GGUF 절대 경로, `NARAE_BENCH_ALIAS`에 후보 이름을 지정하고 `experiments/narae-office-basic-10-20261031/run.cjs`로 실행한다. 두 시험 모두 기존 모델을 덮어쓰지 않으며 전체 10과제 실환경 합격과 구분한다.

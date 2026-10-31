@@ -1,0 +1,6876 @@
+{
+  "kind": "hangul",
+  "blocks": [
+    {
+      "id": "body/0",
+      "text": "가상회의",
+      "editable": true,
+      "textStyle": {
+        "font": "맑은 고딕",
+        "size": 20,
+        "bold": true,
+        "italic": false,
+        "underline": false,
+        "strike": false,
+        "color": "#000000",
+        "background": "",
+        "superscript": false,
+        "subscript": false,
+        "stretch": 100,
+        "letter_spacing": 0,
+        "language_fonts": [
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕"
+        ],
+        "font_type": "TTF",
+        "language_font_types": [
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF"
+        ],
+        "use_font_space": false,
+        "use_kerning": false,
+        "language_ratios": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_spacing": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "language_relative_sizes": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_offsets": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "defaultTextStyle": {
+        "font": "맑은 고딕",
+        "size": 20,
+        "bold": true,
+        "italic": false,
+        "underline": false,
+        "strike": false,
+        "color": "#000000",
+        "background": "",
+        "superscript": false,
+        "subscript": false,
+        "stretch": 100,
+        "letter_spacing": 0,
+        "language_fonts": [
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕"
+        ],
+        "font_type": "TTF",
+        "language_font_types": [
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF"
+        ],
+        "use_font_space": false,
+        "use_kerning": false,
+        "language_ratios": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_spacing": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "language_relative_sizes": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_offsets": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "paragraphStyle": {
+        "align": "LEFT",
+        "left": 0,
+        "right": 0,
+        "indent": 0,
+        "before": 0,
+        "after": 0,
+        "line": 160,
+        "line_type": "PERCENT",
+        "page_break": false,
+        "break_latin": "KEEP_WORD",
+        "break_nonlatin": "BREAK_WORD",
+        "vertical_align": "BASELINE",
+        "condense": 0,
+        "snap_to_grid": false,
+        "font_line_height": false,
+        "widow_orphan": false,
+        "keep_with_next": false,
+        "keep_lines": false,
+        "line_wrap": "BREAK",
+        "auto_spacing_eng": false,
+        "auto_spacing_num": false,
+        "background": "",
+        "borders": [
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          },
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          },
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          },
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          }
+        ],
+        "border_offsets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "border_connect": false,
+        "border_ignore_margin": false
+      },
+      "runs": [
+        {
+          "text": "가상회의",
+          "textStyle": {
+            "font": "맑은 고딕",
+            "size": 20,
+            "bold": true,
+            "italic": false,
+            "underline": false,
+            "strike": false,
+            "color": "#000000",
+            "background": "",
+            "superscript": false,
+            "subscript": false,
+            "stretch": 100,
+            "letter_spacing": 0,
+            "language_fonts": [
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕"
+            ],
+            "font_type": "TTF",
+            "language_font_types": [
+              "TTF",
+              "TTF",
+              "TTF",
+              "TTF",
+              "TTF",
+              "TTF",
+              "TTF"
+            ],
+            "use_font_space": false,
+            "use_kerning": false,
+            "language_ratios": [
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100
+            ],
+            "language_spacing": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "language_relative_sizes": [
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100
+            ],
+            "language_offsets": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "image": false,
+          "field": false
+        }
+      ]
+    },
+    {
+      "id": "body/1",
+      "text": "2038 년 9 월 13 일 15:20",
+      "editable": true,
+      "textStyle": {
+        "font": "맑은 고딕",
+        "size": 11,
+        "bold": false,
+        "italic": false,
+        "underline": false,
+        "strike": false,
+        "color": "#000000",
+        "background": "",
+        "superscript": false,
+        "subscript": false,
+        "stretch": 100,
+        "letter_spacing": 0,
+        "language_fonts": [
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕"
+        ],
+        "font_type": "TTF",
+        "language_font_types": [
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF"
+        ],
+        "use_font_space": false,
+        "use_kerning": false,
+        "language_ratios": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_spacing": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "language_relative_sizes": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_offsets": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "defaultTextStyle": {
+        "font": "맑은 고딕",
+        "size": 11,
+        "bold": false,
+        "italic": false,
+        "underline": false,
+        "strike": false,
+        "color": "#000000",
+        "background": "",
+        "superscript": false,
+        "subscript": false,
+        "stretch": 100,
+        "letter_spacing": 0,
+        "language_fonts": [
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕"
+        ],
+        "font_type": "TTF",
+        "language_font_types": [
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF"
+        ],
+        "use_font_space": false,
+        "use_kerning": false,
+        "language_ratios": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_spacing": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "language_relative_sizes": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_offsets": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "paragraphStyle": {
+        "align": "LEFT",
+        "left": 0,
+        "right": 0,
+        "indent": 0,
+        "before": 0,
+        "after": 0,
+        "line": 160,
+        "line_type": "PERCENT",
+        "page_break": false,
+        "break_latin": "KEEP_WORD",
+        "break_nonlatin": "BREAK_WORD",
+        "vertical_align": "BASELINE",
+        "condense": 0,
+        "snap_to_grid": false,
+        "font_line_height": false,
+        "widow_orphan": false,
+        "keep_with_next": false,
+        "keep_lines": false,
+        "line_wrap": "BREAK",
+        "auto_spacing_eng": false,
+        "auto_spacing_num": false,
+        "background": "",
+        "borders": [
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          },
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          },
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          },
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          }
+        ],
+        "border_offsets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "border_connect": false,
+        "border_ignore_margin": false
+      },
+      "runs": [
+        {
+          "text": "2038 년 9 월 13 일 15:20",
+          "textStyle": {
+            "font": "맑은 고딕",
+            "size": 11,
+            "bold": false,
+            "italic": false,
+            "underline": false,
+            "strike": false,
+            "color": "#000000",
+            "background": "",
+            "superscript": false,
+            "subscript": false,
+            "stretch": 100,
+            "letter_spacing": 0,
+            "language_fonts": [
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕"
+            ],
+            "font_type": "TTF",
+            "language_font_types": [
+              "TTF",
+              "TTF",
+              "TTF",
+              "TTF",
+              "TTF",
+              "TTF",
+              "TTF"
+            ],
+            "use_font_space": false,
+            "use_kerning": false,
+            "language_ratios": [
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100
+            ],
+            "language_spacing": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "language_relative_sizes": [
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100
+            ],
+            "language_offsets": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "image": false,
+          "field": false
+        }
+      ]
+    },
+    {
+      "id": "body/2",
+      "text": "",
+      "editable": true,
+      "textStyle": {
+        "font": "맑은 고딕",
+        "size": 11,
+        "bold": false,
+        "italic": false,
+        "underline": false,
+        "strike": false,
+        "color": "#000000",
+        "background": "",
+        "superscript": false,
+        "subscript": false,
+        "stretch": 100,
+        "letter_spacing": 0,
+        "language_fonts": [
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕"
+        ],
+        "font_type": "TTF",
+        "language_font_types": [
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF"
+        ],
+        "use_font_space": false,
+        "use_kerning": false,
+        "language_ratios": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_spacing": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "language_relative_sizes": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_offsets": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "defaultTextStyle": {
+        "font": "맑은 고딕",
+        "size": 11,
+        "bold": false,
+        "italic": false,
+        "underline": false,
+        "strike": false,
+        "color": "#000000",
+        "background": "",
+        "superscript": false,
+        "subscript": false,
+        "stretch": 100,
+        "letter_spacing": 0,
+        "language_fonts": [
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕"
+        ],
+        "font_type": "TTF",
+        "language_font_types": [
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF"
+        ],
+        "use_font_space": false,
+        "use_kerning": false,
+        "language_ratios": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_spacing": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "language_relative_sizes": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_offsets": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "paragraphStyle": {
+        "align": "LEFT",
+        "left": 0,
+        "right": 0,
+        "indent": 0,
+        "before": 0,
+        "after": 0,
+        "line": 160,
+        "line_type": "PERCENT",
+        "page_break": false,
+        "break_latin": "KEEP_WORD",
+        "break_nonlatin": "BREAK_WORD",
+        "vertical_align": "BASELINE",
+        "condense": 0,
+        "snap_to_grid": false,
+        "font_line_height": false,
+        "widow_orphan": false,
+        "keep_with_next": false,
+        "keep_lines": false,
+        "line_wrap": "BREAK",
+        "auto_spacing_eng": false,
+        "auto_spacing_num": false,
+        "background": "",
+        "borders": [
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          },
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          },
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          },
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          }
+        ],
+        "border_offsets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "border_connect": false,
+        "border_ignore_margin": false
+      },
+      "runs": [
+        {
+          "text": "",
+          "textStyle": {
+            "font": "맑은 고딕",
+            "size": 11,
+            "bold": false,
+            "italic": false,
+            "underline": false,
+            "strike": false,
+            "color": "#000000",
+            "background": "",
+            "superscript": false,
+            "subscript": false,
+            "stretch": 100,
+            "letter_spacing": 0,
+            "language_fonts": [
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕"
+            ],
+            "font_type": "TTF",
+            "language_font_types": [
+              "TTF",
+              "TTF",
+              "TTF",
+              "TTF",
+              "TTF",
+              "TTF",
+              "TTF"
+            ],
+            "use_font_space": false,
+            "use_kerning": false,
+            "language_ratios": [
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100
+            ],
+            "language_spacing": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "language_relative_sizes": [
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100
+            ],
+            "language_offsets": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "image": false,
+          "field": false
+        }
+      ]
+    },
+    {
+      "id": "body/3",
+      "text": "장소: 가상회의실",
+      "editable": true,
+      "textStyle": {
+        "font": "맑은 고딕",
+        "size": 11,
+        "bold": false,
+        "italic": false,
+        "underline": false,
+        "strike": false,
+        "color": "#000000",
+        "background": "",
+        "superscript": false,
+        "subscript": false,
+        "stretch": 100,
+        "letter_spacing": 0,
+        "language_fonts": [
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕"
+        ],
+        "font_type": "TTF",
+        "language_font_types": [
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF"
+        ],
+        "use_font_space": false,
+        "use_kerning": false,
+        "language_ratios": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_spacing": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "language_relative_sizes": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_offsets": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "defaultTextStyle": {
+        "font": "맑은 고딕",
+        "size": 11,
+        "bold": false,
+        "italic": false,
+        "underline": false,
+        "strike": false,
+        "color": "#000000",
+        "background": "",
+        "superscript": false,
+        "subscript": false,
+        "stretch": 100,
+        "letter_spacing": 0,
+        "language_fonts": [
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕"
+        ],
+        "font_type": "TTF",
+        "language_font_types": [
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF"
+        ],
+        "use_font_space": false,
+        "use_kerning": false,
+        "language_ratios": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_spacing": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "language_relative_sizes": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_offsets": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "paragraphStyle": {
+        "align": "LEFT",
+        "left": 0,
+        "right": 0,
+        "indent": 0,
+        "before": 0,
+        "after": 0,
+        "line": 160,
+        "line_type": "PERCENT",
+        "page_break": false,
+        "break_latin": "KEEP_WORD",
+        "break_nonlatin": "BREAK_WORD",
+        "vertical_align": "BASELINE",
+        "condense": 0,
+        "snap_to_grid": false,
+        "font_line_height": false,
+        "widow_orphan": false,
+        "keep_with_next": false,
+        "keep_lines": false,
+        "line_wrap": "BREAK",
+        "auto_spacing_eng": false,
+        "auto_spacing_num": false,
+        "background": "",
+        "borders": [
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          },
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          },
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          },
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          }
+        ],
+        "border_offsets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "border_connect": false,
+        "border_ignore_margin": false
+      },
+      "runs": [
+        {
+          "text": "장소: 가상회의실",
+          "textStyle": {
+            "font": "맑은 고딕",
+            "size": 11,
+            "bold": false,
+            "italic": false,
+            "underline": false,
+            "strike": false,
+            "color": "#000000",
+            "background": "",
+            "superscript": false,
+            "subscript": false,
+            "stretch": 100,
+            "letter_spacing": 0,
+            "language_fonts": [
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕"
+            ],
+            "font_type": "TTF",
+            "language_font_types": [
+              "TTF",
+              "TTF",
+              "TTF",
+              "TTF",
+              "TTF",
+              "TTF",
+              "TTF"
+            ],
+            "use_font_space": false,
+            "use_kerning": false,
+            "language_ratios": [
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100
+            ],
+            "language_spacing": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "language_relative_sizes": [
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100
+            ],
+            "language_offsets": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "image": false,
+          "field": false
+        }
+      ]
+    },
+    {
+      "id": "body/4",
+      "text": "",
+      "editable": true,
+      "textStyle": {
+        "font": "맑은 고딕",
+        "size": 11,
+        "bold": false,
+        "italic": false,
+        "underline": false,
+        "strike": false,
+        "color": "#000000",
+        "background": "",
+        "superscript": false,
+        "subscript": false,
+        "stretch": 100,
+        "letter_spacing": 0,
+        "language_fonts": [
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕"
+        ],
+        "font_type": "TTF",
+        "language_font_types": [
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF"
+        ],
+        "use_font_space": false,
+        "use_kerning": false,
+        "language_ratios": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_spacing": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "language_relative_sizes": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_offsets": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "defaultTextStyle": {
+        "font": "맑은 고딕",
+        "size": 11,
+        "bold": false,
+        "italic": false,
+        "underline": false,
+        "strike": false,
+        "color": "#000000",
+        "background": "",
+        "superscript": false,
+        "subscript": false,
+        "stretch": 100,
+        "letter_spacing": 0,
+        "language_fonts": [
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕"
+        ],
+        "font_type": "TTF",
+        "language_font_types": [
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF"
+        ],
+        "use_font_space": false,
+        "use_kerning": false,
+        "language_ratios": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_spacing": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "language_relative_sizes": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_offsets": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "paragraphStyle": {
+        "align": "LEFT",
+        "left": 0,
+        "right": 0,
+        "indent": 0,
+        "before": 0,
+        "after": 0,
+        "line": 160,
+        "line_type": "PERCENT",
+        "page_break": false,
+        "break_latin": "KEEP_WORD",
+        "break_nonlatin": "BREAK_WORD",
+        "vertical_align": "BASELINE",
+        "condense": 0,
+        "snap_to_grid": false,
+        "font_line_height": false,
+        "widow_orphan": false,
+        "keep_with_next": false,
+        "keep_lines": false,
+        "line_wrap": "BREAK",
+        "auto_spacing_eng": false,
+        "auto_spacing_num": false,
+        "background": "",
+        "borders": [
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          },
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          },
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          },
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          }
+        ],
+        "border_offsets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "border_connect": false,
+        "border_ignore_margin": false
+      },
+      "runs": [
+        {
+          "text": "",
+          "textStyle": {
+            "font": "맑은 고딕",
+            "size": 11,
+            "bold": false,
+            "italic": false,
+            "underline": false,
+            "strike": false,
+            "color": "#000000",
+            "background": "",
+            "superscript": false,
+            "subscript": false,
+            "stretch": 100,
+            "letter_spacing": 0,
+            "language_fonts": [
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕"
+            ],
+            "font_type": "TTF",
+            "language_font_types": [
+              "TTF",
+              "TTF",
+              "TTF",
+              "TTF",
+              "TTF",
+              "TTF",
+              "TTF"
+            ],
+            "use_font_space": false,
+            "use_kerning": false,
+            "language_ratios": [
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100
+            ],
+            "language_spacing": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "language_relative_sizes": [
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100
+            ],
+            "language_offsets": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "image": false,
+          "field": false
+        }
+      ]
+    },
+    {
+      "id": "body/5",
+      "text": "안건: 가상 자료 검토",
+      "editable": true,
+      "textStyle": {
+        "font": "맑은 고딕",
+        "size": 11,
+        "bold": false,
+        "italic": false,
+        "underline": false,
+        "strike": false,
+        "color": "#000000",
+        "background": "",
+        "superscript": false,
+        "subscript": false,
+        "stretch": 100,
+        "letter_spacing": 0,
+        "language_fonts": [
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕"
+        ],
+        "font_type": "TTF",
+        "language_font_types": [
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF"
+        ],
+        "use_font_space": false,
+        "use_kerning": false,
+        "language_ratios": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_spacing": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "language_relative_sizes": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_offsets": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "defaultTextStyle": {
+        "font": "맑은 고딕",
+        "size": 11,
+        "bold": false,
+        "italic": false,
+        "underline": false,
+        "strike": false,
+        "color": "#000000",
+        "background": "",
+        "superscript": false,
+        "subscript": false,
+        "stretch": 100,
+        "letter_spacing": 0,
+        "language_fonts": [
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕"
+        ],
+        "font_type": "TTF",
+        "language_font_types": [
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF"
+        ],
+        "use_font_space": false,
+        "use_kerning": false,
+        "language_ratios": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_spacing": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "language_relative_sizes": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_offsets": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "paragraphStyle": {
+        "align": "LEFT",
+        "left": 0,
+        "right": 0,
+        "indent": 0,
+        "before": 0,
+        "after": 0,
+        "line": 160,
+        "line_type": "PERCENT",
+        "page_break": false,
+        "break_latin": "KEEP_WORD",
+        "break_nonlatin": "BREAK_WORD",
+        "vertical_align": "BASELINE",
+        "condense": 0,
+        "snap_to_grid": false,
+        "font_line_height": false,
+        "widow_orphan": false,
+        "keep_with_next": false,
+        "keep_lines": false,
+        "line_wrap": "BREAK",
+        "auto_spacing_eng": false,
+        "auto_spacing_num": false,
+        "background": "",
+        "borders": [
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          },
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          },
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          },
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          }
+        ],
+        "border_offsets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "border_connect": false,
+        "border_ignore_margin": false
+      },
+      "runs": [
+        {
+          "text": "안건: 가상 자료 검토",
+          "textStyle": {
+            "font": "맑은 고딕",
+            "size": 11,
+            "bold": false,
+            "italic": false,
+            "underline": false,
+            "strike": false,
+            "color": "#000000",
+            "background": "",
+            "superscript": false,
+            "subscript": false,
+            "stretch": 100,
+            "letter_spacing": 0,
+            "language_fonts": [
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕"
+            ],
+            "font_type": "TTF",
+            "language_font_types": [
+              "TTF",
+              "TTF",
+              "TTF",
+              "TTF",
+              "TTF",
+              "TTF",
+              "TTF"
+            ],
+            "use_font_space": false,
+            "use_kerning": false,
+            "language_ratios": [
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100
+            ],
+            "language_spacing": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "language_relative_sizes": [
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100
+            ],
+            "language_offsets": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "image": false,
+          "field": false
+        }
+      ]
+    },
+    {
+      "id": "body/6",
+      "text": "",
+      "editable": true,
+      "textStyle": {
+        "font": "맑은 고딕",
+        "size": 11,
+        "bold": false,
+        "italic": false,
+        "underline": false,
+        "strike": false,
+        "color": "#000000",
+        "background": "",
+        "superscript": false,
+        "subscript": false,
+        "stretch": 100,
+        "letter_spacing": 0,
+        "language_fonts": [
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕"
+        ],
+        "font_type": "TTF",
+        "language_font_types": [
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF"
+        ],
+        "use_font_space": false,
+        "use_kerning": false,
+        "language_ratios": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_spacing": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "language_relative_sizes": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_offsets": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "defaultTextStyle": {
+        "font": "맑은 고딕",
+        "size": 11,
+        "bold": false,
+        "italic": false,
+        "underline": false,
+        "strike": false,
+        "color": "#000000",
+        "background": "",
+        "superscript": false,
+        "subscript": false,
+        "stretch": 100,
+        "letter_spacing": 0,
+        "language_fonts": [
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕"
+        ],
+        "font_type": "TTF",
+        "language_font_types": [
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF"
+        ],
+        "use_font_space": false,
+        "use_kerning": false,
+        "language_ratios": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_spacing": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "language_relative_sizes": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_offsets": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "paragraphStyle": {
+        "align": "LEFT",
+        "left": 0,
+        "right": 0,
+        "indent": 0,
+        "before": 0,
+        "after": 0,
+        "line": 160,
+        "line_type": "PERCENT",
+        "page_break": false,
+        "break_latin": "KEEP_WORD",
+        "break_nonlatin": "BREAK_WORD",
+        "vertical_align": "BASELINE",
+        "condense": 0,
+        "snap_to_grid": false,
+        "font_line_height": false,
+        "widow_orphan": false,
+        "keep_with_next": false,
+        "keep_lines": false,
+        "line_wrap": "BREAK",
+        "auto_spacing_eng": false,
+        "auto_spacing_num": false,
+        "background": "",
+        "borders": [
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          },
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          },
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          },
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          }
+        ],
+        "border_offsets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "border_connect": false,
+        "border_ignore_margin": false
+      },
+      "runs": [
+        {
+          "text": "",
+          "textStyle": {
+            "font": "맑은 고딕",
+            "size": 11,
+            "bold": false,
+            "italic": false,
+            "underline": false,
+            "strike": false,
+            "color": "#000000",
+            "background": "",
+            "superscript": false,
+            "subscript": false,
+            "stretch": 100,
+            "letter_spacing": 0,
+            "language_fonts": [
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕"
+            ],
+            "font_type": "TTF",
+            "language_font_types": [
+              "TTF",
+              "TTF",
+              "TTF",
+              "TTF",
+              "TTF",
+              "TTF",
+              "TTF"
+            ],
+            "use_font_space": false,
+            "use_kerning": false,
+            "language_ratios": [
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100
+            ],
+            "language_spacing": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "language_relative_sizes": [
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100
+            ],
+            "language_offsets": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "image": false,
+          "field": false
+        }
+      ]
+    },
+    {
+      "id": "body/7",
+      "text": "참고: 본 회의는 실제 학교 일정이 아닙니다.",
+      "editable": true,
+      "textStyle": {
+        "font": "맑은 고딕",
+        "size": 11,
+        "bold": false,
+        "italic": false,
+        "underline": false,
+        "strike": false,
+        "color": "#000000",
+        "background": "",
+        "superscript": false,
+        "subscript": false,
+        "stretch": 100,
+        "letter_spacing": 0,
+        "language_fonts": [
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕"
+        ],
+        "font_type": "TTF",
+        "language_font_types": [
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF"
+        ],
+        "use_font_space": false,
+        "use_kerning": false,
+        "language_ratios": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_spacing": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "language_relative_sizes": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_offsets": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "defaultTextStyle": {
+        "font": "맑은 고딕",
+        "size": 11,
+        "bold": false,
+        "italic": false,
+        "underline": false,
+        "strike": false,
+        "color": "#000000",
+        "background": "",
+        "superscript": false,
+        "subscript": false,
+        "stretch": 100,
+        "letter_spacing": 0,
+        "language_fonts": [
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕"
+        ],
+        "font_type": "TTF",
+        "language_font_types": [
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF"
+        ],
+        "use_font_space": false,
+        "use_kerning": false,
+        "language_ratios": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_spacing": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "language_relative_sizes": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_offsets": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "paragraphStyle": {
+        "align": "LEFT",
+        "left": 0,
+        "right": 0,
+        "indent": 0,
+        "before": 0,
+        "after": 0,
+        "line": 160,
+        "line_type": "PERCENT",
+        "page_break": false,
+        "break_latin": "KEEP_WORD",
+        "break_nonlatin": "BREAK_WORD",
+        "vertical_align": "BASELINE",
+        "condense": 0,
+        "snap_to_grid": false,
+        "font_line_height": false,
+        "widow_orphan": false,
+        "keep_with_next": false,
+        "keep_lines": false,
+        "line_wrap": "BREAK",
+        "auto_spacing_eng": false,
+        "auto_spacing_num": false,
+        "background": "",
+        "borders": [
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          },
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          },
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          },
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          }
+        ],
+        "border_offsets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "border_connect": false,
+        "border_ignore_margin": false
+      },
+      "runs": [
+        {
+          "text": "참고: 본 회의는 실제 학교 일정이 아닙니다.",
+          "textStyle": {
+            "font": "맑은 고딕",
+            "size": 11,
+            "bold": false,
+            "italic": false,
+            "underline": false,
+            "strike": false,
+            "color": "#000000",
+            "background": "",
+            "superscript": false,
+            "subscript": false,
+            "stretch": 100,
+            "letter_spacing": 0,
+            "language_fonts": [
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕"
+            ],
+            "font_type": "TTF",
+            "language_font_types": [
+              "TTF",
+              "TTF",
+              "TTF",
+              "TTF",
+              "TTF",
+              "TTF",
+              "TTF"
+            ],
+            "use_font_space": false,
+            "use_kerning": false,
+            "language_ratios": [
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100
+            ],
+            "language_spacing": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "language_relative_sizes": [
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100
+            ],
+            "language_offsets": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "image": false,
+          "field": false
+        }
+      ]
+    },
+    {
+      "id": "body/8",
+      "text": "",
+      "editable": true,
+      "textStyle": {
+        "font": "맑은 고딕",
+        "size": 11,
+        "bold": false,
+        "italic": false,
+        "underline": false,
+        "strike": false,
+        "color": "#000000",
+        "background": "",
+        "superscript": false,
+        "subscript": false,
+        "stretch": 100,
+        "letter_spacing": 0,
+        "language_fonts": [
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕"
+        ],
+        "font_type": "TTF",
+        "language_font_types": [
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF"
+        ],
+        "use_font_space": false,
+        "use_kerning": false,
+        "language_ratios": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_spacing": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "language_relative_sizes": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_offsets": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "defaultTextStyle": {
+        "font": "맑은 고딕",
+        "size": 11,
+        "bold": false,
+        "italic": false,
+        "underline": false,
+        "strike": false,
+        "color": "#000000",
+        "background": "",
+        "superscript": false,
+        "subscript": false,
+        "stretch": 100,
+        "letter_spacing": 0,
+        "language_fonts": [
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕"
+        ],
+        "font_type": "TTF",
+        "language_font_types": [
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF"
+        ],
+        "use_font_space": false,
+        "use_kerning": false,
+        "language_ratios": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_spacing": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "language_relative_sizes": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_offsets": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "paragraphStyle": {
+        "align": "LEFT",
+        "left": 0,
+        "right": 0,
+        "indent": 0,
+        "before": 0,
+        "after": 0,
+        "line": 160,
+        "line_type": "PERCENT",
+        "page_break": false,
+        "break_latin": "KEEP_WORD",
+        "break_nonlatin": "BREAK_WORD",
+        "vertical_align": "BASELINE",
+        "condense": 0,
+        "snap_to_grid": false,
+        "font_line_height": false,
+        "widow_orphan": false,
+        "keep_with_next": false,
+        "keep_lines": false,
+        "line_wrap": "BREAK",
+        "auto_spacing_eng": false,
+        "auto_spacing_num": false,
+        "background": "",
+        "borders": [
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          },
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          },
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          },
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          }
+        ],
+        "border_offsets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "border_connect": false,
+        "border_ignore_margin": false
+      },
+      "runs": [
+        {
+          "text": "",
+          "textStyle": {
+            "font": "맑은 고딕",
+            "size": 11,
+            "bold": false,
+            "italic": false,
+            "underline": false,
+            "strike": false,
+            "color": "#000000",
+            "background": "",
+            "superscript": false,
+            "subscript": false,
+            "stretch": 100,
+            "letter_spacing": 0,
+            "language_fonts": [
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕"
+            ],
+            "font_type": "TTF",
+            "language_font_types": [
+              "TTF",
+              "TTF",
+              "TTF",
+              "TTF",
+              "TTF",
+              "TTF",
+              "TTF"
+            ],
+            "use_font_space": false,
+            "use_kerning": false,
+            "language_ratios": [
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100
+            ],
+            "language_spacing": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "language_relative_sizes": [
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100
+            ],
+            "language_offsets": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "image": false,
+          "field": false
+        }
+      ]
+    },
+    {
+      "id": "body/9",
+      "text": "훈련용 가상 자료이며 실제 학교 일정이 아닙니다.",
+      "editable": true,
+      "textStyle": {
+        "font": "맑은 고딕",
+        "size": 11,
+        "bold": false,
+        "italic": false,
+        "underline": false,
+        "strike": false,
+        "color": "#000000",
+        "background": "",
+        "superscript": false,
+        "subscript": false,
+        "stretch": 100,
+        "letter_spacing": 0,
+        "language_fonts": [
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕"
+        ],
+        "font_type": "TTF",
+        "language_font_types": [
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF"
+        ],
+        "use_font_space": false,
+        "use_kerning": false,
+        "language_ratios": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_spacing": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "language_relative_sizes": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_offsets": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "defaultTextStyle": {
+        "font": "맑은 고딕",
+        "size": 11,
+        "bold": false,
+        "italic": false,
+        "underline": false,
+        "strike": false,
+        "color": "#000000",
+        "background": "",
+        "superscript": false,
+        "subscript": false,
+        "stretch": 100,
+        "letter_spacing": 0,
+        "language_fonts": [
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕"
+        ],
+        "font_type": "TTF",
+        "language_font_types": [
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF"
+        ],
+        "use_font_space": false,
+        "use_kerning": false,
+        "language_ratios": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_spacing": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "language_relative_sizes": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_offsets": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "paragraphStyle": {
+        "align": "LEFT",
+        "left": 0,
+        "right": 0,
+        "indent": 0,
+        "before": 0,
+        "after": 0,
+        "line": 160,
+        "line_type": "PERCENT",
+        "page_break": false,
+        "break_latin": "KEEP_WORD",
+        "break_nonlatin": "BREAK_WORD",
+        "vertical_align": "BASELINE",
+        "condense": 0,
+        "snap_to_grid": false,
+        "font_line_height": false,
+        "widow_orphan": false,
+        "keep_with_next": false,
+        "keep_lines": false,
+        "line_wrap": "BREAK",
+        "auto_spacing_eng": false,
+        "auto_spacing_num": false,
+        "background": "",
+        "borders": [
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          },
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          },
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          },
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          }
+        ],
+        "border_offsets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "border_connect": false,
+        "border_ignore_margin": false
+      },
+      "runs": [
+        {
+          "text": "훈련용 가상 자료이며 실제 학교 일정이 아닙니다.",
+          "textStyle": {
+            "font": "맑은 고딕",
+            "size": 11,
+            "bold": false,
+            "italic": false,
+            "underline": false,
+            "strike": false,
+            "color": "#000000",
+            "background": "",
+            "superscript": false,
+            "subscript": false,
+            "stretch": 100,
+            "letter_spacing": 0,
+            "language_fonts": [
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕"
+            ],
+            "font_type": "TTF",
+            "language_font_types": [
+              "TTF",
+              "TTF",
+              "TTF",
+              "TTF",
+              "TTF",
+              "TTF",
+              "TTF"
+            ],
+            "use_font_space": false,
+            "use_kerning": false,
+            "language_ratios": [
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100
+            ],
+            "language_spacing": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "language_relative_sizes": [
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100
+            ],
+            "language_offsets": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "image": false,
+          "field": false
+        }
+      ]
+    }
+  ],
+  "tables": [],
+  "images": [],
+  "limitations": [
+    "한컴과 동일한 전체 기능·쪽 나눔·픽셀 배치는 아직 검증되지 않았습니다.",
+    "독립 보존 편집에는 지원 범위가 있습니다. 고급 HWP 표·그림 편집에는 Windows 한컴 COM이 필요합니다.",
+    "HWP 3.0 원본은 표현 가능한 텍스트만 보존 편집하며 서식 변경은 거부합니다."
+  ],
+  "textDetailsLoaded": true,
+  "path": "D:\\Codex\\training\\narae4-office-bench-v3-20261031-r2\\evaluation\\workflow-1793450153316\\workspace\\가상회의.hwpx",
+  "name": "가상회의.hwpx",
+  "hash": "5db6b2879bb0a625623fbe41a675bfee1c3a136c6a340dd507bc9bbd9c2eb7c0",
+  "bytes": 3952,
+  "paragraphs": [
+    {
+      "id": "body/0",
+      "text": "가상회의",
+      "editable": true,
+      "textStyle": {
+        "font": "맑은 고딕",
+        "size": 20,
+        "bold": true,
+        "italic": false,
+        "underline": false,
+        "strike": false,
+        "color": "#000000",
+        "background": "",
+        "superscript": false,
+        "subscript": false,
+        "stretch": 100,
+        "letter_spacing": 0,
+        "language_fonts": [
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕"
+        ],
+        "font_type": "TTF",
+        "language_font_types": [
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF"
+        ],
+        "use_font_space": false,
+        "use_kerning": false,
+        "language_ratios": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_spacing": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "language_relative_sizes": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_offsets": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "defaultTextStyle": {
+        "font": "맑은 고딕",
+        "size": 20,
+        "bold": true,
+        "italic": false,
+        "underline": false,
+        "strike": false,
+        "color": "#000000",
+        "background": "",
+        "superscript": false,
+        "subscript": false,
+        "stretch": 100,
+        "letter_spacing": 0,
+        "language_fonts": [
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕"
+        ],
+        "font_type": "TTF",
+        "language_font_types": [
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF"
+        ],
+        "use_font_space": false,
+        "use_kerning": false,
+        "language_ratios": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_spacing": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "language_relative_sizes": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_offsets": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "paragraphStyle": {
+        "align": "LEFT",
+        "left": 0,
+        "right": 0,
+        "indent": 0,
+        "before": 0,
+        "after": 0,
+        "line": 160,
+        "line_type": "PERCENT",
+        "page_break": false,
+        "break_latin": "KEEP_WORD",
+        "break_nonlatin": "BREAK_WORD",
+        "vertical_align": "BASELINE",
+        "condense": 0,
+        "snap_to_grid": false,
+        "font_line_height": false,
+        "widow_orphan": false,
+        "keep_with_next": false,
+        "keep_lines": false,
+        "line_wrap": "BREAK",
+        "auto_spacing_eng": false,
+        "auto_spacing_num": false,
+        "background": "",
+        "borders": [
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          },
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          },
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          },
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          }
+        ],
+        "border_offsets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "border_connect": false,
+        "border_ignore_margin": false
+      },
+      "runs": [
+        {
+          "text": "가상회의",
+          "textStyle": {
+            "font": "맑은 고딕",
+            "size": 20,
+            "bold": true,
+            "italic": false,
+            "underline": false,
+            "strike": false,
+            "color": "#000000",
+            "background": "",
+            "superscript": false,
+            "subscript": false,
+            "stretch": 100,
+            "letter_spacing": 0,
+            "language_fonts": [
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕"
+            ],
+            "font_type": "TTF",
+            "language_font_types": [
+              "TTF",
+              "TTF",
+              "TTF",
+              "TTF",
+              "TTF",
+              "TTF",
+              "TTF"
+            ],
+            "use_font_space": false,
+            "use_kerning": false,
+            "language_ratios": [
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100
+            ],
+            "language_spacing": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "language_relative_sizes": [
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100
+            ],
+            "language_offsets": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "image": false,
+          "field": false
+        }
+      ],
+      "editable_text": true,
+      "text_style": {
+        "font": "맑은 고딕",
+        "size": 20,
+        "bold": true,
+        "italic": false,
+        "underline": false,
+        "strike": false,
+        "color": "#000000",
+        "background": "",
+        "superscript": false,
+        "subscript": false,
+        "stretch": 100,
+        "letter_spacing": 0,
+        "language_fonts": [
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕"
+        ],
+        "font_type": "TTF",
+        "language_font_types": [
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF"
+        ],
+        "use_font_space": false,
+        "use_kerning": false,
+        "language_ratios": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_spacing": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "language_relative_sizes": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_offsets": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "paragraph_style": {
+        "align": "LEFT",
+        "left": 0,
+        "right": 0,
+        "indent": 0,
+        "before": 0,
+        "after": 0,
+        "line": 160,
+        "line_type": "PERCENT",
+        "page_break": false,
+        "break_latin": "KEEP_WORD",
+        "break_nonlatin": "BREAK_WORD",
+        "vertical_align": "BASELINE",
+        "condense": 0,
+        "snap_to_grid": false,
+        "font_line_height": false,
+        "widow_orphan": false,
+        "keep_with_next": false,
+        "keep_lines": false,
+        "line_wrap": "BREAK",
+        "auto_spacing_eng": false,
+        "auto_spacing_num": false,
+        "background": "",
+        "borders": [
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          },
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          },
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          },
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          }
+        ],
+        "border_offsets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "border_connect": false,
+        "border_ignore_margin": false
+      }
+    },
+    {
+      "id": "body/1",
+      "text": "2038 년 9 월 13 일 15:20",
+      "editable": true,
+      "textStyle": {
+        "font": "맑은 고딕",
+        "size": 11,
+        "bold": false,
+        "italic": false,
+        "underline": false,
+        "strike": false,
+        "color": "#000000",
+        "background": "",
+        "superscript": false,
+        "subscript": false,
+        "stretch": 100,
+        "letter_spacing": 0,
+        "language_fonts": [
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕"
+        ],
+        "font_type": "TTF",
+        "language_font_types": [
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF"
+        ],
+        "use_font_space": false,
+        "use_kerning": false,
+        "language_ratios": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_spacing": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "language_relative_sizes": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_offsets": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "defaultTextStyle": {
+        "font": "맑은 고딕",
+        "size": 11,
+        "bold": false,
+        "italic": false,
+        "underline": false,
+        "strike": false,
+        "color": "#000000",
+        "background": "",
+        "superscript": false,
+        "subscript": false,
+        "stretch": 100,
+        "letter_spacing": 0,
+        "language_fonts": [
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕"
+        ],
+        "font_type": "TTF",
+        "language_font_types": [
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF"
+        ],
+        "use_font_space": false,
+        "use_kerning": false,
+        "language_ratios": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_spacing": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "language_relative_sizes": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_offsets": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "paragraphStyle": {
+        "align": "LEFT",
+        "left": 0,
+        "right": 0,
+        "indent": 0,
+        "before": 0,
+        "after": 0,
+        "line": 160,
+        "line_type": "PERCENT",
+        "page_break": false,
+        "break_latin": "KEEP_WORD",
+        "break_nonlatin": "BREAK_WORD",
+        "vertical_align": "BASELINE",
+        "condense": 0,
+        "snap_to_grid": false,
+        "font_line_height": false,
+        "widow_orphan": false,
+        "keep_with_next": false,
+        "keep_lines": false,
+        "line_wrap": "BREAK",
+        "auto_spacing_eng": false,
+        "auto_spacing_num": false,
+        "background": "",
+        "borders": [
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          },
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          },
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          },
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          }
+        ],
+        "border_offsets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "border_connect": false,
+        "border_ignore_margin": false
+      },
+      "runs": [
+        {
+          "text": "2038 년 9 월 13 일 15:20",
+          "textStyle": {
+            "font": "맑은 고딕",
+            "size": 11,
+            "bold": false,
+            "italic": false,
+            "underline": false,
+            "strike": false,
+            "color": "#000000",
+            "background": "",
+            "superscript": false,
+            "subscript": false,
+            "stretch": 100,
+            "letter_spacing": 0,
+            "language_fonts": [
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕"
+            ],
+            "font_type": "TTF",
+            "language_font_types": [
+              "TTF",
+              "TTF",
+              "TTF",
+              "TTF",
+              "TTF",
+              "TTF",
+              "TTF"
+            ],
+            "use_font_space": false,
+            "use_kerning": false,
+            "language_ratios": [
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100
+            ],
+            "language_spacing": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "language_relative_sizes": [
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100
+            ],
+            "language_offsets": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "image": false,
+          "field": false
+        }
+      ],
+      "editable_text": true,
+      "text_style": {
+        "font": "맑은 고딕",
+        "size": 11,
+        "bold": false,
+        "italic": false,
+        "underline": false,
+        "strike": false,
+        "color": "#000000",
+        "background": "",
+        "superscript": false,
+        "subscript": false,
+        "stretch": 100,
+        "letter_spacing": 0,
+        "language_fonts": [
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕"
+        ],
+        "font_type": "TTF",
+        "language_font_types": [
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF"
+        ],
+        "use_font_space": false,
+        "use_kerning": false,
+        "language_ratios": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_spacing": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "language_relative_sizes": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_offsets": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "paragraph_style": {
+        "align": "LEFT",
+        "left": 0,
+        "right": 0,
+        "indent": 0,
+        "before": 0,
+        "after": 0,
+        "line": 160,
+        "line_type": "PERCENT",
+        "page_break": false,
+        "break_latin": "KEEP_WORD",
+        "break_nonlatin": "BREAK_WORD",
+        "vertical_align": "BASELINE",
+        "condense": 0,
+        "snap_to_grid": false,
+        "font_line_height": false,
+        "widow_orphan": false,
+        "keep_with_next": false,
+        "keep_lines": false,
+        "line_wrap": "BREAK",
+        "auto_spacing_eng": false,
+        "auto_spacing_num": false,
+        "background": "",
+        "borders": [
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          },
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          },
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          },
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          }
+        ],
+        "border_offsets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "border_connect": false,
+        "border_ignore_margin": false
+      }
+    },
+    {
+      "id": "body/2",
+      "text": "",
+      "editable": true,
+      "textStyle": {
+        "font": "맑은 고딕",
+        "size": 11,
+        "bold": false,
+        "italic": false,
+        "underline": false,
+        "strike": false,
+        "color": "#000000",
+        "background": "",
+        "superscript": false,
+        "subscript": false,
+        "stretch": 100,
+        "letter_spacing": 0,
+        "language_fonts": [
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕"
+        ],
+        "font_type": "TTF",
+        "language_font_types": [
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF"
+        ],
+        "use_font_space": false,
+        "use_kerning": false,
+        "language_ratios": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_spacing": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "language_relative_sizes": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_offsets": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "defaultTextStyle": {
+        "font": "맑은 고딕",
+        "size": 11,
+        "bold": false,
+        "italic": false,
+        "underline": false,
+        "strike": false,
+        "color": "#000000",
+        "background": "",
+        "superscript": false,
+        "subscript": false,
+        "stretch": 100,
+        "letter_spacing": 0,
+        "language_fonts": [
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕"
+        ],
+        "font_type": "TTF",
+        "language_font_types": [
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF"
+        ],
+        "use_font_space": false,
+        "use_kerning": false,
+        "language_ratios": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_spacing": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "language_relative_sizes": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_offsets": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "paragraphStyle": {
+        "align": "LEFT",
+        "left": 0,
+        "right": 0,
+        "indent": 0,
+        "before": 0,
+        "after": 0,
+        "line": 160,
+        "line_type": "PERCENT",
+        "page_break": false,
+        "break_latin": "KEEP_WORD",
+        "break_nonlatin": "BREAK_WORD",
+        "vertical_align": "BASELINE",
+        "condense": 0,
+        "snap_to_grid": false,
+        "font_line_height": false,
+        "widow_orphan": false,
+        "keep_with_next": false,
+        "keep_lines": false,
+        "line_wrap": "BREAK",
+        "auto_spacing_eng": false,
+        "auto_spacing_num": false,
+        "background": "",
+        "borders": [
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          },
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          },
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          },
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          }
+        ],
+        "border_offsets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "border_connect": false,
+        "border_ignore_margin": false
+      },
+      "runs": [
+        {
+          "text": "",
+          "textStyle": {
+            "font": "맑은 고딕",
+            "size": 11,
+            "bold": false,
+            "italic": false,
+            "underline": false,
+            "strike": false,
+            "color": "#000000",
+            "background": "",
+            "superscript": false,
+            "subscript": false,
+            "stretch": 100,
+            "letter_spacing": 0,
+            "language_fonts": [
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕"
+            ],
+            "font_type": "TTF",
+            "language_font_types": [
+              "TTF",
+              "TTF",
+              "TTF",
+              "TTF",
+              "TTF",
+              "TTF",
+              "TTF"
+            ],
+            "use_font_space": false,
+            "use_kerning": false,
+            "language_ratios": [
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100
+            ],
+            "language_spacing": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "language_relative_sizes": [
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100
+            ],
+            "language_offsets": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "image": false,
+          "field": false
+        }
+      ],
+      "editable_text": true,
+      "text_style": {
+        "font": "맑은 고딕",
+        "size": 11,
+        "bold": false,
+        "italic": false,
+        "underline": false,
+        "strike": false,
+        "color": "#000000",
+        "background": "",
+        "superscript": false,
+        "subscript": false,
+        "stretch": 100,
+        "letter_spacing": 0,
+        "language_fonts": [
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕"
+        ],
+        "font_type": "TTF",
+        "language_font_types": [
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF"
+        ],
+        "use_font_space": false,
+        "use_kerning": false,
+        "language_ratios": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_spacing": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "language_relative_sizes": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_offsets": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "paragraph_style": {
+        "align": "LEFT",
+        "left": 0,
+        "right": 0,
+        "indent": 0,
+        "before": 0,
+        "after": 0,
+        "line": 160,
+        "line_type": "PERCENT",
+        "page_break": false,
+        "break_latin": "KEEP_WORD",
+        "break_nonlatin": "BREAK_WORD",
+        "vertical_align": "BASELINE",
+        "condense": 0,
+        "snap_to_grid": false,
+        "font_line_height": false,
+        "widow_orphan": false,
+        "keep_with_next": false,
+        "keep_lines": false,
+        "line_wrap": "BREAK",
+        "auto_spacing_eng": false,
+        "auto_spacing_num": false,
+        "background": "",
+        "borders": [
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          },
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          },
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          },
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          }
+        ],
+        "border_offsets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "border_connect": false,
+        "border_ignore_margin": false
+      }
+    },
+    {
+      "id": "body/3",
+      "text": "장소: 가상회의실",
+      "editable": true,
+      "textStyle": {
+        "font": "맑은 고딕",
+        "size": 11,
+        "bold": false,
+        "italic": false,
+        "underline": false,
+        "strike": false,
+        "color": "#000000",
+        "background": "",
+        "superscript": false,
+        "subscript": false,
+        "stretch": 100,
+        "letter_spacing": 0,
+        "language_fonts": [
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕"
+        ],
+        "font_type": "TTF",
+        "language_font_types": [
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF"
+        ],
+        "use_font_space": false,
+        "use_kerning": false,
+        "language_ratios": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_spacing": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "language_relative_sizes": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_offsets": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "defaultTextStyle": {
+        "font": "맑은 고딕",
+        "size": 11,
+        "bold": false,
+        "italic": false,
+        "underline": false,
+        "strike": false,
+        "color": "#000000",
+        "background": "",
+        "superscript": false,
+        "subscript": false,
+        "stretch": 100,
+        "letter_spacing": 0,
+        "language_fonts": [
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕"
+        ],
+        "font_type": "TTF",
+        "language_font_types": [
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF"
+        ],
+        "use_font_space": false,
+        "use_kerning": false,
+        "language_ratios": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_spacing": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "language_relative_sizes": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_offsets": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "paragraphStyle": {
+        "align": "LEFT",
+        "left": 0,
+        "right": 0,
+        "indent": 0,
+        "before": 0,
+        "after": 0,
+        "line": 160,
+        "line_type": "PERCENT",
+        "page_break": false,
+        "break_latin": "KEEP_WORD",
+        "break_nonlatin": "BREAK_WORD",
+        "vertical_align": "BASELINE",
+        "condense": 0,
+        "snap_to_grid": false,
+        "font_line_height": false,
+        "widow_orphan": false,
+        "keep_with_next": false,
+        "keep_lines": false,
+        "line_wrap": "BREAK",
+        "auto_spacing_eng": false,
+        "auto_spacing_num": false,
+        "background": "",
+        "borders": [
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          },
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          },
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          },
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          }
+        ],
+        "border_offsets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "border_connect": false,
+        "border_ignore_margin": false
+      },
+      "runs": [
+        {
+          "text": "장소: 가상회의실",
+          "textStyle": {
+            "font": "맑은 고딕",
+            "size": 11,
+            "bold": false,
+            "italic": false,
+            "underline": false,
+            "strike": false,
+            "color": "#000000",
+            "background": "",
+            "superscript": false,
+            "subscript": false,
+            "stretch": 100,
+            "letter_spacing": 0,
+            "language_fonts": [
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕"
+            ],
+            "font_type": "TTF",
+            "language_font_types": [
+              "TTF",
+              "TTF",
+              "TTF",
+              "TTF",
+              "TTF",
+              "TTF",
+              "TTF"
+            ],
+            "use_font_space": false,
+            "use_kerning": false,
+            "language_ratios": [
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100
+            ],
+            "language_spacing": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "language_relative_sizes": [
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100
+            ],
+            "language_offsets": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "image": false,
+          "field": false
+        }
+      ],
+      "editable_text": true,
+      "text_style": {
+        "font": "맑은 고딕",
+        "size": 11,
+        "bold": false,
+        "italic": false,
+        "underline": false,
+        "strike": false,
+        "color": "#000000",
+        "background": "",
+        "superscript": false,
+        "subscript": false,
+        "stretch": 100,
+        "letter_spacing": 0,
+        "language_fonts": [
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕"
+        ],
+        "font_type": "TTF",
+        "language_font_types": [
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF"
+        ],
+        "use_font_space": false,
+        "use_kerning": false,
+        "language_ratios": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_spacing": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "language_relative_sizes": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_offsets": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "paragraph_style": {
+        "align": "LEFT",
+        "left": 0,
+        "right": 0,
+        "indent": 0,
+        "before": 0,
+        "after": 0,
+        "line": 160,
+        "line_type": "PERCENT",
+        "page_break": false,
+        "break_latin": "KEEP_WORD",
+        "break_nonlatin": "BREAK_WORD",
+        "vertical_align": "BASELINE",
+        "condense": 0,
+        "snap_to_grid": false,
+        "font_line_height": false,
+        "widow_orphan": false,
+        "keep_with_next": false,
+        "keep_lines": false,
+        "line_wrap": "BREAK",
+        "auto_spacing_eng": false,
+        "auto_spacing_num": false,
+        "background": "",
+        "borders": [
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          },
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          },
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          },
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          }
+        ],
+        "border_offsets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "border_connect": false,
+        "border_ignore_margin": false
+      }
+    },
+    {
+      "id": "body/4",
+      "text": "",
+      "editable": true,
+      "textStyle": {
+        "font": "맑은 고딕",
+        "size": 11,
+        "bold": false,
+        "italic": false,
+        "underline": false,
+        "strike": false,
+        "color": "#000000",
+        "background": "",
+        "superscript": false,
+        "subscript": false,
+        "stretch": 100,
+        "letter_spacing": 0,
+        "language_fonts": [
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕"
+        ],
+        "font_type": "TTF",
+        "language_font_types": [
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF"
+        ],
+        "use_font_space": false,
+        "use_kerning": false,
+        "language_ratios": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_spacing": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "language_relative_sizes": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_offsets": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "defaultTextStyle": {
+        "font": "맑은 고딕",
+        "size": 11,
+        "bold": false,
+        "italic": false,
+        "underline": false,
+        "strike": false,
+        "color": "#000000",
+        "background": "",
+        "superscript": false,
+        "subscript": false,
+        "stretch": 100,
+        "letter_spacing": 0,
+        "language_fonts": [
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕"
+        ],
+        "font_type": "TTF",
+        "language_font_types": [
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF"
+        ],
+        "use_font_space": false,
+        "use_kerning": false,
+        "language_ratios": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_spacing": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "language_relative_sizes": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_offsets": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "paragraphStyle": {
+        "align": "LEFT",
+        "left": 0,
+        "right": 0,
+        "indent": 0,
+        "before": 0,
+        "after": 0,
+        "line": 160,
+        "line_type": "PERCENT",
+        "page_break": false,
+        "break_latin": "KEEP_WORD",
+        "break_nonlatin": "BREAK_WORD",
+        "vertical_align": "BASELINE",
+        "condense": 0,
+        "snap_to_grid": false,
+        "font_line_height": false,
+        "widow_orphan": false,
+        "keep_with_next": false,
+        "keep_lines": false,
+        "line_wrap": "BREAK",
+        "auto_spacing_eng": false,
+        "auto_spacing_num": false,
+        "background": "",
+        "borders": [
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          },
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          },
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          },
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          }
+        ],
+        "border_offsets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "border_connect": false,
+        "border_ignore_margin": false
+      },
+      "runs": [
+        {
+          "text": "",
+          "textStyle": {
+            "font": "맑은 고딕",
+            "size": 11,
+            "bold": false,
+            "italic": false,
+            "underline": false,
+            "strike": false,
+            "color": "#000000",
+            "background": "",
+            "superscript": false,
+            "subscript": false,
+            "stretch": 100,
+            "letter_spacing": 0,
+            "language_fonts": [
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕"
+            ],
+            "font_type": "TTF",
+            "language_font_types": [
+              "TTF",
+              "TTF",
+              "TTF",
+              "TTF",
+              "TTF",
+              "TTF",
+              "TTF"
+            ],
+            "use_font_space": false,
+            "use_kerning": false,
+            "language_ratios": [
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100
+            ],
+            "language_spacing": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "language_relative_sizes": [
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100
+            ],
+            "language_offsets": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "image": false,
+          "field": false
+        }
+      ],
+      "editable_text": true,
+      "text_style": {
+        "font": "맑은 고딕",
+        "size": 11,
+        "bold": false,
+        "italic": false,
+        "underline": false,
+        "strike": false,
+        "color": "#000000",
+        "background": "",
+        "superscript": false,
+        "subscript": false,
+        "stretch": 100,
+        "letter_spacing": 0,
+        "language_fonts": [
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕"
+        ],
+        "font_type": "TTF",
+        "language_font_types": [
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF"
+        ],
+        "use_font_space": false,
+        "use_kerning": false,
+        "language_ratios": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_spacing": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "language_relative_sizes": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_offsets": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "paragraph_style": {
+        "align": "LEFT",
+        "left": 0,
+        "right": 0,
+        "indent": 0,
+        "before": 0,
+        "after": 0,
+        "line": 160,
+        "line_type": "PERCENT",
+        "page_break": false,
+        "break_latin": "KEEP_WORD",
+        "break_nonlatin": "BREAK_WORD",
+        "vertical_align": "BASELINE",
+        "condense": 0,
+        "snap_to_grid": false,
+        "font_line_height": false,
+        "widow_orphan": false,
+        "keep_with_next": false,
+        "keep_lines": false,
+        "line_wrap": "BREAK",
+        "auto_spacing_eng": false,
+        "auto_spacing_num": false,
+        "background": "",
+        "borders": [
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          },
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          },
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          },
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          }
+        ],
+        "border_offsets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "border_connect": false,
+        "border_ignore_margin": false
+      }
+    },
+    {
+      "id": "body/5",
+      "text": "안건: 가상 자료 검토",
+      "editable": true,
+      "textStyle": {
+        "font": "맑은 고딕",
+        "size": 11,
+        "bold": false,
+        "italic": false,
+        "underline": false,
+        "strike": false,
+        "color": "#000000",
+        "background": "",
+        "superscript": false,
+        "subscript": false,
+        "stretch": 100,
+        "letter_spacing": 0,
+        "language_fonts": [
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕"
+        ],
+        "font_type": "TTF",
+        "language_font_types": [
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF"
+        ],
+        "use_font_space": false,
+        "use_kerning": false,
+        "language_ratios": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_spacing": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "language_relative_sizes": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_offsets": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "defaultTextStyle": {
+        "font": "맑은 고딕",
+        "size": 11,
+        "bold": false,
+        "italic": false,
+        "underline": false,
+        "strike": false,
+        "color": "#000000",
+        "background": "",
+        "superscript": false,
+        "subscript": false,
+        "stretch": 100,
+        "letter_spacing": 0,
+        "language_fonts": [
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕"
+        ],
+        "font_type": "TTF",
+        "language_font_types": [
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF"
+        ],
+        "use_font_space": false,
+        "use_kerning": false,
+        "language_ratios": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_spacing": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "language_relative_sizes": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_offsets": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "paragraphStyle": {
+        "align": "LEFT",
+        "left": 0,
+        "right": 0,
+        "indent": 0,
+        "before": 0,
+        "after": 0,
+        "line": 160,
+        "line_type": "PERCENT",
+        "page_break": false,
+        "break_latin": "KEEP_WORD",
+        "break_nonlatin": "BREAK_WORD",
+        "vertical_align": "BASELINE",
+        "condense": 0,
+        "snap_to_grid": false,
+        "font_line_height": false,
+        "widow_orphan": false,
+        "keep_with_next": false,
+        "keep_lines": false,
+        "line_wrap": "BREAK",
+        "auto_spacing_eng": false,
+        "auto_spacing_num": false,
+        "background": "",
+        "borders": [
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          },
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          },
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          },
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          }
+        ],
+        "border_offsets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "border_connect": false,
+        "border_ignore_margin": false
+      },
+      "runs": [
+        {
+          "text": "안건: 가상 자료 검토",
+          "textStyle": {
+            "font": "맑은 고딕",
+            "size": 11,
+            "bold": false,
+            "italic": false,
+            "underline": false,
+            "strike": false,
+            "color": "#000000",
+            "background": "",
+            "superscript": false,
+            "subscript": false,
+            "stretch": 100,
+            "letter_spacing": 0,
+            "language_fonts": [
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕"
+            ],
+            "font_type": "TTF",
+            "language_font_types": [
+              "TTF",
+              "TTF",
+              "TTF",
+              "TTF",
+              "TTF",
+              "TTF",
+              "TTF"
+            ],
+            "use_font_space": false,
+            "use_kerning": false,
+            "language_ratios": [
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100
+            ],
+            "language_spacing": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "language_relative_sizes": [
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100
+            ],
+            "language_offsets": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "image": false,
+          "field": false
+        }
+      ],
+      "editable_text": true,
+      "text_style": {
+        "font": "맑은 고딕",
+        "size": 11,
+        "bold": false,
+        "italic": false,
+        "underline": false,
+        "strike": false,
+        "color": "#000000",
+        "background": "",
+        "superscript": false,
+        "subscript": false,
+        "stretch": 100,
+        "letter_spacing": 0,
+        "language_fonts": [
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕"
+        ],
+        "font_type": "TTF",
+        "language_font_types": [
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF"
+        ],
+        "use_font_space": false,
+        "use_kerning": false,
+        "language_ratios": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_spacing": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "language_relative_sizes": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_offsets": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "paragraph_style": {
+        "align": "LEFT",
+        "left": 0,
+        "right": 0,
+        "indent": 0,
+        "before": 0,
+        "after": 0,
+        "line": 160,
+        "line_type": "PERCENT",
+        "page_break": false,
+        "break_latin": "KEEP_WORD",
+        "break_nonlatin": "BREAK_WORD",
+        "vertical_align": "BASELINE",
+        "condense": 0,
+        "snap_to_grid": false,
+        "font_line_height": false,
+        "widow_orphan": false,
+        "keep_with_next": false,
+        "keep_lines": false,
+        "line_wrap": "BREAK",
+        "auto_spacing_eng": false,
+        "auto_spacing_num": false,
+        "background": "",
+        "borders": [
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          },
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          },
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          },
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          }
+        ],
+        "border_offsets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "border_connect": false,
+        "border_ignore_margin": false
+      }
+    },
+    {
+      "id": "body/6",
+      "text": "",
+      "editable": true,
+      "textStyle": {
+        "font": "맑은 고딕",
+        "size": 11,
+        "bold": false,
+        "italic": false,
+        "underline": false,
+        "strike": false,
+        "color": "#000000",
+        "background": "",
+        "superscript": false,
+        "subscript": false,
+        "stretch": 100,
+        "letter_spacing": 0,
+        "language_fonts": [
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕"
+        ],
+        "font_type": "TTF",
+        "language_font_types": [
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF"
+        ],
+        "use_font_space": false,
+        "use_kerning": false,
+        "language_ratios": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_spacing": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "language_relative_sizes": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_offsets": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "defaultTextStyle": {
+        "font": "맑은 고딕",
+        "size": 11,
+        "bold": false,
+        "italic": false,
+        "underline": false,
+        "strike": false,
+        "color": "#000000",
+        "background": "",
+        "superscript": false,
+        "subscript": false,
+        "stretch": 100,
+        "letter_spacing": 0,
+        "language_fonts": [
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕"
+        ],
+        "font_type": "TTF",
+        "language_font_types": [
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF"
+        ],
+        "use_font_space": false,
+        "use_kerning": false,
+        "language_ratios": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_spacing": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "language_relative_sizes": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_offsets": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "paragraphStyle": {
+        "align": "LEFT",
+        "left": 0,
+        "right": 0,
+        "indent": 0,
+        "before": 0,
+        "after": 0,
+        "line": 160,
+        "line_type": "PERCENT",
+        "page_break": false,
+        "break_latin": "KEEP_WORD",
+        "break_nonlatin": "BREAK_WORD",
+        "vertical_align": "BASELINE",
+        "condense": 0,
+        "snap_to_grid": false,
+        "font_line_height": false,
+        "widow_orphan": false,
+        "keep_with_next": false,
+        "keep_lines": false,
+        "line_wrap": "BREAK",
+        "auto_spacing_eng": false,
+        "auto_spacing_num": false,
+        "background": "",
+        "borders": [
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          },
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          },
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          },
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          }
+        ],
+        "border_offsets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "border_connect": false,
+        "border_ignore_margin": false
+      },
+      "runs": [
+        {
+          "text": "",
+          "textStyle": {
+            "font": "맑은 고딕",
+            "size": 11,
+            "bold": false,
+            "italic": false,
+            "underline": false,
+            "strike": false,
+            "color": "#000000",
+            "background": "",
+            "superscript": false,
+            "subscript": false,
+            "stretch": 100,
+            "letter_spacing": 0,
+            "language_fonts": [
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕"
+            ],
+            "font_type": "TTF",
+            "language_font_types": [
+              "TTF",
+              "TTF",
+              "TTF",
+              "TTF",
+              "TTF",
+              "TTF",
+              "TTF"
+            ],
+            "use_font_space": false,
+            "use_kerning": false,
+            "language_ratios": [
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100
+            ],
+            "language_spacing": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "language_relative_sizes": [
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100
+            ],
+            "language_offsets": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "image": false,
+          "field": false
+        }
+      ],
+      "editable_text": true,
+      "text_style": {
+        "font": "맑은 고딕",
+        "size": 11,
+        "bold": false,
+        "italic": false,
+        "underline": false,
+        "strike": false,
+        "color": "#000000",
+        "background": "",
+        "superscript": false,
+        "subscript": false,
+        "stretch": 100,
+        "letter_spacing": 0,
+        "language_fonts": [
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕"
+        ],
+        "font_type": "TTF",
+        "language_font_types": [
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF"
+        ],
+        "use_font_space": false,
+        "use_kerning": false,
+        "language_ratios": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_spacing": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "language_relative_sizes": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_offsets": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "paragraph_style": {
+        "align": "LEFT",
+        "left": 0,
+        "right": 0,
+        "indent": 0,
+        "before": 0,
+        "after": 0,
+        "line": 160,
+        "line_type": "PERCENT",
+        "page_break": false,
+        "break_latin": "KEEP_WORD",
+        "break_nonlatin": "BREAK_WORD",
+        "vertical_align": "BASELINE",
+        "condense": 0,
+        "snap_to_grid": false,
+        "font_line_height": false,
+        "widow_orphan": false,
+        "keep_with_next": false,
+        "keep_lines": false,
+        "line_wrap": "BREAK",
+        "auto_spacing_eng": false,
+        "auto_spacing_num": false,
+        "background": "",
+        "borders": [
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          },
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          },
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          },
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          }
+        ],
+        "border_offsets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "border_connect": false,
+        "border_ignore_margin": false
+      }
+    },
+    {
+      "id": "body/7",
+      "text": "참고: 본 회의는 실제 학교 일정이 아닙니다.",
+      "editable": true,
+      "textStyle": {
+        "font": "맑은 고딕",
+        "size": 11,
+        "bold": false,
+        "italic": false,
+        "underline": false,
+        "strike": false,
+        "color": "#000000",
+        "background": "",
+        "superscript": false,
+        "subscript": false,
+        "stretch": 100,
+        "letter_spacing": 0,
+        "language_fonts": [
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕"
+        ],
+        "font_type": "TTF",
+        "language_font_types": [
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF"
+        ],
+        "use_font_space": false,
+        "use_kerning": false,
+        "language_ratios": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_spacing": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "language_relative_sizes": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_offsets": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "defaultTextStyle": {
+        "font": "맑은 고딕",
+        "size": 11,
+        "bold": false,
+        "italic": false,
+        "underline": false,
+        "strike": false,
+        "color": "#000000",
+        "background": "",
+        "superscript": false,
+        "subscript": false,
+        "stretch": 100,
+        "letter_spacing": 0,
+        "language_fonts": [
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕"
+        ],
+        "font_type": "TTF",
+        "language_font_types": [
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF"
+        ],
+        "use_font_space": false,
+        "use_kerning": false,
+        "language_ratios": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_spacing": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "language_relative_sizes": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_offsets": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "paragraphStyle": {
+        "align": "LEFT",
+        "left": 0,
+        "right": 0,
+        "indent": 0,
+        "before": 0,
+        "after": 0,
+        "line": 160,
+        "line_type": "PERCENT",
+        "page_break": false,
+        "break_latin": "KEEP_WORD",
+        "break_nonlatin": "BREAK_WORD",
+        "vertical_align": "BASELINE",
+        "condense": 0,
+        "snap_to_grid": false,
+        "font_line_height": false,
+        "widow_orphan": false,
+        "keep_with_next": false,
+        "keep_lines": false,
+        "line_wrap": "BREAK",
+        "auto_spacing_eng": false,
+        "auto_spacing_num": false,
+        "background": "",
+        "borders": [
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          },
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          },
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          },
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          }
+        ],
+        "border_offsets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "border_connect": false,
+        "border_ignore_margin": false
+      },
+      "runs": [
+        {
+          "text": "참고: 본 회의는 실제 학교 일정이 아닙니다.",
+          "textStyle": {
+            "font": "맑은 고딕",
+            "size": 11,
+            "bold": false,
+            "italic": false,
+            "underline": false,
+            "strike": false,
+            "color": "#000000",
+            "background": "",
+            "superscript": false,
+            "subscript": false,
+            "stretch": 100,
+            "letter_spacing": 0,
+            "language_fonts": [
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕"
+            ],
+            "font_type": "TTF",
+            "language_font_types": [
+              "TTF",
+              "TTF",
+              "TTF",
+              "TTF",
+              "TTF",
+              "TTF",
+              "TTF"
+            ],
+            "use_font_space": false,
+            "use_kerning": false,
+            "language_ratios": [
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100
+            ],
+            "language_spacing": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "language_relative_sizes": [
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100
+            ],
+            "language_offsets": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "image": false,
+          "field": false
+        }
+      ],
+      "editable_text": true,
+      "text_style": {
+        "font": "맑은 고딕",
+        "size": 11,
+        "bold": false,
+        "italic": false,
+        "underline": false,
+        "strike": false,
+        "color": "#000000",
+        "background": "",
+        "superscript": false,
+        "subscript": false,
+        "stretch": 100,
+        "letter_spacing": 0,
+        "language_fonts": [
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕"
+        ],
+        "font_type": "TTF",
+        "language_font_types": [
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF"
+        ],
+        "use_font_space": false,
+        "use_kerning": false,
+        "language_ratios": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_spacing": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "language_relative_sizes": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_offsets": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "paragraph_style": {
+        "align": "LEFT",
+        "left": 0,
+        "right": 0,
+        "indent": 0,
+        "before": 0,
+        "after": 0,
+        "line": 160,
+        "line_type": "PERCENT",
+        "page_break": false,
+        "break_latin": "KEEP_WORD",
+        "break_nonlatin": "BREAK_WORD",
+        "vertical_align": "BASELINE",
+        "condense": 0,
+        "snap_to_grid": false,
+        "font_line_height": false,
+        "widow_orphan": false,
+        "keep_with_next": false,
+        "keep_lines": false,
+        "line_wrap": "BREAK",
+        "auto_spacing_eng": false,
+        "auto_spacing_num": false,
+        "background": "",
+        "borders": [
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          },
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          },
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          },
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          }
+        ],
+        "border_offsets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "border_connect": false,
+        "border_ignore_margin": false
+      }
+    },
+    {
+      "id": "body/8",
+      "text": "",
+      "editable": true,
+      "textStyle": {
+        "font": "맑은 고딕",
+        "size": 11,
+        "bold": false,
+        "italic": false,
+        "underline": false,
+        "strike": false,
+        "color": "#000000",
+        "background": "",
+        "superscript": false,
+        "subscript": false,
+        "stretch": 100,
+        "letter_spacing": 0,
+        "language_fonts": [
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕"
+        ],
+        "font_type": "TTF",
+        "language_font_types": [
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF"
+        ],
+        "use_font_space": false,
+        "use_kerning": false,
+        "language_ratios": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_spacing": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "language_relative_sizes": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_offsets": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "defaultTextStyle": {
+        "font": "맑은 고딕",
+        "size": 11,
+        "bold": false,
+        "italic": false,
+        "underline": false,
+        "strike": false,
+        "color": "#000000",
+        "background": "",
+        "superscript": false,
+        "subscript": false,
+        "stretch": 100,
+        "letter_spacing": 0,
+        "language_fonts": [
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕"
+        ],
+        "font_type": "TTF",
+        "language_font_types": [
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF"
+        ],
+        "use_font_space": false,
+        "use_kerning": false,
+        "language_ratios": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_spacing": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "language_relative_sizes": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_offsets": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "paragraphStyle": {
+        "align": "LEFT",
+        "left": 0,
+        "right": 0,
+        "indent": 0,
+        "before": 0,
+        "after": 0,
+        "line": 160,
+        "line_type": "PERCENT",
+        "page_break": false,
+        "break_latin": "KEEP_WORD",
+        "break_nonlatin": "BREAK_WORD",
+        "vertical_align": "BASELINE",
+        "condense": 0,
+        "snap_to_grid": false,
+        "font_line_height": false,
+        "widow_orphan": false,
+        "keep_with_next": false,
+        "keep_lines": false,
+        "line_wrap": "BREAK",
+        "auto_spacing_eng": false,
+        "auto_spacing_num": false,
+        "background": "",
+        "borders": [
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          },
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          },
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          },
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          }
+        ],
+        "border_offsets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "border_connect": false,
+        "border_ignore_margin": false
+      },
+      "runs": [
+        {
+          "text": "",
+          "textStyle": {
+            "font": "맑은 고딕",
+            "size": 11,
+            "bold": false,
+            "italic": false,
+            "underline": false,
+            "strike": false,
+            "color": "#000000",
+            "background": "",
+            "superscript": false,
+            "subscript": false,
+            "stretch": 100,
+            "letter_spacing": 0,
+            "language_fonts": [
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕"
+            ],
+            "font_type": "TTF",
+            "language_font_types": [
+              "TTF",
+              "TTF",
+              "TTF",
+              "TTF",
+              "TTF",
+              "TTF",
+              "TTF"
+            ],
+            "use_font_space": false,
+            "use_kerning": false,
+            "language_ratios": [
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100
+            ],
+            "language_spacing": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "language_relative_sizes": [
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100
+            ],
+            "language_offsets": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "image": false,
+          "field": false
+        }
+      ],
+      "editable_text": true,
+      "text_style": {
+        "font": "맑은 고딕",
+        "size": 11,
+        "bold": false,
+        "italic": false,
+        "underline": false,
+        "strike": false,
+        "color": "#000000",
+        "background": "",
+        "superscript": false,
+        "subscript": false,
+        "stretch": 100,
+        "letter_spacing": 0,
+        "language_fonts": [
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕"
+        ],
+        "font_type": "TTF",
+        "language_font_types": [
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF"
+        ],
+        "use_font_space": false,
+        "use_kerning": false,
+        "language_ratios": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_spacing": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "language_relative_sizes": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_offsets": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "paragraph_style": {
+        "align": "LEFT",
+        "left": 0,
+        "right": 0,
+        "indent": 0,
+        "before": 0,
+        "after": 0,
+        "line": 160,
+        "line_type": "PERCENT",
+        "page_break": false,
+        "break_latin": "KEEP_WORD",
+        "break_nonlatin": "BREAK_WORD",
+        "vertical_align": "BASELINE",
+        "condense": 0,
+        "snap_to_grid": false,
+        "font_line_height": false,
+        "widow_orphan": false,
+        "keep_with_next": false,
+        "keep_lines": false,
+        "line_wrap": "BREAK",
+        "auto_spacing_eng": false,
+        "auto_spacing_num": false,
+        "background": "",
+        "borders": [
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          },
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          },
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          },
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          }
+        ],
+        "border_offsets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "border_connect": false,
+        "border_ignore_margin": false
+      }
+    },
+    {
+      "id": "body/9",
+      "text": "훈련용 가상 자료이며 실제 학교 일정이 아닙니다.",
+      "editable": true,
+      "textStyle": {
+        "font": "맑은 고딕",
+        "size": 11,
+        "bold": false,
+        "italic": false,
+        "underline": false,
+        "strike": false,
+        "color": "#000000",
+        "background": "",
+        "superscript": false,
+        "subscript": false,
+        "stretch": 100,
+        "letter_spacing": 0,
+        "language_fonts": [
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕"
+        ],
+        "font_type": "TTF",
+        "language_font_types": [
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF"
+        ],
+        "use_font_space": false,
+        "use_kerning": false,
+        "language_ratios": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_spacing": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "language_relative_sizes": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_offsets": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "defaultTextStyle": {
+        "font": "맑은 고딕",
+        "size": 11,
+        "bold": false,
+        "italic": false,
+        "underline": false,
+        "strike": false,
+        "color": "#000000",
+        "background": "",
+        "superscript": false,
+        "subscript": false,
+        "stretch": 100,
+        "letter_spacing": 0,
+        "language_fonts": [
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕"
+        ],
+        "font_type": "TTF",
+        "language_font_types": [
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF"
+        ],
+        "use_font_space": false,
+        "use_kerning": false,
+        "language_ratios": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_spacing": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "language_relative_sizes": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_offsets": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "paragraphStyle": {
+        "align": "LEFT",
+        "left": 0,
+        "right": 0,
+        "indent": 0,
+        "before": 0,
+        "after": 0,
+        "line": 160,
+        "line_type": "PERCENT",
+        "page_break": false,
+        "break_latin": "KEEP_WORD",
+        "break_nonlatin": "BREAK_WORD",
+        "vertical_align": "BASELINE",
+        "condense": 0,
+        "snap_to_grid": false,
+        "font_line_height": false,
+        "widow_orphan": false,
+        "keep_with_next": false,
+        "keep_lines": false,
+        "line_wrap": "BREAK",
+        "auto_spacing_eng": false,
+        "auto_spacing_num": false,
+        "background": "",
+        "borders": [
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          },
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          },
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          },
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          }
+        ],
+        "border_offsets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "border_connect": false,
+        "border_ignore_margin": false
+      },
+      "runs": [
+        {
+          "text": "훈련용 가상 자료이며 실제 학교 일정이 아닙니다.",
+          "textStyle": {
+            "font": "맑은 고딕",
+            "size": 11,
+            "bold": false,
+            "italic": false,
+            "underline": false,
+            "strike": false,
+            "color": "#000000",
+            "background": "",
+            "superscript": false,
+            "subscript": false,
+            "stretch": 100,
+            "letter_spacing": 0,
+            "language_fonts": [
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕",
+              "맑은 고딕"
+            ],
+            "font_type": "TTF",
+            "language_font_types": [
+              "TTF",
+              "TTF",
+              "TTF",
+              "TTF",
+              "TTF",
+              "TTF",
+              "TTF"
+            ],
+            "use_font_space": false,
+            "use_kerning": false,
+            "language_ratios": [
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100
+            ],
+            "language_spacing": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "language_relative_sizes": [
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100
+            ],
+            "language_offsets": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "image": false,
+          "field": false
+        }
+      ],
+      "editable_text": true,
+      "text_style": {
+        "font": "맑은 고딕",
+        "size": 11,
+        "bold": false,
+        "italic": false,
+        "underline": false,
+        "strike": false,
+        "color": "#000000",
+        "background": "",
+        "superscript": false,
+        "subscript": false,
+        "stretch": 100,
+        "letter_spacing": 0,
+        "language_fonts": [
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕",
+          "맑은 고딕"
+        ],
+        "font_type": "TTF",
+        "language_font_types": [
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF",
+          "TTF"
+        ],
+        "use_font_space": false,
+        "use_kerning": false,
+        "language_ratios": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_spacing": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "language_relative_sizes": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "language_offsets": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "paragraph_style": {
+        "align": "LEFT",
+        "left": 0,
+        "right": 0,
+        "indent": 0,
+        "before": 0,
+        "after": 0,
+        "line": 160,
+        "line_type": "PERCENT",
+        "page_break": false,
+        "break_latin": "KEEP_WORD",
+        "break_nonlatin": "BREAK_WORD",
+        "vertical_align": "BASELINE",
+        "condense": 0,
+        "snap_to_grid": false,
+        "font_line_height": false,
+        "widow_orphan": false,
+        "keep_with_next": false,
+        "keep_lines": false,
+        "line_wrap": "BREAK",
+        "auto_spacing_eng": false,
+        "auto_spacing_num": false,
+        "background": "",
+        "borders": [
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          },
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          },
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          },
+          {
+            "style": "NONE",
+            "width_pt": 0.2834645669291339,
+            "color": "#000000"
+          }
+        ],
+        "border_offsets": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "border_connect": false,
+        "border_ignore_margin": false
+      }
+    }
+  ],
+  "counts": {
+    "paragraphs": 10,
+    "tables": 0
+  },
+  "view": "full",
+  "offset": 0,
+  "nextOffset": 10,
+  "hasMore": false,
+  "input": "D:\\Codex\\training\\narae4-office-bench-v3-20261031-r2\\evaluation\\workflow-1793450153316\\workspace\\가상회의.hwpx",
+  "input_sha256": "5db6b2879bb0a625623fbe41a675bfee1c3a136c6a340dd507bc9bbd9c2eb7c0",
+  "input_unchanged": true,
+  "format": "hwpx",
+  "warnings": [
+    "한컴과 동일한 전체 기능·쪽 나눔·픽셀 배치는 아직 검증되지 않았습니다.",
+    "독립 보존 편집에는 지원 범위가 있습니다. 고급 HWP 표·그림 편집에는 Windows 한컴 COM이 필요합니다.",
+    "HWP 3.0 원본은 표현 가능한 텍스트만 보존 편집하며 서식 변경은 거부합니다."
+  ]
+}

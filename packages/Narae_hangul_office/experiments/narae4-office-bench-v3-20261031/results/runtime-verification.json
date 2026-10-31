@@ -1,0 +1,34 @@
+{
+  "baseline": {
+    "adapterPathVerified": true,
+    "modelAliasVerified": true,
+    "scale": 1,
+    "adapterSha256": "19f20486e744bcb9636efcdaf6583c1b9bef545733987a8837e63afdfeecf105",
+    "baseSha256": "aaf42c8b7c3cab2bf3d69c355048d4a0ee9973d48f16c731c0520ee914699223",
+    "protocolSha256": "0c89ae2b854b955d3c089da7ab3bc6e949a4d34e56e0c18c4194b3d7087acf52"
+  },
+  "baseline-retention": {
+    "adapterPathVerified": true,
+    "modelAliasVerified": true,
+    "scale": 1,
+    "adapterSha256": "19f20486e744bcb9636efcdaf6583c1b9bef545733987a8837e63afdfeecf105",
+    "baseSha256": "aaf42c8b7c3cab2bf3d69c355048d4a0ee9973d48f16c731c0520ee914699223",
+    "protocolSha256": "0c89ae2b854b955d3c089da7ab3bc6e949a4d34e56e0c18c4194b3d7087acf52"
+  },
+  "trained": {
+    "adapterPathVerified": true,
+    "modelAliasVerified": true,
+    "scale": 1,
+    "adapterSha256": "241bd7dec6f6c0568d914ac94d31c29ae0273b377cb9a07492ee8bb7e3cfab82",
+    "baseSha256": "aaf42c8b7c3cab2bf3d69c355048d4a0ee9973d48f16c731c0520ee914699223",
+    "protocolSha256": "0c89ae2b854b955d3c089da7ab3bc6e949a4d34e56e0c18c4194b3d7087acf52"
+  },
+  "trained-retention": {
+    "adapterPathVerified": true,
+    "modelAliasVerified": true,
+    "scale": 1,
+    "adapterSha256": "241bd7dec6f6c0568d914ac94d31c29ae0273b377cb9a07492ee8bb7e3cfab82",
+    "baseSha256": "aaf42c8b7c3cab2bf3d69c355048d4a0ee9973d48f16c731c0520ee914699223",
+    "protocolSha256": "0c89ae2b854b955d3c089da7ab3bc6e949a4d34e56e0c18c4194b3d7087acf52"
+  }
+}
