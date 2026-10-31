@@ -1,0 +1,44 @@
+{
+  "frozenAt": "2026-10-31T11:55:12.154Z",
+  "syntheticOnly": true,
+  "privateSchoolData": false,
+  "train": 64,
+  "validation": 16,
+  "heldout": 32,
+  "retention": 8,
+  "split": "Different fictional values and prompts within known workflow families; no claims of unseen-domain or live-task generalization.",
+  "startingAdapter": "D:/Codex/training/narae4-office-20261031/outputs/Narae4-Qwen3.5-2B-Office-LoRA-v1/adapter",
+  "startingAdapterSha256": "3380c0dfbee1737fa7f741d5ec475efdbfbba15206e78373a93592f4c745fc4d",
+  "sourceReplaySha256": {
+    "train.jsonl": "9817a559ffd5f05ea927e5f310f94200a0ac60303b02b6bb0a6520ee79247e76",
+    "validation.jsonl": "20fead1470aae4e64487d52dbd6aec66b6b7351b614bd4c081d1cd71b893d911"
+  },
+  "files": {
+    "train.jsonl": "77be176161fb45a595cecd7bf91fd20fa6005cd25758c8a2ce783297d7e8ed0e",
+    "validation.jsonl": "9045ef68fefa18d1d186855a0d97abcdee1af097897a0a855e78b89b38467f4c"
+  },
+  "heldoutSha256": "8d8c8faa58fa4893a7a5b8fe2d4d2fe0846d34e0fca1486ac7e126c2f6d9051f",
+  "hyperparameters": {
+    "learningRate": 0.00002,
+    "epochs": 3,
+    "accumulation": 4,
+    "optimizerSteps": 48,
+    "seed": 719
+  },
+  "coverage": {
+    "tasks": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ],
+    "scope": "Next decisions and honest evidence; not end-to-end completion. Trip final submission remains unimplemented."
+  },
+  "prepareScriptSha256": "21abb9f7e59e9cdf39efd8c68c1523ad73d48fb233beabdbedbca64d8e80843d"
+}

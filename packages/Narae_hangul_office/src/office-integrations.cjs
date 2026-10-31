@@ -2,6 +2,9 @@
 const fs=require('node:fs'),path=require('node:path'),{pathToFileURL}=require('node:url');
 const {validate}=require('./remote-policy.cjs');
 const {SchoolSessionKeeper,sessionTool}=require('./school-session.cjs');
+const messengerArchive=require('./messenger-archive.cjs');
+const portalLogin=require('./portal-login.cjs');
+const wxsContinuation=require('./wxs-continuation.cjs');
 const vendor=path.resolve(__dirname,'../vendor/narae-gyomu');
 class OfficeIntegrations{
  constructor({home,root,python,workspace,policy,settings,headed=true,busy=()=>true,notify=()=>{},browserEnvironment=()=>({})}){Object.assign(this,{home,root,python,workspace,policy,settings,headed,busy,notify,browserEnvironment});this.instance=null;this.catalog=[];}
@@ -17,22 +20,28 @@ class OfficeIntegrations{
   const {OfficeSchoolBrowser}=await import(pathToFileURL(path.join(__dirname,'school-browser.mjs')).href);
   this.Browser=OfficeSchoolBrowser;
   this.instance.browserCall=args=>this.browserCall(args);
-  this.catalog=tools.filter(t=>!t.name.startsWith('hangul.')&&t.name!=='files.list').map(t=>({type:'function',strict:false,name:'gyomu_'+t.name.replaceAll('.','_'),description:t.description+(t.name.endsWith('.prepare')||t.name==='wxs.save'?' 준비 후 PC에서 실제 미리보기를 승인한 경우에만 적용합니다.':''),parameters:t.parameters,original:t.name}));this.catalog.push(sessionTool);this.keeper=new SchoolSessionKeeper({browser:()=>this.instance.browser,enabled:()=>this.settings().keepSchoolSession!==false,busy:this.busy,notify:state=>{if(state.results.length){fs.mkdirSync(path.join(this.home,'logs'),{recursive:true});fs.appendFileSync(path.join(this.home,'logs/school-session.jsonl'),JSON.stringify({at:state.lastAt,results:state.results})+'\n');}this.notify({type:'schoolSession',state});}});this.keeper.start();return this;
+  this.catalog=tools.filter(t=>!t.name.startsWith('hangul.')&&t.name!=='files.list'&&t.name!=='portal.login').map(t=>({type:'function',strict:false,name:'gyomu_'+t.name.replaceAll('.','_'),description:t.description+(t.name.endsWith('.prepare')||t.name==='wxs.save'?' 준비 후 PC에서 실제 미리보기를 승인한 경우에만 적용합니다.':''),parameters:t.parameters,original:t.name}));this.catalog.push(sessionTool);this.keeper=new SchoolSessionKeeper({browser:()=>this.instance.browser,enabled:()=>this.settings().keepSchoolSession!==false,busy:this.busy,notify:state=>{if(state.results.length){fs.mkdirSync(path.join(this.home,'logs'),{recursive:true});fs.appendFileSync(path.join(this.home,'logs/school-session.jsonl'),JSON.stringify({at:state.lastAt,results:state.results})+'\n');}this.notify({type:'schoolSession',state});}});this.keeper.start();return this;
  }
- async tools(){await this.ready();return this.catalog.map(({original,...tool})=>tool);}
+ async tools(){await this.ready();return [...this.catalog.map(({original,...tool})=>tool),messengerArchive.tool,portalLogin.tool,wxsContinuation.tool];}
  async browserCall(args){if(!this.instance.browser||this.instance.browser.closed){const mode=this.settings().browserMode==='extension'?'extension':'isolated',environment=mode==='extension'?await this.browserEnvironment():{};if(mode==='extension'&&!environment.PLAYWRIGHT_MCP_EXTENSION_TOKEN)throw new Error('설정 → 일반에서 확장 연결 토큰을 저장하거나 기존 Chrome 연결을 먼저 완료하세요.');if(mode==='isolated'&&['snapshot','read','tabs','frames'].includes(args.action))return {notStarted:true,url:'about:blank',title:'열린 업무 브라우저 없음',text:'',elements:[],tabs:[],frames:[],untrusted:true};await this.connectBrowser(mode,{environment});}return this.instance.browser.execute(args);}
  async makeBrowser(mode,{environment}={}){const session=this.session||'local';if(!/^(?:local|[a-f0-9]{32})$/.test(session))throw new Error('브라우저 대화 세션을 확인하세요.');const browser=new this.Browser({profile:this.headed?path.join(this.home,'data/gyomu-browser',session):undefined,connection:mode,connectionDirectory:path.join(this.home,'data/browser-connections',session),environment:environment||await this.browserEnvironment()});try{await browser.start({headed:this.headed});return browser;}catch(error){await browser.browser?.close().catch(()=>{});throw error;}}
  async browserState(){const browser=this.instance?.browser;if(!browser||browser.closed)return {connected:false};return {connected:true,mode:browser.attached?'extension':'isolated',...await browser.execute({action:'tabs'})};}
  async connectBrowser(mode,options={}){if(!['isolated','extension'].includes(mode))throw new Error('브라우저 연결 방식을 선택하세요.');if(this.browserStarting)return this.browserStarting;this.browserStarting=(async()=>{await this.ready();await this.keeper?.pending;const existing=this.instance.browser;if(existing&&!existing.closed&&(existing.attached?'extension':'isolated')===mode)return this.browserState();const browser=await this.makeBrowser(mode,options);this.instance.browser=browser;await existing?.browser?.close().catch(()=>{});return this.browserState();})();try{return await this.browserStarting;}finally{this.browserStarting=null;}}
  async disconnectBrowser(){await this.keeper?.pending;const browser=this.instance?.browser;if(browser){await browser.browser?.close();this.instance.browser=null;}return {connected:false};}
  async execute(name,args,signal){
-  await this.ready();if(signal?.aborted)throw new Error('작업을 중단했습니다.');const tool=this.catalog.find(t=>t.name===name);if(!tool)throw new Error('지원하지 않는 통합 도구입니다.');validate(args,tool.parameters);args=structuredClone(args);
+  await this.ready();if(signal?.aborted)throw new Error('작업을 중단했습니다.');
+  this.wxsContinuationState||=new Map();
+  if(name===wxsContinuation.tool.name){validate(args,wxsContinuation.tool.parameters);return wxsContinuation.execute(args,{instance:this.instance,policy:this.policy,state:this.wxsContinuationState,signal});}
+  if(name===portalLogin.tool.name){validate(args,portalLogin.tool.parameters);const cfg=portalLogin.config(this.home);if(args.operation==='status')return portalLogin.loadProfile('Status',cfg,signal);await this.policy.approve('등록된 보안 문서로 업무포털 로그인 1회 · 인증정보는 모델에 전달하지 않음',{systems:args.systems||[]},signal);if(!this.instance.browser||this.instance.browser.closed||this.instance.browser.attached)await this.connectBrowser('isolated');if(this.portalLoginBrowser!==this.instance.browser){this.portalLoginBrowser=this.instance.browser;this.portalLoginState={};}try{return await portalLogin.login(args,{cfg,browser:this.instance.browser,state:this.portalLoginState,signal});}catch(error){if(signal?.aborted)throw new Error("로그인을 중단했습니다.");return {complete:false,stage:"runtime_unconfirmed",message:"실제 로그인 경로를 확인하지 못했습니다. 인증정보를 포함할 수 있는 오류 상세는 반환하지 않습니다."};}}
+  if(name===messengerArchive.tool.name){validate(args,messengerArchive.tool.parameters);this.archiveReports||=new Set();if(args.operation==='read'){if(!this.archiveReports.has(args.report))throw new Error('현재 작업에서 생성한 탐색 보고서만 읽을 수 있습니다.');return messengerArchive.read(args.report,args);}const result=await messengerArchive.scan(args,{call:(argv,s)=>this.instance.cbe(argv,s),directory:path.join(this.workspace(),'나래-소통탐색'),signal,notify:progress=>this.notify({type:'status',text:`소통 탐색: ${progress.source} ${progress.page}페이지 · ${progress.count}건`})});this.archiveReports.add(result.report);return result;}
+  const tool=this.catalog.find(t=>t.name===name);if(!tool)throw new Error('지원하지 않는 통합 도구입니다.');validate(args,tool.parameters);args=structuredClone(args);
   if(this.browserRequest!==signal){this.browserRequest=signal;this.instance.browser?.resetTask?.();}
   if(tool.original==='portal.session')return args.operation==='extend'?this.keeper.tick(true,signal):this.keeper.status();
   await this.keeper?.pending;
   if(tool.original==='skill.read'&&args.document){const resolved=path.resolve('/',args.document);if(path.isAbsolute(args.document)||args.document.split(/[\\/]/).includes('..')||!resolved)throw new Error('스킬 내부 참조 문서만 읽을 수 있습니다.');}
   const register=file=>{const allowed=this.policy.allowed(file);this.instance.register([allowed]);return allowed;};
   if(args.files)args.files=args.files.map(register);
+  if(tool.original==='wxs.attachment')args.path=register(args.path);
   if(args.config?.body_file)args.config.body_file=register(args.config.body_file);
   if(args.config?.body_hwp)args.config.body_hwp.path=register(args.config.body_hwp.path);
   if(args.config?.attachments)args.config.attachments=args.config.attachments.map(register);
@@ -41,9 +50,10 @@ class OfficeIntegrations{
    if(['fill','press'].includes(args.action))await this.noCredentialInput(args);
    if(!['snapshot','read','tabs','frames','frame','scroll','wait'].includes(args.action)){await this.policy.approve('나래 브라우저 · '+args.action,args,signal);if(['fill','press'].includes(args.action))await this.noCredentialInput(args);}
   }
-  if(tool.original==='portal.open')await this.policy.approve('업무포털 열기',args,signal);
+  if(tool.original==='portal.open'){await this.policy.approve('업무포털 열기',args,signal);return this.browserCall({action:'open',url:portalLogin.config(this.home).portalUrl});}
   if(tool.original==='wxs.read'&&['prepare','open'].includes(args.operation))this.instance.captures.directory=path.join(this.workspace(),'나래-공문조회');
   const result=await this.instance.call(tool.original,args,{signal});
+  if(tool.original==='wxs.final.dialog'){const entry=this.wxsContinuationState.get(args.receipt_id)||{};entry.dialog=result;this.wxsContinuationState.set(args.receipt_id,entry);}
   if(result?.pendingId){
    const pending=this.instance.pending.get(result.pendingId);if(!pending||pending.status!=='prepared')throw new Error('미리보기를 확인할 수 없습니다.');
    try{await this.policy.approve('나래교무 · '+pending.kind,{작업:pending.kind,내용:pending.preview},signal);if(signal?.aborted)throw new Error('작업을 중단했습니다.');if(args.files)args.files.forEach(file=>this.policy.allowed(file));return await this.instance.confirm(result.pendingId,signal);}catch(error){if(pending.status==='prepared')pending.status='cancelled';throw error;}

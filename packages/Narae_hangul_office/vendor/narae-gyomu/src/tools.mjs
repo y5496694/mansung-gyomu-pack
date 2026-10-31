@@ -3,6 +3,7 @@ import path from 'node:path';
 import crypto from 'node:crypto';
 import {spawn} from 'node:child_process';
 import {once} from 'node:events';
+import {createRequire} from 'node:module';
 import {APP, HOME, DATA, TMP, OUTPUTS, Fault, readJSON, writeJSON, outputPath} from './paths.mjs';
 import {run, digest} from './process.mjs';
 import {SchoolBrowser} from './school-browser.mjs';
@@ -12,6 +13,7 @@ import {WxsCapture} from './wxs-capture.mjs';
 const hangulRoot = path.join(APP, 'packages/Narae_hangul_office/skills/narae-hangul-office');
 const officeRoot = () => process.env.NARAE_OFFICE_ROOT || readJSON(path.join(process.env.CODEX_HOME||path.join(process.env.USERPROFILE||'.','.codex'),'skills/narae-hangul-office/runtime.json'),{}).officeRoot || path.join(process.env.LOCALAPPDATA||'.','Programs/NaraeHangulOffice');
 const portalRoot = path.join(APP, 'packages/narae_gyomoo_portal/skills');
+const portalLogin = createRequire(import.meta.url)(path.join(portalRoot,'narae-gyomu-work-portal/scripts/portal-login.cjs'));
 const cbeEntry = path.join(APP, 'packages/CBE_CLI/cli.mjs');
 const wxsEntry = path.join(portalRoot, 'wxs-cli/scripts/wxs_cli.py');
 const skillPaths = {
@@ -164,6 +166,17 @@ export class Tools {
           if (existing) return this.browserCall({action:'tab',index:existing.index});
         }
         return this.browserCall({action:'open',url});
+      }
+      case 'portal.login': {
+        if(Object.keys(a).some(k=>!['operation','systems'].includes(k)) || !['status','login'].includes(a.operation) ||
+          a.systems && (!Array.isArray(a.systems)||a.systems.some(s=>!['neis','edufine'].includes(s))||new Set(a.systems).size!==a.systems.length))
+          throw new Fault('PORTAL_LOGIN_ARGUMENTS','operation은 status/login, systems는 neis/edufine 배열만 지정하세요. 인증정보를 인자로 넣지 않습니다.');
+        const cfg=portalLogin.config(DATA);
+        if(a.operation==='status')return portalLogin.loadProfile('Status',cfg,signal);
+        await this.browserCall({action:'snapshot'});
+        if(this.portalLoginBrowser!==this.browser){this.portalLoginBrowser=this.browser;this.portalLoginState={};}
+        try{return await portalLogin.login(a,{cfg,browser:this.browser,state:this.portalLoginState,signal,readProfile:portalLogin.loadProfile});}
+        catch(error){if(signal?.aborted)throw new Fault('CANCELLED','로그인을 중단했습니다.');return {authenticated:false,complete:false,stage:'runtime_unconfirmed',message:'로그인 경로를 확인하지 못했습니다. 현재 독립 브라우저를 보존합니다.'};}
       }
       case 'browser': return this.browserCall(a);
       case 'cbe.search': {

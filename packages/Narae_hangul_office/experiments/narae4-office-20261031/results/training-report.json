@@ -1,0 +1,155 @@
+{
+  "model": "Narae4-Qwen3.5-2B-Office-LoRA-v1",
+  "actual_weight_training": true,
+  "base": {
+    "repo": "Qwen/Qwen3.5-2B",
+    "revision": "15852e8c16360a2fea060d615a32b45270f8a8fc",
+    "destination": "D:/Codex/models/Qwen3.5-2B-HF",
+    "files": [
+      {
+        "path": "LICENSE",
+        "bytes": 11544,
+        "sha256": "bbedc3fda3305820b977265f01b8619d87570a6739de3a5582c3464840f1e57a"
+      },
+      {
+        "path": "README.md",
+        "bytes": 62814,
+        "sha256": "c0e83a849c776e6fa843d011f023132d942a0f0140d903205bf1c363adad2275"
+      },
+      {
+        "path": "chat_template.jinja",
+        "bytes": 7755,
+        "sha256": "273d8e0e683b885071fb17e08d71e5f2a5ddfb5309756181681de4f5a1822d80"
+      },
+      {
+        "path": "config.json",
+        "bytes": 2908,
+        "sha256": "ed1c1723241f23f7f4e23430759cbd7dcfb4103cbdfe052bfe7626b57c2615b4"
+      },
+      {
+        "path": "merges.txt",
+        "bytes": 3353259,
+        "sha256": "a9d356d7bdf1ef4949e3e748e95b8e10ad9d4e2e838eddc38a0a7b6b94d1db8d"
+      },
+      {
+        "path": "model.safetensors-00001-of-00001.safetensors",
+        "bytes": 4548221488,
+        "sha256": "aa33250c4fc64891ddfaba3a314fd9542ea371843c387178b425fbcc5ed680b1"
+      },
+      {
+        "path": "model.safetensors.index.json",
+        "bytes": 64460,
+        "sha256": "aca8afed9da75b0f050b408d270766fd77627f1af401e240f61c3b47d0db02f9"
+      },
+      {
+        "path": "preprocessor_config.json",
+        "bytes": 390,
+        "sha256": "27225450ac9c6529872ee1924fcb0962ff5634834f817040f444118116f4e516"
+      },
+      {
+        "path": "tokenizer.json",
+        "bytes": 12807982,
+        "sha256": "5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42"
+      },
+      {
+        "path": "tokenizer_config.json",
+        "bytes": 16709,
+        "sha256": "49e2b6e395f959f077f1e992b338919c0d4a9732fc6e613995e06557f843500c"
+      },
+      {
+        "path": "video_preprocessor_config.json",
+        "bytes": 385,
+        "sha256": "7768af27c1fafa9cc9011c1dc20067e03f8915e03b63504550e11d5066986d13"
+      },
+      {
+        "path": "vocab.json",
+        "bytes": 6722759,
+        "sha256": "ce99b4cb2983d118806ce0a8b777a35b093e2000a503ebde25853284c9dfa003"
+      }
+    ]
+  },
+  "optimizer_steps": 16,
+  "epochs": 2,
+  "train_dialogues": 32,
+  "validation_dialogues": 3,
+  "lora_rank": 16,
+  "lora_alpha": 32,
+  "layers": [
+    23
+  ],
+  "vision_tower_trained": false,
+  "decision_model_trained": false,
+  "dtype": "BF16 frozen prefix; FP32 suffix/head/LoRA",
+  "trainable_parameters": 638976,
+  "tensors_changed": 14,
+  "tensor_l2_changes": {
+    "base_model.model.model.language_model.layers.23.self_attn.q_proj.lora_A.default.weight": 0.03501031920313835,
+    "base_model.model.model.language_model.layers.23.self_attn.q_proj.lora_B.default.weight": 0.05851846560835838,
+    "base_model.model.model.language_model.layers.23.self_attn.k_proj.lora_A.default.weight": 0.038271527737379074,
+    "base_model.model.model.language_model.layers.23.self_attn.k_proj.lora_B.default.weight": 0.021667590364813805,
+    "base_model.model.model.language_model.layers.23.self_attn.v_proj.lora_A.default.weight": 0.038611240684986115,
+    "base_model.model.model.language_model.layers.23.self_attn.v_proj.lora_B.default.weight": 0.020486675202846527,
+    "base_model.model.model.language_model.layers.23.self_attn.o_proj.lora_A.default.weight": 0.04016273841261864,
+    "base_model.model.model.language_model.layers.23.self_attn.o_proj.lora_B.default.weight": 0.039883024990558624,
+    "base_model.model.model.language_model.layers.23.mlp.gate_proj.lora_A.default.weight": 0.039625152945518494,
+    "base_model.model.model.language_model.layers.23.mlp.gate_proj.lora_B.default.weight": 0.06883563846349716,
+    "base_model.model.model.language_model.layers.23.mlp.up_proj.lora_A.default.weight": 0.03975192457437515,
+    "base_model.model.model.language_model.layers.23.mlp.up_proj.lora_B.default.weight": 0.07172508537769318,
+    "base_model.model.model.language_model.layers.23.mlp.down_proj.lora_A.default.weight": 0.06402812898159027,
+    "base_model.model.model.language_model.layers.23.mlp.down_proj.lora_B.default.weight": 0.041552625596523285
+  },
+  "initial_loss": {
+    "train": 0.5444239621283486,
+    "validation": 1.5709691022833188
+  },
+  "final_loss": {
+    "train": 0.5110127973603085,
+    "validation": 1.5502891664703686
+  },
+  "prefix_equivalence": {
+    "full_loss": 0.19099876284599304,
+    "cached_loss": 0.19099876284599304,
+    "future_token_max_diff": 0.0
+  },
+  "adapter_sha256": "3380c0dfbee1737fa7f741d5ec475efdbfbba15206e78373a93592f4c745fc4d",
+  "seconds": 1601.9384659999632,
+  "dataset": {
+    "syntheticOnly": true,
+    "privateSchoolData": false,
+    "counts": {
+      "train": 32,
+      "validation": 3
+    },
+    "heldoutTemplatesShared": false,
+    "sourceNarae3TrainSha256": "0163fd047171cfcfe946f3fa36ba1536b358d4365e960913a1cda9e09fa5bab5",
+    "files": {
+      "train.jsonl": "180811a1436985420323630d790966d91a7c55e964d47d34b6c6ebc873a03f9a",
+      "validation.jsonl": "cf1b9ae42d9d8a7aa82f20ddadc29a0d51c90e12354d7c520b44e270ac002aaa"
+    }
+  },
+  "versions": {
+    "torch": "2.14.1",
+    "transformers": "5.20.1",
+    "peft": "0.21.2",
+    "safetensors": "0.8.0"
+  },
+  "scripts_sha256": {
+    "browser.cjs": "ae39e7a81a1d89d42d1810a9cb84dd989a5dca3c043fac7f128b8d04ac6e419f",
+    "build-data.cjs": "6d05e37212bc60ebfc0e56c6828c0a3fcfc0689cd05b71da4ad2f7389625f290",
+    "compatibility.cjs": "19516ac835068e4dd4b517f6cc88c689166f3c61ec1abe1324bed4e0c94341a0",
+    "decision-smoke.cjs": "17abdeabb5f02e9f9a6f162ecc9da841bd7d1a956972dd0da9175e356992cbe4",
+    "desktop-eval.cjs": "2eeb9f4242c208dcf4b846f0bfe4fd1dd757678c42be2ed1ef7620ca5d168136",
+    "download-base.cjs": "b02bf1e48c2b221088ac7e6108a85429f2f2d3f76bdb4a89b0352e8dee29c276",
+    "export.py": "278c0aa3b5261160a54b94091972abe21b0439630cc3c7e7c76ec5d84efe5156",
+    "finish-run.cjs": "40d0a76c7420b2dc1c827e30455fb6f4f8b35927553032d1b44261e53f39ddb7",
+    "heldout.cjs": "7fd87453909445fee8ca4df862bbe229a42a8e5b0dabc53bb261852dc4f73356",
+    "install-office.cjs": "f3def303124c672f5cf8d2d19cdaaab2ff3888c9c34e234b5e091b4adbb9570c",
+    "office-eval.cjs": "234737bb7c1a2e2e0cc01f00bb7fbce9b37050c8ccc4b1d9d1260f3e6982d5d7",
+    "portal-eval.cjs": "79f0796c79827f0b5789152b770216f8195822549d2913748c72acb9edd2fc46",
+    "portal-login.cjs": "9c5e5ed061cd3a2ae2af5fb721f01f1d057e26babddd66ebc481e1d5bb178777",
+    "prepare-tokenizer.cjs": "6ac70128e27e7401d0745af904217a0734aaa755f67628b8499ba053c641fb2f",
+    "register.cjs": "1959b505dc33a3bda710ad257e3bf40049d5145405e8b8545c46db3a303a8d46",
+    "start-training.cjs": "e30d5ba4f9d36ba4839e0c2894c65b975faa97b6135ed5afff8f350546525fa7",
+    "train.py": "7a494ae107990d03c03a29eeb175781b668a2cb7b4785bba5b69929b6776b50d"
+  }
+}

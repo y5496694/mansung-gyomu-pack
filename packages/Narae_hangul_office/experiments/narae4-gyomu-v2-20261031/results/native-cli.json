@@ -1,0 +1,11 @@
+{
+  "version": "0.13.0-preview.18",
+  "syntheticOnly": true,
+  "planner": "stub (not a model-quality test)",
+  "nativeEngine": true,
+  "agentCreate": true,
+  "editSaved": true,
+  "rereadVerified": true,
+  "scope": "Actual HWPX creation through headless agent, hash-checked edit and reread. No live school request.",
+  "file": "D:\\Codex\\tmp\\narae4-gyomu-cli-1793421869231\\Documents\\가상교무-계획.hwpx"
+}

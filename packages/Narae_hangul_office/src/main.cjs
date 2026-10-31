@@ -25,19 +25,19 @@ async function configure(args={}){const changesAI=Object.keys(args).some(key=>![
 async function selected(file){file=document(file);recent=[file,...recent.filter(item=>item!==file)].slice(0,30);save('recent.json',recent);return {path:file,name:path.basename(file),hash:createHash('sha256').update(fs.readFileSync(file)).digest('hex')};}
 const execute=async(name,args,signal)=>{
  if(signal?.aborted)throw new Error('작업을 중지했습니다.');
- if(name==='list_files')return fs.readdirSync(settings.workspace).filter(file=>/\.hwpx?$/i.test(file)).map(file=>path.join(settings.workspace,file));
+ if(name==='list_files')return require('./document-tools.cjs').executeDocumentTool(name,args,{workspace:settings.workspace});
+ if(name==='read_image'){const file=authorise(args.path);return {kind:'image',path:file,image:require('./agent-media.cjs').readImage(file)};}
  const file=['create_document'].includes(name)?output(args.path):document(args.path);
- if(name==='read_document')return native.savedFileOperation(file,{},()=>runPython(python,home,'documents.py',{action:'inspect',path:file},signal));
+ if(name==='read_document'||name==='edit_document')return require('./document-tools.cjs').executeDocumentTool(name,{...args,path:file,...(args.target?{target:output(args.target)}:{})},{workspace:settings.workspace,home,python,signal});
  if(name==='read_live_document'||name==='edit_live_document'){
   await native.openFile(file);
   return native.withFileLock(file,()=>runPython(python,home,'live_hangul.py',{...args,path:file,action:name==='read_live_document'?'read':'edit',backupDir:path.join(home,'backups'),save:settings.hwpAutoSave!==false},signal));
  }
- if(name==='edit_document')return native.savedFileOperation(file,{editing:true,signal},()=>runPython(python,home,'documents.py',{...args,path:file,action:'save'},signal));
  if(name==='create_document'){
   require('./format-policy.cjs').assertDocument(file);
   const blocks=args.blocks;
   const checkImages=items=>{for(const item of items||[]){if(item.type==='image'){item.path=authorise(item.path);if(!fs.existsSync(item.path))throw new Error('그림 파일을 찾을 수 없습니다.');}for(const row of item.rows||[])for(const cell of row)checkImages(cell.blocks);}};checkImages(blocks);
-  const result=await runPython(python,home,'documents.py',{action:'create',path:file,content:args.text||'',...(blocks?{blocks}:{})},signal);await selected(file);return result;
+  const result=await require('./document-tools.cjs').executeDocumentTool(name,{...args,path:file},{workspace:settings.workspace,home,python,signal});await selected(file);return result;
  }
  if(name==='export_pdf')return native.savedFileOperation(file,{},()=>runPython(python,home,'documents.py',{action:'export',path:file,target:output(args.target)},signal));
  throw new Error('지원하지 않는 문서 작업입니다.');
@@ -102,10 +102,10 @@ const methods={
  localAIState:()=>localAI.status(),
  localAIDirectory:async()=>{idle();if(localAI.busy||localAI.child)throw new Error('실행 중인 AI를 먼저 중지하세요.');const picked=await dialog.showOpenDialog(window,{properties:['openDirectory','createDirectory'],title:'AI 모델 저장 폴더 선택',defaultPath:localAI.dir});return picked.canceled?localAI.status():localAI.configure({directory:picked.filePaths[0]});},
  localAIAutoStart:({enabled})=>localAI.setAutoStart(enabled===true),
- localAILicense:({id})=>{localAI.model(id);const names={narae1:'Qwen3-0.6B-LICENSE.txt',narae2:'EXAONE-3.5-LICENSE.txt',narae3:'Qwen3-4B-LICENSE.txt'};return fs.readFileSync(path.join(root,'resources/model-licenses',names[id]),'utf8');},
+ localAILicense:({id})=>{localAI.model(id);const names={narae1:'Qwen3-0.6B-LICENSE.txt',narae2:'EXAONE-3.5-LICENSE.txt',narae3:'Qwen3-4B-LICENSE.txt',narae4:'Narae4-LICENSE.txt'};return fs.readFileSync(path.join(root,'resources/model-licenses',names[id]),'utf8');},
  localAIExternal:async({endpoint,model})=>{idle();let next=connections.update(settings,{provider:'local',endpoint,model,localSource:'external'});const items=await localAI.listModels(next);if(!model&&items[0])next=connections.update(next,{model:items[0].id});if(!items.some(m=>m.id===next.model))throw new Error('서버에 설치된 모델 ID를 입력하세요: '+items.map(m=>m.id).join(', '));await localAI.stop();persist(next);agentChanged();return metadata();},
  localAIInstall:args=>{idle();return localAI.install(args.id,args);},
- localAIImport:async args=>{idle();const picked=await dialog.showOpenDialog(window,{properties:['openDirectory'],title:'base.gguf와 adapter.gguf가 있는 모델 폴더 선택'});if(picked.canceled)return localAI.status();return localAI.install(args.id,{...args,source:fs.realpathSync(picked.filePaths[0])});},
+ localAIImport:async args=>{idle();const picked=await dialog.showOpenDialog(window,{properties:['openDirectory'],title:'나래 모델 파일이 있는 폴더 선택'});if(picked.canceled)return localAI.status();return localAI.install(args.id,{...args,source:fs.realpathSync(picked.filePaths[0])});},
  localAIUse:async({id})=>{idle();await localAI.activate(id);localAI.setAutoStart(true);persist(connections.update(settings,{provider:'local',model:id,localSource:'managed'}));agentChanged();return metadata();},
  localAIStop:async()=>{idle();if(localAI.busy)throw new Error('AI 준비가 끝난 뒤 중지하세요.');localAI.setAutoStart(false);await localAI.stop();return localAI.status();},
  localAICancel:()=>localAI.cancelInstall(),

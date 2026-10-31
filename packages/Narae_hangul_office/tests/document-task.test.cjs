@@ -17,3 +17,11 @@ test('failed PDF output is incomplete and a final school attempt cannot start ne
  assert.match(documentStep(prompt,records,tools,'D:/synthetic').receipt,/확인하지 못/);
  records.push({type:'function_call',name:'gyomu_wxs_final_prepare',call_id:'final',arguments:'{}'},{type:'function_call_output',call_id:'final',output:'{"kind":"wxs-final"}'});assert.equal(documentStep(prompt,records,tools,'D:/synthetic'),null);
 });
+test('one requested time replacement ends only after matching saved hash and unchanged other paragraphs',()=>{
+ const file='D:/synthetic/회의.hwpx',records=[],add=(name,args,value)=>{const id=String(records.length);records.push({type:'function_call',name,arguments:JSON.stringify(args),call_id:id},{type:'function_call_output',call_id:id,output:JSON.stringify(value)});};
+ add('read_document',{path:file},{hash:'before',paragraphs:[{id:'p1',text:'가상 회의'},{id:'p2',text:'일시: 2038-09-13 15:20'}],hasMore:false});
+ add('edit_document',{path:file,expectedHash:'before',operations:[{op:'replace_text',target:'p2',find:'2038-09-13 15:20',replace:'2038-09-13 15:50',expected:1}]},{saved:true,modeledContentVerified:true,hash:'after'});
+ const prompt='회의 시각 15:20만 15:50으로 바꾸고 저장 내용을 확인해 줘.';assert.equal(documentStep(prompt,records,tools,'D:/synthetic',true,file).tools[0].name,'read_document');
+ add('read_document',{path:file},{hash:'after',paragraphs:[{id:'new1',text:'가상 회의'},{id:'new2',text:'일시: 2038-09-13 15:50'}],hasMore:false});assert.match(documentStep(prompt,records,tools,'D:/synthetic',true,file).receipt,/15:20 → 15:50/);
+ const changed=JSON.parse(records.at(-1).output);changed.paragraphs[0].text='다른 제목';records.at(-1).output=JSON.stringify(changed);assert.equal(documentStep(prompt,records,tools,'D:/synthetic',true,file).receipt,undefined);
+});

@@ -1,11 +1,12 @@
 'use strict';
 const fs=require('node:fs'),path=require('node:path'),{randomBytes,createHash}=require('node:crypto');
+const {isDeepStrictEqual}=require('node:util');
 const {inside,tools}=require('./agent.cjs');
-const READ=new Set(['list_files','read_document','read_live_document']);
+const READ=new Set(['list_files','read_document','read_live_document','read_image']);
 function validate(value,schema,depth=0,location='args'){
  if(depth>20)throw new Error('원격 도구 인자가 너무 깊습니다.');
  if(schema.anyOf){if(!schema.anyOf.some(option=>{try{validate(value,option,depth+1,location);return true;}catch{return false;}}))throw new Error('지원하지 않는 변경 인자입니다.');return;}
- if(schema.enum&&!schema.enum.includes(value))throw new Error(location+': 지원하지 않는 원격 인자 값입니다.');
+ if(schema.enum&&!schema.enum.some(option=>isDeepStrictEqual(option,value)))throw new Error(location+': 지원하지 않는 원격 인자 값입니다.');
  if(schema.type==='object'){
   if(!value||typeof value!=='object'||Array.isArray(value))throw new Error('객체 인자가 필요합니다.');
   for(const required of schema.required||[])if(!Object.hasOwn(value,required))throw new Error('필수 인자가 없습니다: '+required);
@@ -15,12 +16,12 @@ function validate(value,schema,depth=0,location='args'){
   for(const [index,item]of value.entries())validate(item,schema.items||{},depth+1,location+'['+index+']');
  }else if(schema.type==='integer'){if(!Number.isSafeInteger(value))throw new Error('정수 인자가 필요합니다.');}
  else if(schema.type&&typeof value!==schema.type)throw new Error(location+': 원격 인자의 형식을 확인하세요 ('+schema.type+').');
- if(typeof value==='number'&&(!Number.isFinite(value)||(schema.minimum!==undefined&&value<schema.minimum)))throw new Error('숫자 인자의 범위를 확인하세요.');
+ if(typeof value==='number'&&(!Number.isFinite(value)||(schema.minimum!==undefined&&value<schema.minimum)||(schema.maximum!==undefined&&value>schema.maximum)))throw new Error('숫자 인자의 범위를 확인하세요.');
 }
 class RemotePolicy{
  constructor({workspace,notify=()=>{},timeout=120000,autoAllow=()=>false}){this.workspace=workspace;this.notify=notify;this.timeout=timeout;this.autoAllow=autoAllow;this.pending=null;}
  allowed(file){const root=path.resolve(this.workspace());file=path.isAbsolute(file)?path.resolve(file):path.resolve(root,file);if(!inside(root,file))throw new Error('원격 작업은 오피스 작업 폴더 안에서만 가능합니다.');let parent=file;while(!fs.existsSync(parent)){const next=path.dirname(parent);if(next===parent)throw new Error('작업 경로를 확인하세요.');parent=next;}if(!inside(fs.realpathSync(root),fs.realpathSync(parent)))throw new Error('작업 폴더 밖으로 연결된 경로는 원격으로 사용할 수 없습니다.');return file;}
- prepare(name,args){const tool=tools.find(t=>t.name===name);if(!tool||!args||typeof args!=='object'||Array.isArray(args))throw new Error('지원하지 않는 원격 도구입니다.');validate(args,tool.parameters);const copy=structuredClone(args);if(name!=='list_files'){if(typeof copy.path!=='string')throw new Error('문서 경로가 필요합니다.');copy.path=this.allowed(copy.path);}if(name==='export_pdf'){if(typeof copy.target!=='string')throw new Error('출력 경로가 필요합니다.');copy.target=this.allowed(copy.target);if(fs.existsSync(copy.target))throw new Error('PDF는 새 이름으로 저장하세요.');}if(name==='create_document'&&fs.existsSync(copy.path))throw new Error('기존 파일을 덮어쓰지 말고 새 이름으로 작성하세요.');if(copy.blocks)validate(copy.blocks,require('./hwp-file-contracts.cjs').blocks);const images=items=>{for(const item of items||[]){if(item.type==='image')item.path=this.allowed(item.path);for(const row of item.rows||[])for(const cell of row)images(cell.blocks);}};images(copy.blocks);return copy;}
+ prepare(name,args){const tool=tools.find(t=>t.name===name);if(!tool||!args||typeof args!=='object'||Array.isArray(args))throw new Error('지원하지 않는 원격 도구입니다.');validate(args,tool.parameters);const copy=structuredClone(args);if(name!=='list_files'){if(typeof copy.path!=='string')throw new Error('문서 경로가 필요합니다.');copy.path=this.allowed(copy.path);}if(name==='export_pdf'||copy.target!==undefined){if(typeof copy.target!=='string')throw new Error('출력 경로가 필요합니다.');copy.target=this.allowed(copy.target);if(fs.existsSync(copy.target))throw new Error('사본은 새 이름으로 저장하세요.');}if(name==='create_document'&&fs.existsSync(copy.path))throw new Error('기존 파일을 덮어쓰지 말고 새 이름으로 작성하세요.');if(copy.blocks)validate(copy.blocks,require('./hwp-file-contracts.cjs').blocks);const images=items=>{for(const item of items||[]){if(item.type==='image')item.path=this.allowed(item.path);for(const row of item.rows||[])for(const cell of row)images(cell.blocks);}};images(copy.blocks);return copy;}
  status(){return this.pending?.view||null;}
  decide({id,digest,allow}){const p=this.pending;if(!p||p.view.id!==id||p.view.digest!==digest||Date.now()>=p.view.expires)throw new Error('승인 요청이 만료됐거나 다른 작업입니다.');p.finish(allow===true);return {decided:true};}
  applyAutoAllow(){const p=this.pending;if(!p||this.autoAllow()!==true)return false;p.finish(Date.now()<p.view.expires);return true;}

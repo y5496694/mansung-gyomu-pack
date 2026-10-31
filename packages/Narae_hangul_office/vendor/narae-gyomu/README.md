@@ -2,6 +2,8 @@
 
 **나래 브라우저 + 나래 한글 + CBE CLI + 나래교무포털을 하나의 Windows 프로그램과 CLI로 연결합니다.** 나래1·나래2·나래3 중 하나의 실제 로컬 모델을 활성화하고 채팅으로 업무를 요청합니다. 다른 AI는 같은 CLI를 직접 사용할 수 있습니다.
 
+나래4는 설치된 나래 한글 오피스의 로컬 에이전트로 연결합니다. `narae-gyomu office agent-status`로 확인하고 `narae-gyomu office agent JOB.json --result RESULT.json`으로 실행합니다. JOB 예시는 `{"prompt":"받은 쪽지 최근 3건 요약","workspace":"D:/Codex/workspaces/교무자료","model":"narae4","allowChanges":false}`입니다. 문서 변경·브라우저 이동/입력이 필요한 요청은 `allowChanges:true`를 지정합니다. 이 연결은 세 모델 데몬을 새로 띄우지 않으며 나래4가 있는 오피스 설치본이 필요합니다. 자세한 [스킬 안내](skills/narae-gyomu/SKILL.md)를 확인하세요.
+
 ![나래교무 화면](verification/desktop.png)
 
 ## 바로 사용

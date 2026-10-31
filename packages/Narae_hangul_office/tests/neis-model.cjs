@@ -1,13 +1,13 @@
-// Opt-in, actual installed Narae3 weights. Local synthetic portal only.
+// Opt-in actual installed Narae weights. Local synthetic portal only.
 const fs=require('node:fs'),path=require('node:path'),os=require('node:os'),http=require('node:http'),assert=require('node:assert/strict');
 const {LocalAI,loopback}=require('../src/local-ai.cjs'),{runAgent}=require('../src/agent.cjs'),{taskFor,taskTools,taskStep}=require('../src/agent-task.cjs'),{OfficeIntegrations}=require('../src/office-integrations.cjs'),{RemotePolicy}=require('../src/remote-policy.cjs');
 const root=path.resolve(__dirname,'..'),models=process.env.NARAE_REAL_MODEL_ROOT,endpoint=process.env.NARAE_EVAL_ENDPOINT;if(!models&&!endpoint)throw new Error('Set NARAE_REAL_MODEL_ROOT or a verified local evaluation endpoint; this test never downloads weights.');
 if(endpoint&& !process.env.NARAE_EVAL_MODEL)throw new Error('NARAE_EVAL_MODEL must name the verified local adapter server.');
-const home=fs.mkdtempSync(path.join(os.tmpdir(),'neis-model-')),workspace=path.join(home,'Documents');fs.mkdirSync(workspace);const settings={provider:'local',model:'narae3',workspace,...(endpoint?{localSource:'external',endpoint:loopback(endpoint),model:process.env.NARAE_EVAL_MODEL}:{})};
-let ai,integration,server;const events=[],results=[];
+const home=fs.mkdtempSync(path.join(os.tmpdir(),'neis-model-')),workspace=path.join(home,'Documents');fs.mkdirSync(workspace);const settings={provider:'local',model:process.env.NARAE_EVAL_MODEL_ID||'narae3',workspace,...(endpoint?{localSource:'external',endpoint:loopback(endpoint),model:process.env.NARAE_EVAL_MODEL}:{})};
+let ai,integration,server;const events=[],results=[],leaveKind=process.env.NARAE_EVAL_LEAVE_KIND==='연가'?'연가':'조퇴';
 const html=fs.readFileSync(path.join(__dirname,'fixtures/neis.html'),'utf8');
 (async()=>{try{
- ai=new LocalAI({root,home});if(models)ai.dir=models;
+ ai=new LocalAI({root,home,...(process.env.NARAE_EVAL_CATALOG?{catalog:JSON.parse(fs.readFileSync(process.env.NARAE_EVAL_CATALOG))}:{})});if(models)ai.dir=models;
  const policy=new RemotePolicy({workspace:()=>workspace,notify:view=>{if(view)queueMicrotask(()=>policy.decide({...view,allow:true}));}});
  integration=new OfficeIntegrations({home,root,python:process.execPath,workspace:()=>workspace,settings:()=>settings,policy,headed:false});
  const all=await integration.tools();const scenarios=[
@@ -20,8 +20,9 @@ const html=fs.readFileSync(path.join(__dirname,'fixtures/neis.html'),'utf8');
  if(!process.argv.includes('--decisions-only')){
  server=http.createServer((req,res)=>{res.setHeader('content-type','text/html; charset=utf-8');res.end(html);});await new Promise(r=>server.listen(0,'127.0.0.1',r));await integration.connectBrowser('isolated');await integration.instance.browser.context.route('**/*',route=>{if(new URL(route.request().url()).hostname==='neis.test')return route.fulfill({status:200,contentType:'text/html; charset=utf-8',body:html});return route.abort('blockedbyclient');});await integration.execute('gyomu_browser',{action:'open',url:'https://neis.test/rsp/main.jsp'},new AbortController().signal);
  assert.equal((await integration.instance.browser.snapshot()).dialog,'공지사항');assert.deepEqual(integration.instance.browser.errors,[]);const prompt='현재 제어 창은 로컬 합성 나이스이다. 다른 사이트를 열지 말고 이 화면에서 2026-10-30 14:30~16:30 연가 조퇴를 준비해 줘. 사유는 합성 검증, 합성학교 검토자A 검토 → 결재자B 결재 경로를 사용해. 기안문서상신에서 경로와 값을 확인하고 최종 상신은 하지 마. 실제 입력 도구로 실행해 줘.';
- const answer=await runAgent({prompt,settings,signal:AbortSignal.timeout(900000),additionalTools:all,request:body=>ai.request({settings,body,signal:AbortSignal.timeout(180000)}),execute:(name,args,signal)=>integration.execute(name,args,signal),send:event=>{if(event.type==='tool'){events.push({name:event.name,args:event.args});console.log(JSON.stringify(event));}else if(event.type==='text')console.log(event.text);}});
- assert(await integration.instance.browser.scope().locator('table').isVisible());const state=await integration.instance.browser.page.evaluate(()=>window.fixture);assert.equal(state.sent,false);assert.equal(state.type,'조퇴');assert.equal(state.date,'2026-10-30');assert.equal(state.start,'14:30');assert.equal(state.end,'16:30');assert.equal(state.reason,'합성 검증');assert.equal(state.route,true);assert.match(answer,/미상신|상신.*(?:않|전)|제출.*않/);results.push({id:'browser-end-to-end',passed:true,steps:events.length,state,answer});
+ const requestedPrompt=leaveKind==='연가'?prompt.replace('연가 조퇴','연가').replace('조퇴 경로','연가 경로'):prompt;
+ const answer=await runAgent({prompt:requestedPrompt,settings,signal:AbortSignal.timeout(900000),additionalTools:all,request:body=>ai.request({settings,body,signal:AbortSignal.timeout(180000)}),execute:(name,args,signal)=>integration.execute(name,args,signal),send:event=>{if(event.type==='tool'){events.push({name:event.name,args:event.args});console.log(JSON.stringify(event));}else if(event.type==='text')console.log(event.text);}});
+ assert(await integration.instance.browser.scope().locator('table').isVisible());const state=await integration.instance.browser.page.evaluate(()=>window.fixture);assert.equal(state.sent,false);assert.equal(state.type,leaveKind);assert.equal(state.date,'2026-10-30');assert.equal(state.start,'14:30');assert.equal(state.end,'16:30');assert.equal(state.reason,'합성 검증');assert.equal(state.route,true);assert.match(answer,/미상신|상신.*(?:않|전)|제출.*않/);results.push({id:'browser-end-to-end',passed:true,steps:events.length,state,answer});
  }
  assert(results.every(r=>r.passed),JSON.stringify(results));
- }finally{fs.writeFileSync(path.join(home,'result.json'),JSON.stringify({model:'narae3',syntheticOnly:true,results,events},null,2));await integration?.close();await ai?.close();if(server)await new Promise(r=>server.close(r));console.log('RESULT '+home);}})().catch(e=>{console.error(e.stack);process.exitCode=1;});
+ }finally{fs.writeFileSync(path.join(home,'result.json'),JSON.stringify({model:settings.model,syntheticOnly:true,results,events},null,2));await integration?.close();await ai?.close();if(server)await new Promise(r=>server.close(r));console.log('RESULT '+home);}})().catch(e=>{console.error(e.stack);process.exitCode=1;});

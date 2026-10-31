@@ -1,0 +1,80 @@
+{
+  "model": "Narae4-Qwen3.5-2B-Office-LoRA-v1",
+  "adapterSha256": "19f20486e744bcb9636efcdaf6583c1b9bef545733987a8837e63afdfeecf105",
+  "actualLocalWeights": true,
+  "actualCandidateWeights": false,
+  "syntheticOnly": true,
+  "scriptSha256": "ab760263d05036f76e3de39da10a3f57253496d4e6e2663c0bfcdc3d6579aed7",
+  "selection": "workflow-native-create,workflow-native-edit",
+  "scope": "School tools are mock observations; HWPX and image tools use real engines. No school login or submission.",
+  "attempt": "D:\\Codex\\training\\narae4-gyomu-v2-20261031-r2\\evaluation\\workflow-1793425502011",
+  "passed": 2,
+  "total": 2,
+  "results": [
+    {
+      "id": "workflow-native-create",
+      "passed": true,
+      "scope": "actual local candidate model + native document/image tools",
+      "seconds": 26.338,
+      "result": {
+        "model": "narae4",
+        "workspace": "D:\\Codex\\training\\narae4-gyomu-v2-20261031-r2\\evaluation\\workflow-1793425502011\\workspace",
+        "text": "문서 파일을 만들었습니다.\nD:\\Codex\\training\\narae4-gyomu-v2-20261031-r2\\evaluation\\workflow-1793425502011\\workspace\\가상회의.hwpx\n나래한글 엔진에서 저장한 내용을 다시 읽어 대조했습니다."
+      },
+      "events": [
+        {
+          "type": "tool",
+          "name": "create_document",
+          "args": {
+            "path": "D:/Codex/training/narae4-gyomu-v2-20261031-r2/evaluation/workflow-1793425502011/workspace/가상회의.hwpx",
+            "text": "가상회의 안내문서\n\n날짜: 2038 년 9 월 13 일 15:20\n장소: 가상회의실\n\n안건: 가상 자료 검토\n\n참고: 본 회의는 실제 학교 일정과 무관합니다."
+          }
+        }
+      ]
+    },
+    {
+      "id": "workflow-native-edit",
+      "passed": true,
+      "scope": "actual local candidate model + native document/image tools",
+      "seconds": 32.094,
+      "result": {
+        "model": "narae4",
+        "workspace": "D:\\Codex\\training\\narae4-gyomu-v2-20261031-r2\\evaluation\\workflow-1793425502011\\workspace",
+        "text": "선택 문서의 시간 변경을 저장하고 다시 읽어 확인했습니다.\nD:\\Codex\\training\\narae4-gyomu-v2-20261031-r2\\evaluation\\workflow-1793425502011\\workspace\\가상회의.hwpx\n15:20 → 15:50\n그 밖의 문단 텍스트가 유지된 것도 대조했습니다."
+      },
+      "events": [
+        {
+          "type": "tool",
+          "name": "read_document",
+          "args": {
+            "path": "D:\\Codex\\training\\narae4-gyomu-v2-20261031-r2\\evaluation\\workflow-1793425502011\\workspace\\가상회의.hwpx"
+          }
+        },
+        {
+          "type": "tool",
+          "name": "edit_document",
+          "args": {
+            "path": "D:\\Codex\\training\\narae4-gyomu-v2-20261031-r2\\evaluation\\workflow-1793425502011\\workspace\\가상회의.hwpx",
+            "expectedHash": "6bd615a24d61addb5f5c6c7df88610be1c453f31590f8421cbfa4ecaa68fd088",
+            "operations": [
+              {
+                "op": "replace_text",
+                "target": "body/3",
+                "find": "2038 년 9 월 13 일 15:20",
+                "replace": "2038 년 9 월 13 일 15:50",
+                "expected": 1
+              }
+            ]
+          }
+        },
+        {
+          "type": "tool",
+          "name": "read_document",
+          "args": {
+            "path": "D:\\Codex\\training\\narae4-gyomu-v2-20261031-r2\\evaluation\\workflow-1793425502011\\workspace\\가상회의.hwpx"
+          }
+        }
+      ]
+    }
+  ]
+}

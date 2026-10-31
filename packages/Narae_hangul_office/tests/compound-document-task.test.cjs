@@ -10,6 +10,7 @@ test('a compound HWP/attachment request retains document and draft tools before 
  const simple=taskTools(taskFor('공문 QA-001 결재해줘'),all);assert(!simple.some(t=>t.name==='create_document'));
  const reading=taskTools(taskFor('에듀파인 공문의 한글 파일을 읽고 요약해줘'),all);assert(reading.some(t=>t.name==='read_document'));assert(!reading.some(t=>t.name==='create_document'));
 });
+test('a review topic in the document body does not turn verified single-file creation into a repeated workflow',()=>{const output={path:'D:/synthetic/회의.hwpx',modeledContentVerified:true};assert.match(localCreationResult('"회의.hwpx"로 만들어 줘. 안건은 자료 검토.',{provider:'local'},[{}],'create_document',output),/문서 파일/);assert.equal(localCreationResult('"회의.hwpx"로 만들고 내용을 검토해 줘.',{provider:'local'},[{}],'create_document',output),null);});
 test('after a final attempt a compound workflow cannot recreate its document or change its attachments',()=>{
  const task=taskFor('한글 파일 "계획.hwp" 만들고 기안에 첨부하고 상신해줘');
  const input=[{type:'function_call',call_id:'one',name:'gyomu_wxs_final_prepare',arguments:'{}'},{type:'function_call_output',call_id:'one',output:JSON.stringify({kind:'wxs-final',result:{attempted:true,completed:false}})},{type:'function_call',call_id:'view',name:'gyomu_browser',arguments:'{"action":"snapshot"}'},{type:'function_call_output',call_id:'view',output:'{"title":"모의 문서진행"}'}];

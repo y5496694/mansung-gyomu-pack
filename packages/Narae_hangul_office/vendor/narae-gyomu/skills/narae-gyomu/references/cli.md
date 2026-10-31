@@ -6,6 +6,8 @@
 narae-gyomu tool call system.status --args '{}'
 narae-gyomu tool call skill.read --args '{"area":"portal"}'
 narae-gyomu tool call portal.open --args '{}'
+narae-gyomu tool call portal.login --args '{"operation":"status"}'
+narae-gyomu tool call portal.login --args '{"operation":"login","systems":["neis","edufine"]}'
 narae-gyomu tool call browser --args '{"action":"snapshot"}'
 narae-gyomu tool call browser --args '{"action":"frames"}'
 ```

@@ -5,6 +5,7 @@ document into two landscape sheets. PrintToPDFEx with PrintMethod=0 renders
 one actual document page per PDF page. Only the Hancom PDF target is used.
 """
 from pathlib import Path
+from contextlib import closing
 import hashlib
 import time
 
@@ -32,7 +33,7 @@ def print_open_document(app,target):
             with target.open('rb') as output:
                 output.seek(0,2);length=output.tell();output.seek(max(0,length-65536));complete=b'%%EOF' in output.read()
             if complete:
-                with pypdfium2.PdfDocument(target) as pdf:
+                with closing(pypdfium2.PdfDocument(target)) as pdf:
                     count=len(pdf)
                     if count==pages:
                         sizes=[]

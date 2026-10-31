@@ -1,0 +1,28 @@
+{
+  "base_revision": "15852e8c16360a2fea060d615a32b45270f8a8fc",
+  "data": {
+    "syntheticOnly": true,
+    "privateSchoolData": false,
+    "counts": {
+      "train": 32,
+      "validation": 3
+    },
+    "heldoutTemplatesShared": false,
+    "sourceNarae3TrainSha256": "0163fd047171cfcfe946f3fa36ba1536b358d4365e960913a1cda9e09fa5bab5",
+    "files": {
+      "train.jsonl": "180811a1436985420323630d790966d91a7c55e964d47d34b6c6ebc873a03f9a",
+      "validation.jsonl": "cf1b9ae42d9d8a7aa82f20ddadc29a0d51c90e12354d7c520b44e270ac002aaa"
+    }
+  },
+  "dtype": "BF16 frozen prefix; FP32 suffix/head/LoRA",
+  "layers": [
+    23
+  ],
+  "rank": 16,
+  "alpha": 32,
+  "learning_rate": 5e-05,
+  "epochs": 2,
+  "optimizer_steps": 16,
+  "seed": 719,
+  "train_script_sha256": "7a494ae107990d03c03a29eeb175781b668a2cb7b4785bba5b69929b6776b50d"
+}

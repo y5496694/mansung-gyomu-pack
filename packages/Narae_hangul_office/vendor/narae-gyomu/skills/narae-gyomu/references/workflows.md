@@ -2,7 +2,7 @@
 
 ## 업무포털
 
-`skill.read {"area":"portal"}` → `portal.open {}` → 사용자 직접 로그인 → `browser snapshot/tabs/frames`로 실제 도착 시스템·학교 확인 → 해당 neis/edufine 절차를 읽고 현재 ref로 업무를 진행한다. 참조문서가 필요하면 `skill.read`의 document에 해당 스킬 안의 `references/이름.md`를 지정한다. 로그인 상태를 제목이나 URL만 보고 단정하지 않는다.
+`skill.read {"area":"portal"}` → 자동 로그인을 요청했다면 `portal.login {"operation":"login","systems":["neis","edufine"]}`, 직접 로그인은 `portal.open {}` → `browser snapshot/tabs/frames`로 실제 도착 시스템·학교 확인 → 해당 neis/edufine 절차를 읽고 현재 ref로 업무를 진행한다. 등록 상태만 확인할 때는 `portal.login {"operation":"status"}`다. 자동 로그인 결과가 불확실하면 동일 세션에서 반복 제출하지 않는다. 최초 기기 접근 승인은 사용자가 직접 처리한다. 참조문서가 필요하면 `skill.read`의 document에 해당 스킬 안의 `references/이름.md`를 지정한다. 로그인 상태를 제목이나 URL만 보고 단정하지 않는다.
 
 원본 브라우저 엔진 위에 iframe 선택·필터/페이지 관찰·입력값/체크 상태 확인을 보강했다. 직접 JS·셸 실행 도구는 없다. 초안·조회 요청은 미상신으로 끝낸다. 명시적인 최종 상신·결재 요청은 문서·결재선을 확인하고 confirmFinalAction:true, expectedDocument, expectedLabel, expectedUrl, expectedState(최신 snapshot.finalState)로 한 번 실행한다. 정확히 관찰한 확인창 문구만 수락하며 불명확하면 반복하지 않는다. 인증서·보안 프로그램·WXS Client는 사용자 PC에 정상 설치되어 있어야 한다.
 

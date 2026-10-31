@@ -20,6 +20,7 @@ export const tools = [
       method:enumeration(['pointer','dom']),force:{type:'boolean'},ms:integer,timeout:integer,decision:enumeration(['accept','dismiss']),expectedId:string,expectedMessage:string,
       confirmFinalAction: {type:'boolean'}, expectedDocument: string, expectedDocumentId: string, expectedLabel: string, expectedUrl: string, expectedState: string, confirmationText: string}, ['action'])},
   {name: 'portal.open', label: '업무포털 열기', description: '등록된 교육청 업무포털을 나래 브라우저로 연다. 사용자가 직접 로그인하며 기존 창은 재사용한다. 로그인 성공 여부는 실제 화면으로 확인한다.', parameters: object()},
+  {name:'portal.login',label:'보안 문서로 독립 브라우저 로그인',description:'사용자가 요청한 자동 로그인만 PC의 기존 DPAPI 보안 문서로 독립 브라우저에서 한 번 수행한다. 인증서·암호는 모델 인자나 결과에 포함하지 않는다. 최초 기기 접근 승인과 추가 보안 인증은 사용자에게 남기며 요청한 서비스의 실제 화면으로 확인한다.',parameters:object({operation:enumeration(['status','login']),systems:{type:'array',items:enumeration(['neis','edufine']),uniqueItems:true}},['operation'])},
   {name: 'cbe.search', label: '교직원 찾기', description: '실행·로그인된 CBE에서 이름 검색. 기본 auto는 내 조직 우선, 성공한 0명일 때 전체 조직. 동명이인은 소속·직책을 확인한다.',
     parameters: object({name: string, scope: enumeration(['auto','my','all']), page: integer}, ['name'])},
   {name: 'cbe.notes', label: '쪽지 읽기', description: 'CBE 쪽지 목록 또는 실제 ID의 본문을 읽는다. 목록은 한 페이지이며 전체가 아닐 수 있다.',
@@ -63,7 +64,7 @@ export function forRequest(text, attached = []) {
   if (/메신저|쪽지|대화|교직원.*연락|CBE/i.test(text))
     tools.filter(t => t.name.startsWith('cbe.')).forEach(t => names.add(t.name));
   if (/포털|포탈|나이스|에듀파인|공문|기안|복무|출장|결재|접수|WXS/i.test(text)) {
-    names.add('browser'); names.add('portal.open');
+    names.add('browser'); names.add('portal.open'); names.add('portal.login');
     tools.filter(t => t.name.startsWith('wxs')).forEach(t => names.add(t.name));
   }
   if (/https?:\/\/|브라우저|웹|사이트|검색/i.test(text)) names.add('browser');

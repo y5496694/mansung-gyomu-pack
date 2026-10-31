@@ -1,0 +1,264 @@
+{
+  "mode": "trained",
+  "scope": "Direct model choices without bounded executor; synthetic unseen values in known workflow families",
+  "total": 16,
+  "passed": 4,
+  "results": [
+    {
+      "id": "cbe-body-5",
+      "kind": "cbe-body",
+      "passed": false,
+      "response": {
+        "output": [
+          {
+            "type": "function_call",
+            "name": "gyomu_cbe_notes",
+            "arguments": "{\"operation\":\"read\",\"box\":\"received\",\"id\":\"fixture-7305a\"}",
+            "call_id": "0082eab5-3f54-44fb-882d-f8ef94fa669e"
+          }
+        ]
+      },
+      "seconds": 7.733
+    },
+    {
+      "id": "progress-5",
+      "kind": "progress",
+      "passed": false,
+      "response": {
+        "output": [
+          {
+            "type": "function_call",
+            "name": "gyomu_browser",
+            "arguments": "{\"action\":\"read\",\"ref\":\"r51\"}",
+            "call_id": "32c95a88-cc55-488f-bdbe-3d0fa3b22ea0"
+          }
+        ]
+      },
+      "seconds": 8.456
+    },
+    {
+      "id": "attachment-5",
+      "kind": "attachment",
+      "passed": false,
+      "response": {
+        "output": [
+          {
+            "type": "function_call",
+            "name": "gyomu_wxs_read",
+            "arguments": "{\"operation\":\"result\",\"id\":\"fixture-7305\"}",
+            "call_id": "a675e7f9-37f8-4be5-a272-6c8544416218"
+          }
+        ]
+      },
+      "seconds": 8.017
+    },
+    {
+      "id": "draft-5",
+      "kind": "draft",
+      "passed": true,
+      "response": {
+        "output": [
+          {
+            "type": "function_call",
+            "name": "gyomu_wxs_save",
+            "arguments": "{\"hwnd\":\"91005\",\"expected_title\":\"가상 생태교육 준비 7305\",\"name\":\"가상 생태교육 준비 7305\"}",
+            "call_id": "4ef97171-8960-4faf-be8a-a10fc70545d9"
+          }
+        ]
+      },
+      "seconds": 9.727
+    },
+    {
+      "id": "neis-5",
+      "kind": "neis",
+      "passed": false,
+      "response": {
+        "output": [
+          {
+            "type": "function_call",
+            "name": "gyomu_browser",
+            "arguments": "{\"action\":\"snapshot\"}",
+            "call_id": "e90255d1-65b0-4efc-89a7-92923a1f98bf"
+          }
+        ]
+      },
+      "seconds": 7.567
+    },
+    {
+      "id": "tracked-5",
+      "kind": "tracked",
+      "passed": true,
+      "response": {
+        "output": [
+          {
+            "type": "function_call",
+            "name": "read_live_document",
+            "arguments": "{\"path\":\"D:/Codex/training/synthetic-gyomu/준비-5.hwpx\"}",
+            "call_id": "51637c1e-898b-465d-8b4a-dcdeaeff8a9a"
+          }
+        ]
+      },
+      "seconds": 9.222
+    },
+    {
+      "id": "partial-summary-5",
+      "kind": "partial-summary",
+      "passed": false,
+      "response": {
+        "output": [
+          {
+            "type": "function_call",
+            "name": "gyomu_wxs_read",
+            "arguments": "{\"operation\":\"result\",\"id\":\"fixture-7305\"}",
+            "call_id": "9e077856-0192-4e7a-b807-73b9554c05bd"
+          }
+        ]
+      },
+      "seconds": 8.048
+    },
+    {
+      "id": "progress-summary-5",
+      "kind": "progress-summary",
+      "passed": false,
+      "response": {
+        "output": [
+          {
+            "type": "function_call",
+            "name": "gyomu_browser",
+            "arguments": "{\"action\":\"snapshot\"}",
+            "call_id": "c7972f7b-74ca-4938-b0cb-16eb6600489b"
+          }
+        ]
+      },
+      "seconds": 8.053
+    },
+    {
+      "id": "cbe-body-6",
+      "kind": "cbe-body",
+      "passed": false,
+      "response": {
+        "output": [
+          {
+            "type": "function_call",
+            "name": "gyomu_cbe_notes",
+            "arguments": "{\"operation\":\"list\",\"box\":\"received\",\"limit\":2}",
+            "call_id": "fa16d1fa-5541-4a90-b984-4b873b50dfdd"
+          }
+        ]
+      },
+      "seconds": 7.111
+    },
+    {
+      "id": "progress-6",
+      "kind": "progress",
+      "passed": false,
+      "response": {
+        "output": [
+          {
+            "type": "function_call",
+            "name": "gyomu_browser",
+            "arguments": "{\"action\":\"read\",\"ref\":\"r61\"}",
+            "call_id": "9a250960-fd6d-4e04-bb09-caf6936557b0"
+          }
+        ]
+      },
+      "seconds": 9.043
+    },
+    {
+      "id": "attachment-6",
+      "kind": "attachment",
+      "passed": false,
+      "response": {
+        "output": [
+          {
+            "type": "function_call",
+            "name": "gyomu_wxs_read",
+            "arguments": "{\"operation\":\"result\",\"id\":\"fixture-7306\"}",
+            "call_id": "7070d64b-adaa-4fb3-bc7f-b3144309f1af"
+          }
+        ]
+      },
+      "seconds": 7.613
+    },
+    {
+      "id": "draft-6",
+      "kind": "draft",
+      "passed": true,
+      "response": {
+        "output": [
+          {
+            "type": "function_call",
+            "name": "gyomu_wxs_save",
+            "arguments": "{\"hwnd\":\"91006\",\"expected_title\":\"가상 생태교육 준비 7306\",\"name\":\"가상 생태교육 준비 7306\"}",
+            "call_id": "c598ecac-4d1b-412a-9227-8b2b48ec8419"
+          }
+        ]
+      },
+      "seconds": 9.908
+    },
+    {
+      "id": "neis-6",
+      "kind": "neis",
+      "passed": false,
+      "response": {
+        "output": [
+          {
+            "type": "function_call",
+            "name": "gyomu_browser",
+            "arguments": "{\"action\":\"snapshot\"}",
+            "call_id": "24d3971d-b484-4eba-9f22-017ddc2ec23a"
+          }
+        ]
+      },
+      "seconds": 7.767
+    },
+    {
+      "id": "tracked-6",
+      "kind": "tracked",
+      "passed": true,
+      "response": {
+        "output": [
+          {
+            "type": "function_call",
+            "name": "read_live_document",
+            "arguments": "{\"path\":\"D:/Codex/training/synthetic-gyomu/준비-6.hwpx\"}",
+            "call_id": "b966a5ad-c8d5-4237-afc9-eea52bfcf01c"
+          }
+        ]
+      },
+      "seconds": 9.309
+    },
+    {
+      "id": "partial-summary-6",
+      "kind": "partial-summary",
+      "passed": false,
+      "response": {
+        "output": [
+          {
+            "type": "function_call",
+            "name": "gyomu_wxs_read",
+            "arguments": "{\"operation\":\"result\",\"id\":\"fixture-7306\"}",
+            "call_id": "1fedab13-03da-43f5-a55e-934534e998f5"
+          }
+        ]
+      },
+      "seconds": 7.976
+    },
+    {
+      "id": "progress-summary-6",
+      "kind": "progress-summary",
+      "passed": false,
+      "response": {
+        "output": [
+          {
+            "type": "function_call",
+            "name": "gyomu_browser",
+            "arguments": "{\"action\":\"snapshot\"}",
+            "call_id": "b201ea75-196d-4db3-a381-8105233e2ac6"
+          }
+        ]
+      },
+      "seconds": 7.967
+    }
+  ]
+}

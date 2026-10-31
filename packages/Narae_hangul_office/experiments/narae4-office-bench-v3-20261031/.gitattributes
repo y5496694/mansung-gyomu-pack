@@ -1,0 +1,3 @@
+# Frozen hashes cover exact bytes on every checkout platform.
+* -text
+.gitattributes text eol=lf

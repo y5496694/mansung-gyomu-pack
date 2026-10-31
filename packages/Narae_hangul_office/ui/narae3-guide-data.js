@@ -1,5 +1,5 @@
 (function(root,factory){if(typeof module==='object'&&module.exports)module.exports=factory();else root.narae3Guide=factory();})(typeof globalThis==='object'?globalThis:this,()=>({
- version:'0.13.0-preview.16',updated:'2026-10-30',
+ version:'0.13.0-preview.17',updated:'2026-10-30',
  intro:'나래3가 오피스의 문서 엔진·업무 도구와 함께 처리하도록 연결된 영역을 안내합니다. 가능한 기능, 요청 예시, 준비 사항과 실제 확인 수준을 함께 읽어 주세요. 안내는 인터넷이나 AI 실행 없이 볼 수 있습니다.',
  modelNote:'현재 배포 모델: 나래3 v1 · 추천 모델이며 선택을 강제하지 않습니다.\n추가 학습 후보 v2: 별도 시험용입니다. 다음 행동 선택 시험에서 v1·v2 모두 4/9로, 향상이 확인되지 않아 앱의 v1을 교체하지 않았습니다.\n아래의 실제 문서 생성·PDF 출력과 모의 학교 업무 시험은 v2, 실제 받은 쪽지 5건 요약은 v1로 확인했습니다. 모의 성공은 현재 v1의 실제 학교 업무 성공률을 의미하지 않습니다.',
  levels:{

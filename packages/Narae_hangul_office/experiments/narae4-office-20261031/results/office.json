@@ -1,0 +1,203 @@
+{
+  "syntheticOnly": true,
+  "actualOfficeAgent": true,
+  "actualDocumentEngine": true,
+  "checks": [
+    {
+      "id": "create-pdf",
+      "passed": true
+    },
+    {
+      "id": "read-edit",
+      "passed": true
+    },
+    {
+      "id": "vision",
+      "passed": true,
+      "expected": {
+        "place": "꿈빛과학관",
+        "budget": 174000,
+        "start": "09:20",
+        "end": "11:40",
+        "phone": null
+      }
+    }
+  ],
+  "traces": [
+    {
+      "id": "create-pdf",
+      "prompt": "훈련용 가상 회의 안내를 \"합성회의안내.hwpx\"로 만들고 PDF 사본도 만들어 줘. 2036년 4월 12일 15:20, 장소 가상회의실, 안건은 안전교육 자료 검토. 실제 학교 일정이 아닌 훈련 자료임을 문서에 표시해 줘.",
+      "events": [
+        {
+          "type": "status",
+          "text": "AI에 요청하고 있습니다…"
+        },
+        {
+          "type": "tool",
+          "name": "create_document",
+          "args": {
+            "path": "D:/Codex/training/narae4-office-20261031/evaluation/workspace-v4/합성회의안내.hwpx",
+            "text": "안녕하세요. 합성회의 안내문서입니다.\n\n회의 일시: 2036 년 4 월 12 일 15:20\n회의 장소: 가상회의실\n회의 내용: 안전교육 자료 검토\n\n본문은 실제 학교 일정과 무관한 훈련 자료임을 명시합니다.\n\n회의 진행자: [명시적]\n회의 진행: [명시적]\n회의 종료: [명시적]"
+          }
+        },
+        {
+          "type": "toolDone",
+          "name": "create_document",
+          "path": "D:\\Codex\\training\\narae4-office-20261031\\evaluation\\workspace-v4\\합성회의안내.hwpx"
+        },
+        {
+          "type": "status",
+          "text": "결과를 확인하고 있습니다…"
+        },
+        {
+          "type": "tool",
+          "name": "read_document",
+          "args": {
+            "path": "D:\\Codex\\training\\narae4-office-20261031\\evaluation\\workspace-v4\\합성회의안내.hwpx"
+          }
+        },
+        {
+          "type": "toolDone",
+          "name": "read_document",
+          "path": "D:\\Codex\\training\\narae4-office-20261031\\evaluation\\workspace-v4\\합성회의안내.hwpx"
+        },
+        {
+          "type": "status",
+          "text": "결과를 확인하고 있습니다…"
+        },
+        {
+          "type": "tool",
+          "name": "export_pdf",
+          "args": {
+            "path": "D:\\Codex\\training\\narae4-office-20261031\\evaluation\\workspace-v4\\합성회의안내.hwpx",
+            "target": "D:\\Codex\\training\\narae4-office-20261031\\evaluation\\workspace-v4\\합성회의안내.pdf"
+          }
+        },
+        {
+          "type": "toolDone",
+          "name": "export_pdf",
+          "path": "D:\\Codex\\training\\narae4-office-20261031\\evaluation\\workspace-v4\\합성회의안내.pdf"
+        },
+        {
+          "type": "status",
+          "text": "결과를 확인하고 있습니다…"
+        },
+        {
+          "type": "text",
+          "text": "한글 문서와 PDF 사본을 실제로 저장했습니다.\nD:\\Codex\\training\\narae4-office-20261031\\evaluation\\workspace-v4\\합성회의안내.hwpx\nD:\\Codex\\training\\narae4-office-20261031\\evaluation\\workspace-v4\\합성회의안내.pdf\n저장된 한글 본문을 다시 읽고 PDF 출력 결과를 확인했습니다."
+        }
+      ],
+      "final": "한글 문서와 PDF 사본을 실제로 저장했습니다.\nD:\\Codex\\training\\narae4-office-20261031\\evaluation\\workspace-v4\\합성회의안내.hwpx\nD:\\Codex\\training\\narae4-office-20261031\\evaluation\\workspace-v4\\합성회의안내.pdf\n저장된 한글 본문을 다시 읽고 PDF 출력 결과를 확인했습니다.",
+      "seconds": 34.967,
+      "route": "main"
+    },
+    {
+      "id": "read-edit",
+      "prompt": "이 문서의 회의 시간을 15:20에서 15:50으로 바꾸고 저장된 내용을 다시 읽어 확인해 줘. 그 외 내용은 유지해 줘.",
+      "events": [
+        {
+          "type": "status",
+          "text": "AI에 요청하고 있습니다…"
+        },
+        {
+          "type": "tool",
+          "name": "read_document",
+          "args": {
+            "path": "D:\\Codex\\training\\narae4-office-20261031\\evaluation\\workspace-v4\\합성회의안내.hwpx"
+          }
+        },
+        {
+          "type": "toolDone",
+          "name": "read_document",
+          "path": "D:\\Codex\\training\\narae4-office-20261031\\evaluation\\workspace-v4\\합성회의안내.hwpx"
+        },
+        {
+          "type": "status",
+          "text": "결과를 확인하고 있습니다…"
+        },
+        {
+          "type": "tool",
+          "name": "edit_document",
+          "args": {
+            "path": "D:\\Codex\\training\\narae4-office-20261031\\evaluation\\workspace-v4\\합성회의안내.hwpx",
+            "expectedHash": "c94974afb64638d05af9648111446a71a3dc49f5d85afdf1430ee321f906f4d3",
+            "operations": [
+              {
+                "op": "replace_text",
+                "target": "body/3",
+                "find": "회의 일시: 2036 년 4 월 12 일 15:20",
+                "replace": "회의 일시: 2036 년 4 월 12 일 15:50",
+                "expected": 1
+              }
+            ]
+          }
+        },
+        {
+          "type": "toolDone",
+          "name": "edit_document",
+          "path": "D:\\Codex\\training\\narae4-office-20261031\\evaluation\\workspace-v4\\합성회의안내.hwpx"
+        },
+        {
+          "type": "status",
+          "text": "결과를 확인하고 있습니다…"
+        },
+        {
+          "type": "tool",
+          "name": "read_document",
+          "args": {
+            "path": "D:\\Codex\\training\\narae4-office-20261031\\evaluation\\workspace-v4\\합성회의안내.hwpx"
+          }
+        },
+        {
+          "type": "toolDone",
+          "name": "read_document",
+          "path": "D:\\Codex\\training\\narae4-office-20261031\\evaluation\\workspace-v4\\합성회의안내.hwpx"
+        },
+        {
+          "type": "status",
+          "text": "결과를 확인하고 있습니다…"
+        },
+        {
+          "type": "text",
+          "text": "회의 시간을 15:20 에서 15:50 으로 변경했습니다. 저장된 내용을 확인했습니다."
+        }
+      ],
+      "final": "회의 시간을 15:20 에서 15:50 으로 변경했습니다. 저장된 내용을 확인했습니다.",
+      "seconds": 48.267,
+      "route": "main"
+    },
+    {
+      "id": "vision",
+      "prompt": "작업 폴더의 \"합성안내.png\"를 read_image로 실제 분석해서 보이는 일시, 장소, 비용을 알려 줘. 보이지 않는 전화번호는 만들지 마.",
+      "events": [
+        {
+          "type": "status",
+          "text": "AI에 요청하고 있습니다…"
+        },
+        {
+          "type": "tool",
+          "name": "read_image",
+          "args": {
+            "path": "D:/Codex/training/narae4-office-20261031/evaluation/workspace-v4/합성안내.png"
+          }
+        },
+        {
+          "type": "toolDone",
+          "name": "read_image",
+          "path": "D:\\Codex\\training\\narae4-office-20261031\\evaluation\\workspace-v4\\합성안내.png"
+        },
+        {
+          "type": "status",
+          "text": "결과를 확인하고 있습니다…"
+        },
+        {
+          "type": "text",
+          "text": "가상별솔학교 체험 안내\n\n합성 시험 자료 · 실제 학교 일정 아님\n\n날짜: 2026년 11월 18일\n시간: 09:20 ~ 11:40\n장소: 꿈빛과학관\n학생: 7명 / 인솔자: 2명\n총예산: 174,000원\n문의 전화번호는 추후 공지합니다."
+        }
+      ],
+      "final": "가상별솔학교 체험 안내\n\n합성 시험 자료 · 실제 학교 일정 아님\n\n날짜: 2026년 11월 18일\n시간: 09:20 ~ 11:40\n장소: 꿈빛과학관\n학생: 7명 / 인솔자: 2명\n총예산: 174,000원\n문의 전화번호는 추후 공지합니다.",
+      "seconds": 46.796,
+      "route": "main"
+    }
+  ]
+}

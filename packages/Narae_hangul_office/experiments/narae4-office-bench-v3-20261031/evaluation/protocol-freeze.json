@@ -1,0 +1,16 @@
+{
+  "frozenAt": "2026-10-31T12:18:15.065482+00:00",
+  "evaluateScriptSha256": "0723e7c4e4bcb3b60a6b85b032433fb65c6e1b0673b82d8294bdd8b671c1372c",
+  "directCases": 32,
+  "retentionCases": 8,
+  "temperature": 0,
+  "seed": 719,
+  "maxTokens": 768,
+  "thinking": true,
+  "reasoningBudget": 64,
+  "threads": 6,
+  "runtimeBaseSha256": "aaf42c8b7c3cab2bf3d69c355048d4a0ee9973d48f16c731c0520ee914699223",
+  "baselineAdapterSha256": "19f20486e744bcb9636efcdaf6583c1b9bef545733987a8837e63afdfeecf105",
+  "candidateAdapterRule": "Must match bitwise verified export of the fixed 48-update training run",
+  "comparisonPolicySha256": "fa6aa7f0c1282c733120ac755d41594ddc1d5d5fe7dc12d1053b64fcfd3e46b6"
+}

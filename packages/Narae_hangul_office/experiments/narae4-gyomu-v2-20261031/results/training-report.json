@@ -1,0 +1,145 @@
+{
+  "model": "Narae4-Qwen3.5-2B-Gyomu-LoRA-v2",
+  "actual_weight_training": true,
+  "base": {
+    "repo": "Qwen/Qwen3.5-2B",
+    "revision": "15852e8c16360a2fea060d615a32b45270f8a8fc",
+    "destination": "D:/Codex/models/Qwen3.5-2B-HF",
+    "files": [
+      {
+        "path": "LICENSE",
+        "bytes": 11544,
+        "sha256": "bbedc3fda3305820b977265f01b8619d87570a6739de3a5582c3464840f1e57a"
+      },
+      {
+        "path": "README.md",
+        "bytes": 62814,
+        "sha256": "c0e83a849c776e6fa843d011f023132d942a0f0140d903205bf1c363adad2275"
+      },
+      {
+        "path": "chat_template.jinja",
+        "bytes": 7755,
+        "sha256": "273d8e0e683b885071fb17e08d71e5f2a5ddfb5309756181681de4f5a1822d80"
+      },
+      {
+        "path": "config.json",
+        "bytes": 2908,
+        "sha256": "ed1c1723241f23f7f4e23430759cbd7dcfb4103cbdfe052bfe7626b57c2615b4"
+      },
+      {
+        "path": "merges.txt",
+        "bytes": 3353259,
+        "sha256": "a9d356d7bdf1ef4949e3e748e95b8e10ad9d4e2e838eddc38a0a7b6b94d1db8d"
+      },
+      {
+        "path": "model.safetensors-00001-of-00001.safetensors",
+        "bytes": 4548221488,
+        "sha256": "aa33250c4fc64891ddfaba3a314fd9542ea371843c387178b425fbcc5ed680b1"
+      },
+      {
+        "path": "model.safetensors.index.json",
+        "bytes": 64460,
+        "sha256": "aca8afed9da75b0f050b408d270766fd77627f1af401e240f61c3b47d0db02f9"
+      },
+      {
+        "path": "preprocessor_config.json",
+        "bytes": 390,
+        "sha256": "27225450ac9c6529872ee1924fcb0962ff5634834f817040f444118116f4e516"
+      },
+      {
+        "path": "tokenizer.json",
+        "bytes": 12807982,
+        "sha256": "5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42"
+      },
+      {
+        "path": "tokenizer_config.json",
+        "bytes": 16709,
+        "sha256": "49e2b6e395f959f077f1e992b338919c0d4a9732fc6e613995e06557f843500c"
+      },
+      {
+        "path": "video_preprocessor_config.json",
+        "bytes": 385,
+        "sha256": "7768af27c1fafa9cc9011c1dc20067e03f8915e03b63504550e11d5066986d13"
+      },
+      {
+        "path": "vocab.json",
+        "bytes": 6722759,
+        "sha256": "ce99b4cb2983d118806ce0a8b777a35b093e2000a503ebde25853284c9dfa003"
+      }
+    ]
+  },
+  "optimizer_steps": 20,
+  "epochs": 2,
+  "train_dialogues": 40,
+  "validation_dialogues": 8,
+  "lora_rank": 16,
+  "lora_alpha": 32,
+  "layers": [
+    23
+  ],
+  "vision_tower_trained": false,
+  "decision_model_trained": false,
+  "dtype": "BF16 frozen prefix; FP32 suffix/head/LoRA",
+  "trainable_parameters": 638976,
+  "tensors_changed": 14,
+  "tensor_l2_changes": {
+    "base_model.model.model.language_model.layers.23.self_attn.q_proj.lora_A.default.weight": 0.05395132303237915,
+    "base_model.model.model.language_model.layers.23.self_attn.q_proj.lora_B.default.weight": 0.07851826399564743,
+    "base_model.model.model.language_model.layers.23.self_attn.k_proj.lora_A.default.weight": 0.055711615830659866,
+    "base_model.model.model.language_model.layers.23.self_attn.k_proj.lora_B.default.weight": 0.02843458764255047,
+    "base_model.model.model.language_model.layers.23.self_attn.v_proj.lora_A.default.weight": 0.06726131588220596,
+    "base_model.model.model.language_model.layers.23.self_attn.v_proj.lora_B.default.weight": 0.02898319810628891,
+    "base_model.model.model.language_model.layers.23.self_attn.o_proj.lora_A.default.weight": 0.07272136956453323,
+    "base_model.model.model.language_model.layers.23.self_attn.o_proj.lora_B.default.weight": 0.05910789221525192,
+    "base_model.model.model.language_model.layers.23.mlp.gate_proj.lora_A.default.weight": 0.06622779369354248,
+    "base_model.model.model.language_model.layers.23.mlp.gate_proj.lora_B.default.weight": 0.09824797511100769,
+    "base_model.model.model.language_model.layers.23.mlp.up_proj.lora_A.default.weight": 0.06600718200206757,
+    "base_model.model.model.language_model.layers.23.mlp.up_proj.lora_B.default.weight": 0.1022125631570816,
+    "base_model.model.model.language_model.layers.23.mlp.down_proj.lora_A.default.weight": 0.11432164162397385,
+    "base_model.model.model.language_model.layers.23.mlp.down_proj.lora_B.default.weight": 0.06022114306688309
+  },
+  "initial_loss": {
+    "train": 0.44326992554124445,
+    "validation": 0.44826452049892396
+  },
+  "final_loss": {
+    "train": 0.38930714601883665,
+    "validation": 0.3976095871767029
+  },
+  "prefix_equivalence": {
+    "full_loss": 0.07714666426181793,
+    "cached_loss": 0.07714666426181793,
+    "future_token_max_diff": 0.0
+  },
+  "adapter_sha256": "12610f9fea76558603951a1e54907314c2e4b95d64b86b57a1ad863f7a46a298",
+  "seconds": 2290.1125212000334,
+  "dataset": {
+    "frozenAt": "2026-10-31T04:24:36.997Z",
+    "syntheticOnly": true,
+    "privateSchoolData": false,
+    "train": 40,
+    "validation": 8,
+    "heldout": 16,
+    "split": "Unseen synthetic values and documents within the same eight workflow families; not unseen-domain generalization.",
+    "retention": 8,
+    "files": {
+      "train.jsonl": "9817a559ffd5f05ea927e5f310f94200a0ac60303b02b6bb0a6520ee79247e76",
+      "validation.jsonl": "20fead1470aae4e64487d52dbd6aec66b6b7351b614bd4c081d1cd71b893d911"
+    },
+    "heldoutSha256": "6d01d572942b81499abbcc4770fd4a631746ca74ebfe1befd8c8ce8954e6ab12",
+    "startingAdapter": "D:/Codex/training/narae4-office-20261031/outputs/Narae4-Qwen3.5-2B-Office-LoRA-v1/adapter",
+    "startingAdapterSha256": "3380c0dfbee1737fa7f741d5ec475efdbfbba15206e78373a93592f4c745fc4d"
+  },
+  "versions": {
+    "torch": "2.14.1",
+    "transformers": "5.20.1",
+    "peft": "0.21.2",
+    "safetensors": "0.8.0"
+  },
+  "scripts_sha256": {
+    "evaluate.cjs": "733c604bf78af42ee652dfd0e3cce6fc3ea9d234664b60fc061275c46b3ccedc",
+    "export.py": "900a408d5fd75f4c1078699f89694fee5df71b4bcd5691d1c21a32bd45949519",
+    "train.py": "61f44a129c26910de8cbe4b5cdf79d3c1026d67b748a49dba3b35e967cb85ea8",
+    "workflows.cjs": "0a1c883b41aac8cd9514fcb22004e2b86cbe4d8dbad39bfca4526de25bf94732"
+  }
+}

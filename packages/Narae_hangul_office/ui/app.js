@@ -1,5 +1,5 @@
 const $=id=>document.getElementById(id),call=(name,args)=>window.narae.call(name,args);let state,current,page=0,pageCount=0,running=false,assistant;
-function modelLabel(id){return ({narae1:'나래1 · 0.6B',narae2:'나래2 · 2.4B',narae3:'나래3 · 4B'})[id]||id||'AI 연결 설정 필요';}
+function modelLabel(id){return ({narae1:'나래1 · 0.6B',narae2:'나래2 · 2.4B',narae3:'나래3 · 4B',narae4:'나래4 · 2B + 판단기'})[id]||id||'AI 연결 설정 필요';}
 const status=text=>$('status').textContent=text;
 function message(role,text){const intro=document.querySelector('.chat-intro');if(intro)intro.remove();const item=document.createElement('div');item.className='message '+role;item.textContent=text;$('messages').append(item);item.scrollIntoView({block:'end'});return item;}
 function report(error){status(error.message||String(error));}

@@ -1,4 +1,4 @@
-"""Publish only verified GGUF weights, adapters, cards and licenses to Hugging Face."""
+"""Publish verified legacy Narae1/2/3 GGUF packages to Hugging Face."""
 import argparse,hashlib,json,os,tempfile
 from pathlib import Path
 
@@ -25,6 +25,9 @@ def publish(source,namespace=None,prepare_only=False,staging_root=None):
     # The allowlist never includes training datasets, conversations or credentials.
     results=[]
     for model in catalog['models']:
+        if model.get('decision') or model.get('projector'):
+            results.append({'id':model['id'],'uploaded':False,'skipped':True,'reason':'This legacy publisher handles two-file text packages only; preserve separately pinned hybrid component licenses and revisions.'})
+            continue
         folder=staging_root/('narae-hf-'+model['id']);folder.mkdir(exist_ok=True)
         for key in ('base','adapter'):
             spec=model[key];file=source/'models'/model['id']/spec['path']

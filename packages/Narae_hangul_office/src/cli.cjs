@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Agent-facing document commands. No Electron, provider login, or paid AI call.
+// Document jobs need no AI. The headless agent uses installed local models.
 const fs=require('node:fs'),path=require('node:path'),os=require('node:os');
 const {createHash,randomUUID}=require('node:crypto');
 const {runPython}=require('./python.cjs'),{NativeDocuments}=require('./native-documents.cjs');
@@ -38,9 +38,10 @@ async function lock(home,file,operation){
  fs.writeFileSync(path.join(target,'owner.json'),JSON.stringify({pid:process.pid,at:new Date().toISOString(),file}));
  try{return await operation();}finally{fs.rmSync(target,{recursive:true,force:true});}
 }
-async function execute(job,{base=process.cwd(),home=process.env.NARAE_OFFICE_HOME||path.join(process.env.LOCALAPPDATA||os.homedir(),'NaraeHangulOffice'),python=require('./runtime-python.cjs').resolvePython(root)}={}){
+async function execute(job,{base=process.cwd(),home=process.env.NARAE_OFFICE_HOME||path.join(process.env.LOCALAPPDATA||os.homedir(),'NaraeHangulOffice'),python=require('./runtime-python.cjs').resolvePython(root),signal}={}){
+ if(signal?.aborted)throw new Error('작업을 중지했습니다.');
  const req=normalize(job,base),action=req.action;
- if(action==='schema')return {schema:1,actions:['doctor','inspect','create','edit','insert-signature','export','open','list','live-read','live-edit','install-skill'],signature:{action:'insert-signature',required:['input','output','expected_input_sha256','image_path','anchor_text','x_mm','y_mm'],optional:['width_mm','height_mm','expected_count','occurrence'],placement:'paper top-left, mm; TreatAsChar=false; TextWrap=BehindText'},...require('./hwp-file-contracts.cjs')};
+ if(action==='schema')return {schema:1,actions:['doctor','inspect','create','edit','insert-signature','export','open','list','live-read','live-edit','install-skill'],agent:{command:'agent <job.json|-> [--result result.json]',required:['prompt','workspace'],defaultModel:'narae4',optional:['schema','model','context','history','allowChanges','save'],promptMaxChars:4000,historyMaxMessages:12,allowChangesDefault:false,source:'managed local models; same agent and school integrations as the app'},signature:{action:'insert-signature',required:['input','output','expected_input_sha256','image_path','anchor_text','x_mm','y_mm'],optional:['width_mm','height_mm','expected_count','occurrence'],placement:'paper top-left, mm; TreatAsChar=false; TextWrap=BehindText'},...require('./hwp-file-contracts.cjs')};
  if(action==='install-skill')return require('../scripts/install-skills.cjs').install({appRoot:root,directory:req.directory});
  if(action==='doctor'){
   const hancom=require('./hancom.cjs').discoverHancom(),available=fs.existsSync(python);
@@ -49,7 +50,7 @@ async function execute(job,{base=process.cwd(),home=process.env.NARAE_OFFICE_HOM
  }
  if(!fs.existsSync(python))throw new Error('앱 런타임이 없습니다. 설치.cmd를 실행하세요.');
  for(const folder of ['cache','data/backups','backups'])fs.mkdirSync(path.join(home,folder),{recursive:true});
- const native=new NativeDocuments(home,python),doc=input=>runPython(python,home,'documents.py',input);
+ const native=new NativeDocuments(home,python),doc=input=>runPython(python,home,'documents.py',input,signal);
  try{
   if(action==='list')return await native.list();
   require('./format-policy.cjs').assertDocument(req.path||'');
@@ -58,7 +59,7 @@ async function execute(job,{base=process.cwd(),home=process.env.NARAE_OFFICE_HOM
    if(action==='live-read'||action==='live-edit'){
     if(action==='live-edit'&&!req.liveRevision)throw new Error('직전 live-read의 liveRevision이 필요합니다.');
     await native.openFile(req.path);
-    return await native.withFileLock(req.path,()=>runPython(python,home,'live_hangul.py',{...req,action:action==='live-read'?'read':'edit',save:req.save!==false,backupDir:path.join(home,'backups')}));
+    return await native.withFileLock(req.path,()=>runPython(python,home,'live_hangul.py',{...req,action:action==='live-read'?'read':'edit',save:req.save!==false,backupDir:path.join(home,'backups')},signal));
    }
    if(action==='create')return {output:req.path,...await doc({...req,action:'create'})};
    if(action==='insert-signature'){
@@ -79,24 +80,29 @@ async function execute(job,{base=process.cwd(),home=process.env.NARAE_OFFICE_HOM
   });
  }finally{native.close();}
 }
-const usage='narae-office doctor | schema | install-skill | run <job.json|-> [--result result.json] | inspect <file> [--full] [--offset N --limit N] | live-read <file> | open <file> | list | export <file> --pdf <new.pdf>\ncreate/edit/live-edit: run 작업 JSON을 사용하세요. 기본 읽기는 compact JSON이며 --full로 전체 서식을 받습니다. 실패 종료코드는 1입니다.';
+const usage='narae-office doctor | schema | install-skill | agent-status | agent <job.json|-> [--result result.json] | run <job.json|-> [--result result.json] | inspect <file> [--full] [--offset N --limit N] | live-read <file> | open <file> | list | export <file> --pdf <new.pdf>\nagent JSON: {"prompt":"요청","workspace":"D:/Codex/workspaces/문서","model":"narae4","allowChanges":false}. 설치된 로컬 모델만 사용합니다. 변경·브라우저 조작은 allowChanges:true일 때 허용합니다.\ncreate/edit/live-edit: run 작업 JSON을 사용하세요. 기본 읽기는 compact JSON이며 --full로 전체 서식을 받습니다. 실패 종료코드는 1입니다.';
 async function main(argv=process.argv.slice(2)){
  let output,response;
  try{
-  if(!argv.length||['help','--help','-h'].includes(argv[0])){process.stdout.write(usage+'\n');return 0;}
+  if(!argv.length||['help','--help','-h'].includes(argv[0])){process.stdout.write(usage+'\nbench [run.json] [--result grade.json] · school-status · school-config config.json\n');return 0;}
   const args=[...argv],action=args.shift(),take=name=>{const i=args.indexOf(name);if(i<0)return undefined;if(!args[i+1])throw new Error(name+' 값이 필요합니다.');return args.splice(i,2)[1];};
   const result=take('--result'),fullIndex=args.indexOf('--full'),full=fullIndex>=0;
+  if(['school-config','school-status'].includes(action)){const login=require('./portal-login.cjs'),home=require('./agent-cli.cjs').defaultHome(),file=args.shift();if(args.length||action==='school-status'&&file)throw new Error('school-config 설정.json 또는 school-status 형식을 사용하세요.');response=action==='school-status'?await login.loadProfile('Status',login.config(home)):login.configure(home,JSON.parse(fs.readFileSync(absolute(file,process.cwd()),'utf8').replace(/^\uFEFF/,'')));response={success:true,...response};output=resultPath(result,{input:file},process.cwd());writeResult(output,response);process.stdout.write(JSON.stringify(response,null,2)+'\n');return 0;}
+  if(action==='bench'){const file=args.shift();if(args.length)throw new Error('bench [실행결과.json] [--result 결과.json] 형식을 사용하세요.');const benchmark=require('./office-benchmark.cjs');response=file?benchmark.readRun(file):benchmark.contract;response={success:file?response.passed:true,...response};output=resultPath(result,{input:file},process.cwd());writeResult(output,response);process.stdout.write(JSON.stringify(response,null,2)+'\n');return response.success?0:1;}
   if(full)args.splice(fullIndex,1);
   const offset=take('--offset'),limit=take('--limit');let job,base=process.cwd(),jobFile;
-  if(action==='run'){
+  if(action==='run'||action==='agent'){
    const file=args.shift();if(!file)throw new Error('작업 JSON 경로 또는 -를 지정하세요.');
    if(file!=='-'){jobFile=path.resolve(file);base=path.dirname(jobFile);}
    job=JSON.parse(fs.readFileSync(jobFile||0,'utf8').replace(/^\uFEFF/,''));
   }else{const pdf=take('--pdf');job={schema:1,action};if(!['doctor','schema','list','install-skill'].includes(action))job.path=args.shift();if(pdf)job.target=pdf;}
   if(full)job.full=true;if(offset!==undefined)job.offset=Number(offset);if(limit!==undefined)job.limit=Number(limit);
   if(args.length)throw new Error('알 수 없는 인자: '+args.join(' '));
-  output=resultPath(result,job,base,jobFile);
-  response={success:true,...await execute(job,{base})};
+  output=resultPath(result,action==='agent'?{...job,input:job.context?path.resolve(base,job.workspace,job.context):undefined}:job,base,jobFile);
+  if(action==='agent'||action==='agent-status'){
+   const agent=require('./agent-cli.cjs'),controller=new AbortController(),cancel=()=>controller.abort();process.once('SIGINT',cancel);
+   try{response={success:true,...await (action==='agent-status'?agent.status():agent.run(job,{base,signal:controller.signal,onEvent:event=>{if(event.type==='tool'||event.type==='status')process.stderr.write(JSON.stringify(event)+'\n');}}))};}finally{process.removeListener('SIGINT',cancel);}
+  }else response={success:true,...await execute(job,{base})};
  }catch(error){response={success:false,error:error.message};}
  try{writeResult(output,response);}catch(error){response={success:false,error:'결과 JSON 저장 실패: '+error.message,operationResult:response};}
  process.stdout.write(JSON.stringify(response,null,2)+'\n');return response.success?0:1;

@@ -1,0 +1,17 @@
+{
+  "frozenAt": "2026-10-31T04:24:36.997Z",
+  "syntheticOnly": true,
+  "privateSchoolData": false,
+  "train": 40,
+  "validation": 8,
+  "heldout": 16,
+  "split": "Unseen synthetic values and documents within the same eight workflow families; not unseen-domain generalization.",
+  "retention": 8,
+  "files": {
+    "train.jsonl": "9817a559ffd5f05ea927e5f310f94200a0ac60303b02b6bb0a6520ee79247e76",
+    "validation.jsonl": "20fead1470aae4e64487d52dbd6aec66b6b7351b614bd4c081d1cd71b893d911"
+  },
+  "heldoutSha256": "6d01d572942b81499abbcc4770fd4a631746ca74ebfe1befd8c8ce8954e6ab12",
+  "startingAdapter": "D:/Codex/training/narae4-office-20261031/outputs/Narae4-Qwen3.5-2B-Office-LoRA-v1/adapter",
+  "startingAdapterSha256": "3380c0dfbee1737fa7f741d5ec475efdbfbba15206e78373a93592f4c745fc4d"
+}

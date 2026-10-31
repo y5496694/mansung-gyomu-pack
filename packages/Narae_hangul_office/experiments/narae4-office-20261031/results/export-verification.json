@@ -1,0 +1,12 @@
+{
+  "model": "Narae4-Qwen3.5-2B-Office-LoRA-v1",
+  "tensor_count": 14,
+  "all_tensors_bitwise_equal": true,
+  "source_sha256": "3380c0dfbee1737fa7f741d5ec475efdbfbba15206e78373a93592f4c745fc4d",
+  "export_sha256": "19f20486e744bcb9636efcdaf6583c1b9bef545733987a8837e63afdfeecf105",
+  "export_bytes": 2557408,
+  "rank": 16,
+  "alpha": 32,
+  "converter_sha256": "ecfe41c32d788a58de9da64ba988b2c97d4131880ff838b1e4e5f641bd415d2e",
+  "scope": "Frozen BF16 training base versus Q4_K_M runtime is a quantization difference; runtime evaluation required."
+}

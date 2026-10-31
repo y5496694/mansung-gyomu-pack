@@ -1,0 +1,56 @@
+[
+  {
+    "id": "narae1",
+    "passed": true,
+    "response": {
+      "output": [
+        {
+          "type": "message",
+          "role": "assistant",
+          "content": [
+            {
+              "type": "output_text",
+              "text": "5"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "narae2",
+    "passed": true,
+    "response": {
+      "output": [
+        {
+          "type": "message",
+          "role": "assistant",
+          "content": [
+            {
+              "type": "output_text",
+              "text": "5"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "narae3",
+    "passed": true,
+    "response": {
+      "output": [
+        {
+          "type": "message",
+          "role": "assistant",
+          "content": [
+            {
+              "type": "output_text",
+              "text": "5"
+            }
+          ]
+        }
+      ]
+    }
+  }
+]

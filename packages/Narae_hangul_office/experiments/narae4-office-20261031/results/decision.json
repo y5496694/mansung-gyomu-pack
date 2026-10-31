@@ -1,0 +1,106 @@
+{
+  "syntheticOnly": true,
+  "actualNativeDecisionAPI": true,
+  "pairedMemory": [
+    {
+      "Id": 15668,
+      "WorkingSet64": 2018852864,
+      "PeakWorkingSet64": 2018852864,
+      "PrivateMemorySize64": 977752064
+    },
+    {
+      "Id": 36916,
+      "WorkingSet64": 1935462400,
+      "PeakWorkingSet64": 1935462400,
+      "PrivateMemorySize64": 1136812032
+    }
+  ],
+  "pairedRssBytes": 3954315264,
+  "rows": [
+    {
+      "id": "query-before-paging",
+      "route": "decision",
+      "decisionRunning": true,
+      "seconds": 5.088,
+      "passed": true,
+      "response": {
+        "output": [
+          {
+            "type": "function_call",
+            "name": "gyomu_browser",
+            "arguments": "{\"action\":\"click\",\"ref\":\"s5/e0\"}",
+            "call_id": "b994d751-0635-443e-a338-311b5c4bc4b3"
+          }
+        ]
+      }
+    },
+    {
+      "id": "page-next",
+      "route": "decision",
+      "decisionRunning": true,
+      "seconds": 0.922,
+      "passed": true,
+      "response": {
+        "output": [
+          {
+            "type": "function_call",
+            "name": "gyomu_browser",
+            "arguments": "{\"action\":\"click\",\"ref\":\"s5/e1\"}",
+            "call_id": "2a94aa93-7926-4b49-b0b0-9e7027573f75"
+          }
+        ]
+      }
+    },
+    {
+      "id": "no-final-auto-route",
+      "passed": true
+    },
+    {
+      "id": "decision-to-vision",
+      "passed": true,
+      "vision": true,
+      "decisionRunning": false,
+      "memory": [
+        {
+          "Id": 30672,
+          "WorkingSet64": 2901917696,
+          "PeakWorkingSet64": 2909204480,
+          "PrivateMemorySize64": 2019692544
+        }
+      ],
+      "response": {
+        "output": [
+          {
+            "type": "message",
+            "role": "assistant",
+            "content": [
+              {
+                "type": "output_text",
+                "text": "꿈빛과학관"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "vision-to-text",
+      "passed": true,
+      "vision": false,
+      "response": {
+        "output": [
+          {
+            "type": "message",
+            "role": "assistant",
+            "content": [
+              {
+                "type": "output_text",
+                "text": "2"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

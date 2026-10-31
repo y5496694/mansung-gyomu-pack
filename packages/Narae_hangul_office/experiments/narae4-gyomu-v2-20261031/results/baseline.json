@@ -1,0 +1,275 @@
+{
+  "mode": "baseline",
+  "scope": "Direct model choices without bounded executor; synthetic unseen values in known workflow families",
+  "total": 16,
+  "passed": 5,
+  "results": [
+    {
+      "id": "cbe-body-5",
+      "kind": "cbe-body",
+      "passed": false,
+      "response": {
+        "output": [
+          {
+            "type": "function_call",
+            "name": "gyomu_cbe_notes",
+            "arguments": "{\"operation\":\"read\",\"box\":\"received\",\"id\":\"fixture-7305a\"}",
+            "call_id": "614ed1bb-58d7-43ef-80ec-15253fb359a0"
+          }
+        ]
+      },
+      "seconds": 7.461
+    },
+    {
+      "id": "progress-5",
+      "kind": "progress",
+      "passed": false,
+      "response": {
+        "output": [
+          {
+            "type": "function_call",
+            "name": "gyomu_browser",
+            "arguments": "{\"action\":\"read\",\"ref\":\"r51\"}",
+            "call_id": "ef2d7f98-cfc9-4e46-8d40-7f04923fbe04"
+          }
+        ]
+      },
+      "seconds": 8.619
+    },
+    {
+      "id": "attachment-5",
+      "kind": "attachment",
+      "passed": false,
+      "response": {
+        "output": [
+          {
+            "type": "function_call",
+            "name": "gyomu_wxs_read",
+            "arguments": "{\"operation\":\"result\",\"id\":\"fixture-7305\"}",
+            "call_id": "24767067-f575-4aaf-a800-336fc19e73e2"
+          }
+        ]
+      },
+      "seconds": 8.431
+    },
+    {
+      "id": "draft-5",
+      "kind": "draft",
+      "passed": true,
+      "response": {
+        "output": [
+          {
+            "type": "function_call",
+            "name": "gyomu_wxs_save",
+            "arguments": "{\"hwnd\":\"91005\",\"expected_title\":\"가상 생태교육 준비 7305\",\"name\":\"가상 생태교육 준비 7305\"}",
+            "call_id": "2e24c89d-6090-4a42-8ea4-c16fb296ff53"
+          }
+        ]
+      },
+      "seconds": 10.125
+    },
+    {
+      "id": "neis-5",
+      "kind": "neis",
+      "passed": false,
+      "error": "로컬 AI 응답이 중단되거나 길이 한도에 도달했습니다. 요청을 나누세요.",
+      "seconds": 40.23
+    },
+    {
+      "id": "tracked-5",
+      "kind": "tracked",
+      "passed": true,
+      "response": {
+        "output": [
+          {
+            "type": "function_call",
+            "name": "read_live_document",
+            "arguments": "{\"path\":\"D:/Codex/training/synthetic-gyomu/준비-5.hwpx\"}",
+            "call_id": "e2af31eb-f1d9-4ef0-a18b-3b3ca834d887"
+          }
+        ]
+      },
+      "seconds": 9.565
+    },
+    {
+      "id": "partial-summary-5",
+      "kind": "partial-summary",
+      "passed": true,
+      "response": {
+        "output": [
+          {
+            "type": "message",
+            "role": "assistant",
+            "content": [
+              {
+                "type": "output_text",
+                "text": "공문 제목: 가상 생태교육 준비 7305\n\n제출 기한: 2034-04-16\n\n할 일: 가상 생태교육 준비 (첨부 파일: 준비-5.hwpx)\n\n첨부 파일: 준비-5.hwpx\n\n주의: 첨부 파일은 암호화되어 있어 사용자 인증이 필요합니다."
+              }
+            ]
+          }
+        ]
+      },
+      "seconds": 10.862
+    },
+    {
+      "id": "progress-summary-5",
+      "kind": "progress-summary",
+      "passed": false,
+      "response": {
+        "output": [
+          {
+            "type": "message",
+            "role": "assistant",
+            "content": [
+              {
+                "type": "output_text",
+                "text": "가상 생태교육 준비 7305 문서의 현재 결재 상태는 '결재중'이며, 현재 결재자는 '가상교감'입니다. 본문은 열지 않았습니다."
+              }
+            ]
+          }
+        ]
+      },
+      "seconds": 10.006
+    },
+    {
+      "id": "cbe-body-6",
+      "kind": "cbe-body",
+      "passed": false,
+      "response": {
+        "output": [
+          {
+            "type": "function_call",
+            "name": "gyomu_cbe_notes",
+            "arguments": "{\"operation\":\"list\",\"box\":\"received\",\"limit\":2}",
+            "call_id": "04f39448-a0a2-4bf7-8113-5354581229cd"
+          }
+        ]
+      },
+      "seconds": 7.196
+    },
+    {
+      "id": "progress-6",
+      "kind": "progress",
+      "passed": false,
+      "response": {
+        "output": [
+          {
+            "type": "function_call",
+            "name": "gyomu_browser",
+            "arguments": "{\"action\":\"read\",\"ref\":\"r61\"}",
+            "call_id": "25c37eef-32bc-494b-9e3f-f8ea8ae82f0f"
+          }
+        ]
+      },
+      "seconds": 9.34
+    },
+    {
+      "id": "attachment-6",
+      "kind": "attachment",
+      "passed": false,
+      "response": {
+        "output": [
+          {
+            "type": "message",
+            "role": "assistant",
+            "content": [
+              {
+                "type": "output_text",
+                "text": "가상 생태교육 준비 7306\n\n마감일: 2034-04-17\n\n첨부 파일: 준비-6.hwpx"
+              }
+            ]
+          }
+        ]
+      },
+      "seconds": 8.737
+    },
+    {
+      "id": "draft-6",
+      "kind": "draft",
+      "passed": true,
+      "response": {
+        "output": [
+          {
+            "type": "function_call",
+            "name": "gyomu_wxs_save",
+            "arguments": "{\"hwnd\":\"91006\",\"expected_title\":\"가상 생태교육 준비 7306\",\"name\":\"가상 생태교육 준비 7306\"}",
+            "call_id": "41bf4ee8-ef91-4694-bb46-3c73e8ebe065"
+          }
+        ]
+      },
+      "seconds": 10.002
+    },
+    {
+      "id": "neis-6",
+      "kind": "neis",
+      "passed": false,
+      "response": {
+        "output": [
+          {
+            "type": "function_call",
+            "name": "gyomu_browser",
+            "arguments": "{\"action\":\"snapshot\"}",
+            "call_id": "7b6845ca-2549-41c4-9000-c13837a67ef0"
+          }
+        ]
+      },
+      "seconds": 7.763
+    },
+    {
+      "id": "tracked-6",
+      "kind": "tracked",
+      "passed": true,
+      "response": {
+        "output": [
+          {
+            "type": "function_call",
+            "name": "read_live_document",
+            "arguments": "{\"path\":\"D:/Codex/training/synthetic-gyomu/준비-6.hwpx\"}",
+            "call_id": "4a4f97e3-d240-48fd-820e-f22fcf8e91e5"
+          }
+        ]
+      },
+      "seconds": 9.369
+    },
+    {
+      "id": "partial-summary-6",
+      "kind": "partial-summary",
+      "passed": false,
+      "response": {
+        "output": [
+          {
+            "type": "message",
+            "role": "assistant",
+            "content": [
+              {
+                "type": "output_text",
+                "text": "공문 제목: 가상 생태교육 준비 7306\n\n제출 기한: 2034-04-17\n\n할 일: 가상 생태교육 준비 (문서 본문에 명시된 내용 없음)"
+              }
+            ]
+          }
+        ]
+      },
+      "seconds": 9.679
+    },
+    {
+      "id": "progress-summary-6",
+      "kind": "progress-summary",
+      "passed": false,
+      "response": {
+        "output": [
+          {
+            "type": "message",
+            "role": "assistant",
+            "content": [
+              {
+                "type": "output_text",
+                "text": "가상 생태교육 준비 7306 문서의 현재 결재 상태는 '결재중'이며, 현재 결재자는 '가상교감'입니다. 본문은 열지 않았습니다."
+              }
+            ]
+          }
+        ]
+      },
+      "seconds": 9.652
+    }
+  ]
+}

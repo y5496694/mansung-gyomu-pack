@@ -30,3 +30,8 @@ test('an attachment must be read and unrequested dates cannot enter its covering
  assert.throws(()=>validateWxsBody('첨부 계획으로 기안 작성',records,args),/2025-04-01/);
  assert.doesNotThrow(()=>validateWxsBody('첨부 계획으로 기안 작성',records,{config:{attachments:[file],body:'2026-11-13 현장체험학습 계획을 붙임과 같이 수립합니다.'}}));
 });
+test('an existing-draft save is followed by readback and cannot be saved or rewritten twice',()=>{
+ const records=[],record=(name,args,value)=>{const id=String(records.length);records.push({type:'function_call',name,arguments:JSON.stringify(args),call_id:id},{type:'function_call_output',call_id:id,output:JSON.stringify(value)});};
+ record('gyomu_wxs_save',{hwnd:'731',expected_title:'가상 보존 기안',name:'가상 보존 기안'},{ok:true,result:{saved:true}});let s=wxsStep('현재 열린 WXS 기안 임시저장',records,{tools:all},{area:'edufine'});assert.equal(s.required,true);assert.deepEqual(s.tools[0].parameters.properties.operation.enum,['draft-status']);record('gyomu_wxs',{operation:'draft-status',hwnd:'731'},{title:'가상 보존 기안',body:'원문',saved:true});s=wxsStep('현재 열린 WXS 기안 임시저장',records,{tools:all},{area:'edufine'});assert(!s.tools.some(t=>['gyomu_wxs_save','gyomu_wxs_prepare'].includes(t.name)));
+ records[1].output=JSON.stringify({error:'저장 응답을 확인하지 못했습니다.'});s=wxsStep('현재 열린 WXS 기안 임시저장',records,{tools:all},{area:'edufine'});assert.match(s.receipt,/반복하거나 상신하지/);assert.equal(s.tools.length,0);
+});

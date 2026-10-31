@@ -1,0 +1,14 @@
+{
+  "syntheticOnly": true,
+  "privateSchoolData": false,
+  "counts": {
+    "train": 32,
+    "validation": 3
+  },
+  "heldoutTemplatesShared": false,
+  "sourceNarae3TrainSha256": "0163fd047171cfcfe946f3fa36ba1536b358d4365e960913a1cda9e09fa5bab5",
+  "files": {
+    "train.jsonl": "180811a1436985420323630d790966d91a7c55e964d47d34b6c6ebc873a03f9a",
+    "validation.jsonl": "cf1b9ae42d9d8a7aa82f20ddadc29a0d51c90e12354d7c520b44e270ac002aaa"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "at": "2026-10-31T01:35:29.618Z",
+  "beforeTraining": true,
+  "changes": [
+    {
+      "id": "amount-edit",
+      "before": false,
+      "after": true
+    },
+    {
+      "id": "failed-save",
+      "before": false,
+      "after": true
+    }
+  ],
+  "reason": "Accept schema-valid equivalent replace_text, and truthful 미저장 answers. Inputs and target task unchanged. The same evaluator applies to baseline and trained candidate."
+}

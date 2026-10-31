@@ -12,7 +12,7 @@ $running=@(Get-CimInstance Win32_Process | Where-Object {$_.ExecutablePath -and 
 if($running.Count){throw '트레이의 나래 한글 오피스 아이콘에서 완전히 종료를 선택한 뒤 다시 설치하세요.'}
 New-Item -ItemType Directory -Path $InstallRoot -Force | Out-Null
 if($sourceRoot -ne $InstallRoot){
-    foreach($name in @('src','ui','vendor','skills','scripts','docs','resources','package.json','package-lock.json','requirements.txt','LICENSE','README.md','THIRD_PARTY_NOTICES.md','narae-office.cmd')){
+    foreach($name in @('src','ui','vendor','skills','scripts','docs','resources','experiments','package.json','package-lock.json','requirements.txt','LICENSE','README.md','THIRD_PARTY_NOTICES.md','narae-office.cmd')){
         $source=Join-Path $sourceRoot $name
         if(Test-Path -LiteralPath $source){Copy-Item -LiteralPath $source -Destination $InstallRoot -Recurse -Force}
     }

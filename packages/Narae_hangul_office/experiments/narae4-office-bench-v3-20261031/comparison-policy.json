@@ -1,0 +1,15 @@
+{
+  "frozenBeforeEvaluation": true,
+  "directCases": 32,
+  "retentionCases": 8,
+  "candidateQualityChecks": [
+    "direct_total_not_lower_than_baseline",
+    "original_sixteen_cases_not_lower_than_baseline",
+    "retention_not_lower_than_baseline",
+    "both_unknown_login_cases_pass"
+  ],
+  "defaultAdapter": "Narae4-Qwen3.5-2B-Office-LoRA-v1",
+  "defaultAdapterSha256": "19f20486e744bcb9636efcdaf6583c1b9bef545733987a8837e63afdfeecf105",
+  "fullTenTaskReleaseGateRequired": true,
+  "syntheticEvaluationCanGrantLiveReleasePass": false
+}

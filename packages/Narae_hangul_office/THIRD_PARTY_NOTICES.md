@@ -29,6 +29,8 @@ The source archive does not bundle Electron, Python wheels or ant executables. T
 
 ## 선택 설치 로컬 AI
 
-llama.cpp CPU runtime b11669: https://github.com/ggml-org/llama.cpp · MIT. 공식 배포 ZIP과 실행 파일의 SHA256을 검사해 별도로 설치합니다.
+llama.cpp CPU runtime b11960: https://github.com/ggml-org/llama.cpp · MIT. 공식 배포 ZIP과 실행 파일의 SHA256을 검사해 별도로 설치합니다.
 
 모델 가중치는 앱 소스와 별도이며 각 원본 조건을 따릅니다. 나래1·3은 Qwen Apache-2.0, 나래2는 EXAONE 1.1 NC 연구·평가용입니다. 원문 이용조건은 resources/model-licenses 및 각 Hugging Face 모델 저장소의 LICENSE에 유지합니다. 앱의 MIT가 모델 이용조건을 대체하지 않습니다.
+
+나래4는 Qwen3.5-2B 본체와 Office LoRA(Apache-2.0), 별도로 호출되는 LiquidAI/d1-2B 판단기(LFM Open License v1.0)를 사용합니다. 두 모델의 가중치를 합친 sparse MoE는 아닙니다. 각 원문은 resources/model-licenses/Narae4-LICENSE.txt에 유지합니다.

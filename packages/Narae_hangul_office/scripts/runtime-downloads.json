@@ -12,10 +12,10 @@
     "manifest": "https://www.python.org/ftp/python/3.13.17/windows-3.13.17.json"
   },
   "llama": {
-    "version": "b11669",
-    "url": "https://github.com/ggml-org/llama.cpp/releases/download/b11669/llama-b11669-bin-win-cpu-x64.zip",
-    "sha256": "37b3efcf962847ca869745fd4ccf7f5e7e8dacfeff9fa3523b4ca8cdc66d632b",
-    "bytes": 19537886,
-    "executableSha256": "6a4635aeb35656153d4bfeeddf761d24ed84aada9c9108d580737cbed465141b"
+    "version": "b11960",
+    "url": "https://github.com/ggml-org/llama.cpp/releases/download/b11960/llama-b11960-bin-win-cpu-x64.zip",
+    "sha256": "73f962f82850d244db47eaacb9d913637027b82399124324298576d58c5f4287",
+    "bytes": 24407745,
+    "executableSha256": "81f65c6681d66099e5d48757aa2c050ba958dc43816e584f0bb4181eb7c910d8"
   }
 }

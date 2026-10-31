@@ -1,0 +1,132 @@
+{
+  "model": "narae4",
+  "syntheticOnly": true,
+  "results": [
+    {
+      "id": "browser-end-to-end",
+      "passed": true,
+      "steps": 15,
+      "state": {
+        "category": "연가",
+        "type": "조퇴",
+        "date": "2026-10-30",
+        "start": "14:30",
+        "end": "16:30",
+        "reason": "합성 검증",
+        "route": true,
+        "sent": false
+      },
+      "answer": "연가/조퇴 초안의 입력값과 결재선을 최종 준비 화면에서 확인했습니다.\n2026-10-30 14:30~16:30 · 사유: 합성 검증\n결재선: 1 검토자A 합성학교 검토\n2 결재자B 합성학교 결재\n최종 상신하지 않았습니다. 화면의 준비 상태를 유지합니다. 별도 임시저장 여부는 확인하지 않았습니다."
+    }
+  ],
+  "events": [
+    {
+      "name": "gyomu_browser",
+      "args": {
+        "action": "snapshot"
+      }
+    },
+    {
+      "name": "gyomu_browser",
+      "args": {
+        "action": "click",
+        "ref": "s5/e1"
+      }
+    },
+    {
+      "name": "gyomu_browser",
+      "args": {
+        "action": "click",
+        "ref": "s8/e1"
+      }
+    },
+    {
+      "name": "gyomu_browser",
+      "args": {
+        "action": "click",
+        "ref": "s11/e1"
+      }
+    },
+    {
+      "name": "gyomu_browser",
+      "args": {
+        "action": "click",
+        "ref": "s14/e1"
+      }
+    },
+    {
+      "name": "gyomu_browser",
+      "args": {
+        "action": "click",
+        "ref": "s17/e1"
+      }
+    },
+    {
+      "name": "gyomu_browser",
+      "args": {
+        "action": "click",
+        "ref": "s20/e2"
+      }
+    },
+    {
+      "name": "gyomu_browser",
+      "args": {
+        "action": "fill",
+        "ref": "s23/e2",
+        "text": "2026-10-30"
+      }
+    },
+    {
+      "name": "gyomu_browser",
+      "args": {
+        "action": "fill",
+        "ref": "s25/e3",
+        "text": "14:30"
+      }
+    },
+    {
+      "name": "gyomu_browser",
+      "args": {
+        "action": "fill",
+        "ref": "s27/e4",
+        "text": "16:30"
+      }
+    },
+    {
+      "name": "gyomu_browser",
+      "args": {
+        "action": "fill",
+        "ref": "s29/e5",
+        "text": "합성 검증"
+      }
+    },
+    {
+      "name": "gyomu_browser",
+      "args": {
+        "action": "click",
+        "ref": "s31/e6"
+      }
+    },
+    {
+      "name": "gyomu_browser",
+      "args": {
+        "action": "click",
+        "ref": "s34/e1"
+      }
+    },
+    {
+      "name": "gyomu_browser",
+      "args": {
+        "action": "click",
+        "ref": "s37/e1"
+      }
+    },
+    {
+      "name": "gyomu_browser",
+      "args": {
+        "action": "click",
+        "ref": "s40/e1"
+      }
+    }
+  ]
+}

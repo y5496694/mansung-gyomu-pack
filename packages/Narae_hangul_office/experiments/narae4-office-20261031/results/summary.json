@@ -1,0 +1,147 @@
+{
+  "date": "2026-10-31",
+  "applicationVersion": "0.13.0-preview.17",
+  "model": "Narae4-Qwen3.5-2B-Office-LoRA-v1",
+  "experimental": true,
+  "actualWeightTraining": true,
+  "optimizerUpdates": 16,
+  "trainableParameters": 638976,
+  "changedTensors": 14,
+  "initialValidationLoss": 1.5709691022833188,
+  "finalValidationLoss": 1.5502891664703686,
+  "heldout": {
+    "before": {
+      "passed": 7,
+      "total": 8
+    },
+    "after": {
+      "passed": 7,
+      "total": 8
+    },
+    "accuracyImprovementObserved": false
+  },
+  "office": [
+    {
+      "id": "create-pdf",
+      "passed": true
+    },
+    {
+      "id": "read-edit",
+      "passed": true
+    },
+    {
+      "id": "vision",
+      "passed": true,
+      "expected": {
+        "place": "꿈빛과학관",
+        "budget": 174000,
+        "start": "09:20",
+        "end": "11:40",
+        "phone": null
+      }
+    }
+  ],
+  "decision": [
+    {
+      "id": "query-before-paging",
+      "passed": true
+    },
+    {
+      "id": "page-next",
+      "passed": true
+    },
+    {
+      "id": "no-final-auto-route",
+      "passed": true
+    },
+    {
+      "id": "decision-to-vision",
+      "passed": true
+    },
+    {
+      "id": "vision-to-text",
+      "passed": true
+    }
+  ],
+  "desktop": {
+    "version": "0.13.0-preview.17",
+    "model": "narae4",
+    "modelCardPresent": true,
+    "documentCreated": true,
+    "contentVerified": true
+  },
+  "legacyModels": [
+    {
+      "id": "narae1",
+      "passed": true,
+      "response": {
+        "output": [
+          {
+            "type": "message",
+            "role": "assistant",
+            "content": [
+              {
+                "type": "output_text",
+                "text": "5"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "narae2",
+      "passed": true,
+      "response": {
+        "output": [
+          {
+            "type": "message",
+            "role": "assistant",
+            "content": [
+              {
+                "type": "output_text",
+                "text": "5"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "narae3",
+      "passed": true,
+      "response": {
+        "output": [
+          {
+            "type": "message",
+            "role": "assistant",
+            "content": [
+              {
+                "type": "output_text",
+                "text": "5"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "unitTests": {
+    "passed": 187,
+    "failed": 0
+  },
+  "realEdufine": {
+    "authenticationAndEntryVerified": true,
+    "registerListVerified": false,
+    "errorKind": null,
+    "readOnly": true,
+    "privateDataUsedForTraining": false
+  },
+  "installedModelDirectory": "D:/Codex/models/narae-office/narae4",
+  "modelFilesBytes": 3051250400,
+  "pairedRssBytes": 3954315264,
+  "visionModelPeakRssBytes": 2909204480,
+  "visionTowerTrained": false,
+  "decisionWeightsTrained": false,
+  "weightsPublished": false
+}

@@ -1,6 +1,7 @@
 """Local HWP/HWPX engine; PDF is an internal Hancom preview/output only."""
 import base64,hashlib,json,os,shutil,subprocess,sys,tempfile,uuid
 from pathlib import Path
+from contextlib import closing
 from hwp_revision import revision_state
 APP=Path(os.environ.get('NARAE_OFFICE_HOME',str(Path.home()/'AppData/Local/NaraeHangulOffice')))
 CACHE=APP/'cache';CACHE.mkdir(parents=True,exist_ok=True)
@@ -29,7 +30,7 @@ def hangul_job(job):
 
 def open_pdf(p, req):
     import io,pypdfium2
-    with pypdfium2.PdfDocument(p) as doc:
+    with closing(pypdfium2.PdfDocument(p)) as doc:
         number=min(max(0,int(req.get('page',0))),len(doc)-1)
         page=doc[number]
         try:
@@ -165,7 +166,7 @@ def export(req):
             from hangul_preview import export_pages
             export_pages(source,generated)
         import pypdfium2
-        with pypdfium2.PdfDocument(generated) as pdf:
+        with closing(pypdfium2.PdfDocument(generated)) as pdf:
             pages=len(pdf)
             if not pages:raise ValueError('한글 출력에 쪽이 없습니다.')
         if (sha(target) if target.exists() else None)!=existing:raise ValueError('출력 대상이 다른 프로그램에서 변경되었습니다.')
