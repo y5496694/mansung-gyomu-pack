@@ -21,6 +21,15 @@ test('Office exposes exactly one login tool after importing the shared portal ve
  try{const tools=await integration.tools();assert.equal(tools.filter(t=>t.name==='gyomu_portal_login').length,1);assert.equal(new Set(tools.map(t=>t.name)).size,tools.length);}
  finally{await integration.close();fs.rmSync(home,{recursive:true,force:true});}
 });
+
+test('a runtime authentication error exposes only the bounded stage and submit flag',async()=>{
+ const previous=portal.login,secret='SYNTHETIC_PRIVATE_ERROR';
+ const integration=new OfficeIntegrations({home:'D:/Codex/tmp',settings:()=>({}),policy:{approve:async()=>{}}});
+ integration.ready=async()=>{};integration.instance={browser:{closed:false}};
+ portal.login=async(_args,{state})=>{state.stage='certificate_open';state.attempted=true;throw Error(secret);};
+ try{const result=await integration.execute('gyomu_portal_login',{operation:'login'});assert.equal(result.failureStage,'certificate_open');assert.equal(result.certificateSubmitted,false);assert(!JSON.stringify(result).includes(secret));}
+ finally{portal.login=previous;}
+});
 test('an unknown login result ends the agent handoff without asking the model to submit again',async()=>{
  const {run}=require('../src/agent-cli.cjs'),home=fs.mkdtempSync('D:/Codex/tmp/office-login-unknown-');let requests=0,executions=0;
  try{

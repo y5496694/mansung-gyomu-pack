@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="local-ai.css">
 <link rel="stylesheet" href="remote.css">
 <link rel="stylesheet" href="agent.css">
+<link rel="stylesheet" href="benchmark.css">
 <link rel="stylesheet" href="brand.css">
 <link rel="stylesheet" href="settings.css">
 <link rel="stylesheet" href="guide.css">
@@ -72,6 +73,7 @@
 <p>선생님의 업무를 도와주는<br>나래 에이전트입니다.</p>
 <p>한글문서, 메신저, 업무포탈<br>업무를 도와드려요.</p>
 <button id="agentUserGuide" type="button" class="text-button">나래3 사용 안내 ›</button>
+<button id="agentBenchmark" type="button" class="text-button">필수 업무 벤치 10개 ›</button>
 </div>
   <div class="agent-sidebar-bottom">
    <div class="agent-preferences">
@@ -111,6 +113,12 @@
 
 
 
+<dialog id="officeBenchDialog" aria-labelledby="officeBenchTitle">
+ <div class="bench-heading"><div><h2 id="officeBenchTitle">나래오피스 필수 업무 벤치</h2><p>모든 과제의 모든 조건을 확인해야 전체 합격입니다.</p></div><button id="closeOfficeBench" type="button" aria-label="벤치 목록 닫기">닫기</button></div>
+ <p id="officeBenchSummary" role="status"></p><p id="officeBenchNotice" role="alert" hidden></p>
+ <div class="bench-actions"><button id="refreshOfficeBench" type="button">새로고침</button><button id="copyOfficeBench" type="button">목록 복사</button><button id="importOfficeBench" type="button">검증 기록 불러오기</button></div>
+ <div id="officeBenchTasks" class="bench-tasks"></div>
+</dialog>
 <dialog id="settingsDialog" aria-labelledby="settingsTitle">
  <div class="settings-shell">
   <aside class="settings-sidebar"><div class="settings-brand">
@@ -225,6 +233,6 @@
  </div>
 </dialog>
 <dialog id="approvalDialog" aria-labelledby="approvalTitle"><div class="approval-heading"><img src="assets/narae-office.png" width="40" height="40" alt=""><div><small>나래 에이전트</small><h2 id="approvalTitle">도구 실행 승인</h2></div><button id="approvalClose" type="button" aria-label="거절하고 닫기">×</button></div><p>요청한 작업과 내용을 확인해 주세요.</p><section id="remoteApproval" hidden><pre id="remoteApprovalDetails"></pre><div class="button-row"><button id="remoteDeny" type="button">거절</button><button id="remoteAllow" type="button" class="primary">이 작업 허용</button></div></section><section id="telegramApproval" hidden><pre id="telegramApprovalDetails"></pre><div class="button-row"><button id="telegramDeny" type="button">거절</button><button id="telegramAllow" type="button" class="primary">이 작업 허용</button></div></section><p id="approvalError" role="alert"></p><small>설정 → 일반에서 모든 도구 실행 자동 허용을 선택할 수 있습니다.</small></dialog>
-<script src="settings.js"></script><script src="narae3-guide-data.js"></script><script src="guide.js"></script><script src="browser-settings.js"></script><script src="app.js"></script><script src="remote.js"></script><script src="agent.js"></script><script src="local-ai.js"></script><script src="telegram.js"></script><script src="approval.js"></script><script src="quick-window.js"></script>
+<script src="settings.js"></script><script src="narae3-guide-data.js"></script><script src="guide.js"></script><script src="browser-settings.js"></script><script src="app.js"></script><script src="remote.js"></script><script src="agent.js"></script><script src="benchmark.js"></script><script src="local-ai.js"></script><script src="telegram.js"></script><script src="approval.js"></script><script src="quick-window.js"></script>
 </body>
 </html>

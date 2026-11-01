@@ -117,6 +117,8 @@ const methods={
  telegramOpenPair:()=>{const url=telegram.status().pairURL;if(!url)throw new Error('내 계정 연결 링크를 먼저 만드세요.');return shell.openExternal(url);},
  agentView:({channel})=>{if(!['kakao','telegram'].includes(channel))throw new Error('대화 채널을 확인하세요.');activeAgentChannel=channel;agentChanged();return agentState();},
  agentState,
+ officeBenchStatus:()=>require('./office-bench-status.cjs').status({home}),
+ officeBenchImport:async()=>{const picked=await dialog.showOpenDialog(window,{properties:['openFile'],title:'필수 벤치 실행 기록 선택',filters:[{name:'JSON 실행 기록',extensions:['json']}]});return picked.canceled?require('./office-bench-status.cjs').status({home}):require('./office-bench-status.cjs').register(picked.filePaths[0],{home});},
  agentSend:async({prompt})=>{try{return await agentChat(prompt);}finally{await remote?.syncConversation().catch(()=>{});}},
  agentTools:()=>integrations.tools(),
  openNaraeChannel:()=>shell.openExternal('https://pf.kakao.com/_xjgxfWX/chat'),

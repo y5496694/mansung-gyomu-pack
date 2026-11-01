@@ -1,0 +1,1315 @@
+{
+  "id": "circulation",
+  "task": "circulation",
+  "variant": "waiting-and-completed",
+  "prompt": "에듀파인 공람 문서 모두 본문과 모든 첨부를 읽고 설명해줘. 조회 기간 2039-05-01~2039-10-31.",
+  "model": "Narae4-Qwen3.5-2B-Office-LoRA-v1",
+  "actualLocalWeights": true,
+  "syntheticOnly": true,
+  "seconds": 10.957,
+  "response": {
+    "model": "narae4",
+    "workspace": "D:\\Codex\\training\\narae4-required-verification-20261101-r2\\circulation",
+    "text": "확인한 원문 근거로 요약했습니다.\n\n1. 가상 공람대기 문서 1\n  목록: 「제목: 가상 공람대기 문서 1 | 결재상태: 결재중 | 현재결재자: 가상교감」\n  본문: 「신청서 제출 기한 2039-11-10, 제출처 가상1지원실.」\n  긴 원문의 주요 구절 발췌입니다. 세부 전체 요약은 문서별 확인이 필요합니다.\n  첨부 0-0.txt: 「붙임 양식 0-0: 대상은 가상 교직원이고 회신처는 가상1연구실입니다.」\n\n조회 조건(실제 목록 표시): 가상현재계정 / 공람완료 / 2039-05-01 ~ 2039-10-31 / 총 2건 / 2/2페이지\n\n확인한 원문 근거로 요약했습니다.\n\n1. 가상 공람대기 문서 2\n  목록: 「제목: 가상 공람대기 문서 2 | 결재상태: 검토중 | 현재결재자: 가상부장」\n  본문: 「신청서 제출 기한 2039-11-11, 제출처 가상1지원실.」\n  긴 원문의 주요 구절 발췌입니다. 세부 전체 요약은 문서별 확인이 필요합니다.\n  첨부 0-1.txt: 「붙임 양식 0-1: 대상은 가상 교직원이고 회신처는 가상2연구실입니다.」\n\n확인한 원문 근거로 요약했습니다.\n\n1. 가상 공람완료 문서 1\n  목록: 「제목: 가상 공람완료 문서 1 | 결재상태: 결재중 | 현재결재자: 가상교감」\n  본문: 「신청서 제출 기한 2039-11-12, 제출처 가상2지원실.」\n  긴 원문의 주요 구절 발췌입니다. 세부 전체 요약은 문서별 확인이 필요합니다.\n  첨부 1-0.txt: 「붙임 양식 1-0: 대상은 가상 교직원이고 회신처는 가상1연구실입니다.」\n\n확인한 원문 근거로 요약했습니다.\n\n1. 가상 공람완료 문서 2\n  목록: 「제목: 가상 공람완료 문서 2 | 결재상태: 검토중 | 현재결재자: 가상부장」\n  본문: 「신청서 제출 기한 2039-11-13, 제출처 가상2지원실.」\n  긴 원문의 주요 구절 발췌입니다. 세부 전체 요약은 문서별 확인이 필요합니다.\n  첨부 1-1.txt: 「붙임 양식 1-1: 대상은 가상 교직원이고 회신처는 가상2연구실입니다.」\n확인 범위: 공문 4건 본문·닫힘 확인, 첨부 4개 중 4개 내용 확인. 조회한 목록의 기간·페이지 밖 자료는 포함하지 않습니다.\n공람대기·공람완료 두 목록 확인. 조회 기간 2039-05-01~2039-10-31."
+  },
+  "verified": {
+    "explicit_period": true,
+    "both_folders": true,
+    "all_pages_counts": true,
+    "all_bodies": true,
+    "all_attachments": true,
+    "per_document_explanation": true,
+    "unconfirmed_not_complete": true
+  },
+  "calls": [
+    {
+      "name": "gyomu_browser",
+      "args": {
+        "action": "snapshot"
+      },
+      "value": {
+        "title": "공람대기 | 업무관리시스템",
+        "url": "https://fixture.invalid/공람대기",
+        "frameIndex": 1,
+        "text": "가상현재계정 / 공람대기 / 2039-05-01 ~ 2039-10-31 / 총 2건 / 1/2페이지",
+        "tableData": [
+          {
+            "headers": [
+              "제목",
+              "결재상태",
+              "현재결재자"
+            ],
+            "rows": [
+              [
+                "가상 공람대기 문서 1",
+                "결재중",
+                "가상교감"
+              ]
+            ],
+            "hasMore": false
+          }
+        ],
+        "tables": [
+          "제목 | 결재상태 | 현재결재자\n가상 공람대기 문서 1 | 결재중 | 가상교감"
+        ],
+        "elements": [
+          {
+            "ref": "document",
+            "label": "가상 공람대기 문서 1",
+            "documentTitle": true
+          },
+          {
+            "ref": "next",
+            "label": "다음 페이지"
+          }
+        ]
+      }
+    },
+    {
+      "name": "gyomu_wxs_read",
+      "args": {
+        "operation": "prepare",
+        "expected_title": "가상 공람대기 문서 1"
+      },
+      "value": {
+        "id": "0-0",
+        "ready": true,
+        "expected_title": "가상 공람대기 문서 1"
+      }
+    },
+    {
+      "name": "gyomu_browser",
+      "args": {
+        "action": "click",
+        "ref": "document"
+      },
+      "value": {
+        "title": "공람대기 | 업무관리시스템",
+        "url": "https://fixture.invalid/공람대기",
+        "frameIndex": 1,
+        "text": "가상현재계정 / 공람대기 / 2039-05-01 ~ 2039-10-31 / 총 2건 / 1/2페이지",
+        "tableData": [
+          {
+            "headers": [
+              "제목",
+              "결재상태",
+              "현재결재자"
+            ],
+            "rows": [
+              [
+                "가상 공람대기 문서 1",
+                "결재중",
+                "가상교감"
+              ]
+            ],
+            "hasMore": false
+          }
+        ],
+        "tables": [
+          "제목 | 결재상태 | 현재결재자\n가상 공람대기 문서 1 | 결재중 | 가상교감"
+        ],
+        "elements": [
+          {
+            "ref": "document",
+            "label": "가상 공람대기 문서 1",
+            "documentTitle": true
+          },
+          {
+            "ref": "next",
+            "label": "다음 페이지"
+          }
+        ]
+      }
+    },
+    {
+      "name": "gyomu_wxs_read",
+      "args": {
+        "operation": "result",
+        "id": "0-0",
+        "chars": 1500
+      },
+      "value": {
+        "id": "0-0",
+        "expected_title": "가상 공람대기 문서 1",
+        "document": {
+          "title": "가상 공람대기 문서 1",
+          "closed": false,
+          "body": {
+            "body_read": true,
+            "text": "가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n",
+            "offset": 0,
+            "hasMore": true,
+            "nextOffset": 1400
+          },
+          "attachments": {
+            "files": [
+              {
+                "path": "D:\\Codex\\training\\narae4-required-verification-20261101-r2\\circulation\\0-0.txt",
+                "exported": true
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "name": "gyomu_wxs_read",
+      "args": {
+        "operation": "result",
+        "id": "0-0",
+        "offset": 1400,
+        "chars": 1500
+      },
+      "value": {
+        "id": "0-0",
+        "expected_title": "가상 공람대기 문서 1",
+        "document": {
+          "title": "가상 공람대기 문서 1",
+          "closed": true,
+          "body": {
+            "body_read": true,
+            "text": "가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n신청서 제출 기한 2039-11-10, 제출처 가상1지원실.",
+            "offset": 1400,
+            "hasMore": false,
+            "nextOffset": 2033
+          },
+          "attachments": {
+            "files": [
+              {
+                "path": "D:\\Codex\\training\\narae4-required-verification-20261101-r2\\circulation\\0-0.txt",
+                "exported": true
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "name": "gyomu_wxs_attachment",
+      "args": {
+        "path": "D:\\Codex\\training\\narae4-required-verification-20261101-r2\\circulation\\0-0.txt",
+        "chars": 1500
+      },
+      "value": {
+        "path": "D:\\Codex\\training\\narae4-required-verification-20261101-r2\\circulation\\0-0.txt",
+        "text": "붙임 양식 0-0: 대상은 가상 교직원이고 회신처는 가상1연구실입니다.",
+        "offset": 0,
+        "hasMore": false,
+        "source_unchanged": true
+      }
+    },
+    {
+      "name": "gyomu_browser",
+      "args": {
+        "action": "click",
+        "ref": "next"
+      },
+      "value": {
+        "title": "공람대기 | 업무관리시스템",
+        "url": "https://fixture.invalid/공람대기",
+        "frameIndex": 1,
+        "text": "가상현재계정 / 공람대기 / 2039-05-01 ~ 2039-10-31 / 총 2건 / 2/2페이지",
+        "tableData": [
+          {
+            "headers": [
+              "제목",
+              "결재상태",
+              "현재결재자"
+            ],
+            "rows": [
+              [
+                "가상 공람대기 문서 2",
+                "검토중",
+                "가상부장"
+              ]
+            ],
+            "hasMore": false
+          }
+        ],
+        "tables": [
+          "제목 | 결재상태 | 현재결재자\n가상 공람대기 문서 2 | 검토중 | 가상부장"
+        ],
+        "elements": [
+          {
+            "ref": "document",
+            "label": "가상 공람대기 문서 2",
+            "documentTitle": true
+          }
+        ]
+      }
+    },
+    {
+      "name": "gyomu_wxs_read",
+      "args": {
+        "operation": "prepare",
+        "expected_title": "가상 공람대기 문서 2"
+      },
+      "value": {
+        "id": "0-1",
+        "ready": true,
+        "expected_title": "가상 공람대기 문서 2"
+      }
+    },
+    {
+      "name": "gyomu_browser",
+      "args": {
+        "action": "click",
+        "ref": "document"
+      },
+      "value": {
+        "title": "공람대기 | 업무관리시스템",
+        "url": "https://fixture.invalid/공람대기",
+        "frameIndex": 1,
+        "text": "가상현재계정 / 공람대기 / 2039-05-01 ~ 2039-10-31 / 총 2건 / 2/2페이지",
+        "tableData": [
+          {
+            "headers": [
+              "제목",
+              "결재상태",
+              "현재결재자"
+            ],
+            "rows": [
+              [
+                "가상 공람대기 문서 2",
+                "검토중",
+                "가상부장"
+              ]
+            ],
+            "hasMore": false
+          }
+        ],
+        "tables": [
+          "제목 | 결재상태 | 현재결재자\n가상 공람대기 문서 2 | 검토중 | 가상부장"
+        ],
+        "elements": [
+          {
+            "ref": "document",
+            "label": "가상 공람대기 문서 2",
+            "documentTitle": true
+          }
+        ]
+      }
+    },
+    {
+      "name": "gyomu_wxs_read",
+      "args": {
+        "operation": "result",
+        "id": "0-1",
+        "chars": 1500
+      },
+      "value": {
+        "id": "0-1",
+        "expected_title": "가상 공람대기 문서 2",
+        "document": {
+          "title": "가상 공람대기 문서 2",
+          "closed": false,
+          "body": {
+            "body_read": true,
+            "text": "가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n",
+            "offset": 0,
+            "hasMore": true,
+            "nextOffset": 1400
+          },
+          "attachments": {
+            "files": [
+              {
+                "path": "D:\\Codex\\training\\narae4-required-verification-20261101-r2\\circulation\\0-1.txt",
+                "exported": true
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "name": "gyomu_wxs_read",
+      "args": {
+        "operation": "result",
+        "id": "0-1",
+        "offset": 1400,
+        "chars": 1500
+      },
+      "value": {
+        "id": "0-1",
+        "expected_title": "가상 공람대기 문서 2",
+        "document": {
+          "title": "가상 공람대기 문서 2",
+          "closed": true,
+          "body": {
+            "body_read": true,
+            "text": "가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n신청서 제출 기한 2039-11-11, 제출처 가상1지원실.",
+            "offset": 1400,
+            "hasMore": false,
+            "nextOffset": 2033
+          },
+          "attachments": {
+            "files": [
+              {
+                "path": "D:\\Codex\\training\\narae4-required-verification-20261101-r2\\circulation\\0-1.txt",
+                "exported": true
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "name": "gyomu_wxs_attachment",
+      "args": {
+        "path": "D:\\Codex\\training\\narae4-required-verification-20261101-r2\\circulation\\0-1.txt",
+        "chars": 1500
+      },
+      "value": {
+        "path": "D:\\Codex\\training\\narae4-required-verification-20261101-r2\\circulation\\0-1.txt",
+        "text": "붙임 양식 0-1: 대상은 가상 교직원이고 회신처는 가상2연구실입니다.",
+        "offset": 0,
+        "hasMore": false,
+        "source_unchanged": true
+      }
+    },
+    {
+      "name": "gyomu_browser",
+      "args": {
+        "action": "frame",
+        "index": 0
+      },
+      "value": {
+        "title": "K-에듀파인",
+        "url": "https://fixture.invalid/root",
+        "frameIndex": 0,
+        "text": "가상현재계정 / 공람",
+        "elements": [
+          {
+            "ref": "completed",
+            "label": "공람완료"
+          }
+        ]
+      }
+    },
+    {
+      "name": "gyomu_browser",
+      "args": {
+        "action": "click",
+        "ref": "completed"
+      },
+      "value": {
+        "title": "공람완료 | 업무관리시스템",
+        "url": "https://fixture.invalid/공람완료",
+        "frameIndex": 1,
+        "text": "가상현재계정 / 공람완료 / 2039-05-01 ~ 2039-10-31 / 총 2건 / 1/2페이지",
+        "tableData": [
+          {
+            "headers": [
+              "제목",
+              "결재상태",
+              "현재결재자"
+            ],
+            "rows": [
+              [
+                "가상 공람완료 문서 1",
+                "결재중",
+                "가상교감"
+              ]
+            ],
+            "hasMore": false
+          }
+        ],
+        "tables": [
+          "제목 | 결재상태 | 현재결재자\n가상 공람완료 문서 1 | 결재중 | 가상교감"
+        ],
+        "elements": [
+          {
+            "ref": "document",
+            "label": "가상 공람완료 문서 1",
+            "documentTitle": true
+          },
+          {
+            "ref": "next",
+            "label": "다음 페이지"
+          }
+        ]
+      }
+    },
+    {
+      "name": "gyomu_wxs_read",
+      "args": {
+        "operation": "prepare",
+        "expected_title": "가상 공람완료 문서 1"
+      },
+      "value": {
+        "id": "1-0",
+        "ready": true,
+        "expected_title": "가상 공람완료 문서 1"
+      }
+    },
+    {
+      "name": "gyomu_browser",
+      "args": {
+        "action": "click",
+        "ref": "document"
+      },
+      "value": {
+        "title": "공람완료 | 업무관리시스템",
+        "url": "https://fixture.invalid/공람완료",
+        "frameIndex": 1,
+        "text": "가상현재계정 / 공람완료 / 2039-05-01 ~ 2039-10-31 / 총 2건 / 1/2페이지",
+        "tableData": [
+          {
+            "headers": [
+              "제목",
+              "결재상태",
+              "현재결재자"
+            ],
+            "rows": [
+              [
+                "가상 공람완료 문서 1",
+                "결재중",
+                "가상교감"
+              ]
+            ],
+            "hasMore": false
+          }
+        ],
+        "tables": [
+          "제목 | 결재상태 | 현재결재자\n가상 공람완료 문서 1 | 결재중 | 가상교감"
+        ],
+        "elements": [
+          {
+            "ref": "document",
+            "label": "가상 공람완료 문서 1",
+            "documentTitle": true
+          },
+          {
+            "ref": "next",
+            "label": "다음 페이지"
+          }
+        ]
+      }
+    },
+    {
+      "name": "gyomu_wxs_read",
+      "args": {
+        "operation": "result",
+        "id": "1-0",
+        "chars": 1500
+      },
+      "value": {
+        "id": "1-0",
+        "expected_title": "가상 공람완료 문서 1",
+        "document": {
+          "title": "가상 공람완료 문서 1",
+          "closed": false,
+          "body": {
+            "body_read": true,
+            "text": "가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n",
+            "offset": 0,
+            "hasMore": true,
+            "nextOffset": 1400
+          },
+          "attachments": {
+            "files": [
+              {
+                "path": "D:\\Codex\\training\\narae4-required-verification-20261101-r2\\circulation\\1-0.txt",
+                "exported": true
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "name": "gyomu_wxs_read",
+      "args": {
+        "operation": "result",
+        "id": "1-0",
+        "offset": 1400,
+        "chars": 1500
+      },
+      "value": {
+        "id": "1-0",
+        "expected_title": "가상 공람완료 문서 1",
+        "document": {
+          "title": "가상 공람완료 문서 1",
+          "closed": true,
+          "body": {
+            "body_read": true,
+            "text": "가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n신청서 제출 기한 2039-11-12, 제출처 가상2지원실.",
+            "offset": 1400,
+            "hasMore": false,
+            "nextOffset": 2033
+          },
+          "attachments": {
+            "files": [
+              {
+                "path": "D:\\Codex\\training\\narae4-required-verification-20261101-r2\\circulation\\1-0.txt",
+                "exported": true
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "name": "gyomu_wxs_attachment",
+      "args": {
+        "path": "D:\\Codex\\training\\narae4-required-verification-20261101-r2\\circulation\\1-0.txt",
+        "chars": 1500
+      },
+      "value": {
+        "path": "D:\\Codex\\training\\narae4-required-verification-20261101-r2\\circulation\\1-0.txt",
+        "text": "붙임 양식 1-0: 대상은 가상 교직원이고 회신처는 가상1연구실입니다.",
+        "offset": 0,
+        "hasMore": false,
+        "source_unchanged": true
+      }
+    },
+    {
+      "name": "gyomu_browser",
+      "args": {
+        "action": "click",
+        "ref": "next"
+      },
+      "value": {
+        "title": "공람완료 | 업무관리시스템",
+        "url": "https://fixture.invalid/공람완료",
+        "frameIndex": 1,
+        "text": "가상현재계정 / 공람완료 / 2039-05-01 ~ 2039-10-31 / 총 2건 / 2/2페이지",
+        "tableData": [
+          {
+            "headers": [
+              "제목",
+              "결재상태",
+              "현재결재자"
+            ],
+            "rows": [
+              [
+                "가상 공람완료 문서 2",
+                "검토중",
+                "가상부장"
+              ]
+            ],
+            "hasMore": false
+          }
+        ],
+        "tables": [
+          "제목 | 결재상태 | 현재결재자\n가상 공람완료 문서 2 | 검토중 | 가상부장"
+        ],
+        "elements": [
+          {
+            "ref": "document",
+            "label": "가상 공람완료 문서 2",
+            "documentTitle": true
+          }
+        ]
+      }
+    },
+    {
+      "name": "gyomu_wxs_read",
+      "args": {
+        "operation": "prepare",
+        "expected_title": "가상 공람완료 문서 2"
+      },
+      "value": {
+        "id": "1-1",
+        "ready": true,
+        "expected_title": "가상 공람완료 문서 2"
+      }
+    },
+    {
+      "name": "gyomu_browser",
+      "args": {
+        "action": "click",
+        "ref": "document"
+      },
+      "value": {
+        "title": "공람완료 | 업무관리시스템",
+        "url": "https://fixture.invalid/공람완료",
+        "frameIndex": 1,
+        "text": "가상현재계정 / 공람완료 / 2039-05-01 ~ 2039-10-31 / 총 2건 / 2/2페이지",
+        "tableData": [
+          {
+            "headers": [
+              "제목",
+              "결재상태",
+              "현재결재자"
+            ],
+            "rows": [
+              [
+                "가상 공람완료 문서 2",
+                "검토중",
+                "가상부장"
+              ]
+            ],
+            "hasMore": false
+          }
+        ],
+        "tables": [
+          "제목 | 결재상태 | 현재결재자\n가상 공람완료 문서 2 | 검토중 | 가상부장"
+        ],
+        "elements": [
+          {
+            "ref": "document",
+            "label": "가상 공람완료 문서 2",
+            "documentTitle": true
+          }
+        ]
+      }
+    },
+    {
+      "name": "gyomu_wxs_read",
+      "args": {
+        "operation": "result",
+        "id": "1-1",
+        "chars": 1500
+      },
+      "value": {
+        "id": "1-1",
+        "expected_title": "가상 공람완료 문서 2",
+        "document": {
+          "title": "가상 공람완료 문서 2",
+          "closed": false,
+          "body": {
+            "body_read": true,
+            "text": "가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n",
+            "offset": 0,
+            "hasMore": true,
+            "nextOffset": 1400
+          },
+          "attachments": {
+            "files": [
+              {
+                "path": "D:\\Codex\\training\\narae4-required-verification-20261101-r2\\circulation\\1-1.txt",
+                "exported": true
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "name": "gyomu_wxs_read",
+      "args": {
+        "operation": "result",
+        "id": "1-1",
+        "offset": 1400,
+        "chars": 1500
+      },
+      "value": {
+        "id": "1-1",
+        "expected_title": "가상 공람완료 문서 2",
+        "document": {
+          "title": "가상 공람완료 문서 2",
+          "closed": true,
+          "body": {
+            "body_read": true,
+            "text": "가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n신청서 제출 기한 2039-11-13, 제출처 가상2지원실.",
+            "offset": 1400,
+            "hasMore": false,
+            "nextOffset": 2033
+          },
+          "attachments": {
+            "files": [
+              {
+                "path": "D:\\Codex\\training\\narae4-required-verification-20261101-r2\\circulation\\1-1.txt",
+                "exported": true
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "name": "gyomu_wxs_attachment",
+      "args": {
+        "path": "D:\\Codex\\training\\narae4-required-verification-20261101-r2\\circulation\\1-1.txt",
+        "chars": 1500
+      },
+      "value": {
+        "path": "D:\\Codex\\training\\narae4-required-verification-20261101-r2\\circulation\\1-1.txt",
+        "text": "붙임 양식 1-1: 대상은 가상 교직원이고 회신처는 가상2연구실입니다.",
+        "offset": 0,
+        "hasMore": false,
+        "source_unchanged": true
+      }
+    }
+  ],
+  "events": [
+    {
+      "type": "tool",
+      "name": "gyomu_browser",
+      "args": {
+        "action": "snapshot"
+      }
+    },
+    {
+      "type": "tool",
+      "name": "gyomu_wxs_read",
+      "args": {
+        "operation": "prepare",
+        "expected_title": "가상 공람대기 문서 1"
+      }
+    },
+    {
+      "type": "tool",
+      "name": "gyomu_browser",
+      "args": {
+        "action": "click",
+        "ref": "document"
+      }
+    },
+    {
+      "type": "tool",
+      "name": "gyomu_wxs_read",
+      "args": {
+        "operation": "result",
+        "id": "0-0",
+        "chars": 1500
+      }
+    },
+    {
+      "type": "tool",
+      "name": "gyomu_wxs_read",
+      "args": {
+        "operation": "result",
+        "id": "0-0",
+        "offset": 1400,
+        "chars": 1500
+      }
+    },
+    {
+      "type": "tool",
+      "name": "gyomu_wxs_attachment",
+      "args": {
+        "path": "D:\\Codex\\training\\narae4-required-verification-20261101-r2\\circulation\\0-0.txt",
+        "chars": 1500
+      }
+    },
+    {
+      "type": "tool",
+      "name": "gyomu_browser",
+      "args": {
+        "action": "click",
+        "ref": "next"
+      }
+    },
+    {
+      "type": "tool",
+      "name": "gyomu_wxs_read",
+      "args": {
+        "operation": "prepare",
+        "expected_title": "가상 공람대기 문서 2"
+      }
+    },
+    {
+      "type": "tool",
+      "name": "gyomu_browser",
+      "args": {
+        "action": "click",
+        "ref": "document"
+      }
+    },
+    {
+      "type": "tool",
+      "name": "gyomu_wxs_read",
+      "args": {
+        "operation": "result",
+        "id": "0-1",
+        "chars": 1500
+      }
+    },
+    {
+      "type": "tool",
+      "name": "gyomu_wxs_read",
+      "args": {
+        "operation": "result",
+        "id": "0-1",
+        "offset": 1400,
+        "chars": 1500
+      }
+    },
+    {
+      "type": "tool",
+      "name": "gyomu_wxs_attachment",
+      "args": {
+        "path": "D:\\Codex\\training\\narae4-required-verification-20261101-r2\\circulation\\0-1.txt",
+        "chars": 1500
+      }
+    },
+    {
+      "type": "tool",
+      "name": "gyomu_browser",
+      "args": {
+        "action": "frame",
+        "index": 0
+      }
+    },
+    {
+      "type": "tool",
+      "name": "gyomu_browser",
+      "args": {
+        "action": "click",
+        "ref": "completed"
+      }
+    },
+    {
+      "type": "tool",
+      "name": "gyomu_wxs_read",
+      "args": {
+        "operation": "prepare",
+        "expected_title": "가상 공람완료 문서 1"
+      }
+    },
+    {
+      "type": "tool",
+      "name": "gyomu_browser",
+      "args": {
+        "action": "click",
+        "ref": "document"
+      }
+    },
+    {
+      "type": "tool",
+      "name": "gyomu_wxs_read",
+      "args": {
+        "operation": "result",
+        "id": "1-0",
+        "chars": 1500
+      }
+    },
+    {
+      "type": "tool",
+      "name": "gyomu_wxs_read",
+      "args": {
+        "operation": "result",
+        "id": "1-0",
+        "offset": 1400,
+        "chars": 1500
+      }
+    },
+    {
+      "type": "tool",
+      "name": "gyomu_wxs_attachment",
+      "args": {
+        "path": "D:\\Codex\\training\\narae4-required-verification-20261101-r2\\circulation\\1-0.txt",
+        "chars": 1500
+      }
+    },
+    {
+      "type": "tool",
+      "name": "gyomu_browser",
+      "args": {
+        "action": "click",
+        "ref": "next"
+      }
+    },
+    {
+      "type": "tool",
+      "name": "gyomu_wxs_read",
+      "args": {
+        "operation": "prepare",
+        "expected_title": "가상 공람완료 문서 2"
+      }
+    },
+    {
+      "type": "tool",
+      "name": "gyomu_browser",
+      "args": {
+        "action": "click",
+        "ref": "document"
+      }
+    },
+    {
+      "type": "tool",
+      "name": "gyomu_wxs_read",
+      "args": {
+        "operation": "result",
+        "id": "1-1",
+        "chars": 1500
+      }
+    },
+    {
+      "type": "tool",
+      "name": "gyomu_wxs_read",
+      "args": {
+        "operation": "result",
+        "id": "1-1",
+        "offset": 1400,
+        "chars": 1500
+      }
+    },
+    {
+      "type": "tool",
+      "name": "gyomu_wxs_attachment",
+      "args": {
+        "path": "D:\\Codex\\training\\narae4-required-verification-20261101-r2\\circulation\\1-1.txt",
+        "chars": 1500
+      }
+    },
+    {
+      "type": "tool",
+      "name": "report_evidence",
+      "args": {
+        "evidence_ids": [
+          "e1",
+          "e2",
+          "e3"
+        ]
+      }
+    },
+    {
+      "type": "tool",
+      "name": "report_evidence",
+      "args": {
+        "evidence_ids": [
+          "e1",
+          "e2",
+          "e3"
+        ]
+      }
+    },
+    {
+      "type": "tool",
+      "name": "report_evidence",
+      "args": {
+        "evidence_ids": [
+          "e1",
+          "e2",
+          "e3"
+        ]
+      }
+    },
+    {
+      "type": "tool",
+      "name": "report_evidence",
+      "args": {
+        "evidence_ids": [
+          "e1",
+          "e2",
+          "e3"
+        ]
+      }
+    }
+  ],
+  "modelRequests": [
+    {
+      "tools": [
+        "gyomu_wxs_read"
+      ],
+      "route": "bounded-rule",
+      "returnedCalls": [
+        "gyomu_wxs_read"
+      ]
+    },
+    {
+      "tools": [
+        "gyomu_browser"
+      ],
+      "route": "bounded-rule",
+      "returnedCalls": [
+        "gyomu_browser"
+      ]
+    },
+    {
+      "tools": [
+        "gyomu_wxs_read"
+      ],
+      "route": "bounded-rule",
+      "returnedCalls": [
+        "gyomu_wxs_read"
+      ]
+    },
+    {
+      "tools": [
+        "gyomu_wxs_read"
+      ],
+      "route": "bounded-rule",
+      "returnedCalls": [
+        "gyomu_wxs_read"
+      ]
+    },
+    {
+      "tools": [
+        "gyomu_wxs_attachment"
+      ],
+      "route": "bounded-rule",
+      "returnedCalls": [
+        "gyomu_wxs_attachment"
+      ]
+    },
+    {
+      "tools": [
+        "gyomu_browser"
+      ],
+      "route": "bounded-rule",
+      "returnedCalls": [
+        "gyomu_browser"
+      ]
+    },
+    {
+      "tools": [
+        "gyomu_wxs_read"
+      ],
+      "route": "bounded-rule",
+      "returnedCalls": [
+        "gyomu_wxs_read"
+      ]
+    },
+    {
+      "tools": [
+        "gyomu_browser"
+      ],
+      "route": "bounded-rule",
+      "returnedCalls": [
+        "gyomu_browser"
+      ]
+    },
+    {
+      "tools": [
+        "gyomu_wxs_read"
+      ],
+      "route": "bounded-rule",
+      "returnedCalls": [
+        "gyomu_wxs_read"
+      ]
+    },
+    {
+      "tools": [
+        "gyomu_wxs_read"
+      ],
+      "route": "bounded-rule",
+      "returnedCalls": [
+        "gyomu_wxs_read"
+      ]
+    },
+    {
+      "tools": [
+        "gyomu_wxs_attachment"
+      ],
+      "route": "bounded-rule",
+      "returnedCalls": [
+        "gyomu_wxs_attachment"
+      ]
+    },
+    {
+      "tools": [
+        "gyomu_browser"
+      ],
+      "route": "bounded-rule",
+      "returnedCalls": [
+        "gyomu_browser"
+      ]
+    },
+    {
+      "tools": [
+        "gyomu_browser"
+      ],
+      "route": "bounded-rule",
+      "returnedCalls": [
+        "gyomu_browser"
+      ]
+    },
+    {
+      "tools": [
+        "gyomu_wxs_read"
+      ],
+      "route": "bounded-rule",
+      "returnedCalls": [
+        "gyomu_wxs_read"
+      ]
+    },
+    {
+      "tools": [
+        "gyomu_browser"
+      ],
+      "route": "bounded-rule",
+      "returnedCalls": [
+        "gyomu_browser"
+      ]
+    },
+    {
+      "tools": [
+        "gyomu_wxs_read"
+      ],
+      "route": "bounded-rule",
+      "returnedCalls": [
+        "gyomu_wxs_read"
+      ]
+    },
+    {
+      "tools": [
+        "gyomu_wxs_read"
+      ],
+      "route": "bounded-rule",
+      "returnedCalls": [
+        "gyomu_wxs_read"
+      ]
+    },
+    {
+      "tools": [
+        "gyomu_wxs_attachment"
+      ],
+      "route": "bounded-rule",
+      "returnedCalls": [
+        "gyomu_wxs_attachment"
+      ]
+    },
+    {
+      "tools": [
+        "gyomu_browser"
+      ],
+      "route": "bounded-rule",
+      "returnedCalls": [
+        "gyomu_browser"
+      ]
+    },
+    {
+      "tools": [
+        "gyomu_wxs_read"
+      ],
+      "route": "bounded-rule",
+      "returnedCalls": [
+        "gyomu_wxs_read"
+      ]
+    },
+    {
+      "tools": [
+        "gyomu_browser"
+      ],
+      "route": "bounded-rule",
+      "returnedCalls": [
+        "gyomu_browser"
+      ]
+    },
+    {
+      "tools": [
+        "gyomu_wxs_read"
+      ],
+      "route": "bounded-rule",
+      "returnedCalls": [
+        "gyomu_wxs_read"
+      ]
+    },
+    {
+      "tools": [
+        "gyomu_wxs_read"
+      ],
+      "route": "bounded-rule",
+      "returnedCalls": [
+        "gyomu_wxs_read"
+      ]
+    },
+    {
+      "tools": [
+        "gyomu_wxs_attachment"
+      ],
+      "route": "bounded-rule",
+      "returnedCalls": [
+        "gyomu_wxs_attachment"
+      ]
+    },
+    {
+      "tools": [
+        "report_evidence"
+      ],
+      "route": "main",
+      "returnedCalls": [
+        "report_evidence"
+      ]
+    },
+    {
+      "tools": [
+        "report_evidence"
+      ],
+      "route": "main",
+      "returnedCalls": [
+        "report_evidence"
+      ]
+    },
+    {
+      "tools": [
+        "report_evidence"
+      ],
+      "route": "main",
+      "returnedCalls": [
+        "report_evidence"
+      ]
+    },
+    {
+      "tools": [
+        "report_evidence"
+      ],
+      "route": "main",
+      "returnedCalls": [
+        "report_evidence"
+      ]
+    }
+  ],
+  "sourceObservations": {
+    "opened": [
+      "0-0",
+      "0-1",
+      "1-0",
+      "1-1"
+    ],
+    "bodyReads": [
+      {
+        "id": "0-0",
+        "offset": 0,
+        "hasMore": true
+      },
+      {
+        "id": "0-0",
+        "offset": 1400,
+        "hasMore": false
+      },
+      {
+        "id": "0-1",
+        "offset": 0,
+        "hasMore": true
+      },
+      {
+        "id": "0-1",
+        "offset": 1400,
+        "hasMore": false
+      },
+      {
+        "id": "1-0",
+        "offset": 0,
+        "hasMore": true
+      },
+      {
+        "id": "1-0",
+        "offset": 1400,
+        "hasMore": false
+      },
+      {
+        "id": "1-1",
+        "offset": 0,
+        "hasMore": true
+      },
+      {
+        "id": "1-1",
+        "offset": 1400,
+        "hasMore": false
+      }
+    ],
+    "attachmentReads": [
+      "D:\\Codex\\training\\narae4-required-verification-20261101-r2\\circulation\\0-0.txt",
+      "D:\\Codex\\training\\narae4-required-verification-20261101-r2\\circulation\\0-1.txt",
+      "D:\\Codex\\training\\narae4-required-verification-20261101-r2\\circulation\\1-0.txt",
+      "D:\\Codex\\training\\narae4-required-verification-20261101-r2\\circulation\\1-1.txt"
+    ],
+    "pages": [
+      "공람대기:1",
+      "공람대기:1",
+      "공람대기:2",
+      "공람대기:2",
+      "공람완료:1",
+      "공람완료:1",
+      "공람완료:2",
+      "공람완료:2"
+    ],
+    "account": "가상현재계정",
+    "scope": "공람대기"
+  }
+}

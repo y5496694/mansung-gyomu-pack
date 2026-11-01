@@ -1,0 +1,316 @@
+{
+  "schema": 1,
+  "contract": "narae-office-basic-10-v1",
+  "environment": "synthetic",
+  "model": "Narae4-Qwen3.5-2B-Office-LoRA-v1",
+  "adapterSha256": "19f20486e744bcb9636efcdaf6583c1b9bef545733987a8837e63afdfeecf105",
+  "sourceSha256": {
+    "src/agent-cli.cjs": "bed52c13765e807c7aa3e5f98a769de89ebf32757499bf2b100a11c66f161516",
+    "src/agent-conversations.cjs": "42c095fe9132c744fb3698e5c835e7809da078cf850cca6f78153d5312b45c64",
+    "src/agent-errors.cjs": "9d737568bcdaf5ecbbb1e4c3880726618f13f7e0917c7786e77e368f4137342d",
+    "src/agent-media.cjs": "30f8cf44d58c6e523e2bf9628fc27136ea65ee8b5a608ecd7c52c3c22b8c40d7",
+    "src/agent-task.cjs": "d065651ebc6f1cbf9f70f3e18585a52d545d66131b113e785e86e9ebd4247b8e",
+    "src/agent.cjs": "dced89db966dea0fb73a77c4b66b47c07a52d156d97710a6abc0d360651c4693",
+    "src/anthropic-login.cjs": "f2f91364a0b73e2fd0dafa6e832a6ca706a4ed2729228c61840697f94a8960ba",
+    "src/browser-environment.cjs": "e3a5601a594dfd6ebed9860cf8e370e59b37890b2dcdf486274e13987a49a253",
+    "src/cli-output.cjs": "c82a15551252b37f76aa99e6a53e9e3c311994aa387394490717ea5e3b3b6d2b",
+    "src/cli.cjs": "4c270d493c2d889c6446ec7684dc86fb4bf1b99cec317f207499ebafb9af8403",
+    "src/connection-settings.cjs": "ecf642948997118dffd56dba60e0f5c5709377a1b9bfb9b93a0de3ebb7f08d35",
+    "src/desktop-shell.cjs": "628272a7ccde4c198e7f74f380c58b296286faa1f3756e945c3e01f1b9aab9b6",
+    "src/document-task.cjs": "f9f77391693bbf4f4c9052cf0ea7c747ca8ada3326c9ea2c4f12388bb462f955",
+    "src/document-tools.cjs": "df03a3c9a4643e3f2844fcd1f81cdfc1f3c4e605130508d65f7a57d7915d47f8",
+    "src/edufine-review.cjs": "747e5db74a1ea1af85017e20140839cbd005f279acf290d76e403e2d6883fc9b",
+    "src/edufine-task.cjs": "0449b051401194fc224c8cbd9af6b02800a92986e7b888eed25c4f37ff4befab",
+    "src/evidence-report.cjs": "b8c1a6f550a5b01e805a141d4dcdd9e9bec37903dcb7309a4808ba550b89d2c9",
+    "src/format-policy.cjs": "974ea99e1dfb24bcbbf01ab7f1020f9e4beb2a53a93f906c9050dfd3001ad98d",
+    "src/hancom-discovery.cjs": "afb13e76daf52842b06ec369371ac025cf14d79de77aacfad6f413a50fd2327a",
+    "src/hancom.cjs": "3e643809e57ed7c973c44b34995dd84dd15bed6bd832a82926c7c068425355b2",
+    "src/hwp-file-contracts.cjs": "cb758521237f11f1b1bf0bcbbff51e9d44bb1f11344139cae82c804e2d237c51",
+    "src/image-task.cjs": "77ce1ce7700c954c25336483101c03a32a3a60487b163dc9e1d313fe52c4f636",
+    "src/kakao-connector.cjs": "b7442e5790eaa21f271afe7f3278241680c5d16e29a4c83ad5cfa4fb04884891",
+    "src/kakao-relay.cjs": "90300979aa9f13063fdddeed51e78a8e3db4c23f02ea24d55376eed3c541e18c",
+    "src/key-store.cjs": "0466ef32f0a79bf4f179b10b6e7c3e094c9dda7e7defc376396e92fc7eb4380e",
+    "src/local-ai.cjs": "5f2311f08cc638f0a9b3431d0ae40bd25e158b6ac2e676edc92775a8f6522361",
+    "src/local-decision.cjs": "6bd21421e80e71c6e07160acc75acbacadc2b82b0072351780e49a0e90b611f2",
+    "src/local-runtime.cjs": "ce8ba9fdb80a3eda9fe8621c0f601441ed4efb16f91c8b78bedb73ff441ba9d2",
+    "src/main.cjs": "d120c9e3fd58b603445eb1c0a3fb54ae9d3abd967839f6ff4814fa1dbf97facf",
+    "src/messenger-archive.cjs": "eeb79964c75d5721801b92c619831a409f896725ad4c78c6b7d77bee25cce189",
+    "src/messenger-task.cjs": "259aa38010794572e8b75eefc8e65f527a06d843e2112531bdd20ca76e60b5fc",
+    "src/native-documents.cjs": "7e48822a5d97eb0306b6ac3003db7c3f9c536a13a57ea5272127a7d13b586cfb",
+    "src/neis-approval.cjs": "2e76f244db799caa401cfb0170b8f4f0dc2006b5afce549bb8457d1e546d5584",
+    "src/neis-final.cjs": "0c048f1938f758e364e4b8ad3cf4919d8a0e5377e215e496b08457ddea80bb79",
+    "src/neis-task.cjs": "e41ba63ccfcdbbd038e0beb12ef8329369eba01fceda1c56fcb4f9c447a58331",
+    "src/network-trust.cjs": "db508d716772340bfcbe676429c0495740923f5a61e948f1cecde6f556284aec",
+    "src/oauth-lock.cjs": "b62236888cefbc26cf5565d7e1bea96baf4af9d98490959289ca39edcad517a3",
+    "src/oauth.cjs": "797fcd496b7c95201236c5bffd0b9cb34fe215efea8366104efad7d27fccfa01",
+    "src/office-bench-status.cjs": "9a0fcfa9797dd042d9bd2e53f87e784d6ae4f38be64b60e0c799944b22377291",
+    "src/office-benchmark.cjs": "931ab9f1268c84865dff4d95cb389b6d7d6d01fc5699dd98b355107eee31e079",
+    "src/office-integrations.cjs": "8784ddfcf5f0aa61447e542df73440dd64e16fe31920b3cdee61131f88b7400f",
+    "src/oidc.cjs": "13e83e275c7cfabb2fb1b0605a65eb69d0e35cf09b766caa20554142bd9b1e7f",
+    "src/planner-document.cjs": "bd1fb47137ef3c743fcb7c7c7616f5a4b12f7435cefbff49bd11a4fd05c277b0",
+    "src/portal-login.cjs": "75f4c77c1216c0a1a1e42d3e345cc38b071541600ee684f07d953faa229b3ad2",
+    "src/preload.cjs": "4542406ede431fff72554ed4cc7f2fd48b856b989e5e9cdc7f038d9d07c03c68",
+    "src/provider.cjs": "5fbadce7cd8794d902dae0c43a1d2a96be7387ef4b0c57f1719e600a3c156c3d",
+    "src/python.cjs": "65167af9ddb821ba6e3ada7bfde33399778b96fb1b0264a3d345b4b26ffbb9fa",
+    "src/remote-policy.cjs": "d7a8c674b0753bdb215f5c3d34f9d7d789fcd659b25b6318e8286b785f03d813",
+    "src/runtime-python.cjs": "47b80d12235fd1de4aad5ff3dce7036da416f645bc28da79bff5ba81fcbc3d33",
+    "src/school-browser.mjs": "54975116aaa62cbe6166a0e87beb7fcefc993df4afbdc71cc34930465e016fdb",
+    "src/school-final-task.cjs": "9d48fea65c20b935700d7bf7575ff720600d8653d677b94dcbef159652fa0ec9",
+    "src/school-session.cjs": "5bd256d3131843f33424d7d92c0f524a3c08117848f64bf92140201a8d2a1b72",
+    "src/telegram-bot.cjs": "49889e62cde7182e2ae1241a443edaa93de7b55e1a9f5b21fb44198aa5c7c6d0",
+    "src/verified-download.cjs": "67999963e104883de8718fdb2ece26042ad968943bf72e545e2071c9f331666d",
+    "src/windows-brand.cjs": "96659c6c55fc0d14cb68ba6863046a8d3ae56769ddbd3531dccbb01fb0cd6672",
+    "src/wxs-continuation.cjs": "baf2a72075768747380d7145a964313b796a1bc4a3a1375ff9f0e0479c58f966",
+    "src/wxs-task.cjs": "14bb73b346874949276b16748d1296982929426a36350141a64793c0aa61d75a"
+  },
+  "provenance": [
+    {
+      "summary": "run-1-summary.json",
+      "sha256": "ee616951c0f13e9c68908f3d9fd8a509722c5717a59d442909646128263c20b5",
+      "scriptSha256": "1509d432a08d418145878e1a98e2d32d8634acac51991e68d64b9aeb94ca54d1"
+    },
+    {
+      "summary": "run-2-summary.json",
+      "sha256": "fbb2db798d75ff865cf0f47576f38e02910d4ae0735e7feb8cfd2e57ae1f40e5",
+      "scriptSha256": "e76cd9d650652991fd711a4070d2ad6a2705c59be41a4baeacccaa5b17a6508e"
+    }
+  ],
+  "passedTasks": 9,
+  "totalTasks": 10,
+  "fullTenTaskPass": false,
+  "releasePassed": false,
+  "liveVerified": false,
+  "taskResults": [
+    {
+      "number": 1,
+      "id": "portal",
+      "title": "보안 문서 로그인·나이스·에듀파인 진입",
+      "passed": true,
+      "missing": []
+    },
+    {
+      "number": 2,
+      "id": "archive",
+      "title": "6개월 쪽지·대화 제출 후보 목록",
+      "passed": true,
+      "missing": []
+    },
+    {
+      "number": 3,
+      "id": "search",
+      "title": "특정 내용 탐색·설명",
+      "passed": true,
+      "missing": []
+    },
+    {
+      "number": 4,
+      "id": "send",
+      "title": "특정 대상 쪽지·대화 전송",
+      "passed": true,
+      "missing": []
+    },
+    {
+      "number": 5,
+      "id": "draft",
+      "title": "서식 준수 기안 상신",
+      "passed": false,
+      "missing": [
+        "template-submit/observed_template",
+        "template-submit/body_fields_layout",
+        "template-submit/visual_review",
+        "template-submit/route_and_disclosure",
+        "template-submit/server_attachments",
+        "template-submit/final_process",
+        "template-submit/server_list_verified"
+      ]
+    },
+    {
+      "number": 6,
+      "id": "progress",
+      "title": "내가 처리 중인 문서 확인·설명",
+      "passed": true,
+      "missing": []
+    },
+    {
+      "number": 7,
+      "id": "circulation",
+      "title": "공람 문서 모두 읽고 설명",
+      "passed": true,
+      "missing": []
+    },
+    {
+      "number": 8,
+      "id": "duty",
+      "title": "다른 사람 특정 날짜 복무 조회",
+      "passed": true,
+      "missing": []
+    },
+    {
+      "number": 9,
+      "id": "trip",
+      "title": "나이스 출장 상신",
+      "passed": true,
+      "missing": []
+    },
+    {
+      "number": 10,
+      "id": "leave",
+      "title": "나이스 연가·조퇴 상신",
+      "passed": true,
+      "missing": []
+    }
+  ],
+  "routes": [
+    {
+      "case": "portal",
+      "routes": [
+        "main"
+      ],
+      "actualWeightInference": true
+    },
+    {
+      "case": "archive",
+      "routes": [
+        "bounded-rule"
+      ],
+      "actualWeightInference": false
+    },
+    {
+      "case": "search-note",
+      "routes": [
+        "bounded-rule"
+      ],
+      "actualWeightInference": false
+    },
+    {
+      "case": "search-chat",
+      "routes": [
+        "bounded-rule"
+      ],
+      "actualWeightInference": false
+    },
+    {
+      "case": "send-note",
+      "routes": [
+        "main",
+        "main"
+      ],
+      "actualWeightInference": true
+    },
+    {
+      "case": "send-chat",
+      "routes": [
+        "main",
+        "main"
+      ],
+      "actualWeightInference": true
+    },
+    {
+      "case": "draft-save-smoke",
+      "routes": [
+        "bounded-rule",
+        "bounded-rule",
+        "bounded-rule",
+        "main",
+        "bounded-rule"
+      ],
+      "actualWeightInference": true
+    },
+    {
+      "case": "progress",
+      "routes": [
+        "bounded-rule",
+        "bounded-rule",
+        "bounded-rule",
+        "bounded-rule",
+        "bounded-rule",
+        "bounded-rule",
+        "bounded-rule",
+        "bounded-rule",
+        "bounded-rule",
+        "bounded-rule",
+        "bounded-rule",
+        "main"
+      ],
+      "actualWeightInference": true
+    },
+    {
+      "case": "circulation",
+      "routes": [
+        "bounded-rule",
+        "bounded-rule",
+        "bounded-rule",
+        "bounded-rule",
+        "bounded-rule",
+        "bounded-rule",
+        "bounded-rule",
+        "bounded-rule",
+        "bounded-rule",
+        "bounded-rule",
+        "bounded-rule",
+        "bounded-rule",
+        "bounded-rule",
+        "bounded-rule",
+        "bounded-rule",
+        "bounded-rule",
+        "bounded-rule",
+        "bounded-rule",
+        "bounded-rule",
+        "bounded-rule",
+        "bounded-rule",
+        "bounded-rule",
+        "bounded-rule",
+        "bounded-rule",
+        "main",
+        "main",
+        "main",
+        "main"
+      ],
+      "actualWeightInference": true
+    },
+    {
+      "case": "circulation-auth",
+      "routes": [
+        "bounded-rule",
+        "bounded-rule",
+        "bounded-rule",
+        "bounded-rule",
+        "bounded-rule",
+        "bounded-rule",
+        "bounded-rule",
+        "bounded-rule",
+        "bounded-rule",
+        "bounded-rule",
+        "bounded-rule",
+        "bounded-rule",
+        "bounded-rule",
+        "bounded-rule",
+        "bounded-rule",
+        "bounded-rule",
+        "bounded-rule",
+        "bounded-rule",
+        "bounded-rule",
+        "bounded-rule",
+        "bounded-rule",
+        "bounded-rule",
+        "main",
+        "main",
+        "main",
+        "main"
+      ],
+      "actualWeightInference": true
+    },
+    {
+      "case": "duty",
+      "routes": [
+        "bounded-rule",
+        "bounded-rule",
+        "bounded-rule",
+        "bounded-rule",
+        "bounded-rule"
+      ],
+      "actualWeightInference": false
+    }
+  ],
+  "scope": "Installed Narae4 application workflow including bounded rules and model inference; this is not a bare-model score or public OfficeBench. External services are synthetic. Real DPAPI/private password fill and isolated browser are exercised. Native WXS template/layout/visual/final-submit is unverified; only draft-save smoke was run. No live school data, messages or submissions."
+}

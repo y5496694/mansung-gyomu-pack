@@ -1,0 +1,22 @@
+'use strict';
+// Combine immutable runs only when they used identical, unchanged source/weights.
+const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict'),crypto=require('node:crypto');
+const office=path.resolve(__dirname,'../..'),bench=require(office+'/src/office-benchmark.cjs'),hash=p=>crypto.createHash('sha256').update(fs.readFileSync(p)).digest('hex');
+const [output,...inputs]=process.argv.slice(2).map(p=>path.resolve(p));assert(output&&inputs.length>=2,'combine OUTPUT RUN_DIR RUN_DIR');assert(!fs.existsSync(output),'Use a fresh output directory.');
+const loaded=inputs.map(directory=>({directory,summary:JSON.parse(fs.readFileSync(path.join(directory,'summary.json'))),run:JSON.parse(fs.readFileSync(path.join(directory,'run.json')))}));
+const baseline=loaded[0].summary;for(const {directory,summary,run}of loaded){assert.equal(summary.sourceUnchanged,true,directory);assert.equal(summary.defaultAdapterChanged,false,directory);assert.equal(summary.adapterSha256,baseline.adapterSha256);assert.deepEqual(summary.sourceSha256,baseline.sourceSha256);assert.equal(run.environment,'synthetic');for(const [name,sha]of Object.entries(summary.sourceSha256))assert.equal(hash(path.join(office,name)),sha,'Source changed after run: '+name);}
+fs.mkdirSync(output,{recursive:true});const cases=[],seen=new Set(),provenance=[],routes=[];
+for(const [index,{directory,summary,run}]of loaded.entries()){
+ const prefix='run-'+(index+1)+'-',copied=new Map();
+ for(const record of run.cases){const key=record.task+'/'+record.variant;assert(!seen.has(key),'Duplicate variant: '+key);seen.add(key);const next=structuredClone(record);
+  for(const check of Object.values(next.checks))for(const proof of check.evidence||[]){const source=path.resolve(directory,proof.file);assert.equal(hash(source),proof.sha256);if(!copied.has(source)){const destination=prefix+path.basename(source);assert(!fs.existsSync(path.join(output,destination)));const trace=JSON.parse(fs.readFileSync(source));assert.equal(trace.syntheticOnly,true,'Not a synthetic trace');fs.copyFileSync(source,path.join(output,destination));copied.set(source,destination);if(trace.modelRequests)routes.push({case:trace.id,routes:trace.modelRequests.map(r=>r.route),actualWeightInference:trace.modelRequests.some(r=>r.route&&r.route!=='bounded-rule')});}proof.file=copied.get(source);}
+  cases.push(next);
+ }
+ const summaryFile=prefix+'summary.json';fs.copyFileSync(path.join(directory,'summary.json'),path.join(output,summaryFile));provenance.push({summary:summaryFile,sha256:hash(path.join(output,summaryFile)),scriptSha256:summary.scriptSha256});
+}
+const circulation=cases.find(c=>c.task==='circulation'&&c.variant==='waiting-and-completed'),negative=cases.find(c=>c.task==='circulation'&&c.variant==='authentication-negative');
+if(circulation&&negative){const check=circulation.checks.unconfirmed_not_complete;for(const proof of Object.values(negative.checks)){check.passed=check.passed&&proof.passed;for(const evidence of proof.evidence)if(!check.evidence.some(p=>p.file===evidence.file&&p.pointer===evidence.pointer))check.evidence.push(evidence);}}
+const run={schema:1,contract:bench.contract.id,environment:'synthetic',cases},grade=bench.grade(run,{base:output});
+const report={schema:1,contract:bench.contract.id,environment:'synthetic',model:baseline.model,adapterSha256:baseline.adapterSha256,sourceSha256:baseline.sourceSha256,provenance,passedTasks:grade.passedTasks,totalTasks:grade.totalTasks,fullTenTaskPass:grade.passed,releasePassed:false,liveVerified:false,taskResults:grade.results.map(({number,id,title,passed,variants})=>({number,id,title,passed,missing:variants.flatMap(v=>v.checks.filter(c=>!c.passed).map(c=>v.variant+'/'+c.id))})),routes,scope:'Installed Narae4 application workflow including bounded rules and model inference; this is not a bare-model score or public OfficeBench. External services are synthetic. Real DPAPI/private password fill and isolated browser are exercised. Native WXS template/layout/visual/final-submit is unverified; only draft-save smoke was run. No live school data, messages or submissions.'};
+for(const [file,value]of Object.entries({'run.json':run,'grade.json':grade,'summary.json':report}))fs.writeFileSync(path.join(output,file),JSON.stringify(value,null,2));
+console.log(JSON.stringify({output,passedTasks:grade.passedTasks,totalTasks:grade.totalTasks,releasePassed:false}));

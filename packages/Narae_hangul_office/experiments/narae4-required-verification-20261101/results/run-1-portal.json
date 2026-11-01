@@ -1,0 +1,118 @@
+{
+  "id": "portal",
+  "task": "portal",
+  "variant": "both-systems",
+  "prompt": "설정된 보안 문서로 업무포털 자동 로그인하고 나이스 에듀파인에 접속해줘.",
+  "model": "Narae4-Qwen3.5-2B-Office-LoRA-v1",
+  "actualLocalWeights": true,
+  "syntheticOnly": true,
+  "seconds": 19.645,
+  "response": {
+    "model": "narae4",
+    "workspace": "D:\\Codex\\training\\narae4-required-verification-20261101-r2\\portal",
+    "text": "업무포털 로그인과 요청한 시스템 진입을 실제 화면에서 확인했습니다.\n나이스: 진입 확인\nK-에듀파인: 진입 확인"
+  },
+  "verified": {
+    "profile_safe": true,
+    "portal_authenticated": true,
+    "neis_screen": true,
+    "edufine_screen": true,
+    "no_secret_in_log": true
+  },
+  "calls": [
+    {
+      "name": "gyomu_portal_login",
+      "args": {
+        "operation": "login",
+        "systems": [
+          "neis",
+          "edufine"
+        ]
+      },
+      "value": {
+        "authenticated": true,
+        "complete": true,
+        "stage": "verified",
+        "systems": {
+          "neis": true,
+          "edufine": true
+        },
+        "observations": {
+          "neis": {
+            "productTitle": true,
+            "loginTitle": false,
+            "samePortalOrigin": false,
+            "controls": 2,
+            "frames": 0,
+            "permissionRequired": false,
+            "errorPage": false
+          },
+          "edufine": {
+            "productTitle": true,
+            "loginTitle": false,
+            "samePortalOrigin": false,
+            "controls": 2,
+            "frames": 0,
+            "permissionRequired": false,
+            "errorPage": false
+          }
+        }
+      }
+    }
+  ],
+  "events": [
+    {
+      "type": "tool",
+      "name": "gyomu_portal_login",
+      "args": {
+        "operation": "login",
+        "systems": [
+          "neis",
+          "edufine"
+        ]
+      }
+    }
+  ],
+  "modelRequests": [
+    {
+      "tools": [
+        "gyomu_portal_login"
+      ],
+      "route": "main",
+      "returnedCalls": [
+        "gyomu_portal_login"
+      ]
+    }
+  ],
+  "sourceObservations": {
+    "authPosts": 1,
+    "passwordMatched": true,
+    "network": [
+      {
+        "host": "portal.fixture.test",
+        "path": "/login",
+        "method": "GET"
+      },
+      {
+        "host": "portal.fixture.test",
+        "path": "/auth",
+        "method": "POST"
+      },
+      {
+        "host": "portal.fixture.test",
+        "path": "/main",
+        "method": "GET"
+      },
+      {
+        "host": "neis.fixture.test",
+        "path": "/main",
+        "method": "GET"
+      },
+      {
+        "host": "edufine.fixture.test",
+        "path": "/main",
+        "method": "GET"
+      }
+    ]
+  }
+}

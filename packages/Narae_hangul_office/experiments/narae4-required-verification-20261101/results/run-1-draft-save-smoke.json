@@ -1,0 +1,220 @@
+{
+  "id": "draft-save-smoke",
+  "task": "draft",
+  "variant": "template-submit",
+  "prompt": "현재 열린 WXS 기안을 임시저장해 줘. 제목과 원문은 유지하고 상신하지 마.",
+  "model": "Narae4-Qwen3.5-2B-Office-LoRA-v1",
+  "actualLocalWeights": true,
+  "syntheticOnly": true,
+  "seconds": 23.329,
+  "response": {
+    "model": "narae4",
+    "workspace": "D:\\Codex\\training\\narae4-required-verification-20261101-r2\\draft-save-smoke",
+    "text": "기안 임시저장 응답과 같은 창의 제목·본문·첨부·결재선을 재조회했습니다.\n제목: 가상 계획\n미상신입니다. 저장·입력을 반복하지 않았습니다. 임시저장 목록 재열기와 첨부 서버 바이트 검증은 별도 확인 대상입니다."
+  },
+  "verified": {
+    "observed_template": false,
+    "body_fields_layout": false,
+    "visual_review": false,
+    "title_body_exact": true,
+    "route_and_disclosure": false,
+    "server_attachments": false,
+    "final_process": false,
+    "server_list_verified": false,
+    "no_duplicate": true
+  },
+  "calls": [
+    {
+      "name": "gyomu_browser",
+      "args": {
+        "action": "snapshot"
+      },
+      "value": {
+        "title": "K-에듀파인",
+        "url": "https://fixture.invalid/draft",
+        "elements": [],
+        "text": "모의 기안"
+      }
+    },
+    {
+      "name": "gyomu_skill_read",
+      "args": {
+        "area": "edufine"
+      },
+      "value": {
+        "text": "원본 보존, 동일 창 재조회",
+        "hasMore": false
+      }
+    },
+    {
+      "name": "gyomu_wxs",
+      "args": {
+        "operation": "windows"
+      },
+      "value": {
+        "windows": [
+          {
+            "hwnd": "9931",
+            "title": "가상 계획"
+          }
+        ]
+      }
+    },
+    {
+      "name": "gyomu_wxs",
+      "args": {
+        "operation": "draft-status",
+        "hwnd": "9931"
+      },
+      "value": {
+        "title": "가상 계획",
+        "body": "1. 관련: 가상 문서\n2. 가상 계획을 붙임과 같이 수립합니다.",
+        "attachments": [],
+        "approval_route": [
+          {
+            "name": "가상결재자",
+            "role": "결재"
+          }
+        ],
+        "saved": false
+      }
+    },
+    {
+      "name": "gyomu_wxs_save",
+      "args": {
+        "hwnd": "9931",
+        "expected_title": "가상 계획",
+        "name": "가상 계획"
+      },
+      "value": {
+        "ok": true,
+        "result": {
+          "saved": true
+        }
+      }
+    },
+    {
+      "name": "gyomu_wxs",
+      "args": {
+        "operation": "draft-status",
+        "hwnd": "9931"
+      },
+      "value": {
+        "title": "가상 계획",
+        "body": "1. 관련: 가상 문서\n2. 가상 계획을 붙임과 같이 수립합니다.",
+        "attachments": [],
+        "approval_route": [
+          {
+            "name": "가상결재자",
+            "role": "결재"
+          }
+        ],
+        "saved": true
+      }
+    }
+  ],
+  "events": [
+    {
+      "type": "tool",
+      "name": "gyomu_browser",
+      "args": {
+        "action": "snapshot"
+      }
+    },
+    {
+      "type": "tool",
+      "name": "gyomu_skill_read",
+      "args": {
+        "area": "edufine"
+      }
+    },
+    {
+      "type": "tool",
+      "name": "gyomu_wxs",
+      "args": {
+        "operation": "windows"
+      }
+    },
+    {
+      "type": "tool",
+      "name": "gyomu_wxs",
+      "args": {
+        "operation": "draft-status",
+        "hwnd": "9931"
+      }
+    },
+    {
+      "type": "tool",
+      "name": "gyomu_wxs_save",
+      "args": {
+        "hwnd": "9931",
+        "expected_title": "가상 계획",
+        "name": "가상 계획"
+      }
+    },
+    {
+      "type": "tool",
+      "name": "gyomu_wxs",
+      "args": {
+        "operation": "draft-status",
+        "hwnd": "9931"
+      }
+    }
+  ],
+  "modelRequests": [
+    {
+      "tools": [
+        "gyomu_skill_read"
+      ],
+      "route": "bounded-rule",
+      "returnedCalls": [
+        "gyomu_skill_read"
+      ]
+    },
+    {
+      "tools": [
+        "gyomu_wxs"
+      ],
+      "route": "bounded-rule",
+      "returnedCalls": [
+        "gyomu_wxs"
+      ]
+    },
+    {
+      "tools": [
+        "gyomu_wxs"
+      ],
+      "route": "bounded-rule",
+      "returnedCalls": [
+        "gyomu_wxs"
+      ]
+    },
+    {
+      "tools": [
+        "gyomu_system_status",
+        "gyomu_browser",
+        "gyomu_portal_open",
+        "gyomu_wxs",
+        "gyomu_wxs_options",
+        "gyomu_wxs_prepare",
+        "gyomu_wxs_save"
+      ],
+      "route": "main",
+      "returnedCalls": [
+        "gyomu_wxs_save"
+      ]
+    },
+    {
+      "tools": [
+        "gyomu_wxs"
+      ],
+      "route": "bounded-rule",
+      "returnedCalls": [
+        "gyomu_wxs"
+      ]
+    }
+  ],
+  "sourceObservations": {
+    "saves": 1
+  }
+}

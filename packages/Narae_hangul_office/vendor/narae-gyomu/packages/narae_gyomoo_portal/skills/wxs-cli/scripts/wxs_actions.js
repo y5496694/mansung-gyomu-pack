@@ -14,7 +14,10 @@ function wxsAction(action, p) {
         need(typeof Attach.syncNew === "function" && typeof hsattach !== "undefined", "Native attachment upload integration unavailable");
         var app = String(rInfo.applID), explicit = {"6010":true,"8010":true,"6023":true,"6022":true,"6056":true,"6024":true};
         if (explicit[app] || Attach._naraeLocalUploadBound) return;
-        need(app === "2020", "Unverified attachment upload application; no metadata-only addition applied");
+        var freshStandard = app === "-1" && rInfo.appType === "sancgian" && rInfo.docProcessed === false &&
+            String(rInfo.apprMsgID) === "00000000000000000000" && typeof domHox1 !== "undefined" &&
+            typeof get_text === "function" && String(get_text(domHox1, "/hox/docInfo/ID")) === "";
+        need(app === "2020" || freshStandard, "Unverified attachment upload application; no metadata-only addition applied");
         var original = Attach.syncNew, source = String(original);
         need(/file\.atPc/.test(source) && /this\.appendTo/.test(source) && /this\.element\.setAttachNameByGroup/.test(source), "Native attachment ID-allocation branch changed");
         need(typeof hsattach.AddFlashFile === "function" || typeof hsattach.AddFlashFile === "unknown", "Native byte-upload method unavailable");
@@ -34,6 +37,7 @@ function wxsAction(action, p) {
             }
             var ids = original.apply(this, arguments);
             if (ids === false || ids == null) return ids;
+            if (explicit[String(rInfo.applID)]) return ids;
             need(ids.length === current.length, "Native attachment ID count changed");
             for (var uq = 0; uq < local.length; uq++) {
                 var id = ids[local[uq].index];
@@ -78,7 +82,7 @@ function wxsAction(action, p) {
         need(draftNames.length === 1 && draftNames[0], "Expected one observed drafter identity");
         return draftNames[0];
     }
-    if (action === "processing_status" || action === "processing_click" || action === "processing_preflight") {
+    if (action === "processing_status" || action === "processing_notice_status" || action === "processing_click" || action === "processing_preflight") {
         need(/\/retrieveDocSanctn\.do$/.test(String(location.pathname)), "Expected the observed document-processing route");
         var fields = [], processingInputs = document.querySelectorAll("input,select,textarea"), submit = el("aSubmit");
         for (var pf = 0; pf < processingInputs.length; pf++) {
@@ -88,11 +92,11 @@ function wxsAction(action, p) {
                          visible: rect.right > rect.left && rect.bottom > rect.top && style.display !== "none" && style.visibility !== "hidden"});
         }
         var sr = submit.getBoundingClientRect();
-        need(sr.right > sr.left && sr.bottom > sr.top, "Processing confirmation is not visible");
+        if (action !== "processing_notice_status") need(sr.right > sr.left && sr.bottom > sr.top, "Processing confirmation is not visible");
         var displayClone = document.body.cloneNode(true), nonDisplay = displayClone.querySelectorAll("script,style,noscript,object");
         for (var nd = nonDisplay.length - 1; nd >= 0; nd--) nonDisplay[nd].parentNode.removeChild(nonDisplay[nd]);
         var state = {title: String(document.title), text: String(displayClone.innerText || displayClone.textContent).replace(/^\s+|\s+$/g, "").slice(0, 20000), fields: fields, button: {id: "aSubmit", label: String(submit.innerText).replace(/^\s+|\s+$/g, ""), disabled: !!submit.disabled}};
-        if (action === "processing_status") return state;
+        if (action === "processing_status" || action === "processing_notice_status") return state;
         var exactState = JSON.stringify(wxsPlain(state)) === JSON.stringify(wxsPlain(p.expected));
         if (action === "processing_preflight") return {exact_state: exactState, legacy_gate_passed: JSON.stringify(wxsPlain(state)) === JSON.stringify(p.expected)};
         need(exactState, "Processing form changed after preview");

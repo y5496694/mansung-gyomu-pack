@@ -1,0 +1,174 @@
+{
+  "id": "send-chat",
+  "task": "send",
+  "variant": "chat",
+  "prompt": "소통 대화를 가상초등학교 가상교사 선생님에게 보내줘. 본문은 \"가상 시험 안내입니다. 2039-11-07까지 회신 바랍니다.\"",
+  "model": "Narae4-Qwen3.5-2B-Office-LoRA-v1",
+  "actualLocalWeights": true,
+  "syntheticOnly": true,
+  "seconds": 20.961,
+  "response": {
+    "model": "narae4",
+    "workspace": "D:\\Codex\\training\\narae4-required-verification-20261101-r2\\send-chat",
+    "text": "대화를 전송하고 서버 기록으로 검증했습니다. 상대방의 읽음 확인을 뜻하지 않습니다."
+  },
+  "verified": {
+    "current_unique_recipient": true,
+    "requested_content": true,
+    "authorized_send": true,
+    "server_verified": true,
+    "no_duplicate": true
+  },
+  "calls": [
+    {
+      "name": "gyomu_cbe_search",
+      "args": {
+        "name": "가상교사",
+        "scope": "all"
+      },
+      "value": {
+        "items": [
+          {
+            "id": "wrong-person",
+            "name": "가상교사",
+            "department": "다른초등학교"
+          },
+          {
+            "id": "right-person",
+            "name": "가상교사",
+            "department": "가상초등학교"
+          }
+        ]
+      }
+    },
+    {
+      "name": "gyomu_cbe_prepare",
+      "args": {
+        "kind": "chat",
+        "recipient_ids": [
+          "right-person"
+        ],
+        "body": "가상 시험 안내입니다. 2039-11-07까지 회신 바랍니다."
+      },
+      "value": {
+        "ok": true,
+        "kind": "cbe",
+        "result": {
+          "sent": true,
+          "verified": true,
+          "id": "synthetic-sent-0"
+        }
+      }
+    }
+  ],
+  "events": [
+    {
+      "type": "tool",
+      "name": "gyomu_cbe_search",
+      "args": {
+        "name": "가상교사",
+        "scope": "all"
+      }
+    },
+    {
+      "type": "tool",
+      "name": "gyomu_cbe_prepare",
+      "args": {
+        "kind": "chat",
+        "recipient_ids": [
+          "right-person"
+        ],
+        "body": "가상 시험 안내입니다. 2039-11-07까지 회신 바랍니다."
+      }
+    }
+  ],
+  "modelRequests": [
+    {
+      "tools": [
+        "gyomu_cbe_search"
+      ],
+      "route": "main",
+      "returnedCalls": [
+        "gyomu_cbe_search"
+      ]
+    },
+    {
+      "tools": [
+        "gyomu_cbe_prepare"
+      ],
+      "route": "main",
+      "returnedCalls": [
+        "gyomu_cbe_prepare"
+      ]
+    }
+  ],
+  "sourceObservations": {
+    "backendCalls": [
+      [
+        "users",
+        "search",
+        "가상교사",
+        "--scope",
+        "all",
+        "--page",
+        "1",
+        "--limit",
+        "100"
+      ],
+      [
+        "chats",
+        "send",
+        "--to",
+        "right-person",
+        "--text",
+        "가상 시험 안내입니다. 2039-11-07까지 회신 바랍니다.",
+        "--dry-run"
+      ],
+      [
+        "chats",
+        "send",
+        "--to",
+        "right-person",
+        "--text",
+        "가상 시험 안내입니다. 2039-11-07까지 회신 바랍니다."
+      ]
+    ],
+    "serverRows": [
+      {
+        "id": "synthetic-sent-0",
+        "argv": [
+          "chats",
+          "send",
+          "--to",
+          "right-person",
+          "--text",
+          "가상 시험 안내입니다. 2039-11-07까지 회신 바랍니다."
+        ]
+      }
+    ],
+    "approvals": [
+      {
+        "name": "나래교무 · cbe",
+        "args": {
+          "작업": "cbe",
+          "내용": {
+            "recipients": [
+              {
+                "id": "right-person",
+                "name": "가상교사",
+                "department": "가상초등학교"
+              }
+            ],
+            "title": "",
+            "body": "가상 시험 안내입니다. 2039-11-07까지 회신 바랍니다.",
+            "files": [],
+            "kind": "chat",
+            "dryRun": {
+              "dry_run": true
+            }
+          }
+        }
+      }
+    ]
+  }
+}

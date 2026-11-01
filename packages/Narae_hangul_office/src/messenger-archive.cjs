@@ -37,7 +37,8 @@ async function scan(args,{call,directory,signal,notify=()=>{}}){
   if(day<args.from||day>args.to)return;
   if(/^\[(?:보안|회수|삭제)/.test(record.text||'')){fault(record.source+':'+record.id,'보안·회수·삭제 본문 미확인');return;}
   result.records.push(record);
-  const text=String(record.title||'')+'\n'+String(record.text||'');
+  // A room title describes the container, not this message's contents.
+  const text=(record.source==='chat'?'':String(record.title||'')+'\n')+String(record.text||'');
   if((!args.query||text.toLocaleLowerCase().includes(args.query.toLocaleLowerCase()))&&(!args.submissionOnly||submission.test(text)))result.matches.push(record);
  };
  try{

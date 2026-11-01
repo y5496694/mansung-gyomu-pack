@@ -1,0 +1,719 @@
+{
+  "id": "duty",
+  "task": "duty",
+  "variant": "other-person-date",
+  "prompt": "나이스 가상민 선생님의 2039-05-04 복무 사항 확인하고 설명해줘. 소속 \"가상학교\".",
+  "model": "Narae4-Qwen3.5-2B-Office-LoRA-v1",
+  "actualLocalWeights": true,
+  "syntheticOnly": true,
+  "seconds": 9.122,
+  "response": {
+    "model": "narae4",
+    "workspace": "D:\\Codex\\training\\narae4-required-verification-20261101-r2\\duty",
+    "text": "복무 조회 조건: 가상민 / 2039-05-04 / 가상학교\n소속 | 성명 | 일자 | 복무 | 상태\n가상학교 | 가상민 | 2039-05-04 | 관내출장 | 승인완료\n소속 | 성명 | 일자 | 복무 | 상태\n가상학교 | 가상민 | 2039-05-04 | 조퇴 | 승인완료\n확인한 결과 2페이지. 현재 권한으로 표시된 조회 결과이며 다른 기간·미표시 복무는 포함하지 않습니다."
+  },
+  "verified": {
+    "current_permission": true,
+    "unique_person_organization": true,
+    "exact_date_query": true,
+    "all_result_pages": true,
+    "source_result_explanation": true
+  },
+  "calls": [
+    {
+      "name": "gyomu_browser",
+      "args": {
+        "action": "snapshot"
+      },
+      "value": {
+        "version": "s4",
+        "frameIndex": 0,
+        "url": "http://127.0.0.1:51728/",
+        "title": "나이스 교직원근무상황조회",
+        "dialog": null,
+        "text": "가상현재계정: 교직원근무상황조회 권한 있음\n\n소속\n다른학교\n가상학교\n성명조회일자조회",
+        "tables": [],
+        "elements": [
+          {
+            "ref": "s4/e1",
+            "role": "select",
+            "tag": "select",
+            "type": "",
+            "label": "소속",
+            "id": "org",
+            "disabled": false,
+            "value": "other",
+            "options": [
+              {
+                "text": "다른학교",
+                "value": "other",
+                "selected": true
+              },
+              {
+                "text": "가상학교",
+                "value": "fixture",
+                "selected": false
+              }
+            ]
+          },
+          {
+            "ref": "s4/e2",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "성명",
+            "id": "person",
+            "disabled": false,
+            "value": ""
+          },
+          {
+            "ref": "s4/e3",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "조회일자",
+            "id": "day",
+            "disabled": false,
+            "value": "",
+            "dateInput": {
+              "placeholder": null,
+              "maxLength": -1,
+              "inputMode": "",
+              "className": "",
+              "container": "",
+              "parentContainer": ""
+            }
+          },
+          {
+            "ref": "s4/e4",
+            "role": "button",
+            "tag": "button",
+            "type": "",
+            "label": "조회",
+            "id": "",
+            "disabled": false
+          }
+        ],
+        "totalElements": 4,
+        "appliedFilter": null,
+        "hasMore": false,
+        "nextOffset": 50,
+        "calendars": [],
+        "frames": [],
+        "tableData": [],
+        "untrusted": true,
+        "finalState": "90c2c6b5a469ec13087a57443a800f3b664b1be2c8e07dc3eae8221513c74551"
+      }
+    },
+    {
+      "name": "gyomu_browser",
+      "args": {
+        "action": "fill",
+        "ref": "s4/e2",
+        "text": "가상민"
+      },
+      "value": {
+        "filled": true,
+        "refresh": "snapshot",
+        "version": "s6",
+        "frameIndex": 0,
+        "url": "http://127.0.0.1:51728/",
+        "title": "나이스 교직원근무상황조회",
+        "dialog": null,
+        "text": "가상현재계정: 교직원근무상황조회 권한 있음\n\n소속\n다른학교\n가상학교\n성명조회일자조회",
+        "tables": [],
+        "elements": [
+          {
+            "ref": "s6/e1",
+            "role": "select",
+            "tag": "select",
+            "type": "",
+            "label": "소속",
+            "id": "org",
+            "disabled": false,
+            "value": "other",
+            "options": [
+              {
+                "text": "다른학교",
+                "value": "other",
+                "selected": true
+              },
+              {
+                "text": "가상학교",
+                "value": "fixture",
+                "selected": false
+              }
+            ]
+          },
+          {
+            "ref": "s6/e2",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "성명",
+            "id": "person",
+            "disabled": false,
+            "value": "가상민"
+          },
+          {
+            "ref": "s6/e3",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "조회일자",
+            "id": "day",
+            "disabled": false,
+            "value": "",
+            "dateInput": {
+              "placeholder": null,
+              "maxLength": -1,
+              "inputMode": "",
+              "className": "",
+              "container": "",
+              "parentContainer": ""
+            }
+          },
+          {
+            "ref": "s6/e4",
+            "role": "button",
+            "tag": "button",
+            "type": "",
+            "label": "조회",
+            "id": "",
+            "disabled": false
+          }
+        ],
+        "totalElements": 4,
+        "appliedFilter": null,
+        "hasMore": false,
+        "nextOffset": 50,
+        "calendars": [],
+        "frames": [],
+        "tableData": [],
+        "untrusted": true,
+        "finalState": "2ceef916f17f1bbeb9b61322d09b02b3387dfe6a1b77dfb3ccdfa741c63e667a"
+      }
+    },
+    {
+      "name": "gyomu_browser",
+      "args": {
+        "action": "fill",
+        "ref": "s6/e3",
+        "text": "2039-05-04"
+      },
+      "value": {
+        "filled": true,
+        "refresh": "snapshot",
+        "version": "s8",
+        "frameIndex": 0,
+        "url": "http://127.0.0.1:51728/",
+        "title": "나이스 교직원근무상황조회",
+        "dialog": null,
+        "text": "가상현재계정: 교직원근무상황조회 권한 있음\n\n소속\n다른학교\n가상학교\n성명조회일자조회",
+        "tables": [],
+        "elements": [
+          {
+            "ref": "s8/e1",
+            "role": "select",
+            "tag": "select",
+            "type": "",
+            "label": "소속",
+            "id": "org",
+            "disabled": false,
+            "value": "other",
+            "options": [
+              {
+                "text": "다른학교",
+                "value": "other",
+                "selected": true
+              },
+              {
+                "text": "가상학교",
+                "value": "fixture",
+                "selected": false
+              }
+            ]
+          },
+          {
+            "ref": "s8/e2",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "성명",
+            "id": "person",
+            "disabled": false,
+            "value": "가상민"
+          },
+          {
+            "ref": "s8/e3",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "조회일자",
+            "id": "day",
+            "disabled": false,
+            "value": "2039-05-04",
+            "dateInput": {
+              "placeholder": null,
+              "maxLength": -1,
+              "inputMode": "",
+              "className": "",
+              "container": "",
+              "parentContainer": ""
+            }
+          },
+          {
+            "ref": "s8/e4",
+            "role": "button",
+            "tag": "button",
+            "type": "",
+            "label": "조회",
+            "id": "",
+            "disabled": false
+          }
+        ],
+        "totalElements": 4,
+        "appliedFilter": null,
+        "hasMore": false,
+        "nextOffset": 50,
+        "calendars": [],
+        "frames": [],
+        "tableData": [],
+        "untrusted": true,
+        "finalState": "59cbd12c8f116dba81f5c86234cf25b45cb08eb5de9b7133ef8ac0865f8e5e2c"
+      }
+    },
+    {
+      "name": "gyomu_browser",
+      "args": {
+        "action": "select",
+        "ref": "s8/e1",
+        "value": "fixture"
+      },
+      "value": {
+        "selected": [
+          "fixture"
+        ],
+        "version": "s10",
+        "frameIndex": 0,
+        "url": "http://127.0.0.1:51728/",
+        "title": "나이스 교직원근무상황조회",
+        "dialog": null,
+        "text": "가상현재계정: 교직원근무상황조회 권한 있음\n\n소속\n다른학교\n가상학교\n성명조회일자조회",
+        "tables": [],
+        "elements": [
+          {
+            "ref": "s10/e1",
+            "role": "select",
+            "tag": "select",
+            "type": "",
+            "label": "소속",
+            "id": "org",
+            "disabled": false,
+            "value": "fixture",
+            "options": [
+              {
+                "text": "다른학교",
+                "value": "other",
+                "selected": false
+              },
+              {
+                "text": "가상학교",
+                "value": "fixture",
+                "selected": true
+              }
+            ]
+          },
+          {
+            "ref": "s10/e2",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "성명",
+            "id": "person",
+            "disabled": false,
+            "value": "가상민"
+          },
+          {
+            "ref": "s10/e3",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "조회일자",
+            "id": "day",
+            "disabled": false,
+            "value": "2039-05-04",
+            "dateInput": {
+              "placeholder": null,
+              "maxLength": -1,
+              "inputMode": "",
+              "className": "",
+              "container": "",
+              "parentContainer": ""
+            }
+          },
+          {
+            "ref": "s10/e4",
+            "role": "button",
+            "tag": "button",
+            "type": "",
+            "label": "조회",
+            "id": "",
+            "disabled": false
+          }
+        ],
+        "totalElements": 4,
+        "appliedFilter": null,
+        "hasMore": false,
+        "nextOffset": 50,
+        "calendars": [],
+        "frames": [],
+        "tableData": [],
+        "untrusted": true,
+        "finalState": "14207d85c13a9dfb101685360ae25d0df729ba488684ff5a3c80efbc6e64cfe4"
+      }
+    },
+    {
+      "name": "gyomu_browser",
+      "args": {
+        "action": "click",
+        "ref": "s10/e4"
+      },
+      "value": {
+        "version": "s13",
+        "frameIndex": 0,
+        "url": "http://127.0.0.1:51728/",
+        "title": "나이스 교직원근무상황조회",
+        "dialog": null,
+        "text": "가상현재계정: 교직원근무상황조회 권한 있음\n\n소속\n다른학교\n가상학교\n성명조회일자조회\n소속\t성명\t일자\t복무\t상태\n가상학교\t가상민\t2039-05-04\t관내출장\t승인완료\n다음 페이지",
+        "tables": [
+          "소속\t성명\t일자\t복무\t상태\n가상학교\t가상민\t2039-05-04\t관내출장\t승인완료"
+        ],
+        "elements": [
+          {
+            "ref": "s13/e1",
+            "role": "select",
+            "tag": "select",
+            "type": "",
+            "label": "소속",
+            "id": "org",
+            "disabled": false,
+            "value": "fixture",
+            "options": [
+              {
+                "text": "다른학교",
+                "value": "other",
+                "selected": false
+              },
+              {
+                "text": "가상학교",
+                "value": "fixture",
+                "selected": true
+              }
+            ]
+          },
+          {
+            "ref": "s13/e2",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "성명",
+            "id": "person",
+            "disabled": false,
+            "value": "가상민"
+          },
+          {
+            "ref": "s13/e3",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "조회일자",
+            "id": "day",
+            "disabled": false,
+            "value": "2039-05-04",
+            "dateInput": {
+              "placeholder": null,
+              "maxLength": -1,
+              "inputMode": "",
+              "className": "",
+              "container": "",
+              "parentContainer": ""
+            }
+          },
+          {
+            "ref": "s13/e4",
+            "role": "button",
+            "tag": "button",
+            "type": "",
+            "label": "조회",
+            "id": "",
+            "disabled": false
+          },
+          {
+            "ref": "s13/e5",
+            "role": "button",
+            "tag": "button",
+            "type": "",
+            "label": "다음 페이지",
+            "id": "",
+            "disabled": false
+          }
+        ],
+        "totalElements": 5,
+        "appliedFilter": null,
+        "hasMore": false,
+        "nextOffset": 50,
+        "calendars": [],
+        "frames": [],
+        "tableData": [
+          {
+            "headers": [
+              "소속",
+              "성명",
+              "일자",
+              "복무",
+              "상태"
+            ],
+            "rows": [
+              [
+                "가상학교",
+                "가상민",
+                "2039-05-04",
+                "관내출장",
+                "승인완료"
+              ]
+            ],
+            "hasMore": false,
+            "totalVisibleRows": 1
+          }
+        ],
+        "untrusted": true,
+        "finalState": "63e43b0e190f4f6da4adff813551fe1b4cd61e1865bf9e3874155bb2ddc080f1"
+      }
+    },
+    {
+      "name": "gyomu_browser",
+      "args": {
+        "action": "click",
+        "ref": "s13/e5"
+      },
+      "value": {
+        "version": "s16",
+        "frameIndex": 0,
+        "url": "http://127.0.0.1:51728/",
+        "title": "나이스 교직원근무상황조회",
+        "dialog": null,
+        "text": "가상현재계정: 교직원근무상황조회 권한 있음\n\n소속\n다른학교\n가상학교\n성명조회일자조회\n소속\t성명\t일자\t복무\t상태\n가상학교\t가상민\t2039-05-04\t조퇴\t승인완료",
+        "tables": [
+          "소속\t성명\t일자\t복무\t상태\n가상학교\t가상민\t2039-05-04\t조퇴\t승인완료"
+        ],
+        "elements": [
+          {
+            "ref": "s16/e1",
+            "role": "select",
+            "tag": "select",
+            "type": "",
+            "label": "소속",
+            "id": "org",
+            "disabled": false,
+            "value": "fixture",
+            "options": [
+              {
+                "text": "다른학교",
+                "value": "other",
+                "selected": false
+              },
+              {
+                "text": "가상학교",
+                "value": "fixture",
+                "selected": true
+              }
+            ]
+          },
+          {
+            "ref": "s16/e2",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "성명",
+            "id": "person",
+            "disabled": false,
+            "value": "가상민"
+          },
+          {
+            "ref": "s16/e3",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "조회일자",
+            "id": "day",
+            "disabled": false,
+            "value": "2039-05-04",
+            "dateInput": {
+              "placeholder": null,
+              "maxLength": -1,
+              "inputMode": "",
+              "className": "",
+              "container": "",
+              "parentContainer": ""
+            }
+          },
+          {
+            "ref": "s16/e4",
+            "role": "button",
+            "tag": "button",
+            "type": "",
+            "label": "조회",
+            "id": "",
+            "disabled": false
+          }
+        ],
+        "totalElements": 4,
+        "appliedFilter": null,
+        "hasMore": false,
+        "nextOffset": 50,
+        "calendars": [],
+        "frames": [],
+        "tableData": [
+          {
+            "headers": [
+              "소속",
+              "성명",
+              "일자",
+              "복무",
+              "상태"
+            ],
+            "rows": [
+              [
+                "가상학교",
+                "가상민",
+                "2039-05-04",
+                "조퇴",
+                "승인완료"
+              ]
+            ],
+            "hasMore": false,
+            "totalVisibleRows": 1
+          }
+        ],
+        "untrusted": true,
+        "finalState": "a9e36eed6d39a39156f688119b3b9db3613b05e249e6387f7e37e29f99f763db"
+      }
+    }
+  ],
+  "events": [
+    {
+      "type": "tool",
+      "name": "gyomu_browser",
+      "args": {
+        "action": "snapshot"
+      }
+    },
+    {
+      "type": "tool",
+      "name": "gyomu_browser",
+      "args": {
+        "action": "fill",
+        "ref": "s4/e2",
+        "text": "가상민"
+      }
+    },
+    {
+      "type": "tool",
+      "name": "gyomu_browser",
+      "args": {
+        "action": "fill",
+        "ref": "s6/e3",
+        "text": "2039-05-04"
+      }
+    },
+    {
+      "type": "tool",
+      "name": "gyomu_browser",
+      "args": {
+        "action": "select",
+        "ref": "s8/e1",
+        "value": "fixture"
+      }
+    },
+    {
+      "type": "tool",
+      "name": "gyomu_browser",
+      "args": {
+        "action": "click",
+        "ref": "s10/e4"
+      }
+    },
+    {
+      "type": "tool",
+      "name": "gyomu_browser",
+      "args": {
+        "action": "click",
+        "ref": "s13/e5"
+      }
+    }
+  ],
+  "modelRequests": [
+    {
+      "tools": [
+        "gyomu_browser"
+      ],
+      "route": "bounded-rule",
+      "returnedCalls": [
+        "gyomu_browser"
+      ]
+    },
+    {
+      "tools": [
+        "gyomu_browser"
+      ],
+      "route": "bounded-rule",
+      "returnedCalls": [
+        "gyomu_browser"
+      ]
+    },
+    {
+      "tools": [
+        "gyomu_browser"
+      ],
+      "route": "bounded-rule",
+      "returnedCalls": [
+        "gyomu_browser"
+      ]
+    },
+    {
+      "tools": [
+        "gyomu_browser"
+      ],
+      "route": "bounded-rule",
+      "returnedCalls": [
+        "gyomu_browser"
+      ]
+    },
+    {
+      "tools": [
+        "gyomu_browser"
+      ],
+      "route": "bounded-rule",
+      "returnedCalls": [
+        "gyomu_browser"
+      ]
+    }
+  ],
+  "sourceObservations": {
+    "queries": [
+      {
+        "person": "가상민",
+        "day": "2039-05-04",
+        "organization": "가상학교",
+        "page": 1
+      },
+      {
+        "person": "가상민",
+        "day": "2039-05-04",
+        "organization": "가상학교",
+        "page": 2
+      }
+    ]
+  }
+}

@@ -4,6 +4,28 @@ const assert=require('node:assert/strict');
 const fs=require('node:fs');
 const {login}=require('../src/portal-login.cjs');
 
+test('observing a pending site alert returns its stable dialog instead of a repeated snapshot error',async()=>{
+ const {OfficeSchoolBrowser}=await import('../src/school-browser.mjs'),browser=new OfficeSchoolBrowser();
+ try{await browser.start({headed:false});await browser.context.route('https://portal.fixture/**',route=>route.fulfill({contentType:'text/html;charset=utf-8',body:'<title>안내 시험</title><button onclick="alert(\'합성 설치 상태 안내\')">상태 확인</button>'}));let screen=await browser.execute({action:'open',url:'https://portal.fixture/check'});screen=await browser.execute({action:'click',ref:screen.elements[0].ref});const id=screen.nativeDialog.id;
+  const repeated=await browser.execute({action:'snapshot'});assert.equal(repeated.nativeDialog.id,id);assert.equal(repeated.actionPending,true);const read=await browser.execute({action:'read'});assert.equal(read.nativeDialog.id,id);await browser.execute({action:'dialog',decision:'accept',expectedId:id,expectedMessage:'합성 설치 상태 안내'});
+ }finally{await browser.browser?.close();}
+});
+
+test('local module access rejects unrelated, insecure, changed and attached origins',async()=>{
+ const {OfficeSchoolBrowser}=await import('../src/school-browser.mjs'),browser=new OfficeSchoolBrowser();let grants=0;
+ browser.context={grantPermissions:async()=>{grants++;}};
+ for(const [url,expected,attached]of [['https://other.invalid/','https://other.invalid',false],['http://klef.cbe.go.kr/','http://klef.cbe.go.kr',false],['https://klef.cbe.go.kr/','https://cbe.eduptl.kr',false],['https://klef.cbe.go.kr/','https://klef.cbe.go.kr',true]]){browser.page={url:()=>url};browser.attached=attached;await assert.rejects(browser.execute({action:'local-access',expectedOrigin:expected}),e=>e.code==='LOCAL_ACCESS_ORIGIN_REQUIRED');}
+ assert.equal(grants,0);browser.attached=false;browser.page={url:()=> 'https://klef.cbe.go.kr/main'};browser.diagnostics=async()=>({permissions:{'local-network-access':'granted'}});const result=await browser.execute({action:'local-access',expectedOrigin:'https://klef.cbe.go.kr'});assert.equal(grants,1);assert.equal(result.refreshed,false);assert.equal(result.permissionGranted,true);
+});
+
+test('an explicit portal login URL is not replaced with a different restored main URL',async()=>{
+ const {OfficeSchoolBrowser}=await import('../src/school-browser.mjs'),browser=new OfficeSchoolBrowser();
+ try{await browser.start({headed:false});await browser.context.route('https://cbe.eduptl.kr/**',route=>route.fulfill({contentType:'text/html;charset=utf-8',body:route.request().url().endsWith('/main')?'<title>가상 이전 메인</title><button>로그아웃</button>':'<title>가상 실제 로그인</title><button>교육행정 전자서명 인증서 로그인</button>'}));
+  await browser.execute({action:'open',url:'https://cbe.eduptl.kr/main'});const screen=await browser.execute({action:'open',url:'https://cbe.eduptl.kr/login'});assert.equal(screen.url,'https://cbe.eduptl.kr/login');assert.equal(screen.title,'가상 실제 로그인');
+  const page=browser.page;await browser.execute({action:'open',url:'https://cbe.eduptl.kr/login'});assert.equal(browser.page,page);assert.equal(browser.context.pages().length,1);
+ }finally{await browser.browser?.close();}
+});
+
 test('dedicated Chrome uses observed certificate iframe, delayed SSO and real service popups',async()=>{
  const {OfficeSchoolBrowser}=await import('../src/school-browser.mjs');
  const browser=new OfficeSchoolBrowser(),secret='synthetic-password-for-local-fixture',state={},events=[];

@@ -1,0 +1,10 @@
+<!doctype html><meta charset="utf-8"><title>합성 나이스 신청</title><div id="root"></div><script>
+const kind=new URLSearchParams(location.search).get('kind')||'조퇴',wrong=new URLSearchParams(location.search).has('wrong'),badDialog=new URLSearchParams(location.search).has('bad-dialog');
+const labels=kind==='출장'?['시작일자','종료일자','시작시각','종료시각','출장지','출장목적','교통수단','여비','출장구분']:['신청일자','시작시각','종료시각','사유'];const values={};let route=false;window.submissions=0;
+const routeTable=()=>'<table><tr><th>순서</th><th>성명</th><th>결재구분</th></tr><tr><td>1</td><td>가상검토자</td><td>검토</td></tr><tr><td>2</td><td>가상결재자</td><td>결재</td></tr></table>';
+function form(){root.innerHTML='<div role="dialog" aria-label="'+(kind==='출장'?'출장신청':'근무상황신청')+'"><h1>'+kind+' 신청</h1>'+(kind==='출장'?'':'<label>근무상황소분류<input value="'+kind+'" readonly></label>')+labels.map(label=>'<label>'+label+'<input onchange="values[\''+label+'\']=this.value" value="'+(values[label]||'')+'"></label>').join('')+'<button onclick="preview()">승인요청</button></div>';}
+function preview(){root.innerHTML='<div role="dialog" aria-label="기안문서상신"><h1>기안문서상신</h1><p>'+kind+' '+labels.map(l=>l+': '+(values[l]||'')).join(' / ')+'</p>'+(route?routeTable():'<button onclick="chooseRoute()">개인결재선</button>')+'<button onclick="submit()">상신</button></div>';}
+function chooseRoute(){root.innerHTML='<div role="dialog" aria-label="개인 결재선 지정"><h1>개인 결재선 지정</h1>'+routeTable()+'<button onclick="route=true;preview()">지정</button></div>';}
+async function submit(){if(!confirm(badDialog?'결재 문서를 삭제하시겠습니까?':'이 신청을 상신하시겠습니까?'))return;await fetch('/record',{method:'POST',body:JSON.stringify({kind,values})});window.submissions++;const headers=kind==='출장'?['시작일자','종료일자','시작시각','종료시각','출장지','출장목적','교통수단','여비','출장구분','상태']:['신청일자','시작시각','종료시각','사유','종류','상태'],row=kind==='출장'?labels.map(l=>values[l]):[values['신청일자'],values['시작시각'],values['종료시각'],values['사유'],kind];row.push('결재중');if(wrong)row[0]='2038-01-01';root.innerHTML='<h1>신청 목록</h1><table><tr>'+headers.map(h=>'<th>'+h+'</th>').join('')+'</tr><tr>'+row.map(c=>'<td>'+c+'</td>').join('')+'</tr></table>';}
+form();
+</script>

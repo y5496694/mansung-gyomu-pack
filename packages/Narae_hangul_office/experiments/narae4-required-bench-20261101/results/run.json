@@ -1,0 +1,234 @@
+{
+  "schema": 1,
+  "contract": "narae-office-basic-10-v1",
+  "environment": "synthetic",
+  "cases": [
+    {
+      "task": "leave",
+      "variant": "annual",
+      "checks": {
+        "exact_dates_times_reason": {
+          "passed": true,
+          "evidence": [
+            {
+              "file": "연가.json",
+              "sha256": "d02063fb6716bab47f373479b8550b31d5fcf4777c8aab3486ce0486a1debef8",
+              "pointer": "/verified/exactDatesTimes",
+              "expected": true
+            }
+          ]
+        },
+        "correct_leave_type": {
+          "passed": true,
+          "evidence": [
+            {
+              "file": "연가.json",
+              "sha256": "d02063fb6716bab47f373479b8550b31d5fcf4777c8aab3486ce0486a1debef8",
+              "pointer": "/verified/exactDatesTimes",
+              "expected": true
+            }
+          ]
+        },
+        "current_approval_route": {
+          "passed": true,
+          "evidence": [
+            {
+              "file": "연가.json",
+              "sha256": "d02063fb6716bab47f373479b8550b31d5fcf4777c8aab3486ce0486a1debef8",
+              "pointer": "/verified/currentApprovalRoute",
+              "expected": true
+            }
+          ]
+        },
+        "final_confirmation": {
+          "passed": true,
+          "evidence": [
+            {
+              "file": "연가.json",
+              "sha256": "d02063fb6716bab47f373479b8550b31d5fcf4777c8aab3486ce0486a1debef8",
+              "pointer": "/verified/finalConfirmation",
+              "expected": true
+            }
+          ]
+        },
+        "server_list_verified": {
+          "passed": true,
+          "evidence": [
+            {
+              "file": "연가.json",
+              "sha256": "d02063fb6716bab47f373479b8550b31d5fcf4777c8aab3486ce0486a1debef8",
+              "pointer": "/verified/serverListVerified",
+              "expected": true
+            }
+          ]
+        },
+        "no_duplicate": {
+          "passed": true,
+          "evidence": [
+            {
+              "file": "연가.json",
+              "sha256": "d02063fb6716bab47f373479b8550b31d5fcf4777c8aab3486ce0486a1debef8",
+              "pointer": "/verified/noDuplicate",
+              "expected": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "task": "leave",
+      "variant": "early",
+      "checks": {
+        "exact_dates_times_reason": {
+          "passed": true,
+          "evidence": [
+            {
+              "file": "조퇴.json",
+              "sha256": "4154cc31bbf2c59366aac9a6c9cce13ee8ab41027a4705c43a72470195ac4ac8",
+              "pointer": "/verified/exactDatesTimes",
+              "expected": true
+            }
+          ]
+        },
+        "correct_leave_type": {
+          "passed": true,
+          "evidence": [
+            {
+              "file": "조퇴.json",
+              "sha256": "4154cc31bbf2c59366aac9a6c9cce13ee8ab41027a4705c43a72470195ac4ac8",
+              "pointer": "/verified/exactDatesTimes",
+              "expected": true
+            }
+          ]
+        },
+        "current_approval_route": {
+          "passed": true,
+          "evidence": [
+            {
+              "file": "조퇴.json",
+              "sha256": "4154cc31bbf2c59366aac9a6c9cce13ee8ab41027a4705c43a72470195ac4ac8",
+              "pointer": "/verified/currentApprovalRoute",
+              "expected": true
+            }
+          ]
+        },
+        "final_confirmation": {
+          "passed": true,
+          "evidence": [
+            {
+              "file": "조퇴.json",
+              "sha256": "4154cc31bbf2c59366aac9a6c9cce13ee8ab41027a4705c43a72470195ac4ac8",
+              "pointer": "/verified/finalConfirmation",
+              "expected": true
+            }
+          ]
+        },
+        "server_list_verified": {
+          "passed": true,
+          "evidence": [
+            {
+              "file": "조퇴.json",
+              "sha256": "4154cc31bbf2c59366aac9a6c9cce13ee8ab41027a4705c43a72470195ac4ac8",
+              "pointer": "/verified/serverListVerified",
+              "expected": true
+            }
+          ]
+        },
+        "no_duplicate": {
+          "passed": true,
+          "evidence": [
+            {
+              "file": "조퇴.json",
+              "sha256": "4154cc31bbf2c59366aac9a6c9cce13ee8ab41027a4705c43a72470195ac4ac8",
+              "pointer": "/verified/noDuplicate",
+              "expected": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "task": "trip",
+      "variant": "domestic-trip",
+      "checks": {
+        "exact_dates_times": {
+          "passed": true,
+          "evidence": [
+            {
+              "file": "출장.json",
+              "sha256": "9b1dd2b4b5f5f683ed7872fe3ca2feb73a157c90335d065040061f76749d054c",
+              "pointer": "/verified/exactDatesTimes",
+              "expected": true
+            }
+          ]
+        },
+        "destination_purpose": {
+          "passed": true,
+          "evidence": [
+            {
+              "file": "출장.json",
+              "sha256": "9b1dd2b4b5f5f683ed7872fe3ca2feb73a157c90335d065040061f76749d054c",
+              "pointer": "/verified/destinationPurpose",
+              "expected": true
+            }
+          ]
+        },
+        "trip_type_transport_expenses": {
+          "passed": true,
+          "evidence": [
+            {
+              "file": "출장.json",
+              "sha256": "9b1dd2b4b5f5f683ed7872fe3ca2feb73a157c90335d065040061f76749d054c",
+              "pointer": "/verified/typeTransportExpenses",
+              "expected": true
+            }
+          ]
+        },
+        "current_approval_route": {
+          "passed": true,
+          "evidence": [
+            {
+              "file": "출장.json",
+              "sha256": "9b1dd2b4b5f5f683ed7872fe3ca2feb73a157c90335d065040061f76749d054c",
+              "pointer": "/verified/currentApprovalRoute",
+              "expected": true
+            }
+          ]
+        },
+        "final_confirmation": {
+          "passed": true,
+          "evidence": [
+            {
+              "file": "출장.json",
+              "sha256": "9b1dd2b4b5f5f683ed7872fe3ca2feb73a157c90335d065040061f76749d054c",
+              "pointer": "/verified/finalConfirmation",
+              "expected": true
+            }
+          ]
+        },
+        "server_list_verified": {
+          "passed": true,
+          "evidence": [
+            {
+              "file": "출장.json",
+              "sha256": "9b1dd2b4b5f5f683ed7872fe3ca2feb73a157c90335d065040061f76749d054c",
+              "pointer": "/verified/serverListVerified",
+              "expected": true
+            }
+          ]
+        },
+        "no_duplicate": {
+          "passed": true,
+          "evidence": [
+            {
+              "file": "출장.json",
+              "sha256": "9b1dd2b4b5f5f683ed7872fe3ca2feb73a157c90335d065040061f76749d054c",
+              "pointer": "/verified/noDuplicate",
+              "expected": true
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,2009 @@
+{
+  "kind": "출장",
+  "prompt": "나이스 2039-05-07 09:10~16:10 출장지 \"가상연수원\", 출장목적 \"가상 자료 협의\", 교통수단 \"대중교통\", 여비 \"미지급\", 출장구분 \"국내출장\". 상신해줘.",
+  "model": "Narae4-Qwen3.5-2B-Office-LoRA-v1",
+  "actualLocalWeights": true,
+  "syntheticOnly": true,
+  "response": {
+    "model": "narae4",
+    "workspace": "D:\\Codex\\training\\narae4-required-bench-20261101-r2\\출장",
+    "text": "요청한 출장을 상신한 뒤 같은 신청을 서버 목록에서 확인했습니다.\n시작일자 | 종료일자 | 시작시각 | 종료시각 | 출장지 | 출장목적 | 교통수단 | 여비 | 출장구분 | 상태\n2039-05-07 | 2039-05-07 | 09:10 | 16:10 | 가상연수원 | 가상 자료 협의 | 대중교통 | 미지급 | 국내출장 | 결재중\n같은 상신은 반복하지 않았습니다."
+  },
+  "seconds": 175.254,
+  "verified": {
+    "exactDatesTimes": true,
+    "destinationPurpose": true,
+    "typeTransportExpenses": true,
+    "currentApprovalRoute": true,
+    "finalConfirmation": true,
+    "serverListVerified": true,
+    "noDuplicate": true
+  },
+  "posts": [
+    {
+      "kind": "출장",
+      "values": {
+        "시작일자": "2039-05-07",
+        "종료일자": "2039-05-07",
+        "시작시각": "09:10",
+        "종료시각": "16:10",
+        "출장지": "가상연수원",
+        "출장목적": "가상 자료 협의",
+        "교통수단": "대중교통",
+        "여비": "미지급",
+        "출장구분": "국내출장"
+      }
+    }
+  ],
+  "calls": [
+    {
+      "name": "gyomu_browser",
+      "args": {
+        "action": "snapshot"
+      },
+      "value": {
+        "version": "s4",
+        "frameIndex": 0,
+        "url": "http://127.0.0.1:55924/?kind=%EC%B6%9C%EC%9E%A5",
+        "title": "합성 나이스 신청",
+        "dialog": "출장신청",
+        "text": "출장 신청\n시작일자종료일자시작시각종료시각출장지출장목적교통수단여비출장구분승인요청",
+        "tables": [],
+        "elements": [
+          {
+            "ref": "s4/e1",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "시작일자",
+            "id": "",
+            "disabled": false,
+            "value": "",
+            "dateInput": {
+              "placeholder": null,
+              "maxLength": -1,
+              "inputMode": "",
+              "className": "",
+              "container": "",
+              "parentContainer": ""
+            }
+          },
+          {
+            "ref": "s4/e2",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "종료일자",
+            "id": "",
+            "disabled": false,
+            "value": "",
+            "dateInput": {
+              "placeholder": null,
+              "maxLength": -1,
+              "inputMode": "",
+              "className": "",
+              "container": "",
+              "parentContainer": ""
+            }
+          },
+          {
+            "ref": "s4/e3",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "시작시각",
+            "id": "",
+            "disabled": false,
+            "value": ""
+          },
+          {
+            "ref": "s4/e4",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "종료시각",
+            "id": "",
+            "disabled": false,
+            "value": ""
+          },
+          {
+            "ref": "s4/e5",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "출장지",
+            "id": "",
+            "disabled": false,
+            "value": ""
+          },
+          {
+            "ref": "s4/e6",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "출장목적",
+            "id": "",
+            "disabled": false,
+            "value": ""
+          },
+          {
+            "ref": "s4/e7",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "교통수단",
+            "id": "",
+            "disabled": false,
+            "value": ""
+          },
+          {
+            "ref": "s4/e8",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "여비",
+            "id": "",
+            "disabled": false,
+            "value": ""
+          },
+          {
+            "ref": "s4/e9",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "출장구분",
+            "id": "",
+            "disabled": false,
+            "value": ""
+          },
+          {
+            "ref": "s4/e10",
+            "role": "button",
+            "tag": "button",
+            "type": "",
+            "label": "승인요청",
+            "id": "",
+            "disabled": false
+          }
+        ],
+        "totalElements": 10,
+        "appliedFilter": null,
+        "hasMore": false,
+        "nextOffset": 50,
+        "calendars": [],
+        "frames": [],
+        "tableData": [],
+        "untrusted": true,
+        "finalState": "08fbb00c05a56baa3200743f02ed92302b1dd71a9da9d0c75918cb8684f5181e"
+      }
+    },
+    {
+      "name": "gyomu_browser",
+      "args": {
+        "action": "fill",
+        "ref": "s4/e1",
+        "text": "2039-05-07"
+      },
+      "value": {
+        "filled": true,
+        "refresh": "snapshot",
+        "version": "s6",
+        "frameIndex": 0,
+        "url": "http://127.0.0.1:55924/?kind=%EC%B6%9C%EC%9E%A5",
+        "title": "합성 나이스 신청",
+        "dialog": "출장신청",
+        "text": "출장 신청\n시작일자종료일자시작시각종료시각출장지출장목적교통수단여비출장구분승인요청",
+        "tables": [],
+        "elements": [
+          {
+            "ref": "s6/e1",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "시작일자",
+            "id": "",
+            "disabled": false,
+            "value": "2039-05-07",
+            "dateInput": {
+              "placeholder": null,
+              "maxLength": -1,
+              "inputMode": "",
+              "className": "",
+              "container": "",
+              "parentContainer": ""
+            }
+          },
+          {
+            "ref": "s6/e2",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "종료일자",
+            "id": "",
+            "disabled": false,
+            "value": "",
+            "dateInput": {
+              "placeholder": null,
+              "maxLength": -1,
+              "inputMode": "",
+              "className": "",
+              "container": "",
+              "parentContainer": ""
+            }
+          },
+          {
+            "ref": "s6/e3",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "시작시각",
+            "id": "",
+            "disabled": false,
+            "value": ""
+          },
+          {
+            "ref": "s6/e4",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "종료시각",
+            "id": "",
+            "disabled": false,
+            "value": ""
+          },
+          {
+            "ref": "s6/e5",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "출장지",
+            "id": "",
+            "disabled": false,
+            "value": ""
+          },
+          {
+            "ref": "s6/e6",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "출장목적",
+            "id": "",
+            "disabled": false,
+            "value": ""
+          },
+          {
+            "ref": "s6/e7",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "교통수단",
+            "id": "",
+            "disabled": false,
+            "value": ""
+          },
+          {
+            "ref": "s6/e8",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "여비",
+            "id": "",
+            "disabled": false,
+            "value": ""
+          },
+          {
+            "ref": "s6/e9",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "출장구분",
+            "id": "",
+            "disabled": false,
+            "value": ""
+          },
+          {
+            "ref": "s6/e10",
+            "role": "button",
+            "tag": "button",
+            "type": "",
+            "label": "승인요청",
+            "id": "",
+            "disabled": false
+          }
+        ],
+        "totalElements": 10,
+        "appliedFilter": null,
+        "hasMore": false,
+        "nextOffset": 50,
+        "calendars": [],
+        "frames": [],
+        "tableData": [],
+        "untrusted": true,
+        "finalState": "a7d6c725136a7db7ba2ef60cf1bc7103ef7cf3c47623feffe0245af2e8cc3f6e"
+      }
+    },
+    {
+      "name": "gyomu_browser",
+      "args": {
+        "action": "fill",
+        "ref": "s6/e2",
+        "text": "2039-05-07"
+      },
+      "value": {
+        "filled": true,
+        "refresh": "snapshot",
+        "version": "s8",
+        "frameIndex": 0,
+        "url": "http://127.0.0.1:55924/?kind=%EC%B6%9C%EC%9E%A5",
+        "title": "합성 나이스 신청",
+        "dialog": "출장신청",
+        "text": "출장 신청\n시작일자종료일자시작시각종료시각출장지출장목적교통수단여비출장구분승인요청",
+        "tables": [],
+        "elements": [
+          {
+            "ref": "s8/e1",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "시작일자",
+            "id": "",
+            "disabled": false,
+            "value": "2039-05-07",
+            "dateInput": {
+              "placeholder": null,
+              "maxLength": -1,
+              "inputMode": "",
+              "className": "",
+              "container": "",
+              "parentContainer": ""
+            }
+          },
+          {
+            "ref": "s8/e2",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "종료일자",
+            "id": "",
+            "disabled": false,
+            "value": "2039-05-07",
+            "dateInput": {
+              "placeholder": null,
+              "maxLength": -1,
+              "inputMode": "",
+              "className": "",
+              "container": "",
+              "parentContainer": ""
+            }
+          },
+          {
+            "ref": "s8/e3",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "시작시각",
+            "id": "",
+            "disabled": false,
+            "value": ""
+          },
+          {
+            "ref": "s8/e4",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "종료시각",
+            "id": "",
+            "disabled": false,
+            "value": ""
+          },
+          {
+            "ref": "s8/e5",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "출장지",
+            "id": "",
+            "disabled": false,
+            "value": ""
+          },
+          {
+            "ref": "s8/e6",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "출장목적",
+            "id": "",
+            "disabled": false,
+            "value": ""
+          },
+          {
+            "ref": "s8/e7",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "교통수단",
+            "id": "",
+            "disabled": false,
+            "value": ""
+          },
+          {
+            "ref": "s8/e8",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "여비",
+            "id": "",
+            "disabled": false,
+            "value": ""
+          },
+          {
+            "ref": "s8/e9",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "출장구분",
+            "id": "",
+            "disabled": false,
+            "value": ""
+          },
+          {
+            "ref": "s8/e10",
+            "role": "button",
+            "tag": "button",
+            "type": "",
+            "label": "승인요청",
+            "id": "",
+            "disabled": false
+          }
+        ],
+        "totalElements": 10,
+        "appliedFilter": null,
+        "hasMore": false,
+        "nextOffset": 50,
+        "calendars": [],
+        "frames": [],
+        "tableData": [],
+        "untrusted": true,
+        "finalState": "d2249d4c74f2905db5fb4638df196faf404f2eb567042d3b67cf0fc08aeee0e1"
+      }
+    },
+    {
+      "name": "gyomu_browser",
+      "args": {
+        "action": "fill",
+        "ref": "s8/e3",
+        "text": "09:10"
+      },
+      "value": {
+        "filled": true,
+        "refresh": "snapshot",
+        "version": "s10",
+        "frameIndex": 0,
+        "url": "http://127.0.0.1:55924/?kind=%EC%B6%9C%EC%9E%A5",
+        "title": "합성 나이스 신청",
+        "dialog": "출장신청",
+        "text": "출장 신청\n시작일자종료일자시작시각종료시각출장지출장목적교통수단여비출장구분승인요청",
+        "tables": [],
+        "elements": [
+          {
+            "ref": "s10/e1",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "시작일자",
+            "id": "",
+            "disabled": false,
+            "value": "2039-05-07",
+            "dateInput": {
+              "placeholder": null,
+              "maxLength": -1,
+              "inputMode": "",
+              "className": "",
+              "container": "",
+              "parentContainer": ""
+            }
+          },
+          {
+            "ref": "s10/e2",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "종료일자",
+            "id": "",
+            "disabled": false,
+            "value": "2039-05-07",
+            "dateInput": {
+              "placeholder": null,
+              "maxLength": -1,
+              "inputMode": "",
+              "className": "",
+              "container": "",
+              "parentContainer": ""
+            }
+          },
+          {
+            "ref": "s10/e3",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "시작시각",
+            "id": "",
+            "disabled": false,
+            "value": "09:10"
+          },
+          {
+            "ref": "s10/e4",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "종료시각",
+            "id": "",
+            "disabled": false,
+            "value": ""
+          },
+          {
+            "ref": "s10/e5",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "출장지",
+            "id": "",
+            "disabled": false,
+            "value": ""
+          },
+          {
+            "ref": "s10/e6",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "출장목적",
+            "id": "",
+            "disabled": false,
+            "value": ""
+          },
+          {
+            "ref": "s10/e7",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "교통수단",
+            "id": "",
+            "disabled": false,
+            "value": ""
+          },
+          {
+            "ref": "s10/e8",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "여비",
+            "id": "",
+            "disabled": false,
+            "value": ""
+          },
+          {
+            "ref": "s10/e9",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "출장구분",
+            "id": "",
+            "disabled": false,
+            "value": ""
+          },
+          {
+            "ref": "s10/e10",
+            "role": "button",
+            "tag": "button",
+            "type": "",
+            "label": "승인요청",
+            "id": "",
+            "disabled": false
+          }
+        ],
+        "totalElements": 10,
+        "appliedFilter": null,
+        "hasMore": false,
+        "nextOffset": 50,
+        "calendars": [],
+        "frames": [],
+        "tableData": [],
+        "untrusted": true,
+        "finalState": "3c7f9f0cbdde44bcaccda4fa9d076cd43d7a440c0786eb844cf3af535ef46ab8"
+      }
+    },
+    {
+      "name": "gyomu_browser",
+      "args": {
+        "action": "fill",
+        "ref": "s10/e4",
+        "text": "16:10"
+      },
+      "value": {
+        "filled": true,
+        "refresh": "snapshot",
+        "version": "s12",
+        "frameIndex": 0,
+        "url": "http://127.0.0.1:55924/?kind=%EC%B6%9C%EC%9E%A5",
+        "title": "합성 나이스 신청",
+        "dialog": "출장신청",
+        "text": "출장 신청\n시작일자종료일자시작시각종료시각출장지출장목적교통수단여비출장구분승인요청",
+        "tables": [],
+        "elements": [
+          {
+            "ref": "s12/e1",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "시작일자",
+            "id": "",
+            "disabled": false,
+            "value": "2039-05-07",
+            "dateInput": {
+              "placeholder": null,
+              "maxLength": -1,
+              "inputMode": "",
+              "className": "",
+              "container": "",
+              "parentContainer": ""
+            }
+          },
+          {
+            "ref": "s12/e2",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "종료일자",
+            "id": "",
+            "disabled": false,
+            "value": "2039-05-07",
+            "dateInput": {
+              "placeholder": null,
+              "maxLength": -1,
+              "inputMode": "",
+              "className": "",
+              "container": "",
+              "parentContainer": ""
+            }
+          },
+          {
+            "ref": "s12/e3",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "시작시각",
+            "id": "",
+            "disabled": false,
+            "value": "09:10"
+          },
+          {
+            "ref": "s12/e4",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "종료시각",
+            "id": "",
+            "disabled": false,
+            "value": "16:10"
+          },
+          {
+            "ref": "s12/e5",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "출장지",
+            "id": "",
+            "disabled": false,
+            "value": ""
+          },
+          {
+            "ref": "s12/e6",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "출장목적",
+            "id": "",
+            "disabled": false,
+            "value": ""
+          },
+          {
+            "ref": "s12/e7",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "교통수단",
+            "id": "",
+            "disabled": false,
+            "value": ""
+          },
+          {
+            "ref": "s12/e8",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "여비",
+            "id": "",
+            "disabled": false,
+            "value": ""
+          },
+          {
+            "ref": "s12/e9",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "출장구분",
+            "id": "",
+            "disabled": false,
+            "value": ""
+          },
+          {
+            "ref": "s12/e10",
+            "role": "button",
+            "tag": "button",
+            "type": "",
+            "label": "승인요청",
+            "id": "",
+            "disabled": false
+          }
+        ],
+        "totalElements": 10,
+        "appliedFilter": null,
+        "hasMore": false,
+        "nextOffset": 50,
+        "calendars": [],
+        "frames": [],
+        "tableData": [],
+        "untrusted": true,
+        "finalState": "ec2bd60a6bd74253c65843e2215850d7ccd73dbe36db520450639d65d89afc7c"
+      }
+    },
+    {
+      "name": "gyomu_browser",
+      "args": {
+        "action": "fill",
+        "ref": "s12/e5",
+        "text": "가상연수원"
+      },
+      "value": {
+        "filled": true,
+        "refresh": "snapshot",
+        "version": "s14",
+        "frameIndex": 0,
+        "url": "http://127.0.0.1:55924/?kind=%EC%B6%9C%EC%9E%A5",
+        "title": "합성 나이스 신청",
+        "dialog": "출장신청",
+        "text": "출장 신청\n시작일자종료일자시작시각종료시각출장지출장목적교통수단여비출장구분승인요청",
+        "tables": [],
+        "elements": [
+          {
+            "ref": "s14/e1",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "시작일자",
+            "id": "",
+            "disabled": false,
+            "value": "2039-05-07",
+            "dateInput": {
+              "placeholder": null,
+              "maxLength": -1,
+              "inputMode": "",
+              "className": "",
+              "container": "",
+              "parentContainer": ""
+            }
+          },
+          {
+            "ref": "s14/e2",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "종료일자",
+            "id": "",
+            "disabled": false,
+            "value": "2039-05-07",
+            "dateInput": {
+              "placeholder": null,
+              "maxLength": -1,
+              "inputMode": "",
+              "className": "",
+              "container": "",
+              "parentContainer": ""
+            }
+          },
+          {
+            "ref": "s14/e3",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "시작시각",
+            "id": "",
+            "disabled": false,
+            "value": "09:10"
+          },
+          {
+            "ref": "s14/e4",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "종료시각",
+            "id": "",
+            "disabled": false,
+            "value": "16:10"
+          },
+          {
+            "ref": "s14/e5",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "출장지",
+            "id": "",
+            "disabled": false,
+            "value": "가상연수원"
+          },
+          {
+            "ref": "s14/e6",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "출장목적",
+            "id": "",
+            "disabled": false,
+            "value": ""
+          },
+          {
+            "ref": "s14/e7",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "교통수단",
+            "id": "",
+            "disabled": false,
+            "value": ""
+          },
+          {
+            "ref": "s14/e8",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "여비",
+            "id": "",
+            "disabled": false,
+            "value": ""
+          },
+          {
+            "ref": "s14/e9",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "출장구분",
+            "id": "",
+            "disabled": false,
+            "value": ""
+          },
+          {
+            "ref": "s14/e10",
+            "role": "button",
+            "tag": "button",
+            "type": "",
+            "label": "승인요청",
+            "id": "",
+            "disabled": false
+          }
+        ],
+        "totalElements": 10,
+        "appliedFilter": null,
+        "hasMore": false,
+        "nextOffset": 50,
+        "calendars": [],
+        "frames": [],
+        "tableData": [],
+        "untrusted": true,
+        "finalState": "29a260ab03374069b46d89f4500604d6c55d0ae5f30850e043969c6a3eae346f"
+      }
+    },
+    {
+      "name": "gyomu_browser",
+      "args": {
+        "action": "fill",
+        "ref": "s14/e6",
+        "text": "가상 자료 협의"
+      },
+      "value": {
+        "filled": true,
+        "refresh": "snapshot",
+        "version": "s16",
+        "frameIndex": 0,
+        "url": "http://127.0.0.1:55924/?kind=%EC%B6%9C%EC%9E%A5",
+        "title": "합성 나이스 신청",
+        "dialog": "출장신청",
+        "text": "출장 신청\n시작일자종료일자시작시각종료시각출장지출장목적교통수단여비출장구분승인요청",
+        "tables": [],
+        "elements": [
+          {
+            "ref": "s16/e1",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "시작일자",
+            "id": "",
+            "disabled": false,
+            "value": "2039-05-07",
+            "dateInput": {
+              "placeholder": null,
+              "maxLength": -1,
+              "inputMode": "",
+              "className": "",
+              "container": "",
+              "parentContainer": ""
+            }
+          },
+          {
+            "ref": "s16/e2",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "종료일자",
+            "id": "",
+            "disabled": false,
+            "value": "2039-05-07",
+            "dateInput": {
+              "placeholder": null,
+              "maxLength": -1,
+              "inputMode": "",
+              "className": "",
+              "container": "",
+              "parentContainer": ""
+            }
+          },
+          {
+            "ref": "s16/e3",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "시작시각",
+            "id": "",
+            "disabled": false,
+            "value": "09:10"
+          },
+          {
+            "ref": "s16/e4",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "종료시각",
+            "id": "",
+            "disabled": false,
+            "value": "16:10"
+          },
+          {
+            "ref": "s16/e5",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "출장지",
+            "id": "",
+            "disabled": false,
+            "value": "가상연수원"
+          },
+          {
+            "ref": "s16/e6",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "출장목적",
+            "id": "",
+            "disabled": false,
+            "value": "가상 자료 협의"
+          },
+          {
+            "ref": "s16/e7",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "교통수단",
+            "id": "",
+            "disabled": false,
+            "value": ""
+          },
+          {
+            "ref": "s16/e8",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "여비",
+            "id": "",
+            "disabled": false,
+            "value": ""
+          },
+          {
+            "ref": "s16/e9",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "출장구분",
+            "id": "",
+            "disabled": false,
+            "value": ""
+          },
+          {
+            "ref": "s16/e10",
+            "role": "button",
+            "tag": "button",
+            "type": "",
+            "label": "승인요청",
+            "id": "",
+            "disabled": false
+          }
+        ],
+        "totalElements": 10,
+        "appliedFilter": null,
+        "hasMore": false,
+        "nextOffset": 50,
+        "calendars": [],
+        "frames": [],
+        "tableData": [],
+        "untrusted": true,
+        "finalState": "797d31cfd82351a1980ec6f468c4d5fce29e5e5c7ee05c1bcca558a840553912"
+      }
+    },
+    {
+      "name": "gyomu_browser",
+      "args": {
+        "action": "fill",
+        "ref": "s16/e7",
+        "text": "대중교통"
+      },
+      "value": {
+        "filled": true,
+        "refresh": "snapshot",
+        "version": "s18",
+        "frameIndex": 0,
+        "url": "http://127.0.0.1:55924/?kind=%EC%B6%9C%EC%9E%A5",
+        "title": "합성 나이스 신청",
+        "dialog": "출장신청",
+        "text": "출장 신청\n시작일자종료일자시작시각종료시각출장지출장목적교통수단여비출장구분승인요청",
+        "tables": [],
+        "elements": [
+          {
+            "ref": "s18/e1",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "시작일자",
+            "id": "",
+            "disabled": false,
+            "value": "2039-05-07",
+            "dateInput": {
+              "placeholder": null,
+              "maxLength": -1,
+              "inputMode": "",
+              "className": "",
+              "container": "",
+              "parentContainer": ""
+            }
+          },
+          {
+            "ref": "s18/e2",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "종료일자",
+            "id": "",
+            "disabled": false,
+            "value": "2039-05-07",
+            "dateInput": {
+              "placeholder": null,
+              "maxLength": -1,
+              "inputMode": "",
+              "className": "",
+              "container": "",
+              "parentContainer": ""
+            }
+          },
+          {
+            "ref": "s18/e3",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "시작시각",
+            "id": "",
+            "disabled": false,
+            "value": "09:10"
+          },
+          {
+            "ref": "s18/e4",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "종료시각",
+            "id": "",
+            "disabled": false,
+            "value": "16:10"
+          },
+          {
+            "ref": "s18/e5",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "출장지",
+            "id": "",
+            "disabled": false,
+            "value": "가상연수원"
+          },
+          {
+            "ref": "s18/e6",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "출장목적",
+            "id": "",
+            "disabled": false,
+            "value": "가상 자료 협의"
+          },
+          {
+            "ref": "s18/e7",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "교통수단",
+            "id": "",
+            "disabled": false,
+            "value": "대중교통"
+          },
+          {
+            "ref": "s18/e8",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "여비",
+            "id": "",
+            "disabled": false,
+            "value": ""
+          },
+          {
+            "ref": "s18/e9",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "출장구분",
+            "id": "",
+            "disabled": false,
+            "value": ""
+          },
+          {
+            "ref": "s18/e10",
+            "role": "button",
+            "tag": "button",
+            "type": "",
+            "label": "승인요청",
+            "id": "",
+            "disabled": false
+          }
+        ],
+        "totalElements": 10,
+        "appliedFilter": null,
+        "hasMore": false,
+        "nextOffset": 50,
+        "calendars": [],
+        "frames": [],
+        "tableData": [],
+        "untrusted": true,
+        "finalState": "89de0862a0f19763a1ea7587aecc087839029712739df0947ba5bb0c38c64a6a"
+      }
+    },
+    {
+      "name": "gyomu_browser",
+      "args": {
+        "action": "fill",
+        "ref": "s18/e8",
+        "text": "미지급"
+      },
+      "value": {
+        "filled": true,
+        "refresh": "snapshot",
+        "version": "s20",
+        "frameIndex": 0,
+        "url": "http://127.0.0.1:55924/?kind=%EC%B6%9C%EC%9E%A5",
+        "title": "합성 나이스 신청",
+        "dialog": "출장신청",
+        "text": "출장 신청\n시작일자종료일자시작시각종료시각출장지출장목적교통수단여비출장구분승인요청",
+        "tables": [],
+        "elements": [
+          {
+            "ref": "s20/e1",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "시작일자",
+            "id": "",
+            "disabled": false,
+            "value": "2039-05-07",
+            "dateInput": {
+              "placeholder": null,
+              "maxLength": -1,
+              "inputMode": "",
+              "className": "",
+              "container": "",
+              "parentContainer": ""
+            }
+          },
+          {
+            "ref": "s20/e2",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "종료일자",
+            "id": "",
+            "disabled": false,
+            "value": "2039-05-07",
+            "dateInput": {
+              "placeholder": null,
+              "maxLength": -1,
+              "inputMode": "",
+              "className": "",
+              "container": "",
+              "parentContainer": ""
+            }
+          },
+          {
+            "ref": "s20/e3",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "시작시각",
+            "id": "",
+            "disabled": false,
+            "value": "09:10"
+          },
+          {
+            "ref": "s20/e4",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "종료시각",
+            "id": "",
+            "disabled": false,
+            "value": "16:10"
+          },
+          {
+            "ref": "s20/e5",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "출장지",
+            "id": "",
+            "disabled": false,
+            "value": "가상연수원"
+          },
+          {
+            "ref": "s20/e6",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "출장목적",
+            "id": "",
+            "disabled": false,
+            "value": "가상 자료 협의"
+          },
+          {
+            "ref": "s20/e7",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "교통수단",
+            "id": "",
+            "disabled": false,
+            "value": "대중교통"
+          },
+          {
+            "ref": "s20/e8",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "여비",
+            "id": "",
+            "disabled": false,
+            "value": "미지급"
+          },
+          {
+            "ref": "s20/e9",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "출장구분",
+            "id": "",
+            "disabled": false,
+            "value": ""
+          },
+          {
+            "ref": "s20/e10",
+            "role": "button",
+            "tag": "button",
+            "type": "",
+            "label": "승인요청",
+            "id": "",
+            "disabled": false
+          }
+        ],
+        "totalElements": 10,
+        "appliedFilter": null,
+        "hasMore": false,
+        "nextOffset": 50,
+        "calendars": [],
+        "frames": [],
+        "tableData": [],
+        "untrusted": true,
+        "finalState": "c4b22e86a1cf6de04ae02fd2afb5dd41695003149b3288cefadce644aff011e3"
+      }
+    },
+    {
+      "name": "gyomu_browser",
+      "args": {
+        "action": "fill",
+        "ref": "s20/e9",
+        "text": "국내출장"
+      },
+      "value": {
+        "filled": true,
+        "refresh": "snapshot",
+        "version": "s22",
+        "frameIndex": 0,
+        "url": "http://127.0.0.1:55924/?kind=%EC%B6%9C%EC%9E%A5",
+        "title": "합성 나이스 신청",
+        "dialog": "출장신청",
+        "text": "출장 신청\n시작일자종료일자시작시각종료시각출장지출장목적교통수단여비출장구분승인요청",
+        "tables": [],
+        "elements": [
+          {
+            "ref": "s22/e1",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "시작일자",
+            "id": "",
+            "disabled": false,
+            "value": "2039-05-07",
+            "dateInput": {
+              "placeholder": null,
+              "maxLength": -1,
+              "inputMode": "",
+              "className": "",
+              "container": "",
+              "parentContainer": ""
+            }
+          },
+          {
+            "ref": "s22/e2",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "종료일자",
+            "id": "",
+            "disabled": false,
+            "value": "2039-05-07",
+            "dateInput": {
+              "placeholder": null,
+              "maxLength": -1,
+              "inputMode": "",
+              "className": "",
+              "container": "",
+              "parentContainer": ""
+            }
+          },
+          {
+            "ref": "s22/e3",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "시작시각",
+            "id": "",
+            "disabled": false,
+            "value": "09:10"
+          },
+          {
+            "ref": "s22/e4",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "종료시각",
+            "id": "",
+            "disabled": false,
+            "value": "16:10"
+          },
+          {
+            "ref": "s22/e5",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "출장지",
+            "id": "",
+            "disabled": false,
+            "value": "가상연수원"
+          },
+          {
+            "ref": "s22/e6",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "출장목적",
+            "id": "",
+            "disabled": false,
+            "value": "가상 자료 협의"
+          },
+          {
+            "ref": "s22/e7",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "교통수단",
+            "id": "",
+            "disabled": false,
+            "value": "대중교통"
+          },
+          {
+            "ref": "s22/e8",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "여비",
+            "id": "",
+            "disabled": false,
+            "value": "미지급"
+          },
+          {
+            "ref": "s22/e9",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "출장구분",
+            "id": "",
+            "disabled": false,
+            "value": "국내출장"
+          },
+          {
+            "ref": "s22/e10",
+            "role": "button",
+            "tag": "button",
+            "type": "",
+            "label": "승인요청",
+            "id": "",
+            "disabled": false
+          }
+        ],
+        "totalElements": 10,
+        "appliedFilter": null,
+        "hasMore": false,
+        "nextOffset": 50,
+        "calendars": [],
+        "frames": [],
+        "tableData": [],
+        "untrusted": true,
+        "finalState": "fe6802db7d43963eeec490c45f6115326e883fc7eae08155a70f594c035fd4c3"
+      }
+    },
+    {
+      "name": "gyomu_browser",
+      "args": {
+        "action": "click",
+        "ref": "s22/e10"
+      },
+      "value": {
+        "version": "s25",
+        "frameIndex": 0,
+        "url": "http://127.0.0.1:55924/?kind=%EC%B6%9C%EC%9E%A5",
+        "title": "합성 나이스 신청",
+        "dialog": "기안문서상신",
+        "text": "기안문서상신\n\n출장 시작일자: 2039-05-07 / 종료일자: 2039-05-07 / 시작시각: 09:10 / 종료시각: 16:10 / 출장지: 가상연수원 / 출장목적: 가상 자료 협의 / 교통수단: 대중교통 / 여비: 미지급 / 출장구분: 국내출장\n\n개인결재선상신",
+        "tables": [],
+        "elements": [
+          {
+            "ref": "s25/e1",
+            "role": "button",
+            "tag": "button",
+            "type": "",
+            "label": "개인결재선",
+            "id": "",
+            "disabled": false
+          },
+          {
+            "ref": "s25/e2",
+            "role": "button",
+            "tag": "button",
+            "type": "",
+            "label": "상신",
+            "id": "",
+            "disabled": false
+          }
+        ],
+        "totalElements": 2,
+        "appliedFilter": null,
+        "hasMore": false,
+        "nextOffset": 50,
+        "calendars": [],
+        "frames": [],
+        "tableData": [],
+        "untrusted": true,
+        "finalState": "ff9af99cbd3cdd98faed6dd2b99d72f6b9d72b9e5e770c0604ac6c5093bb4489"
+      }
+    },
+    {
+      "name": "gyomu_browser",
+      "args": {
+        "action": "click",
+        "ref": "s25/e1"
+      },
+      "value": {
+        "version": "s28",
+        "frameIndex": 0,
+        "url": "http://127.0.0.1:55924/?kind=%EC%B6%9C%EC%9E%A5",
+        "title": "합성 나이스 신청",
+        "dialog": "개인 결재선 지정",
+        "text": "개인 결재선 지정\n순서\t성명\t결재구분\n1\t가상검토자\t검토\n2\t가상결재자\t결재\n지정",
+        "tables": [
+          "순서\t성명\t결재구분\n1\t가상검토자\t검토\n2\t가상결재자\t결재"
+        ],
+        "elements": [
+          {
+            "ref": "s28/e1",
+            "role": "button",
+            "tag": "button",
+            "type": "",
+            "label": "지정",
+            "id": "",
+            "disabled": false
+          }
+        ],
+        "totalElements": 1,
+        "appliedFilter": null,
+        "hasMore": false,
+        "nextOffset": 50,
+        "calendars": [],
+        "frames": [],
+        "tableData": [
+          {
+            "headers": [
+              "순서",
+              "성명",
+              "결재구분"
+            ],
+            "rows": [
+              [
+                "1",
+                "가상검토자",
+                "검토"
+              ],
+              [
+                "2",
+                "가상결재자",
+                "결재"
+              ]
+            ],
+            "hasMore": false,
+            "totalVisibleRows": 2
+          }
+        ],
+        "untrusted": true,
+        "finalState": "f9968ec415076fe982c3e200a7876d1a8433a6488b59dab960e74146d42c1c7b"
+      }
+    },
+    {
+      "name": "gyomu_browser",
+      "args": {
+        "action": "click",
+        "ref": "s28/e1"
+      },
+      "value": {
+        "version": "s31",
+        "frameIndex": 0,
+        "url": "http://127.0.0.1:55924/?kind=%EC%B6%9C%EC%9E%A5",
+        "title": "합성 나이스 신청",
+        "dialog": "기안문서상신",
+        "text": "기안문서상신\n\n출장 시작일자: 2039-05-07 / 종료일자: 2039-05-07 / 시작시각: 09:10 / 종료시각: 16:10 / 출장지: 가상연수원 / 출장목적: 가상 자료 협의 / 교통수단: 대중교통 / 여비: 미지급 / 출장구분: 국내출장\n\n순서\t성명\t결재구분\n1\t가상검토자\t검토\n2\t가상결재자\t결재\n상신",
+        "tables": [
+          "순서\t성명\t결재구분\n1\t가상검토자\t검토\n2\t가상결재자\t결재"
+        ],
+        "elements": [
+          {
+            "ref": "s31/e1",
+            "role": "button",
+            "tag": "button",
+            "type": "",
+            "label": "상신",
+            "id": "",
+            "disabled": false
+          }
+        ],
+        "totalElements": 1,
+        "appliedFilter": null,
+        "hasMore": false,
+        "nextOffset": 50,
+        "calendars": [],
+        "frames": [],
+        "tableData": [
+          {
+            "headers": [
+              "순서",
+              "성명",
+              "결재구분"
+            ],
+            "rows": [
+              [
+                "1",
+                "가상검토자",
+                "검토"
+              ],
+              [
+                "2",
+                "가상결재자",
+                "결재"
+              ]
+            ],
+            "hasMore": false,
+            "totalVisibleRows": 2
+          }
+        ],
+        "untrusted": true,
+        "finalState": "2719a42813398ace58982de5635143a150f0fa2629b487c7532373ff62a98ff6"
+      }
+    },
+    {
+      "name": "gyomu_browser",
+      "args": {
+        "action": "click",
+        "ref": "s31/e1",
+        "confirmFinalAction": true,
+        "expectedDocument": "기안문서상신\n\n출장 시작일자: 2039-05-07 / 종료일자: 2039-05-07 / 시작시각: 09:10 / 종료시각: 16:10 / 출장지: 가상연수원 / 출장목적: 가상 자료 협의 / 교통수단: 대중교통 / 여비: 미지급 / 출장구분: 국내출장\n\n순서\t성명\t결재구분\n1\t가상검토자\t검토\n2\t가상결재자\t결재\n상신",
+        "expectedLabel": "상신",
+        "expectedUrl": "http://127.0.0.1:55924/?kind=%EC%B6%9C%EC%9E%A5",
+        "expectedState": "2719a42813398ace58982de5635143a150f0fa2629b487c7532373ff62a98ff6"
+      },
+      "value": {
+        "version": "s34",
+        "frameIndex": 0,
+        "url": "http://127.0.0.1:55924/?kind=%EC%B6%9C%EC%9E%A5",
+        "title": "합성 나이스 신청",
+        "dialog": "기안문서상신",
+        "text": "기안문서상신\n\n출장 시작일자: 2039-05-07 / 종료일자: 2039-05-07 / 시작시각: 09:10 / 종료시각: 16:10 / 출장지: 가상연수원 / 출장목적: 가상 자료 협의 / 교통수단: 대중교통 / 여비: 미지급 / 출장구분: 국내출장\n\n순서\t성명\t결재구분\n1\t가상검토자\t검토\n2\t가상결재자\t결재\n상신",
+        "tables": [
+          "순서\t성명\t결재구분\n1\t가상검토자\t검토\n2\t가상결재자\t결재"
+        ],
+        "elements": [
+          {
+            "ref": "s34/e1",
+            "role": "button",
+            "tag": "button",
+            "type": "",
+            "label": "상신",
+            "id": "",
+            "disabled": false
+          }
+        ],
+        "totalElements": 1,
+        "appliedFilter": null,
+        "hasMore": false,
+        "nextOffset": 50,
+        "calendars": [],
+        "frames": [],
+        "tableData": [
+          {
+            "headers": [
+              "순서",
+              "성명",
+              "결재구분"
+            ],
+            "rows": [
+              [
+                "1",
+                "가상검토자",
+                "검토"
+              ],
+              [
+                "2",
+                "가상결재자",
+                "결재"
+              ]
+            ],
+            "hasMore": false,
+            "totalVisibleRows": 2
+          }
+        ],
+        "untrusted": true,
+        "finalState": "2719a42813398ace58982de5635143a150f0fa2629b487c7532373ff62a98ff6",
+        "finalAction": {
+          "operation": "submit",
+          "attempted": true,
+          "completed": false,
+          "verificationRequired": true,
+          "nativeDialog": {
+            "type": "confirm",
+            "message": "이 신청을 상신하시겠습니까?",
+            "accepted": false
+          }
+        }
+      }
+    },
+    {
+      "name": "gyomu_browser",
+      "args": {
+        "action": "click",
+        "ref": "s34/e1",
+        "confirmFinalAction": true,
+        "expectedDocument": "기안문서상신\n\n출장 시작일자: 2039-05-07 / 종료일자: 2039-05-07 / 시작시각: 09:10 / 종료시각: 16:10 / 출장지: 가상연수원 / 출장목적: 가상 자료 협의 / 교통수단: 대중교통 / 여비: 미지급 / 출장구분: 국내출장\n\n순서\t성명\t결재구분\n1\t가상검토자\t검토\n2\t가상결재자\t결재\n상신",
+        "expectedLabel": "상신",
+        "expectedUrl": "http://127.0.0.1:55924/?kind=%EC%B6%9C%EC%9E%A5",
+        "expectedState": "2719a42813398ace58982de5635143a150f0fa2629b487c7532373ff62a98ff6",
+        "confirmationText": "이 신청을 상신하시겠습니까?"
+      },
+      "value": {
+        "version": "s37",
+        "frameIndex": 0,
+        "url": "http://127.0.0.1:55924/?kind=%EC%B6%9C%EC%9E%A5",
+        "title": "합성 나이스 신청",
+        "dialog": null,
+        "text": "신청 목록\n시작일자\t종료일자\t시작시각\t종료시각\t출장지\t출장목적\t교통수단\t여비\t출장구분\t상태\n2039-05-07\t2039-05-07\t09:10\t16:10\t가상연수원\t가상 자료 협의\t대중교통\t미지급\t국내출장\t결재중",
+        "tables": [
+          "시작일자\t종료일자\t시작시각\t종료시각\t출장지\t출장목적\t교통수단\t여비\t출장구분\t상태\n2039-05-07\t2039-05-07\t09:10\t16:10\t가상연수원\t가상 자료 협의\t대중교통\t미지급\t국내출장\t결재중"
+        ],
+        "elements": [],
+        "totalElements": 0,
+        "appliedFilter": null,
+        "hasMore": false,
+        "nextOffset": 50,
+        "calendars": [],
+        "frames": [],
+        "tableData": [
+          {
+            "headers": [
+              "시작일자",
+              "종료일자",
+              "시작시각",
+              "종료시각",
+              "출장지",
+              "출장목적",
+              "교통수단",
+              "여비",
+              "출장구분",
+              "상태"
+            ],
+            "rows": [
+              [
+                "2039-05-07",
+                "2039-05-07",
+                "09:10",
+                "16:10",
+                "가상연수원",
+                "가상 자료 협의",
+                "대중교통",
+                "미지급",
+                "국내출장",
+                "결재중"
+              ]
+            ],
+            "hasMore": false,
+            "totalVisibleRows": 1
+          }
+        ],
+        "untrusted": true,
+        "finalState": "69aa9259f1083f708fbe14eb75e38d0307e5ee0ecca2e389136b395c939eddda",
+        "finalAction": {
+          "operation": "submit",
+          "attempted": true,
+          "completed": false,
+          "verificationRequired": true,
+          "nativeDialog": {
+            "type": "confirm",
+            "message": "이 신청을 상신하시겠습니까?",
+            "accepted": true
+          }
+        }
+      }
+    },
+    {
+      "name": "gyomu_browser",
+      "args": {
+        "action": "snapshot"
+      },
+      "value": {
+        "version": "s38",
+        "frameIndex": 0,
+        "url": "http://127.0.0.1:55924/?kind=%EC%B6%9C%EC%9E%A5",
+        "title": "합성 나이스 신청",
+        "dialog": null,
+        "text": "신청 목록\n시작일자\t종료일자\t시작시각\t종료시각\t출장지\t출장목적\t교통수단\t여비\t출장구분\t상태\n2039-05-07\t2039-05-07\t09:10\t16:10\t가상연수원\t가상 자료 협의\t대중교통\t미지급\t국내출장\t결재중",
+        "tables": [
+          "시작일자\t종료일자\t시작시각\t종료시각\t출장지\t출장목적\t교통수단\t여비\t출장구분\t상태\n2039-05-07\t2039-05-07\t09:10\t16:10\t가상연수원\t가상 자료 협의\t대중교통\t미지급\t국내출장\t결재중"
+        ],
+        "elements": [],
+        "totalElements": 0,
+        "appliedFilter": null,
+        "hasMore": false,
+        "nextOffset": 50,
+        "calendars": [],
+        "frames": [],
+        "tableData": [
+          {
+            "headers": [
+              "시작일자",
+              "종료일자",
+              "시작시각",
+              "종료시각",
+              "출장지",
+              "출장목적",
+              "교통수단",
+              "여비",
+              "출장구분",
+              "상태"
+            ],
+            "rows": [
+              [
+                "2039-05-07",
+                "2039-05-07",
+                "09:10",
+                "16:10",
+                "가상연수원",
+                "가상 자료 협의",
+                "대중교통",
+                "미지급",
+                "국내출장",
+                "결재중"
+              ]
+            ],
+            "hasMore": false,
+            "totalVisibleRows": 1
+          }
+        ],
+        "untrusted": true,
+        "finalState": "69aa9259f1083f708fbe14eb75e38d0307e5ee0ecca2e389136b395c939eddda"
+      }
+    }
+  ],
+  "events": [
+    {
+      "type": "tool",
+      "name": "gyomu_browser",
+      "args": {
+        "action": "snapshot"
+      }
+    },
+    {
+      "type": "tool",
+      "name": "gyomu_browser",
+      "args": {
+        "action": "fill",
+        "ref": "s4/e1",
+        "text": "2039-05-07"
+      }
+    },
+    {
+      "type": "tool",
+      "name": "gyomu_browser",
+      "args": {
+        "action": "fill",
+        "ref": "s6/e2",
+        "text": "2039-05-07"
+      }
+    },
+    {
+      "type": "tool",
+      "name": "gyomu_browser",
+      "args": {
+        "action": "fill",
+        "ref": "s8/e3",
+        "text": "09:10"
+      }
+    },
+    {
+      "type": "tool",
+      "name": "gyomu_browser",
+      "args": {
+        "action": "fill",
+        "ref": "s10/e4",
+        "text": "16:10"
+      }
+    },
+    {
+      "type": "tool",
+      "name": "gyomu_browser",
+      "args": {
+        "action": "fill",
+        "ref": "s12/e5",
+        "text": "가상연수원"
+      }
+    },
+    {
+      "type": "tool",
+      "name": "gyomu_browser",
+      "args": {
+        "action": "fill",
+        "ref": "s14/e6",
+        "text": "가상 자료 협의"
+      }
+    },
+    {
+      "type": "tool",
+      "name": "gyomu_browser",
+      "args": {
+        "action": "fill",
+        "ref": "s16/e7",
+        "text": "대중교통"
+      }
+    },
+    {
+      "type": "tool",
+      "name": "gyomu_browser",
+      "args": {
+        "action": "fill",
+        "ref": "s18/e8",
+        "text": "미지급"
+      }
+    },
+    {
+      "type": "tool",
+      "name": "gyomu_browser",
+      "args": {
+        "action": "fill",
+        "ref": "s20/e9",
+        "text": "국내출장"
+      }
+    },
+    {
+      "type": "tool",
+      "name": "gyomu_browser",
+      "args": {
+        "action": "click",
+        "ref": "s22/e10"
+      }
+    },
+    {
+      "type": "tool",
+      "name": "gyomu_browser",
+      "args": {
+        "action": "click",
+        "ref": "s25/e1"
+      }
+    },
+    {
+      "type": "tool",
+      "name": "gyomu_browser",
+      "args": {
+        "action": "click",
+        "ref": "s28/e1"
+      }
+    },
+    {
+      "type": "tool",
+      "name": "gyomu_browser",
+      "args": {
+        "action": "click",
+        "ref": "s31/e1",
+        "confirmFinalAction": true,
+        "expectedDocument": "기안문서상신\n\n출장 시작일자: 2039-05-07 / 종료일자: 2039-05-07 / 시작시각: 09:10 / 종료시각: 16:10 / 출장지: 가상연수원 / 출장목적: 가상 자료 협의 / 교통수단: 대중교통 / 여비: 미지급 / 출장구분: 국내출장\n\n순서\t성명\t결재구분\n1\t가상검토자\t검토\n2\t가상결재자\t결재\n상신",
+        "expectedLabel": "상신",
+        "expectedUrl": "http://127.0.0.1:55924/?kind=%EC%B6%9C%EC%9E%A5",
+        "expectedState": "2719a42813398ace58982de5635143a150f0fa2629b487c7532373ff62a98ff6"
+      }
+    },
+    {
+      "type": "tool",
+      "name": "gyomu_browser",
+      "args": {
+        "action": "click",
+        "ref": "s34/e1",
+        "confirmFinalAction": true,
+        "expectedDocument": "기안문서상신\n\n출장 시작일자: 2039-05-07 / 종료일자: 2039-05-07 / 시작시각: 09:10 / 종료시각: 16:10 / 출장지: 가상연수원 / 출장목적: 가상 자료 협의 / 교통수단: 대중교통 / 여비: 미지급 / 출장구분: 국내출장\n\n순서\t성명\t결재구분\n1\t가상검토자\t검토\n2\t가상결재자\t결재\n상신",
+        "expectedLabel": "상신",
+        "expectedUrl": "http://127.0.0.1:55924/?kind=%EC%B6%9C%EC%9E%A5",
+        "expectedState": "2719a42813398ace58982de5635143a150f0fa2629b487c7532373ff62a98ff6",
+        "confirmationText": "이 신청을 상신하시겠습니까?"
+      }
+    },
+    {
+      "type": "tool",
+      "name": "gyomu_browser",
+      "args": {
+        "action": "snapshot"
+      }
+    }
+  ]
+}

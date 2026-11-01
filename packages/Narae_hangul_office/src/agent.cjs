@@ -60,7 +60,7 @@ async function runAgent({prompt,context,settings,request,execute,send,signal,his
   const result=await request({instructions:(task?'당신은 선생님의 업무를 돕는 나래 에이전트입니다. 한국어로 답하세요. 도구 결과로 확인한 사실만 보고하세요.':instructions)+'\n'+agentInstructions+'\n'+(step.procedure||task?.instructions||'')+'\n다음 단계: '+step.instructions,input:requestInput,tools:step.tools,...(step.required?{tool_choice:'required'}:{}),...(step.maxOutputTokens?{max_output_tokens:step.maxOutputTokens}:{}),parallel_tool_calls:false,store:false});input.push(...result.output||[]);
   if(step.required&&!(result.output||[]).some(i=>i.type==='function_call'))throw new Error('필수 준비 단계의 도구 실행이 확인되지 않아 중지했습니다. 완료로 처리하지 않습니다.');
   let text=(result.output||[]).filter(item=>item.type==='message').flatMap(item=>item.content||[]).filter(item=>item.type==='output_text').map(item=>item.text).join('\n');
-  if(task?.area==='school-final'&&text&&!(result.output||[]).some(i=>i.type==='function_call'))text='최종 처리의 서버 목록 검증을 확인하지 못했습니다. 상신·결재 완료로 처리하지 않습니다. 현재 결과를 확인한 뒤 이어야 하며 같은 최종 실행을 반복하지 않았습니다.';
+  if(task?.area==='school-final'&&!step.preparationPending&&text&&!(result.output||[]).some(i=>i.type==='function_call'))text='최종 처리의 서버 목록 검증을 확인하지 못했습니다. 상신·결재 완료로 처리하지 않습니다. 현재 결과를 확인한 뒤 이어야 하며 같은 최종 실행을 반복하지 않았습니다.';
   if(task?.draft&&task.plan.type&&!task.mixed&&/(?:신청|초안|입력|결재선).{0,20}(?:완료|지정했습니다|확인했습니다)/.test(text))text='요청한 입력값과 결재선을 최종 준비 화면에서 모두 확인하지 못해 완료로 처리하지 않았습니다. 현재 화면에서 확인을 이어가야 합니다. 최종 상신은 실행하지 않았습니다.';
   if(text){final=text;send({type:'text',text});}
   const calls=(result.output||[]).filter(item=>item.type==='function_call');

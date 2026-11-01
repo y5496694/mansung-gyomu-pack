@@ -1,0 +1,551 @@
+{
+  "schema": 1,
+  "contract": "narae-office-basic-10-v1",
+  "environment": "synthetic",
+  "passed": false,
+  "releasePassed": false,
+  "passedTasks": 2,
+  "totalTasks": 10,
+  "rule": "모든 과제의 모든 변형·검사를 통과해야 합격. 미지원·미검증·부분 성공·누락은 불합격.",
+  "results": [
+    {
+      "number": 1,
+      "id": "portal",
+      "title": "보안 문서 로그인·나이스·에듀파인 진입",
+      "passed": false,
+      "variants": [
+        {
+          "variant": "both-systems",
+          "passed": false,
+          "checks": [
+            {
+              "id": "profile_safe",
+              "passed": false,
+              "reason": "검증된 증거 없음"
+            },
+            {
+              "id": "portal_authenticated",
+              "passed": false,
+              "reason": "검증된 증거 없음"
+            },
+            {
+              "id": "neis_screen",
+              "passed": false,
+              "reason": "검증된 증거 없음"
+            },
+            {
+              "id": "edufine_screen",
+              "passed": false,
+              "reason": "검증된 증거 없음"
+            },
+            {
+              "id": "no_secret_in_log",
+              "passed": false,
+              "reason": "검증된 증거 없음"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 2,
+      "id": "archive",
+      "title": "6개월 쪽지·대화 제출 후보 목록",
+      "passed": false,
+      "variants": [
+        {
+          "variant": "notes-and-chats",
+          "passed": false,
+          "checks": [
+            {
+              "id": "calendar_month_range",
+              "passed": false,
+              "reason": "검증된 증거 없음"
+            },
+            {
+              "id": "notes_all_pages",
+              "passed": false,
+              "reason": "검증된 증거 없음"
+            },
+            {
+              "id": "all_rooms_and_messages",
+              "passed": false,
+              "reason": "검증된 증거 없음"
+            },
+            {
+              "id": "bodies_read",
+              "passed": false,
+              "reason": "검증된 증거 없음"
+            },
+            {
+              "id": "source_ids_dates_senders",
+              "passed": false,
+              "reason": "검증된 증거 없음"
+            },
+            {
+              "id": "changes_and_cancellations",
+              "passed": false,
+              "reason": "검증된 증거 없음"
+            },
+            {
+              "id": "submission_candidates",
+              "passed": false,
+              "reason": "검증된 증거 없음"
+            },
+            {
+              "id": "coverage_complete",
+              "passed": false,
+              "reason": "검증된 증거 없음"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 3,
+      "id": "search",
+      "title": "특정 내용 탐색·설명",
+      "passed": false,
+      "variants": [
+        {
+          "variant": "note",
+          "passed": false,
+          "checks": [
+            {
+              "id": "body_query",
+              "passed": false,
+              "reason": "검증된 증거 없음"
+            },
+            {
+              "id": "all_matching_pages",
+              "passed": false,
+              "reason": "검증된 증거 없음"
+            },
+            {
+              "id": "source_evidence",
+              "passed": false,
+              "reason": "검증된 증거 없음"
+            },
+            {
+              "id": "meaning_deadline_destination",
+              "passed": false,
+              "reason": "검증된 증거 없음"
+            },
+            {
+              "id": "changes_preserved",
+              "passed": false,
+              "reason": "검증된 증거 없음"
+            },
+            {
+              "id": "scope_disclosed",
+              "passed": false,
+              "reason": "검증된 증거 없음"
+            }
+          ]
+        },
+        {
+          "variant": "chat",
+          "passed": false,
+          "checks": [
+            {
+              "id": "body_query",
+              "passed": false,
+              "reason": "검증된 증거 없음"
+            },
+            {
+              "id": "all_matching_pages",
+              "passed": false,
+              "reason": "검증된 증거 없음"
+            },
+            {
+              "id": "source_evidence",
+              "passed": false,
+              "reason": "검증된 증거 없음"
+            },
+            {
+              "id": "meaning_deadline_destination",
+              "passed": false,
+              "reason": "검증된 증거 없음"
+            },
+            {
+              "id": "changes_preserved",
+              "passed": false,
+              "reason": "검증된 증거 없음"
+            },
+            {
+              "id": "scope_disclosed",
+              "passed": false,
+              "reason": "검증된 증거 없음"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 4,
+      "id": "send",
+      "title": "특정 대상 쪽지·대화 전송",
+      "passed": false,
+      "variants": [
+        {
+          "variant": "note",
+          "passed": false,
+          "checks": [
+            {
+              "id": "current_unique_recipient",
+              "passed": false,
+              "reason": "검증된 증거 없음"
+            },
+            {
+              "id": "requested_content",
+              "passed": false,
+              "reason": "검증된 증거 없음"
+            },
+            {
+              "id": "authorized_send",
+              "passed": false,
+              "reason": "검증된 증거 없음"
+            },
+            {
+              "id": "server_verified",
+              "passed": false,
+              "reason": "검증된 증거 없음"
+            },
+            {
+              "id": "no_duplicate",
+              "passed": false,
+              "reason": "검증된 증거 없음"
+            }
+          ]
+        },
+        {
+          "variant": "chat",
+          "passed": false,
+          "checks": [
+            {
+              "id": "current_unique_recipient",
+              "passed": false,
+              "reason": "검증된 증거 없음"
+            },
+            {
+              "id": "requested_content",
+              "passed": false,
+              "reason": "검증된 증거 없음"
+            },
+            {
+              "id": "authorized_send",
+              "passed": false,
+              "reason": "검증된 증거 없음"
+            },
+            {
+              "id": "server_verified",
+              "passed": false,
+              "reason": "검증된 증거 없음"
+            },
+            {
+              "id": "no_duplicate",
+              "passed": false,
+              "reason": "검증된 증거 없음"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 5,
+      "id": "draft",
+      "title": "서식 준수 기안 상신",
+      "passed": false,
+      "variants": [
+        {
+          "variant": "template-submit",
+          "passed": false,
+          "checks": [
+            {
+              "id": "observed_template",
+              "passed": false,
+              "reason": "검증된 증거 없음"
+            },
+            {
+              "id": "body_fields_layout",
+              "passed": false,
+              "reason": "검증된 증거 없음"
+            },
+            {
+              "id": "visual_review",
+              "passed": false,
+              "reason": "검증된 증거 없음"
+            },
+            {
+              "id": "title_body_exact",
+              "passed": false,
+              "reason": "검증된 증거 없음"
+            },
+            {
+              "id": "route_and_disclosure",
+              "passed": false,
+              "reason": "검증된 증거 없음"
+            },
+            {
+              "id": "server_attachments",
+              "passed": false,
+              "reason": "검증된 증거 없음"
+            },
+            {
+              "id": "final_process",
+              "passed": false,
+              "reason": "검증된 증거 없음"
+            },
+            {
+              "id": "server_list_verified",
+              "passed": false,
+              "reason": "검증된 증거 없음"
+            },
+            {
+              "id": "no_duplicate",
+              "passed": false,
+              "reason": "검증된 증거 없음"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 6,
+      "id": "progress",
+      "title": "내가 처리 중인 문서 확인·설명",
+      "passed": false,
+      "variants": [
+        {
+          "variant": "assigned-to-me",
+          "passed": false,
+          "checks": [
+            {
+              "id": "current_account_scope",
+              "passed": false,
+              "reason": "검증된 증거 없음"
+            },
+            {
+              "id": "all_pages",
+              "passed": false,
+              "reason": "검증된 증거 없음"
+            },
+            {
+              "id": "all_bodies_attachments",
+              "passed": false,
+              "reason": "검증된 증거 없음"
+            },
+            {
+              "id": "status_approver",
+              "passed": false,
+              "reason": "검증된 증거 없음"
+            },
+            {
+              "id": "source_explanation",
+              "passed": false,
+              "reason": "검증된 증거 없음"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 7,
+      "id": "circulation",
+      "title": "공람 문서 모두 읽고 설명",
+      "passed": false,
+      "variants": [
+        {
+          "variant": "waiting-and-completed",
+          "passed": false,
+          "checks": [
+            {
+              "id": "explicit_period",
+              "passed": false,
+              "reason": "검증된 증거 없음"
+            },
+            {
+              "id": "both_folders",
+              "passed": false,
+              "reason": "검증된 증거 없음"
+            },
+            {
+              "id": "all_pages_counts",
+              "passed": false,
+              "reason": "검증된 증거 없음"
+            },
+            {
+              "id": "all_bodies",
+              "passed": false,
+              "reason": "검증된 증거 없음"
+            },
+            {
+              "id": "all_attachments",
+              "passed": false,
+              "reason": "검증된 증거 없음"
+            },
+            {
+              "id": "per_document_explanation",
+              "passed": false,
+              "reason": "검증된 증거 없음"
+            },
+            {
+              "id": "unconfirmed_not_complete",
+              "passed": false,
+              "reason": "검증된 증거 없음"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 8,
+      "id": "duty",
+      "title": "다른 사람 특정 날짜 복무 조회",
+      "passed": false,
+      "variants": [
+        {
+          "variant": "other-person-date",
+          "passed": false,
+          "checks": [
+            {
+              "id": "current_permission",
+              "passed": false,
+              "reason": "검증된 증거 없음"
+            },
+            {
+              "id": "unique_person_organization",
+              "passed": false,
+              "reason": "검증된 증거 없음"
+            },
+            {
+              "id": "exact_date_query",
+              "passed": false,
+              "reason": "검증된 증거 없음"
+            },
+            {
+              "id": "all_result_pages",
+              "passed": false,
+              "reason": "검증된 증거 없음"
+            },
+            {
+              "id": "source_result_explanation",
+              "passed": false,
+              "reason": "검증된 증거 없음"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 9,
+      "id": "trip",
+      "title": "나이스 출장 상신",
+      "passed": true,
+      "variants": [
+        {
+          "variant": "domestic-trip",
+          "passed": true,
+          "checks": [
+            {
+              "id": "exact_dates_times",
+              "passed": true
+            },
+            {
+              "id": "destination_purpose",
+              "passed": true
+            },
+            {
+              "id": "trip_type_transport_expenses",
+              "passed": true
+            },
+            {
+              "id": "current_approval_route",
+              "passed": true
+            },
+            {
+              "id": "final_confirmation",
+              "passed": true
+            },
+            {
+              "id": "server_list_verified",
+              "passed": true
+            },
+            {
+              "id": "no_duplicate",
+              "passed": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 10,
+      "id": "leave",
+      "title": "나이스 연가·조퇴 상신",
+      "passed": true,
+      "variants": [
+        {
+          "variant": "annual",
+          "passed": true,
+          "checks": [
+            {
+              "id": "exact_dates_times_reason",
+              "passed": true
+            },
+            {
+              "id": "correct_leave_type",
+              "passed": true
+            },
+            {
+              "id": "current_approval_route",
+              "passed": true
+            },
+            {
+              "id": "final_confirmation",
+              "passed": true
+            },
+            {
+              "id": "server_list_verified",
+              "passed": true
+            },
+            {
+              "id": "no_duplicate",
+              "passed": true
+            }
+          ]
+        },
+        {
+          "variant": "early",
+          "passed": true,
+          "checks": [
+            {
+              "id": "exact_dates_times_reason",
+              "passed": true
+            },
+            {
+              "id": "correct_leave_type",
+              "passed": true
+            },
+            {
+              "id": "current_approval_route",
+              "passed": true
+            },
+            {
+              "id": "final_confirmation",
+              "passed": true
+            },
+            {
+              "id": "server_list_verified",
+              "passed": true
+            },
+            {
+              "id": "no_duplicate",
+              "passed": true
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

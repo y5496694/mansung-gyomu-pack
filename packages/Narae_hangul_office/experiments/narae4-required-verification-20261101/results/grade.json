@@ -1,0 +1,497 @@
+{
+  "schema": 1,
+  "contract": "narae-office-basic-10-v1",
+  "environment": "synthetic",
+  "passed": false,
+  "releasePassed": false,
+  "passedTasks": 9,
+  "totalTasks": 10,
+  "rule": "모든 과제의 모든 변형·검사를 통과해야 합격. 미지원·미검증·부분 성공·누락은 불합격.",
+  "results": [
+    {
+      "number": 1,
+      "id": "portal",
+      "title": "보안 문서 로그인·나이스·에듀파인 진입",
+      "passed": true,
+      "variants": [
+        {
+          "variant": "both-systems",
+          "passed": true,
+          "checks": [
+            {
+              "id": "profile_safe",
+              "passed": true
+            },
+            {
+              "id": "portal_authenticated",
+              "passed": true
+            },
+            {
+              "id": "neis_screen",
+              "passed": true
+            },
+            {
+              "id": "edufine_screen",
+              "passed": true
+            },
+            {
+              "id": "no_secret_in_log",
+              "passed": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 2,
+      "id": "archive",
+      "title": "6개월 쪽지·대화 제출 후보 목록",
+      "passed": true,
+      "variants": [
+        {
+          "variant": "notes-and-chats",
+          "passed": true,
+          "checks": [
+            {
+              "id": "calendar_month_range",
+              "passed": true
+            },
+            {
+              "id": "notes_all_pages",
+              "passed": true
+            },
+            {
+              "id": "all_rooms_and_messages",
+              "passed": true
+            },
+            {
+              "id": "bodies_read",
+              "passed": true
+            },
+            {
+              "id": "source_ids_dates_senders",
+              "passed": true
+            },
+            {
+              "id": "changes_and_cancellations",
+              "passed": true
+            },
+            {
+              "id": "submission_candidates",
+              "passed": true
+            },
+            {
+              "id": "coverage_complete",
+              "passed": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 3,
+      "id": "search",
+      "title": "특정 내용 탐색·설명",
+      "passed": true,
+      "variants": [
+        {
+          "variant": "note",
+          "passed": true,
+          "checks": [
+            {
+              "id": "body_query",
+              "passed": true
+            },
+            {
+              "id": "all_matching_pages",
+              "passed": true
+            },
+            {
+              "id": "source_evidence",
+              "passed": true
+            },
+            {
+              "id": "meaning_deadline_destination",
+              "passed": true
+            },
+            {
+              "id": "changes_preserved",
+              "passed": true
+            },
+            {
+              "id": "scope_disclosed",
+              "passed": true
+            }
+          ]
+        },
+        {
+          "variant": "chat",
+          "passed": true,
+          "checks": [
+            {
+              "id": "body_query",
+              "passed": true
+            },
+            {
+              "id": "all_matching_pages",
+              "passed": true
+            },
+            {
+              "id": "source_evidence",
+              "passed": true
+            },
+            {
+              "id": "meaning_deadline_destination",
+              "passed": true
+            },
+            {
+              "id": "changes_preserved",
+              "passed": true
+            },
+            {
+              "id": "scope_disclosed",
+              "passed": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 4,
+      "id": "send",
+      "title": "특정 대상 쪽지·대화 전송",
+      "passed": true,
+      "variants": [
+        {
+          "variant": "note",
+          "passed": true,
+          "checks": [
+            {
+              "id": "current_unique_recipient",
+              "passed": true
+            },
+            {
+              "id": "requested_content",
+              "passed": true
+            },
+            {
+              "id": "authorized_send",
+              "passed": true
+            },
+            {
+              "id": "server_verified",
+              "passed": true
+            },
+            {
+              "id": "no_duplicate",
+              "passed": true
+            }
+          ]
+        },
+        {
+          "variant": "chat",
+          "passed": true,
+          "checks": [
+            {
+              "id": "current_unique_recipient",
+              "passed": true
+            },
+            {
+              "id": "requested_content",
+              "passed": true
+            },
+            {
+              "id": "authorized_send",
+              "passed": true
+            },
+            {
+              "id": "server_verified",
+              "passed": true
+            },
+            {
+              "id": "no_duplicate",
+              "passed": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 5,
+      "id": "draft",
+      "title": "서식 준수 기안 상신",
+      "passed": false,
+      "variants": [
+        {
+          "variant": "template-submit",
+          "passed": false,
+          "checks": [
+            {
+              "id": "observed_template",
+              "passed": false,
+              "reason": "실제 실행에서 조건을 확인하지 못함"
+            },
+            {
+              "id": "body_fields_layout",
+              "passed": false,
+              "reason": "실제 실행에서 조건을 확인하지 못함"
+            },
+            {
+              "id": "visual_review",
+              "passed": false,
+              "reason": "실제 실행에서 조건을 확인하지 못함"
+            },
+            {
+              "id": "title_body_exact",
+              "passed": true
+            },
+            {
+              "id": "route_and_disclosure",
+              "passed": false,
+              "reason": "실제 실행에서 조건을 확인하지 못함"
+            },
+            {
+              "id": "server_attachments",
+              "passed": false,
+              "reason": "실제 실행에서 조건을 확인하지 못함"
+            },
+            {
+              "id": "final_process",
+              "passed": false,
+              "reason": "실제 실행에서 조건을 확인하지 못함"
+            },
+            {
+              "id": "server_list_verified",
+              "passed": false,
+              "reason": "실제 실행에서 조건을 확인하지 못함"
+            },
+            {
+              "id": "no_duplicate",
+              "passed": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 6,
+      "id": "progress",
+      "title": "내가 처리 중인 문서 확인·설명",
+      "passed": true,
+      "variants": [
+        {
+          "variant": "assigned-to-me",
+          "passed": true,
+          "checks": [
+            {
+              "id": "current_account_scope",
+              "passed": true
+            },
+            {
+              "id": "all_pages",
+              "passed": true
+            },
+            {
+              "id": "all_bodies_attachments",
+              "passed": true
+            },
+            {
+              "id": "status_approver",
+              "passed": true
+            },
+            {
+              "id": "source_explanation",
+              "passed": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 7,
+      "id": "circulation",
+      "title": "공람 문서 모두 읽고 설명",
+      "passed": true,
+      "variants": [
+        {
+          "variant": "waiting-and-completed",
+          "passed": true,
+          "checks": [
+            {
+              "id": "explicit_period",
+              "passed": true
+            },
+            {
+              "id": "both_folders",
+              "passed": true
+            },
+            {
+              "id": "all_pages_counts",
+              "passed": true
+            },
+            {
+              "id": "all_bodies",
+              "passed": true
+            },
+            {
+              "id": "all_attachments",
+              "passed": true
+            },
+            {
+              "id": "per_document_explanation",
+              "passed": true
+            },
+            {
+              "id": "unconfirmed_not_complete",
+              "passed": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 8,
+      "id": "duty",
+      "title": "다른 사람 특정 날짜 복무 조회",
+      "passed": true,
+      "variants": [
+        {
+          "variant": "other-person-date",
+          "passed": true,
+          "checks": [
+            {
+              "id": "current_permission",
+              "passed": true
+            },
+            {
+              "id": "unique_person_organization",
+              "passed": true
+            },
+            {
+              "id": "exact_date_query",
+              "passed": true
+            },
+            {
+              "id": "all_result_pages",
+              "passed": true
+            },
+            {
+              "id": "source_result_explanation",
+              "passed": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 9,
+      "id": "trip",
+      "title": "나이스 출장 상신",
+      "passed": true,
+      "variants": [
+        {
+          "variant": "domestic-trip",
+          "passed": true,
+          "checks": [
+            {
+              "id": "exact_dates_times",
+              "passed": true
+            },
+            {
+              "id": "destination_purpose",
+              "passed": true
+            },
+            {
+              "id": "trip_type_transport_expenses",
+              "passed": true
+            },
+            {
+              "id": "current_approval_route",
+              "passed": true
+            },
+            {
+              "id": "final_confirmation",
+              "passed": true
+            },
+            {
+              "id": "server_list_verified",
+              "passed": true
+            },
+            {
+              "id": "no_duplicate",
+              "passed": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 10,
+      "id": "leave",
+      "title": "나이스 연가·조퇴 상신",
+      "passed": true,
+      "variants": [
+        {
+          "variant": "annual",
+          "passed": true,
+          "checks": [
+            {
+              "id": "exact_dates_times_reason",
+              "passed": true
+            },
+            {
+              "id": "correct_leave_type",
+              "passed": true
+            },
+            {
+              "id": "current_approval_route",
+              "passed": true
+            },
+            {
+              "id": "final_confirmation",
+              "passed": true
+            },
+            {
+              "id": "server_list_verified",
+              "passed": true
+            },
+            {
+              "id": "no_duplicate",
+              "passed": true
+            }
+          ]
+        },
+        {
+          "variant": "early",
+          "passed": true,
+          "checks": [
+            {
+              "id": "exact_dates_times_reason",
+              "passed": true
+            },
+            {
+              "id": "correct_leave_type",
+              "passed": true
+            },
+            {
+              "id": "current_approval_route",
+              "passed": true
+            },
+            {
+              "id": "final_confirmation",
+              "passed": true
+            },
+            {
+              "id": "server_list_verified",
+              "passed": true
+            },
+            {
+              "id": "no_duplicate",
+              "passed": true
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

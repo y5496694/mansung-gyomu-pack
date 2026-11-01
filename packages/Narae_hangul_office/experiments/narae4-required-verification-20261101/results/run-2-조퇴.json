@@ -1,0 +1,978 @@
+{
+  "kind": "조퇴",
+  "prompt": "나이스 2039-05-07 14:30~16:30 조퇴 신청. 사유는 가상 검증. 상신해줘.",
+  "model": "Narae4-Qwen3.5-2B-Office-LoRA-v1",
+  "actualLocalWeights": true,
+  "syntheticOnly": true,
+  "response": {
+    "model": "narae4",
+    "workspace": "D:\\Codex\\training\\narae4-required-bench-20261101-r3\\조퇴",
+    "text": "요청한 조퇴을 상신한 뒤 같은 신청을 서버 목록에서 확인했습니다.\n신청일자 | 시작시각 | 종료시각 | 사유 | 종류 | 상태\n2039-05-07 | 14:30 | 16:30 | 가상 검증 | 조퇴 | 결재중\n같은 상신은 반복하지 않았습니다."
+  },
+  "seconds": 106.874,
+  "verified": {
+    "exactDatesTimes": true,
+    "destinationPurpose": false,
+    "typeTransportExpenses": false,
+    "currentApprovalRoute": true,
+    "finalConfirmation": true,
+    "serverListVerified": true,
+    "noDuplicate": true
+  },
+  "posts": [
+    {
+      "kind": "조퇴",
+      "values": {
+        "신청일자": "2039-05-07",
+        "시작시각": "14:30",
+        "종료시각": "16:30",
+        "사유": "가상 검증"
+      }
+    }
+  ],
+  "calls": [
+    {
+      "name": "gyomu_browser",
+      "args": {
+        "action": "snapshot"
+      },
+      "value": {
+        "version": "s4",
+        "frameIndex": 0,
+        "url": "http://127.0.0.1:58427/?kind=%EC%A1%B0%ED%87%B4",
+        "title": "합성 나이스 신청",
+        "dialog": "근무상황신청",
+        "text": "조퇴 신청\n근무상황소분류신청일자시작시각종료시각사유승인요청",
+        "tables": [],
+        "elements": [
+          {
+            "ref": "s4/e1",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "근무상황소분류",
+            "id": "",
+            "disabled": false,
+            "value": "조퇴"
+          },
+          {
+            "ref": "s4/e2",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "신청일자",
+            "id": "",
+            "disabled": false,
+            "value": "",
+            "dateInput": {
+              "placeholder": null,
+              "maxLength": -1,
+              "inputMode": "",
+              "className": "",
+              "container": "",
+              "parentContainer": ""
+            }
+          },
+          {
+            "ref": "s4/e3",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "시작시각",
+            "id": "",
+            "disabled": false,
+            "value": ""
+          },
+          {
+            "ref": "s4/e4",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "종료시각",
+            "id": "",
+            "disabled": false,
+            "value": ""
+          },
+          {
+            "ref": "s4/e5",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "사유",
+            "id": "",
+            "disabled": false,
+            "value": ""
+          },
+          {
+            "ref": "s4/e6",
+            "role": "button",
+            "tag": "button",
+            "type": "",
+            "label": "승인요청",
+            "id": "",
+            "disabled": false
+          }
+        ],
+        "totalElements": 6,
+        "appliedFilter": null,
+        "hasMore": false,
+        "nextOffset": 50,
+        "calendars": [],
+        "frames": [],
+        "tableData": [],
+        "untrusted": true,
+        "finalState": "5ff5098159b28fdd89d30cad00d7296c24766aed4178c7623db4d576c2648dbd"
+      }
+    },
+    {
+      "name": "gyomu_browser",
+      "args": {
+        "action": "fill",
+        "ref": "s4/e2",
+        "text": "2039-05-07"
+      },
+      "value": {
+        "filled": true,
+        "refresh": "snapshot",
+        "version": "s6",
+        "frameIndex": 0,
+        "url": "http://127.0.0.1:58427/?kind=%EC%A1%B0%ED%87%B4",
+        "title": "합성 나이스 신청",
+        "dialog": "근무상황신청",
+        "text": "조퇴 신청\n근무상황소분류신청일자시작시각종료시각사유승인요청",
+        "tables": [],
+        "elements": [
+          {
+            "ref": "s6/e1",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "근무상황소분류",
+            "id": "",
+            "disabled": false,
+            "value": "조퇴"
+          },
+          {
+            "ref": "s6/e2",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "신청일자",
+            "id": "",
+            "disabled": false,
+            "value": "2039-05-07",
+            "dateInput": {
+              "placeholder": null,
+              "maxLength": -1,
+              "inputMode": "",
+              "className": "",
+              "container": "",
+              "parentContainer": ""
+            }
+          },
+          {
+            "ref": "s6/e3",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "시작시각",
+            "id": "",
+            "disabled": false,
+            "value": ""
+          },
+          {
+            "ref": "s6/e4",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "종료시각",
+            "id": "",
+            "disabled": false,
+            "value": ""
+          },
+          {
+            "ref": "s6/e5",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "사유",
+            "id": "",
+            "disabled": false,
+            "value": ""
+          },
+          {
+            "ref": "s6/e6",
+            "role": "button",
+            "tag": "button",
+            "type": "",
+            "label": "승인요청",
+            "id": "",
+            "disabled": false
+          }
+        ],
+        "totalElements": 6,
+        "appliedFilter": null,
+        "hasMore": false,
+        "nextOffset": 50,
+        "calendars": [],
+        "frames": [],
+        "tableData": [],
+        "untrusted": true,
+        "finalState": "14dad1574eafca65e83087bc4b2d19bc7d0f9541b7d0c244d8ee14783cfc2f28"
+      }
+    },
+    {
+      "name": "gyomu_browser",
+      "args": {
+        "action": "fill",
+        "ref": "s6/e3",
+        "text": "14:30"
+      },
+      "value": {
+        "filled": true,
+        "refresh": "snapshot",
+        "version": "s8",
+        "frameIndex": 0,
+        "url": "http://127.0.0.1:58427/?kind=%EC%A1%B0%ED%87%B4",
+        "title": "합성 나이스 신청",
+        "dialog": "근무상황신청",
+        "text": "조퇴 신청\n근무상황소분류신청일자시작시각종료시각사유승인요청",
+        "tables": [],
+        "elements": [
+          {
+            "ref": "s8/e1",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "근무상황소분류",
+            "id": "",
+            "disabled": false,
+            "value": "조퇴"
+          },
+          {
+            "ref": "s8/e2",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "신청일자",
+            "id": "",
+            "disabled": false,
+            "value": "2039-05-07",
+            "dateInput": {
+              "placeholder": null,
+              "maxLength": -1,
+              "inputMode": "",
+              "className": "",
+              "container": "",
+              "parentContainer": ""
+            }
+          },
+          {
+            "ref": "s8/e3",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "시작시각",
+            "id": "",
+            "disabled": false,
+            "value": "14:30"
+          },
+          {
+            "ref": "s8/e4",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "종료시각",
+            "id": "",
+            "disabled": false,
+            "value": ""
+          },
+          {
+            "ref": "s8/e5",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "사유",
+            "id": "",
+            "disabled": false,
+            "value": ""
+          },
+          {
+            "ref": "s8/e6",
+            "role": "button",
+            "tag": "button",
+            "type": "",
+            "label": "승인요청",
+            "id": "",
+            "disabled": false
+          }
+        ],
+        "totalElements": 6,
+        "appliedFilter": null,
+        "hasMore": false,
+        "nextOffset": 50,
+        "calendars": [],
+        "frames": [],
+        "tableData": [],
+        "untrusted": true,
+        "finalState": "9b482e9d4f021fa67f058ebfe8f879cd9c6db59511371948ea154af85155a750"
+      }
+    },
+    {
+      "name": "gyomu_browser",
+      "args": {
+        "action": "fill",
+        "ref": "s8/e4",
+        "text": "16:30"
+      },
+      "value": {
+        "filled": true,
+        "refresh": "snapshot",
+        "version": "s10",
+        "frameIndex": 0,
+        "url": "http://127.0.0.1:58427/?kind=%EC%A1%B0%ED%87%B4",
+        "title": "합성 나이스 신청",
+        "dialog": "근무상황신청",
+        "text": "조퇴 신청\n근무상황소분류신청일자시작시각종료시각사유승인요청",
+        "tables": [],
+        "elements": [
+          {
+            "ref": "s10/e1",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "근무상황소분류",
+            "id": "",
+            "disabled": false,
+            "value": "조퇴"
+          },
+          {
+            "ref": "s10/e2",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "신청일자",
+            "id": "",
+            "disabled": false,
+            "value": "2039-05-07",
+            "dateInput": {
+              "placeholder": null,
+              "maxLength": -1,
+              "inputMode": "",
+              "className": "",
+              "container": "",
+              "parentContainer": ""
+            }
+          },
+          {
+            "ref": "s10/e3",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "시작시각",
+            "id": "",
+            "disabled": false,
+            "value": "14:30"
+          },
+          {
+            "ref": "s10/e4",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "종료시각",
+            "id": "",
+            "disabled": false,
+            "value": "16:30"
+          },
+          {
+            "ref": "s10/e5",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "사유",
+            "id": "",
+            "disabled": false,
+            "value": ""
+          },
+          {
+            "ref": "s10/e6",
+            "role": "button",
+            "tag": "button",
+            "type": "",
+            "label": "승인요청",
+            "id": "",
+            "disabled": false
+          }
+        ],
+        "totalElements": 6,
+        "appliedFilter": null,
+        "hasMore": false,
+        "nextOffset": 50,
+        "calendars": [],
+        "frames": [],
+        "tableData": [],
+        "untrusted": true,
+        "finalState": "7f6f6d12d093542867fdd7dc2a44c2260b0ba7a904b017ad7d1128cfc0c1d60c"
+      }
+    },
+    {
+      "name": "gyomu_browser",
+      "args": {
+        "action": "fill",
+        "ref": "s10/e5",
+        "text": "가상 검증"
+      },
+      "value": {
+        "filled": true,
+        "refresh": "snapshot",
+        "version": "s12",
+        "frameIndex": 0,
+        "url": "http://127.0.0.1:58427/?kind=%EC%A1%B0%ED%87%B4",
+        "title": "합성 나이스 신청",
+        "dialog": "근무상황신청",
+        "text": "조퇴 신청\n근무상황소분류신청일자시작시각종료시각사유승인요청",
+        "tables": [],
+        "elements": [
+          {
+            "ref": "s12/e1",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "근무상황소분류",
+            "id": "",
+            "disabled": false,
+            "value": "조퇴"
+          },
+          {
+            "ref": "s12/e2",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "신청일자",
+            "id": "",
+            "disabled": false,
+            "value": "2039-05-07",
+            "dateInput": {
+              "placeholder": null,
+              "maxLength": -1,
+              "inputMode": "",
+              "className": "",
+              "container": "",
+              "parentContainer": ""
+            }
+          },
+          {
+            "ref": "s12/e3",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "시작시각",
+            "id": "",
+            "disabled": false,
+            "value": "14:30"
+          },
+          {
+            "ref": "s12/e4",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "종료시각",
+            "id": "",
+            "disabled": false,
+            "value": "16:30"
+          },
+          {
+            "ref": "s12/e5",
+            "role": "textbox",
+            "tag": "input",
+            "type": "",
+            "label": "사유",
+            "id": "",
+            "disabled": false,
+            "value": "가상 검증"
+          },
+          {
+            "ref": "s12/e6",
+            "role": "button",
+            "tag": "button",
+            "type": "",
+            "label": "승인요청",
+            "id": "",
+            "disabled": false
+          }
+        ],
+        "totalElements": 6,
+        "appliedFilter": null,
+        "hasMore": false,
+        "nextOffset": 50,
+        "calendars": [],
+        "frames": [],
+        "tableData": [],
+        "untrusted": true,
+        "finalState": "490607c8314da5987e138208c70ae14dd6365a698d64627cf031db52d160bf31"
+      }
+    },
+    {
+      "name": "gyomu_browser",
+      "args": {
+        "action": "click",
+        "ref": "s12/e6"
+      },
+      "value": {
+        "version": "s15",
+        "frameIndex": 0,
+        "url": "http://127.0.0.1:58427/?kind=%EC%A1%B0%ED%87%B4",
+        "title": "합성 나이스 신청",
+        "dialog": "기안문서상신",
+        "text": "기안문서상신\n\n조퇴 신청일자: 2039-05-07 / 시작시각: 14:30 / 종료시각: 16:30 / 사유: 가상 검증\n\n개인결재선상신",
+        "tables": [],
+        "elements": [
+          {
+            "ref": "s15/e1",
+            "role": "button",
+            "tag": "button",
+            "type": "",
+            "label": "개인결재선",
+            "id": "",
+            "disabled": false
+          },
+          {
+            "ref": "s15/e2",
+            "role": "button",
+            "tag": "button",
+            "type": "",
+            "label": "상신",
+            "id": "",
+            "disabled": false
+          }
+        ],
+        "totalElements": 2,
+        "appliedFilter": null,
+        "hasMore": false,
+        "nextOffset": 50,
+        "calendars": [],
+        "frames": [],
+        "tableData": [],
+        "untrusted": true,
+        "finalState": "33b3236c01536b91a242f2e00477f1f330ec359495c25c4d97af30de7ca6f086"
+      }
+    },
+    {
+      "name": "gyomu_browser",
+      "args": {
+        "action": "click",
+        "ref": "s15/e1"
+      },
+      "value": {
+        "version": "s18",
+        "frameIndex": 0,
+        "url": "http://127.0.0.1:58427/?kind=%EC%A1%B0%ED%87%B4",
+        "title": "합성 나이스 신청",
+        "dialog": "개인 결재선 지정",
+        "text": "개인 결재선 지정\n순서\t성명\t결재구분\n1\t가상검토자\t검토\n2\t가상결재자\t결재\n지정",
+        "tables": [
+          "순서\t성명\t결재구분\n1\t가상검토자\t검토\n2\t가상결재자\t결재"
+        ],
+        "elements": [
+          {
+            "ref": "s18/e1",
+            "role": "button",
+            "tag": "button",
+            "type": "",
+            "label": "지정",
+            "id": "",
+            "disabled": false
+          }
+        ],
+        "totalElements": 1,
+        "appliedFilter": null,
+        "hasMore": false,
+        "nextOffset": 50,
+        "calendars": [],
+        "frames": [],
+        "tableData": [
+          {
+            "headers": [
+              "순서",
+              "성명",
+              "결재구분"
+            ],
+            "rows": [
+              [
+                "1",
+                "가상검토자",
+                "검토"
+              ],
+              [
+                "2",
+                "가상결재자",
+                "결재"
+              ]
+            ],
+            "hasMore": false,
+            "totalVisibleRows": 2
+          }
+        ],
+        "untrusted": true,
+        "finalState": "f9968ec415076fe982c3e200a7876d1a8433a6488b59dab960e74146d42c1c7b"
+      }
+    },
+    {
+      "name": "gyomu_browser",
+      "args": {
+        "action": "click",
+        "ref": "s18/e1"
+      },
+      "value": {
+        "version": "s21",
+        "frameIndex": 0,
+        "url": "http://127.0.0.1:58427/?kind=%EC%A1%B0%ED%87%B4",
+        "title": "합성 나이스 신청",
+        "dialog": "기안문서상신",
+        "text": "기안문서상신\n\n조퇴 신청일자: 2039-05-07 / 시작시각: 14:30 / 종료시각: 16:30 / 사유: 가상 검증\n\n순서\t성명\t결재구분\n1\t가상검토자\t검토\n2\t가상결재자\t결재\n상신",
+        "tables": [
+          "순서\t성명\t결재구분\n1\t가상검토자\t검토\n2\t가상결재자\t결재"
+        ],
+        "elements": [
+          {
+            "ref": "s21/e1",
+            "role": "button",
+            "tag": "button",
+            "type": "",
+            "label": "상신",
+            "id": "",
+            "disabled": false
+          }
+        ],
+        "totalElements": 1,
+        "appliedFilter": null,
+        "hasMore": false,
+        "nextOffset": 50,
+        "calendars": [],
+        "frames": [],
+        "tableData": [
+          {
+            "headers": [
+              "순서",
+              "성명",
+              "결재구분"
+            ],
+            "rows": [
+              [
+                "1",
+                "가상검토자",
+                "검토"
+              ],
+              [
+                "2",
+                "가상결재자",
+                "결재"
+              ]
+            ],
+            "hasMore": false,
+            "totalVisibleRows": 2
+          }
+        ],
+        "untrusted": true,
+        "finalState": "44749b095e19ea9378bf6bc689f73c4e5021a7b667d7fa7a9772763ed5d75610"
+      }
+    },
+    {
+      "name": "gyomu_browser",
+      "args": {
+        "action": "click",
+        "ref": "s21/e1",
+        "confirmFinalAction": true,
+        "expectedDocument": "기안문서상신\n\n조퇴 신청일자: 2039-05-07 / 시작시각: 14:30 / 종료시각: 16:30 / 사유: 가상 검증\n\n순서\t성명\t결재구분\n1\t가상검토자\t검토\n2\t가상결재자\t결재\n상신",
+        "expectedLabel": "상신",
+        "expectedUrl": "http://127.0.0.1:58427/?kind=%EC%A1%B0%ED%87%B4",
+        "expectedState": "44749b095e19ea9378bf6bc689f73c4e5021a7b667d7fa7a9772763ed5d75610"
+      },
+      "value": {
+        "version": "s24",
+        "frameIndex": 0,
+        "url": "http://127.0.0.1:58427/?kind=%EC%A1%B0%ED%87%B4",
+        "title": "합성 나이스 신청",
+        "dialog": "기안문서상신",
+        "text": "기안문서상신\n\n조퇴 신청일자: 2039-05-07 / 시작시각: 14:30 / 종료시각: 16:30 / 사유: 가상 검증\n\n순서\t성명\t결재구분\n1\t가상검토자\t검토\n2\t가상결재자\t결재\n상신",
+        "tables": [
+          "순서\t성명\t결재구분\n1\t가상검토자\t검토\n2\t가상결재자\t결재"
+        ],
+        "elements": [
+          {
+            "ref": "s24/e1",
+            "role": "button",
+            "tag": "button",
+            "type": "",
+            "label": "상신",
+            "id": "",
+            "disabled": false
+          }
+        ],
+        "totalElements": 1,
+        "appliedFilter": null,
+        "hasMore": false,
+        "nextOffset": 50,
+        "calendars": [],
+        "frames": [],
+        "tableData": [
+          {
+            "headers": [
+              "순서",
+              "성명",
+              "결재구분"
+            ],
+            "rows": [
+              [
+                "1",
+                "가상검토자",
+                "검토"
+              ],
+              [
+                "2",
+                "가상결재자",
+                "결재"
+              ]
+            ],
+            "hasMore": false,
+            "totalVisibleRows": 2
+          }
+        ],
+        "untrusted": true,
+        "finalState": "44749b095e19ea9378bf6bc689f73c4e5021a7b667d7fa7a9772763ed5d75610",
+        "finalAction": {
+          "operation": "submit",
+          "attempted": true,
+          "completed": false,
+          "verificationRequired": true,
+          "nativeDialog": {
+            "type": "confirm",
+            "message": "이 신청을 상신하시겠습니까?",
+            "accepted": false
+          }
+        }
+      }
+    },
+    {
+      "name": "gyomu_browser",
+      "args": {
+        "action": "click",
+        "ref": "s24/e1",
+        "confirmFinalAction": true,
+        "expectedDocument": "기안문서상신\n\n조퇴 신청일자: 2039-05-07 / 시작시각: 14:30 / 종료시각: 16:30 / 사유: 가상 검증\n\n순서\t성명\t결재구분\n1\t가상검토자\t검토\n2\t가상결재자\t결재\n상신",
+        "expectedLabel": "상신",
+        "expectedUrl": "http://127.0.0.1:58427/?kind=%EC%A1%B0%ED%87%B4",
+        "expectedState": "44749b095e19ea9378bf6bc689f73c4e5021a7b667d7fa7a9772763ed5d75610",
+        "confirmationText": "이 신청을 상신하시겠습니까?"
+      },
+      "value": {
+        "version": "s27",
+        "frameIndex": 0,
+        "url": "http://127.0.0.1:58427/?kind=%EC%A1%B0%ED%87%B4",
+        "title": "합성 나이스 신청",
+        "dialog": null,
+        "text": "신청 목록\n신청일자\t시작시각\t종료시각\t사유\t종류\t상태\n2039-05-07\t14:30\t16:30\t가상 검증\t조퇴\t결재중",
+        "tables": [
+          "신청일자\t시작시각\t종료시각\t사유\t종류\t상태\n2039-05-07\t14:30\t16:30\t가상 검증\t조퇴\t결재중"
+        ],
+        "elements": [],
+        "totalElements": 0,
+        "appliedFilter": null,
+        "hasMore": false,
+        "nextOffset": 50,
+        "calendars": [],
+        "frames": [],
+        "tableData": [
+          {
+            "headers": [
+              "신청일자",
+              "시작시각",
+              "종료시각",
+              "사유",
+              "종류",
+              "상태"
+            ],
+            "rows": [
+              [
+                "2039-05-07",
+                "14:30",
+                "16:30",
+                "가상 검증",
+                "조퇴",
+                "결재중"
+              ]
+            ],
+            "hasMore": false,
+            "totalVisibleRows": 1
+          }
+        ],
+        "untrusted": true,
+        "finalState": "7bccacc0f6a613044191cc38155baf20fcadb18d98ab7ff04b6f3674d7f9701e",
+        "finalAction": {
+          "operation": "submit",
+          "attempted": true,
+          "completed": false,
+          "verificationRequired": true,
+          "nativeDialog": {
+            "type": "confirm",
+            "message": "이 신청을 상신하시겠습니까?",
+            "accepted": true
+          }
+        }
+      }
+    },
+    {
+      "name": "gyomu_browser",
+      "args": {
+        "action": "snapshot"
+      },
+      "value": {
+        "version": "s28",
+        "frameIndex": 0,
+        "url": "http://127.0.0.1:58427/?kind=%EC%A1%B0%ED%87%B4",
+        "title": "합성 나이스 신청",
+        "dialog": null,
+        "text": "신청 목록\n신청일자\t시작시각\t종료시각\t사유\t종류\t상태\n2039-05-07\t14:30\t16:30\t가상 검증\t조퇴\t결재중",
+        "tables": [
+          "신청일자\t시작시각\t종료시각\t사유\t종류\t상태\n2039-05-07\t14:30\t16:30\t가상 검증\t조퇴\t결재중"
+        ],
+        "elements": [],
+        "totalElements": 0,
+        "appliedFilter": null,
+        "hasMore": false,
+        "nextOffset": 50,
+        "calendars": [],
+        "frames": [],
+        "tableData": [
+          {
+            "headers": [
+              "신청일자",
+              "시작시각",
+              "종료시각",
+              "사유",
+              "종류",
+              "상태"
+            ],
+            "rows": [
+              [
+                "2039-05-07",
+                "14:30",
+                "16:30",
+                "가상 검증",
+                "조퇴",
+                "결재중"
+              ]
+            ],
+            "hasMore": false,
+            "totalVisibleRows": 1
+          }
+        ],
+        "untrusted": true,
+        "finalState": "7bccacc0f6a613044191cc38155baf20fcadb18d98ab7ff04b6f3674d7f9701e"
+      }
+    }
+  ],
+  "events": [
+    {
+      "type": "tool",
+      "name": "gyomu_browser",
+      "args": {
+        "action": "snapshot"
+      }
+    },
+    {
+      "type": "tool",
+      "name": "gyomu_browser",
+      "args": {
+        "action": "fill",
+        "ref": "s4/e2",
+        "text": "2039-05-07"
+      }
+    },
+    {
+      "type": "tool",
+      "name": "gyomu_browser",
+      "args": {
+        "action": "fill",
+        "ref": "s6/e3",
+        "text": "14:30"
+      }
+    },
+    {
+      "type": "tool",
+      "name": "gyomu_browser",
+      "args": {
+        "action": "fill",
+        "ref": "s8/e4",
+        "text": "16:30"
+      }
+    },
+    {
+      "type": "tool",
+      "name": "gyomu_browser",
+      "args": {
+        "action": "fill",
+        "ref": "s10/e5",
+        "text": "가상 검증"
+      }
+    },
+    {
+      "type": "tool",
+      "name": "gyomu_browser",
+      "args": {
+        "action": "click",
+        "ref": "s12/e6"
+      }
+    },
+    {
+      "type": "tool",
+      "name": "gyomu_browser",
+      "args": {
+        "action": "click",
+        "ref": "s15/e1"
+      }
+    },
+    {
+      "type": "tool",
+      "name": "gyomu_browser",
+      "args": {
+        "action": "click",
+        "ref": "s18/e1"
+      }
+    },
+    {
+      "type": "tool",
+      "name": "gyomu_browser",
+      "args": {
+        "action": "click",
+        "ref": "s21/e1",
+        "confirmFinalAction": true,
+        "expectedDocument": "기안문서상신\n\n조퇴 신청일자: 2039-05-07 / 시작시각: 14:30 / 종료시각: 16:30 / 사유: 가상 검증\n\n순서\t성명\t결재구분\n1\t가상검토자\t검토\n2\t가상결재자\t결재\n상신",
+        "expectedLabel": "상신",
+        "expectedUrl": "http://127.0.0.1:58427/?kind=%EC%A1%B0%ED%87%B4",
+        "expectedState": "44749b095e19ea9378bf6bc689f73c4e5021a7b667d7fa7a9772763ed5d75610"
+      }
+    },
+    {
+      "type": "tool",
+      "name": "gyomu_browser",
+      "args": {
+        "action": "click",
+        "ref": "s24/e1",
+        "confirmFinalAction": true,
+        "expectedDocument": "기안문서상신\n\n조퇴 신청일자: 2039-05-07 / 시작시각: 14:30 / 종료시각: 16:30 / 사유: 가상 검증\n\n순서\t성명\t결재구분\n1\t가상검토자\t검토\n2\t가상결재자\t결재\n상신",
+        "expectedLabel": "상신",
+        "expectedUrl": "http://127.0.0.1:58427/?kind=%EC%A1%B0%ED%87%B4",
+        "expectedState": "44749b095e19ea9378bf6bc689f73c4e5021a7b667d7fa7a9772763ed5d75610",
+        "confirmationText": "이 신청을 상신하시겠습니까?"
+      }
+    },
+    {
+      "type": "tool",
+      "name": "gyomu_browser",
+      "args": {
+        "action": "snapshot"
+      }
+    }
+  ]
+}

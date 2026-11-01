@@ -1,0 +1,26 @@
+{
+  "schema": 1,
+  "date": "2026-11-01",
+  "office": { "tests": 305, "passed": 305, "failed": 0, "skipped": 0, "durationMs": 261117.8222 },
+  "portalPython": { "tests": 97, "passed": 97, "failed": 0 },
+  "nativeActions": { "tests": 26, "passed": 26, "failed": 0, "realApplication": false },
+  "commonCli": { "tests": 19, "passed": 19, "failed": 0 },
+  "commonVendor": { "sources": 4, "files": 541, "verified": true },
+  "officeVendor": { "files": 563, "sourceCommit": "afcc372f3c3b57c44436a67cecda02a90f2e9b62" },
+  "liveWorkflow": {
+    "assisted": true,
+    "draftAndTemporarySave": true,
+    "nativeVisualReview": true,
+    "serverAttachmentHashMatchBeforeAndAfterSubmission": true,
+    "submissionServerStateVerified": true,
+    "withdrawalServerStateVerified": true,
+    "recalledDocumentDeletionAbsenceVerified": true,
+    "existingDocumentsPreserved": true,
+    "temporaryReviewCopyRetained": true,
+    "revisionResubmissionVerified": false,
+    "narae4StandalonePass": false,
+    "requiredTenLiveReleaseVerified": false
+  },
+  "weightsTrainedOrReplaced": false,
+  "privateLiveEvidencePublished": false
+}

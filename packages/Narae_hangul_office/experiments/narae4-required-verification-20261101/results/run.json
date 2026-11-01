@@ -1,0 +1,1029 @@
+{
+  "schema": 1,
+  "contract": "narae-office-basic-10-v1",
+  "environment": "synthetic",
+  "cases": [
+    {
+      "task": "portal",
+      "variant": "both-systems",
+      "checks": {
+        "profile_safe": {
+          "passed": true,
+          "evidence": [
+            {
+              "file": "run-1-portal.json",
+              "sha256": "e585eb343d1252d372614c9788828be78ad7512f67de1a0f47ea1f206dc042c4",
+              "pointer": "/verified/profile_safe",
+              "expected": true
+            }
+          ]
+        },
+        "portal_authenticated": {
+          "passed": true,
+          "evidence": [
+            {
+              "file": "run-1-portal.json",
+              "sha256": "e585eb343d1252d372614c9788828be78ad7512f67de1a0f47ea1f206dc042c4",
+              "pointer": "/verified/portal_authenticated",
+              "expected": true
+            }
+          ]
+        },
+        "neis_screen": {
+          "passed": true,
+          "evidence": [
+            {
+              "file": "run-1-portal.json",
+              "sha256": "e585eb343d1252d372614c9788828be78ad7512f67de1a0f47ea1f206dc042c4",
+              "pointer": "/verified/neis_screen",
+              "expected": true
+            }
+          ]
+        },
+        "edufine_screen": {
+          "passed": true,
+          "evidence": [
+            {
+              "file": "run-1-portal.json",
+              "sha256": "e585eb343d1252d372614c9788828be78ad7512f67de1a0f47ea1f206dc042c4",
+              "pointer": "/verified/edufine_screen",
+              "expected": true
+            }
+          ]
+        },
+        "no_secret_in_log": {
+          "passed": true,
+          "evidence": [
+            {
+              "file": "run-1-portal.json",
+              "sha256": "e585eb343d1252d372614c9788828be78ad7512f67de1a0f47ea1f206dc042c4",
+              "pointer": "/verified/no_secret_in_log",
+              "expected": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "task": "archive",
+      "variant": "notes-and-chats",
+      "checks": {
+        "calendar_month_range": {
+          "passed": true,
+          "evidence": [
+            {
+              "file": "run-1-archive.json",
+              "sha256": "ec15986afd92d368ec6dca5f226e17e8e6bf1123ad7b7f3f9654ebced32e8ab0",
+              "pointer": "/verified/calendar_month_range",
+              "expected": true
+            }
+          ]
+        },
+        "notes_all_pages": {
+          "passed": true,
+          "evidence": [
+            {
+              "file": "run-1-archive.json",
+              "sha256": "ec15986afd92d368ec6dca5f226e17e8e6bf1123ad7b7f3f9654ebced32e8ab0",
+              "pointer": "/verified/notes_all_pages",
+              "expected": true
+            }
+          ]
+        },
+        "all_rooms_and_messages": {
+          "passed": true,
+          "evidence": [
+            {
+              "file": "run-1-archive.json",
+              "sha256": "ec15986afd92d368ec6dca5f226e17e8e6bf1123ad7b7f3f9654ebced32e8ab0",
+              "pointer": "/verified/all_rooms_and_messages",
+              "expected": true
+            }
+          ]
+        },
+        "bodies_read": {
+          "passed": true,
+          "evidence": [
+            {
+              "file": "run-1-archive.json",
+              "sha256": "ec15986afd92d368ec6dca5f226e17e8e6bf1123ad7b7f3f9654ebced32e8ab0",
+              "pointer": "/verified/bodies_read",
+              "expected": true
+            }
+          ]
+        },
+        "source_ids_dates_senders": {
+          "passed": true,
+          "evidence": [
+            {
+              "file": "run-1-archive.json",
+              "sha256": "ec15986afd92d368ec6dca5f226e17e8e6bf1123ad7b7f3f9654ebced32e8ab0",
+              "pointer": "/verified/source_ids_dates_senders",
+              "expected": true
+            }
+          ]
+        },
+        "changes_and_cancellations": {
+          "passed": true,
+          "evidence": [
+            {
+              "file": "run-1-archive.json",
+              "sha256": "ec15986afd92d368ec6dca5f226e17e8e6bf1123ad7b7f3f9654ebced32e8ab0",
+              "pointer": "/verified/changes_and_cancellations",
+              "expected": true
+            }
+          ]
+        },
+        "submission_candidates": {
+          "passed": true,
+          "evidence": [
+            {
+              "file": "run-1-archive.json",
+              "sha256": "ec15986afd92d368ec6dca5f226e17e8e6bf1123ad7b7f3f9654ebced32e8ab0",
+              "pointer": "/verified/submission_candidates",
+              "expected": true
+            }
+          ]
+        },
+        "coverage_complete": {
+          "passed": true,
+          "evidence": [
+            {
+              "file": "run-1-archive.json",
+              "sha256": "ec15986afd92d368ec6dca5f226e17e8e6bf1123ad7b7f3f9654ebced32e8ab0",
+              "pointer": "/verified/coverage_complete",
+              "expected": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "task": "search",
+      "variant": "note",
+      "checks": {
+        "body_query": {
+          "passed": true,
+          "evidence": [
+            {
+              "file": "run-1-search-note.json",
+              "sha256": "337b07003bd2a4b2cf50533c62e0745988744853d5ee5acf26c3efc568624261",
+              "pointer": "/verified/body_query",
+              "expected": true
+            }
+          ]
+        },
+        "all_matching_pages": {
+          "passed": true,
+          "evidence": [
+            {
+              "file": "run-1-search-note.json",
+              "sha256": "337b07003bd2a4b2cf50533c62e0745988744853d5ee5acf26c3efc568624261",
+              "pointer": "/verified/all_matching_pages",
+              "expected": true
+            }
+          ]
+        },
+        "source_evidence": {
+          "passed": true,
+          "evidence": [
+            {
+              "file": "run-1-search-note.json",
+              "sha256": "337b07003bd2a4b2cf50533c62e0745988744853d5ee5acf26c3efc568624261",
+              "pointer": "/verified/source_evidence",
+              "expected": true
+            }
+          ]
+        },
+        "meaning_deadline_destination": {
+          "passed": true,
+          "evidence": [
+            {
+              "file": "run-1-search-note.json",
+              "sha256": "337b07003bd2a4b2cf50533c62e0745988744853d5ee5acf26c3efc568624261",
+              "pointer": "/verified/meaning_deadline_destination",
+              "expected": true
+            }
+          ]
+        },
+        "changes_preserved": {
+          "passed": true,
+          "evidence": [
+            {
+              "file": "run-1-search-note.json",
+              "sha256": "337b07003bd2a4b2cf50533c62e0745988744853d5ee5acf26c3efc568624261",
+              "pointer": "/verified/changes_preserved",
+              "expected": true
+            }
+          ]
+        },
+        "scope_disclosed": {
+          "passed": true,
+          "evidence": [
+            {
+              "file": "run-1-search-note.json",
+              "sha256": "337b07003bd2a4b2cf50533c62e0745988744853d5ee5acf26c3efc568624261",
+              "pointer": "/verified/scope_disclosed",
+              "expected": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "task": "search",
+      "variant": "chat",
+      "checks": {
+        "body_query": {
+          "passed": true,
+          "evidence": [
+            {
+              "file": "run-1-search-chat.json",
+              "sha256": "cfcc95fab7812dd5e35c7895d758f5a0fbd49bcdabd3504185b7d22a3f2ff352",
+              "pointer": "/verified/body_query",
+              "expected": true
+            }
+          ]
+        },
+        "all_matching_pages": {
+          "passed": true,
+          "evidence": [
+            {
+              "file": "run-1-search-chat.json",
+              "sha256": "cfcc95fab7812dd5e35c7895d758f5a0fbd49bcdabd3504185b7d22a3f2ff352",
+              "pointer": "/verified/all_matching_pages",
+              "expected": true
+            }
+          ]
+        },
+        "source_evidence": {
+          "passed": true,
+          "evidence": [
+            {
+              "file": "run-1-search-chat.json",
+              "sha256": "cfcc95fab7812dd5e35c7895d758f5a0fbd49bcdabd3504185b7d22a3f2ff352",
+              "pointer": "/verified/source_evidence",
+              "expected": true
+            }
+          ]
+        },
+        "meaning_deadline_destination": {
+          "passed": true,
+          "evidence": [
+            {
+              "file": "run-1-search-chat.json",
+              "sha256": "cfcc95fab7812dd5e35c7895d758f5a0fbd49bcdabd3504185b7d22a3f2ff352",
+              "pointer": "/verified/meaning_deadline_destination",
+              "expected": true
+            }
+          ]
+        },
+        "changes_preserved": {
+          "passed": true,
+          "evidence": [
+            {
+              "file": "run-1-search-chat.json",
+              "sha256": "cfcc95fab7812dd5e35c7895d758f5a0fbd49bcdabd3504185b7d22a3f2ff352",
+              "pointer": "/verified/changes_preserved",
+              "expected": true
+            }
+          ]
+        },
+        "scope_disclosed": {
+          "passed": true,
+          "evidence": [
+            {
+              "file": "run-1-search-chat.json",
+              "sha256": "cfcc95fab7812dd5e35c7895d758f5a0fbd49bcdabd3504185b7d22a3f2ff352",
+              "pointer": "/verified/scope_disclosed",
+              "expected": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "task": "send",
+      "variant": "note",
+      "checks": {
+        "current_unique_recipient": {
+          "passed": true,
+          "evidence": [
+            {
+              "file": "run-1-send-note.json",
+              "sha256": "597daa13a32ba745942ce3c23536baa137da9d9874a87751a9cafef11d8fc7b0",
+              "pointer": "/verified/current_unique_recipient",
+              "expected": true
+            }
+          ]
+        },
+        "requested_content": {
+          "passed": true,
+          "evidence": [
+            {
+              "file": "run-1-send-note.json",
+              "sha256": "597daa13a32ba745942ce3c23536baa137da9d9874a87751a9cafef11d8fc7b0",
+              "pointer": "/verified/requested_content",
+              "expected": true
+            }
+          ]
+        },
+        "authorized_send": {
+          "passed": true,
+          "evidence": [
+            {
+              "file": "run-1-send-note.json",
+              "sha256": "597daa13a32ba745942ce3c23536baa137da9d9874a87751a9cafef11d8fc7b0",
+              "pointer": "/verified/authorized_send",
+              "expected": true
+            }
+          ]
+        },
+        "server_verified": {
+          "passed": true,
+          "evidence": [
+            {
+              "file": "run-1-send-note.json",
+              "sha256": "597daa13a32ba745942ce3c23536baa137da9d9874a87751a9cafef11d8fc7b0",
+              "pointer": "/verified/server_verified",
+              "expected": true
+            }
+          ]
+        },
+        "no_duplicate": {
+          "passed": true,
+          "evidence": [
+            {
+              "file": "run-1-send-note.json",
+              "sha256": "597daa13a32ba745942ce3c23536baa137da9d9874a87751a9cafef11d8fc7b0",
+              "pointer": "/verified/no_duplicate",
+              "expected": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "task": "send",
+      "variant": "chat",
+      "checks": {
+        "current_unique_recipient": {
+          "passed": true,
+          "evidence": [
+            {
+              "file": "run-1-send-chat.json",
+              "sha256": "b8063f1cef97bff3589afc9d24d52d44caebcc2c66f56e197ee3e73bc51a3cb4",
+              "pointer": "/verified/current_unique_recipient",
+              "expected": true
+            }
+          ]
+        },
+        "requested_content": {
+          "passed": true,
+          "evidence": [
+            {
+              "file": "run-1-send-chat.json",
+              "sha256": "b8063f1cef97bff3589afc9d24d52d44caebcc2c66f56e197ee3e73bc51a3cb4",
+              "pointer": "/verified/requested_content",
+              "expected": true
+            }
+          ]
+        },
+        "authorized_send": {
+          "passed": true,
+          "evidence": [
+            {
+              "file": "run-1-send-chat.json",
+              "sha256": "b8063f1cef97bff3589afc9d24d52d44caebcc2c66f56e197ee3e73bc51a3cb4",
+              "pointer": "/verified/authorized_send",
+              "expected": true
+            }
+          ]
+        },
+        "server_verified": {
+          "passed": true,
+          "evidence": [
+            {
+              "file": "run-1-send-chat.json",
+              "sha256": "b8063f1cef97bff3589afc9d24d52d44caebcc2c66f56e197ee3e73bc51a3cb4",
+              "pointer": "/verified/server_verified",
+              "expected": true
+            }
+          ]
+        },
+        "no_duplicate": {
+          "passed": true,
+          "evidence": [
+            {
+              "file": "run-1-send-chat.json",
+              "sha256": "b8063f1cef97bff3589afc9d24d52d44caebcc2c66f56e197ee3e73bc51a3cb4",
+              "pointer": "/verified/no_duplicate",
+              "expected": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "task": "draft",
+      "variant": "template-submit",
+      "checks": {
+        "observed_template": {
+          "passed": false,
+          "reason": "실제 실행에서 조건을 확인하지 못함",
+          "evidence": [
+            {
+              "file": "run-1-draft-save-smoke.json",
+              "sha256": "35e1e5ec06fcbb56c2eb9fd70167d7f4e952159d4ddc8cf3af1889dc9720f236",
+              "pointer": "/verified/observed_template",
+              "expected": true
+            }
+          ]
+        },
+        "body_fields_layout": {
+          "passed": false,
+          "reason": "실제 실행에서 조건을 확인하지 못함",
+          "evidence": [
+            {
+              "file": "run-1-draft-save-smoke.json",
+              "sha256": "35e1e5ec06fcbb56c2eb9fd70167d7f4e952159d4ddc8cf3af1889dc9720f236",
+              "pointer": "/verified/body_fields_layout",
+              "expected": true
+            }
+          ]
+        },
+        "visual_review": {
+          "passed": false,
+          "reason": "실제 실행에서 조건을 확인하지 못함",
+          "evidence": [
+            {
+              "file": "run-1-draft-save-smoke.json",
+              "sha256": "35e1e5ec06fcbb56c2eb9fd70167d7f4e952159d4ddc8cf3af1889dc9720f236",
+              "pointer": "/verified/visual_review",
+              "expected": true
+            }
+          ]
+        },
+        "title_body_exact": {
+          "passed": true,
+          "evidence": [
+            {
+              "file": "run-1-draft-save-smoke.json",
+              "sha256": "35e1e5ec06fcbb56c2eb9fd70167d7f4e952159d4ddc8cf3af1889dc9720f236",
+              "pointer": "/verified/title_body_exact",
+              "expected": true
+            }
+          ]
+        },
+        "route_and_disclosure": {
+          "passed": false,
+          "reason": "실제 실행에서 조건을 확인하지 못함",
+          "evidence": [
+            {
+              "file": "run-1-draft-save-smoke.json",
+              "sha256": "35e1e5ec06fcbb56c2eb9fd70167d7f4e952159d4ddc8cf3af1889dc9720f236",
+              "pointer": "/verified/route_and_disclosure",
+              "expected": true
+            }
+          ]
+        },
+        "server_attachments": {
+          "passed": false,
+          "reason": "실제 실행에서 조건을 확인하지 못함",
+          "evidence": [
+            {
+              "file": "run-1-draft-save-smoke.json",
+              "sha256": "35e1e5ec06fcbb56c2eb9fd70167d7f4e952159d4ddc8cf3af1889dc9720f236",
+              "pointer": "/verified/server_attachments",
+              "expected": true
+            }
+          ]
+        },
+        "final_process": {
+          "passed": false,
+          "reason": "실제 실행에서 조건을 확인하지 못함",
+          "evidence": [
+            {
+              "file": "run-1-draft-save-smoke.json",
+              "sha256": "35e1e5ec06fcbb56c2eb9fd70167d7f4e952159d4ddc8cf3af1889dc9720f236",
+              "pointer": "/verified/final_process",
+              "expected": true
+            }
+          ]
+        },
+        "server_list_verified": {
+          "passed": false,
+          "reason": "실제 실행에서 조건을 확인하지 못함",
+          "evidence": [
+            {
+              "file": "run-1-draft-save-smoke.json",
+              "sha256": "35e1e5ec06fcbb56c2eb9fd70167d7f4e952159d4ddc8cf3af1889dc9720f236",
+              "pointer": "/verified/server_list_verified",
+              "expected": true
+            }
+          ]
+        },
+        "no_duplicate": {
+          "passed": true,
+          "evidence": [
+            {
+              "file": "run-1-draft-save-smoke.json",
+              "sha256": "35e1e5ec06fcbb56c2eb9fd70167d7f4e952159d4ddc8cf3af1889dc9720f236",
+              "pointer": "/verified/no_duplicate",
+              "expected": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "task": "progress",
+      "variant": "assigned-to-me",
+      "checks": {
+        "current_account_scope": {
+          "passed": true,
+          "evidence": [
+            {
+              "file": "run-1-progress.json",
+              "sha256": "2ad854d8fcc6a4d018dc316a318ee92e1f453054c327d134973d0d366b044b56",
+              "pointer": "/verified/current_account_scope",
+              "expected": true
+            }
+          ]
+        },
+        "all_pages": {
+          "passed": true,
+          "evidence": [
+            {
+              "file": "run-1-progress.json",
+              "sha256": "2ad854d8fcc6a4d018dc316a318ee92e1f453054c327d134973d0d366b044b56",
+              "pointer": "/verified/all_pages",
+              "expected": true
+            }
+          ]
+        },
+        "all_bodies_attachments": {
+          "passed": true,
+          "evidence": [
+            {
+              "file": "run-1-progress.json",
+              "sha256": "2ad854d8fcc6a4d018dc316a318ee92e1f453054c327d134973d0d366b044b56",
+              "pointer": "/verified/all_bodies_attachments",
+              "expected": true
+            }
+          ]
+        },
+        "status_approver": {
+          "passed": true,
+          "evidence": [
+            {
+              "file": "run-1-progress.json",
+              "sha256": "2ad854d8fcc6a4d018dc316a318ee92e1f453054c327d134973d0d366b044b56",
+              "pointer": "/verified/status_approver",
+              "expected": true
+            }
+          ]
+        },
+        "source_explanation": {
+          "passed": true,
+          "evidence": [
+            {
+              "file": "run-1-progress.json",
+              "sha256": "2ad854d8fcc6a4d018dc316a318ee92e1f453054c327d134973d0d366b044b56",
+              "pointer": "/verified/source_explanation",
+              "expected": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "task": "circulation",
+      "variant": "waiting-and-completed",
+      "checks": {
+        "explicit_period": {
+          "passed": true,
+          "evidence": [
+            {
+              "file": "run-1-circulation.json",
+              "sha256": "2b10951e11d5f84be056510fbd85fb38f1f596d3c7062b6565303f8ff49e8f7e",
+              "pointer": "/verified/explicit_period",
+              "expected": true
+            }
+          ]
+        },
+        "both_folders": {
+          "passed": true,
+          "evidence": [
+            {
+              "file": "run-1-circulation.json",
+              "sha256": "2b10951e11d5f84be056510fbd85fb38f1f596d3c7062b6565303f8ff49e8f7e",
+              "pointer": "/verified/both_folders",
+              "expected": true
+            }
+          ]
+        },
+        "all_pages_counts": {
+          "passed": true,
+          "evidence": [
+            {
+              "file": "run-1-circulation.json",
+              "sha256": "2b10951e11d5f84be056510fbd85fb38f1f596d3c7062b6565303f8ff49e8f7e",
+              "pointer": "/verified/all_pages_counts",
+              "expected": true
+            }
+          ]
+        },
+        "all_bodies": {
+          "passed": true,
+          "evidence": [
+            {
+              "file": "run-1-circulation.json",
+              "sha256": "2b10951e11d5f84be056510fbd85fb38f1f596d3c7062b6565303f8ff49e8f7e",
+              "pointer": "/verified/all_bodies",
+              "expected": true
+            }
+          ]
+        },
+        "all_attachments": {
+          "passed": true,
+          "evidence": [
+            {
+              "file": "run-1-circulation.json",
+              "sha256": "2b10951e11d5f84be056510fbd85fb38f1f596d3c7062b6565303f8ff49e8f7e",
+              "pointer": "/verified/all_attachments",
+              "expected": true
+            }
+          ]
+        },
+        "per_document_explanation": {
+          "passed": true,
+          "evidence": [
+            {
+              "file": "run-1-circulation.json",
+              "sha256": "2b10951e11d5f84be056510fbd85fb38f1f596d3c7062b6565303f8ff49e8f7e",
+              "pointer": "/verified/per_document_explanation",
+              "expected": true
+            }
+          ]
+        },
+        "unconfirmed_not_complete": {
+          "passed": true,
+          "evidence": [
+            {
+              "file": "run-1-circulation.json",
+              "sha256": "2b10951e11d5f84be056510fbd85fb38f1f596d3c7062b6565303f8ff49e8f7e",
+              "pointer": "/verified/unconfirmed_not_complete",
+              "expected": true
+            },
+            {
+              "file": "run-1-circulation-auth.json",
+              "sha256": "d87efcdd958d88e4dc3e85bdc9c0330355d8112b2ba1ce7e445652e9c49a63c8",
+              "pointer": "/verified/no_false_completion",
+              "expected": true
+            },
+            {
+              "file": "run-1-circulation-auth.json",
+              "sha256": "d87efcdd958d88e4dc3e85bdc9c0330355d8112b2ba1ce7e445652e9c49a63c8",
+              "pointer": "/verified/authentication_preserved",
+              "expected": true
+            },
+            {
+              "file": "run-1-circulation-auth.json",
+              "sha256": "d87efcdd958d88e4dc3e85bdc9c0330355d8112b2ba1ce7e445652e9c49a63c8",
+              "pointer": "/verified/remaining_documents_read",
+              "expected": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "task": "circulation",
+      "variant": "authentication-negative",
+      "checks": {
+        "authentication_preserved": {
+          "passed": true,
+          "evidence": [
+            {
+              "file": "run-1-circulation-auth.json",
+              "sha256": "d87efcdd958d88e4dc3e85bdc9c0330355d8112b2ba1ce7e445652e9c49a63c8",
+              "pointer": "/verified/authentication_preserved",
+              "expected": true
+            }
+          ]
+        },
+        "remaining_documents_read": {
+          "passed": true,
+          "evidence": [
+            {
+              "file": "run-1-circulation-auth.json",
+              "sha256": "d87efcdd958d88e4dc3e85bdc9c0330355d8112b2ba1ce7e445652e9c49a63c8",
+              "pointer": "/verified/remaining_documents_read",
+              "expected": true
+            }
+          ]
+        },
+        "no_false_completion": {
+          "passed": true,
+          "evidence": [
+            {
+              "file": "run-1-circulation-auth.json",
+              "sha256": "d87efcdd958d88e4dc3e85bdc9c0330355d8112b2ba1ce7e445652e9c49a63c8",
+              "pointer": "/verified/no_false_completion",
+              "expected": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "task": "duty",
+      "variant": "other-person-date",
+      "checks": {
+        "current_permission": {
+          "passed": true,
+          "evidence": [
+            {
+              "file": "run-1-duty.json",
+              "sha256": "e30d43310e0bf61f6c63cc8afb2085e20f998fca163e053aea7ab12effc3dcc0",
+              "pointer": "/verified/current_permission",
+              "expected": true
+            }
+          ]
+        },
+        "unique_person_organization": {
+          "passed": true,
+          "evidence": [
+            {
+              "file": "run-1-duty.json",
+              "sha256": "e30d43310e0bf61f6c63cc8afb2085e20f998fca163e053aea7ab12effc3dcc0",
+              "pointer": "/verified/unique_person_organization",
+              "expected": true
+            }
+          ]
+        },
+        "exact_date_query": {
+          "passed": true,
+          "evidence": [
+            {
+              "file": "run-1-duty.json",
+              "sha256": "e30d43310e0bf61f6c63cc8afb2085e20f998fca163e053aea7ab12effc3dcc0",
+              "pointer": "/verified/exact_date_query",
+              "expected": true
+            }
+          ]
+        },
+        "all_result_pages": {
+          "passed": true,
+          "evidence": [
+            {
+              "file": "run-1-duty.json",
+              "sha256": "e30d43310e0bf61f6c63cc8afb2085e20f998fca163e053aea7ab12effc3dcc0",
+              "pointer": "/verified/all_result_pages",
+              "expected": true
+            }
+          ]
+        },
+        "source_result_explanation": {
+          "passed": true,
+          "evidence": [
+            {
+              "file": "run-1-duty.json",
+              "sha256": "e30d43310e0bf61f6c63cc8afb2085e20f998fca163e053aea7ab12effc3dcc0",
+              "pointer": "/verified/source_result_explanation",
+              "expected": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "task": "leave",
+      "variant": "annual",
+      "checks": {
+        "exact_dates_times_reason": {
+          "passed": true,
+          "evidence": [
+            {
+              "file": "run-2-연가.json",
+              "sha256": "354f0bc8f4f116f35a30b4b2f3e4f04ccbb7fd1ca566bfa4ccc51ece55ec4d5d",
+              "pointer": "/verified/exactDatesTimes",
+              "expected": true
+            }
+          ]
+        },
+        "correct_leave_type": {
+          "passed": true,
+          "evidence": [
+            {
+              "file": "run-2-연가.json",
+              "sha256": "354f0bc8f4f116f35a30b4b2f3e4f04ccbb7fd1ca566bfa4ccc51ece55ec4d5d",
+              "pointer": "/verified/exactDatesTimes",
+              "expected": true
+            }
+          ]
+        },
+        "current_approval_route": {
+          "passed": true,
+          "evidence": [
+            {
+              "file": "run-2-연가.json",
+              "sha256": "354f0bc8f4f116f35a30b4b2f3e4f04ccbb7fd1ca566bfa4ccc51ece55ec4d5d",
+              "pointer": "/verified/currentApprovalRoute",
+              "expected": true
+            }
+          ]
+        },
+        "final_confirmation": {
+          "passed": true,
+          "evidence": [
+            {
+              "file": "run-2-연가.json",
+              "sha256": "354f0bc8f4f116f35a30b4b2f3e4f04ccbb7fd1ca566bfa4ccc51ece55ec4d5d",
+              "pointer": "/verified/finalConfirmation",
+              "expected": true
+            }
+          ]
+        },
+        "server_list_verified": {
+          "passed": true,
+          "evidence": [
+            {
+              "file": "run-2-연가.json",
+              "sha256": "354f0bc8f4f116f35a30b4b2f3e4f04ccbb7fd1ca566bfa4ccc51ece55ec4d5d",
+              "pointer": "/verified/serverListVerified",
+              "expected": true
+            }
+          ]
+        },
+        "no_duplicate": {
+          "passed": true,
+          "evidence": [
+            {
+              "file": "run-2-연가.json",
+              "sha256": "354f0bc8f4f116f35a30b4b2f3e4f04ccbb7fd1ca566bfa4ccc51ece55ec4d5d",
+              "pointer": "/verified/noDuplicate",
+              "expected": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "task": "leave",
+      "variant": "early",
+      "checks": {
+        "exact_dates_times_reason": {
+          "passed": true,
+          "evidence": [
+            {
+              "file": "run-2-조퇴.json",
+              "sha256": "2fc2d5b074923aac72df72fa9018ecfcc2d47d6fe5c622155d82c3e5e2fe065e",
+              "pointer": "/verified/exactDatesTimes",
+              "expected": true
+            }
+          ]
+        },
+        "correct_leave_type": {
+          "passed": true,
+          "evidence": [
+            {
+              "file": "run-2-조퇴.json",
+              "sha256": "2fc2d5b074923aac72df72fa9018ecfcc2d47d6fe5c622155d82c3e5e2fe065e",
+              "pointer": "/verified/exactDatesTimes",
+              "expected": true
+            }
+          ]
+        },
+        "current_approval_route": {
+          "passed": true,
+          "evidence": [
+            {
+              "file": "run-2-조퇴.json",
+              "sha256": "2fc2d5b074923aac72df72fa9018ecfcc2d47d6fe5c622155d82c3e5e2fe065e",
+              "pointer": "/verified/currentApprovalRoute",
+              "expected": true
+            }
+          ]
+        },
+        "final_confirmation": {
+          "passed": true,
+          "evidence": [
+            {
+              "file": "run-2-조퇴.json",
+              "sha256": "2fc2d5b074923aac72df72fa9018ecfcc2d47d6fe5c622155d82c3e5e2fe065e",
+              "pointer": "/verified/finalConfirmation",
+              "expected": true
+            }
+          ]
+        },
+        "server_list_verified": {
+          "passed": true,
+          "evidence": [
+            {
+              "file": "run-2-조퇴.json",
+              "sha256": "2fc2d5b074923aac72df72fa9018ecfcc2d47d6fe5c622155d82c3e5e2fe065e",
+              "pointer": "/verified/serverListVerified",
+              "expected": true
+            }
+          ]
+        },
+        "no_duplicate": {
+          "passed": true,
+          "evidence": [
+            {
+              "file": "run-2-조퇴.json",
+              "sha256": "2fc2d5b074923aac72df72fa9018ecfcc2d47d6fe5c622155d82c3e5e2fe065e",
+              "pointer": "/verified/noDuplicate",
+              "expected": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "task": "trip",
+      "variant": "domestic-trip",
+      "checks": {
+        "exact_dates_times": {
+          "passed": true,
+          "evidence": [
+            {
+              "file": "run-2-출장.json",
+              "sha256": "87a88cae2f8130debd65b61c8d53e447aad088f4106b7a32602126278a7680f6",
+              "pointer": "/verified/exactDatesTimes",
+              "expected": true
+            }
+          ]
+        },
+        "destination_purpose": {
+          "passed": true,
+          "evidence": [
+            {
+              "file": "run-2-출장.json",
+              "sha256": "87a88cae2f8130debd65b61c8d53e447aad088f4106b7a32602126278a7680f6",
+              "pointer": "/verified/destinationPurpose",
+              "expected": true
+            }
+          ]
+        },
+        "trip_type_transport_expenses": {
+          "passed": true,
+          "evidence": [
+            {
+              "file": "run-2-출장.json",
+              "sha256": "87a88cae2f8130debd65b61c8d53e447aad088f4106b7a32602126278a7680f6",
+              "pointer": "/verified/typeTransportExpenses",
+              "expected": true
+            }
+          ]
+        },
+        "current_approval_route": {
+          "passed": true,
+          "evidence": [
+            {
+              "file": "run-2-출장.json",
+              "sha256": "87a88cae2f8130debd65b61c8d53e447aad088f4106b7a32602126278a7680f6",
+              "pointer": "/verified/currentApprovalRoute",
+              "expected": true
+            }
+          ]
+        },
+        "final_confirmation": {
+          "passed": true,
+          "evidence": [
+            {
+              "file": "run-2-출장.json",
+              "sha256": "87a88cae2f8130debd65b61c8d53e447aad088f4106b7a32602126278a7680f6",
+              "pointer": "/verified/finalConfirmation",
+              "expected": true
+            }
+          ]
+        },
+        "server_list_verified": {
+          "passed": true,
+          "evidence": [
+            {
+              "file": "run-2-출장.json",
+              "sha256": "87a88cae2f8130debd65b61c8d53e447aad088f4106b7a32602126278a7680f6",
+              "pointer": "/verified/serverListVerified",
+              "expected": true
+            }
+          ]
+        },
+        "no_duplicate": {
+          "passed": true,
+          "evidence": [
+            {
+              "file": "run-2-출장.json",
+              "sha256": "87a88cae2f8130debd65b61c8d53e447aad088f4106b7a32602126278a7680f6",
+              "pointer": "/verified/noDuplicate",
+              "expected": true
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

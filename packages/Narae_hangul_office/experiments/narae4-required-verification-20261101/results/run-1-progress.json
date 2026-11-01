@@ -1,0 +1,636 @@
+{
+  "id": "progress",
+  "task": "progress",
+  "variant": "assigned-to-me",
+  "prompt": "에듀파인 나한테 처리 중인 문서 모두 본문과 모든 첨부를 읽고 내용과 상태 및 현재 결재자를 설명해줘.",
+  "model": "Narae4-Qwen3.5-2B-Office-LoRA-v1",
+  "actualLocalWeights": true,
+  "syntheticOnly": true,
+  "seconds": 5.622,
+  "response": {
+    "model": "narae4",
+    "workspace": "D:\\Codex\\training\\narae4-required-verification-20261101-r2\\progress",
+    "text": "확인한 원문 근거로 요약했습니다.\n\n1. 가상 업무담당확인 문서 1\n  목록: 「제목: 가상 업무담당확인 문서 1 | 결재상태: 결재중 | 현재결재자: 가상교감」\n  본문: 「신청서 제출 기한 2039-11-10, 제출처 가상1지원실.」\n  긴 원문의 주요 구절 발췌입니다. 세부 전체 요약은 문서별 확인이 필요합니다.\n  첨부 0-0.txt: 「붙임 양식 0-0: 대상은 가상 교직원이고 회신처는 가상1연구실입니다.」\n\n2. 가상 업무담당확인 문서 2\n  목록: 「제목: 가상 업무담당확인 문서 2 | 결재상태: 검토중 | 현재결재자: 가상부장」\n  본문: 「신청서 제출 기한 2039-11-11, 제출처 가상1지원실.」\n  긴 원문의 주요 구절 발췌입니다. 세부 전체 요약은 문서별 확인이 필요합니다.\n  첨부 0-1.txt: 「붙임 양식 0-1: 대상은 가상 교직원이고 회신처는 가상2연구실입니다.」\n\n조회 조건(실제 목록 표시): 가상현재계정 / 업무담당확인 / 2039-05-01 ~ 2039-10-31 / 총 2건 / 2/2페이지\n확인 범위: 공문 2건 본문·닫힘 확인, 첨부 2개 중 2개 내용 확인. 조회한 목록의 기간·페이지 밖 자료는 포함하지 않습니다."
+  },
+  "verified": {
+    "current_account_scope": true,
+    "all_pages": true,
+    "all_bodies_attachments": true,
+    "status_approver": true,
+    "source_explanation": true
+  },
+  "calls": [
+    {
+      "name": "gyomu_browser",
+      "args": {
+        "action": "snapshot"
+      },
+      "value": {
+        "title": "업무담당확인 | 업무관리시스템",
+        "url": "https://fixture.invalid/업무담당확인",
+        "frameIndex": 1,
+        "text": "가상현재계정 / 업무담당확인 / 2039-05-01 ~ 2039-10-31 / 총 2건 / 1/2페이지",
+        "tableData": [
+          {
+            "headers": [
+              "제목",
+              "결재상태",
+              "현재결재자"
+            ],
+            "rows": [
+              [
+                "가상 업무담당확인 문서 1",
+                "결재중",
+                "가상교감"
+              ]
+            ],
+            "hasMore": false
+          }
+        ],
+        "tables": [
+          "제목 | 결재상태 | 현재결재자\n가상 업무담당확인 문서 1 | 결재중 | 가상교감"
+        ],
+        "elements": [
+          {
+            "ref": "document",
+            "label": "가상 업무담당확인 문서 1",
+            "documentTitle": true
+          },
+          {
+            "ref": "next",
+            "label": "다음 페이지"
+          }
+        ]
+      }
+    },
+    {
+      "name": "gyomu_wxs_read",
+      "args": {
+        "operation": "prepare",
+        "expected_title": "가상 업무담당확인 문서 1"
+      },
+      "value": {
+        "id": "0-0",
+        "ready": true,
+        "expected_title": "가상 업무담당확인 문서 1"
+      }
+    },
+    {
+      "name": "gyomu_browser",
+      "args": {
+        "action": "click",
+        "ref": "document"
+      },
+      "value": {
+        "title": "업무담당확인 | 업무관리시스템",
+        "url": "https://fixture.invalid/업무담당확인",
+        "frameIndex": 1,
+        "text": "가상현재계정 / 업무담당확인 / 2039-05-01 ~ 2039-10-31 / 총 2건 / 1/2페이지",
+        "tableData": [
+          {
+            "headers": [
+              "제목",
+              "결재상태",
+              "현재결재자"
+            ],
+            "rows": [
+              [
+                "가상 업무담당확인 문서 1",
+                "결재중",
+                "가상교감"
+              ]
+            ],
+            "hasMore": false
+          }
+        ],
+        "tables": [
+          "제목 | 결재상태 | 현재결재자\n가상 업무담당확인 문서 1 | 결재중 | 가상교감"
+        ],
+        "elements": [
+          {
+            "ref": "document",
+            "label": "가상 업무담당확인 문서 1",
+            "documentTitle": true
+          },
+          {
+            "ref": "next",
+            "label": "다음 페이지"
+          }
+        ]
+      }
+    },
+    {
+      "name": "gyomu_wxs_read",
+      "args": {
+        "operation": "result",
+        "id": "0-0",
+        "chars": 1500
+      },
+      "value": {
+        "id": "0-0",
+        "expected_title": "가상 업무담당확인 문서 1",
+        "document": {
+          "title": "가상 업무담당확인 문서 1",
+          "closed": false,
+          "body": {
+            "body_read": true,
+            "text": "가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n",
+            "offset": 0,
+            "hasMore": true,
+            "nextOffset": 1400
+          },
+          "attachments": {
+            "files": [
+              {
+                "path": "D:\\Codex\\training\\narae4-required-verification-20261101-r2\\progress\\0-0.txt",
+                "exported": true
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "name": "gyomu_wxs_read",
+      "args": {
+        "operation": "result",
+        "id": "0-0",
+        "offset": 1400,
+        "chars": 1500
+      },
+      "value": {
+        "id": "0-0",
+        "expected_title": "가상 업무담당확인 문서 1",
+        "document": {
+          "title": "가상 업무담당확인 문서 1",
+          "closed": true,
+          "body": {
+            "body_read": true,
+            "text": "가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n신청서 제출 기한 2039-11-10, 제출처 가상1지원실.",
+            "offset": 1400,
+            "hasMore": false,
+            "nextOffset": 2033
+          },
+          "attachments": {
+            "files": [
+              {
+                "path": "D:\\Codex\\training\\narae4-required-verification-20261101-r2\\progress\\0-0.txt",
+                "exported": true
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "name": "gyomu_wxs_attachment",
+      "args": {
+        "path": "D:\\Codex\\training\\narae4-required-verification-20261101-r2\\progress\\0-0.txt",
+        "chars": 1500
+      },
+      "value": {
+        "path": "D:\\Codex\\training\\narae4-required-verification-20261101-r2\\progress\\0-0.txt",
+        "text": "붙임 양식 0-0: 대상은 가상 교직원이고 회신처는 가상1연구실입니다.",
+        "offset": 0,
+        "hasMore": false,
+        "source_unchanged": true
+      }
+    },
+    {
+      "name": "gyomu_browser",
+      "args": {
+        "action": "click",
+        "ref": "next"
+      },
+      "value": {
+        "title": "업무담당확인 | 업무관리시스템",
+        "url": "https://fixture.invalid/업무담당확인",
+        "frameIndex": 1,
+        "text": "가상현재계정 / 업무담당확인 / 2039-05-01 ~ 2039-10-31 / 총 2건 / 2/2페이지",
+        "tableData": [
+          {
+            "headers": [
+              "제목",
+              "결재상태",
+              "현재결재자"
+            ],
+            "rows": [
+              [
+                "가상 업무담당확인 문서 2",
+                "검토중",
+                "가상부장"
+              ]
+            ],
+            "hasMore": false
+          }
+        ],
+        "tables": [
+          "제목 | 결재상태 | 현재결재자\n가상 업무담당확인 문서 2 | 검토중 | 가상부장"
+        ],
+        "elements": [
+          {
+            "ref": "document",
+            "label": "가상 업무담당확인 문서 2",
+            "documentTitle": true
+          }
+        ]
+      }
+    },
+    {
+      "name": "gyomu_wxs_read",
+      "args": {
+        "operation": "prepare",
+        "expected_title": "가상 업무담당확인 문서 2"
+      },
+      "value": {
+        "id": "0-1",
+        "ready": true,
+        "expected_title": "가상 업무담당확인 문서 2"
+      }
+    },
+    {
+      "name": "gyomu_browser",
+      "args": {
+        "action": "click",
+        "ref": "document"
+      },
+      "value": {
+        "title": "업무담당확인 | 업무관리시스템",
+        "url": "https://fixture.invalid/업무담당확인",
+        "frameIndex": 1,
+        "text": "가상현재계정 / 업무담당확인 / 2039-05-01 ~ 2039-10-31 / 총 2건 / 2/2페이지",
+        "tableData": [
+          {
+            "headers": [
+              "제목",
+              "결재상태",
+              "현재결재자"
+            ],
+            "rows": [
+              [
+                "가상 업무담당확인 문서 2",
+                "검토중",
+                "가상부장"
+              ]
+            ],
+            "hasMore": false
+          }
+        ],
+        "tables": [
+          "제목 | 결재상태 | 현재결재자\n가상 업무담당확인 문서 2 | 검토중 | 가상부장"
+        ],
+        "elements": [
+          {
+            "ref": "document",
+            "label": "가상 업무담당확인 문서 2",
+            "documentTitle": true
+          }
+        ]
+      }
+    },
+    {
+      "name": "gyomu_wxs_read",
+      "args": {
+        "operation": "result",
+        "id": "0-1",
+        "chars": 1500
+      },
+      "value": {
+        "id": "0-1",
+        "expected_title": "가상 업무담당확인 문서 2",
+        "document": {
+          "title": "가상 업무담당확인 문서 2",
+          "closed": false,
+          "body": {
+            "body_read": true,
+            "text": "가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n",
+            "offset": 0,
+            "hasMore": true,
+            "nextOffset": 1400
+          },
+          "attachments": {
+            "files": [
+              {
+                "path": "D:\\Codex\\training\\narae4-required-verification-20261101-r2\\progress\\0-1.txt",
+                "exported": true
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "name": "gyomu_wxs_read",
+      "args": {
+        "operation": "result",
+        "id": "0-1",
+        "offset": 1400,
+        "chars": 1500
+      },
+      "value": {
+        "id": "0-1",
+        "expected_title": "가상 업무담당확인 문서 2",
+        "document": {
+          "title": "가상 업무담당확인 문서 2",
+          "closed": true,
+          "body": {
+            "body_read": true,
+            "text": "가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n가상 자료입니다.\n신청서 제출 기한 2039-11-11, 제출처 가상1지원실.",
+            "offset": 1400,
+            "hasMore": false,
+            "nextOffset": 2033
+          },
+          "attachments": {
+            "files": [
+              {
+                "path": "D:\\Codex\\training\\narae4-required-verification-20261101-r2\\progress\\0-1.txt",
+                "exported": true
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "name": "gyomu_wxs_attachment",
+      "args": {
+        "path": "D:\\Codex\\training\\narae4-required-verification-20261101-r2\\progress\\0-1.txt",
+        "chars": 1500
+      },
+      "value": {
+        "path": "D:\\Codex\\training\\narae4-required-verification-20261101-r2\\progress\\0-1.txt",
+        "text": "붙임 양식 0-1: 대상은 가상 교직원이고 회신처는 가상2연구실입니다.",
+        "offset": 0,
+        "hasMore": false,
+        "source_unchanged": true
+      }
+    }
+  ],
+  "events": [
+    {
+      "type": "tool",
+      "name": "gyomu_browser",
+      "args": {
+        "action": "snapshot"
+      }
+    },
+    {
+      "type": "tool",
+      "name": "gyomu_wxs_read",
+      "args": {
+        "operation": "prepare",
+        "expected_title": "가상 업무담당확인 문서 1"
+      }
+    },
+    {
+      "type": "tool",
+      "name": "gyomu_browser",
+      "args": {
+        "action": "click",
+        "ref": "document"
+      }
+    },
+    {
+      "type": "tool",
+      "name": "gyomu_wxs_read",
+      "args": {
+        "operation": "result",
+        "id": "0-0",
+        "chars": 1500
+      }
+    },
+    {
+      "type": "tool",
+      "name": "gyomu_wxs_read",
+      "args": {
+        "operation": "result",
+        "id": "0-0",
+        "offset": 1400,
+        "chars": 1500
+      }
+    },
+    {
+      "type": "tool",
+      "name": "gyomu_wxs_attachment",
+      "args": {
+        "path": "D:\\Codex\\training\\narae4-required-verification-20261101-r2\\progress\\0-0.txt",
+        "chars": 1500
+      }
+    },
+    {
+      "type": "tool",
+      "name": "gyomu_browser",
+      "args": {
+        "action": "click",
+        "ref": "next"
+      }
+    },
+    {
+      "type": "tool",
+      "name": "gyomu_wxs_read",
+      "args": {
+        "operation": "prepare",
+        "expected_title": "가상 업무담당확인 문서 2"
+      }
+    },
+    {
+      "type": "tool",
+      "name": "gyomu_browser",
+      "args": {
+        "action": "click",
+        "ref": "document"
+      }
+    },
+    {
+      "type": "tool",
+      "name": "gyomu_wxs_read",
+      "args": {
+        "operation": "result",
+        "id": "0-1",
+        "chars": 1500
+      }
+    },
+    {
+      "type": "tool",
+      "name": "gyomu_wxs_read",
+      "args": {
+        "operation": "result",
+        "id": "0-1",
+        "offset": 1400,
+        "chars": 1500
+      }
+    },
+    {
+      "type": "tool",
+      "name": "gyomu_wxs_attachment",
+      "args": {
+        "path": "D:\\Codex\\training\\narae4-required-verification-20261101-r2\\progress\\0-1.txt",
+        "chars": 1500
+      }
+    },
+    {
+      "type": "tool",
+      "name": "report_evidence",
+      "args": {
+        "evidence_ids": [
+          "e1",
+          "e2",
+          "e3",
+          "e4",
+          "e5",
+          "e6"
+        ]
+      }
+    }
+  ],
+  "modelRequests": [
+    {
+      "tools": [
+        "gyomu_wxs_read"
+      ],
+      "route": "bounded-rule",
+      "returnedCalls": [
+        "gyomu_wxs_read"
+      ]
+    },
+    {
+      "tools": [
+        "gyomu_browser"
+      ],
+      "route": "bounded-rule",
+      "returnedCalls": [
+        "gyomu_browser"
+      ]
+    },
+    {
+      "tools": [
+        "gyomu_wxs_read"
+      ],
+      "route": "bounded-rule",
+      "returnedCalls": [
+        "gyomu_wxs_read"
+      ]
+    },
+    {
+      "tools": [
+        "gyomu_wxs_read"
+      ],
+      "route": "bounded-rule",
+      "returnedCalls": [
+        "gyomu_wxs_read"
+      ]
+    },
+    {
+      "tools": [
+        "gyomu_wxs_attachment"
+      ],
+      "route": "bounded-rule",
+      "returnedCalls": [
+        "gyomu_wxs_attachment"
+      ]
+    },
+    {
+      "tools": [
+        "gyomu_browser"
+      ],
+      "route": "bounded-rule",
+      "returnedCalls": [
+        "gyomu_browser"
+      ]
+    },
+    {
+      "tools": [
+        "gyomu_wxs_read"
+      ],
+      "route": "bounded-rule",
+      "returnedCalls": [
+        "gyomu_wxs_read"
+      ]
+    },
+    {
+      "tools": [
+        "gyomu_browser"
+      ],
+      "route": "bounded-rule",
+      "returnedCalls": [
+        "gyomu_browser"
+      ]
+    },
+    {
+      "tools": [
+        "gyomu_wxs_read"
+      ],
+      "route": "bounded-rule",
+      "returnedCalls": [
+        "gyomu_wxs_read"
+      ]
+    },
+    {
+      "tools": [
+        "gyomu_wxs_read"
+      ],
+      "route": "bounded-rule",
+      "returnedCalls": [
+        "gyomu_wxs_read"
+      ]
+    },
+    {
+      "tools": [
+        "gyomu_wxs_attachment"
+      ],
+      "route": "bounded-rule",
+      "returnedCalls": [
+        "gyomu_wxs_attachment"
+      ]
+    },
+    {
+      "tools": [
+        "report_evidence"
+      ],
+      "route": "main",
+      "returnedCalls": [
+        "report_evidence"
+      ]
+    }
+  ],
+  "sourceObservations": {
+    "opened": [
+      "0-0",
+      "0-1"
+    ],
+    "bodyReads": [
+      {
+        "id": "0-0",
+        "offset": 0,
+        "hasMore": true
+      },
+      {
+        "id": "0-0",
+        "offset": 1400,
+        "hasMore": false
+      },
+      {
+        "id": "0-1",
+        "offset": 0,
+        "hasMore": true
+      },
+      {
+        "id": "0-1",
+        "offset": 1400,
+        "hasMore": false
+      }
+    ],
+    "attachmentReads": [
+      "D:\\Codex\\training\\narae4-required-verification-20261101-r2\\progress\\0-0.txt",
+      "D:\\Codex\\training\\narae4-required-verification-20261101-r2\\progress\\0-1.txt"
+    ],
+    "pages": [
+      "업무담당확인:1",
+      "업무담당확인:1",
+      "업무담당확인:2",
+      "업무담당확인:2"
+    ],
+    "account": "가상현재계정",
+    "scope": "업무담당확인"
+  }
+}
