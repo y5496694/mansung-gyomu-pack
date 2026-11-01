@@ -1,0 +1,401 @@
+[
+  {
+    "id": "sen",
+    "region": "서울",
+    "label": "서울특별시교육청",
+    "portalUrl": "https://sen.eduptl.kr/bpm_lgn_lg00_001.do",
+    "neisUrl": "https://sen.neis.go.kr/",
+    "edufineUrl": "https://klef.sen.go.kr/",
+    "evpnUrl": "https://evpn.sen.go.kr/",
+    "sources": [
+      "https://www.blsoft.co.kr/menu7/index.html?pg=neis-address"
+    ],
+    "addressChecked": "2026-11-01",
+    "liveTested": false,
+    "messenger": "서울 교직원 메신저",
+    "adapter": "uia",
+    "messengerIdentityChecked": false,
+    "support": "dedicated-driver-pending"
+  },
+  {
+    "id": "pen",
+    "region": "부산",
+    "label": "부산광역시교육청",
+    "portalUrl": "https://pen.eduptl.kr/bpm_lgn_lg00_001.do",
+    "neisUrl": "https://pen.neis.go.kr/",
+    "edufineUrl": "https://klef.pen.go.kr/",
+    "evpnUrl": "https://evpn.pen.go.kr/",
+    "sources": [
+      "https://www.blsoft.co.kr/menu7/index.html?pg=neis-address"
+    ],
+    "addressChecked": "2026-11-01",
+    "liveTested": false,
+    "messenger": "펜메신저",
+    "adapter": "uia",
+    "messengerSources": [
+      "https://note.pen.go.kr/main/uOrg/read/G0000133/1183"
+    ],
+    "messengerIdentityChecked": true,
+    "support": "dedicated-driver-pending"
+  },
+  {
+    "id": "dge",
+    "region": "대구",
+    "label": "대구광역시교육청",
+    "portalUrl": "https://dge.eduptl.kr/bpm_lgn_lg00_001.do",
+    "neisUrl": "https://dge.neis.go.kr/",
+    "edufineUrl": "https://klef.dge.go.kr/",
+    "evpnUrl": "https://evpn.dge.go.kr/",
+    "sources": [
+      "https://www.blsoft.co.kr/menu7/index.html?pg=neis-address"
+    ],
+    "addressChecked": "2026-11-01",
+    "liveTested": false,
+    "messenger": "대구 교직원 메신저",
+    "adapter": "uia",
+    "messengerIdentityChecked": false,
+    "support": "dedicated-driver-pending"
+  },
+  {
+    "id": "ice",
+    "region": "인천",
+    "label": "인천광역시교육청",
+    "portalUrl": "https://ice.eduptl.kr/bpm_lgn_lg00_001.do",
+    "neisUrl": "https://ice.neis.go.kr/",
+    "edufineUrl": "https://klef.ice.go.kr/",
+    "evpnUrl": "https://evpn.ice.go.kr/",
+    "sources": [
+      "https://www.blsoft.co.kr/menu7/index.html?pg=neis-address"
+    ],
+    "addressChecked": "2026-11-01",
+    "liveTested": false,
+    "messenger": "아이스톡",
+    "adapter": "uia",
+    "messengerSources": [
+      "https://ict114.ice.go.kr/upload/ucare/kms/f52427cf5fb74f3fa29f464120bf3522.pdf"
+    ],
+    "messengerIdentityChecked": true,
+    "support": "dedicated-driver-pending"
+  },
+  {
+    "id": "gen",
+    "region": "광주",
+    "label": "광주광역시교육청",
+    "portalUrl": "https://gen.eduptl.kr/bpm_lgn_lg00_001.do",
+    "neisUrl": "https://gen.neis.go.kr/",
+    "edufineUrl": "https://klef.gen.go.kr/",
+    "evpnUrl": "https://evpn.gen.go.kr/",
+    "sources": [
+      "https://www.blsoft.co.kr/menu7/index.html?pg=neis-address"
+    ],
+    "addressChecked": "2026-11-01",
+    "liveTested": false,
+    "messenger": "광주 교직원 메신저",
+    "adapter": "uia",
+    "messengerIdentityChecked": false,
+    "support": "dedicated-driver-pending"
+  },
+  {
+    "id": "dje",
+    "region": "대전",
+    "label": "대전광역시교육청",
+    "portalUrl": "https://dje.eduptl.kr/bpm_lgn_lg00_001.do",
+    "neisUrl": "https://dje.neis.go.kr/",
+    "edufineUrl": "https://klef.dje.go.kr/",
+    "evpnUrl": "https://evpn.dje.go.kr/",
+    "sources": [
+      "https://www.blsoft.co.kr/menu7/index.html?pg=neis-address"
+    ],
+    "addressChecked": "2026-11-01",
+    "liveTested": false,
+    "messenger": "대전 교직원 메신저",
+    "adapter": "uia",
+    "messengerIdentityChecked": false,
+    "support": "dedicated-driver-pending"
+  },
+  {
+    "id": "use",
+    "region": "울산",
+    "label": "울산광역시교육청",
+    "portalUrl": "https://use.eduptl.kr/bpm_lgn_lg00_001.do",
+    "neisUrl": "https://use.neis.go.kr/",
+    "edufineUrl": "https://klef.use.go.kr/",
+    "evpnUrl": "https://evpn.use.go.kr/",
+    "sources": [
+      "https://www.blsoft.co.kr/menu7/index.html?pg=neis-address"
+    ],
+    "addressChecked": "2026-11-01",
+    "liveTested": false,
+    "messenger": "울산 교직원 메신저",
+    "adapter": "uia",
+    "messengerIdentityChecked": false,
+    "support": "dedicated-driver-pending"
+  },
+  {
+    "id": "sje",
+    "region": "세종",
+    "label": "세종특별자치시교육청",
+    "portalUrl": "https://sje.eduptl.kr/bpm_lgn_lg00_001.do",
+    "neisUrl": "https://sje.neis.go.kr/",
+    "edufineUrl": "https://klef.sje.go.kr/",
+    "evpnUrl": "https://evpn.sje.go.kr/",
+    "sources": [
+      "https://www.blsoft.co.kr/menu7/index.html?pg=neis-address"
+    ],
+    "addressChecked": "2026-11-01",
+    "liveTested": false,
+    "messenger": "세종 교직원 메신저",
+    "adapter": "uia",
+    "messengerIdentityChecked": false,
+    "support": "dedicated-driver-pending"
+  },
+  {
+    "id": "goe",
+    "region": "경기",
+    "label": "경기도교육청",
+    "portalUrl": "https://goe.eduptl.kr/bpm_lgn_lg00_001.do",
+    "neisUrl": "https://goe.neis.go.kr/",
+    "edufineUrl": "https://klef.goe.go.kr/",
+    "evpnUrl": "https://evpn.goe.go.kr/",
+    "sources": [
+      "https://www.blsoft.co.kr/menu7/index.html?pg=neis-address",
+      "https://goeia.go.kr/flexer/html/UPLOAD/BBS/B29/%28%EB%B0%B0%ED%8F%AC%EC%9A%A9%292024%20%ED%95%99%EB%85%84%EC%B4%88%20%EB%82%98%EC%9D%B4%EC%8A%A4%20%EC%82%AC%EC%9A%A9%EC%9E%90%20%EC%97%B0%EC%88%98%EB%AC%BC%2820240216%EC%88%98%EC%A0%95%29_hwp_files/Sections1.html"
+    ],
+    "addressChecked": "2026-11-01",
+    "liveTested": false,
+    "messenger": "GOE메신저",
+    "adapter": "ultari-atmessenger7",
+    "messengerSources": [
+      "https://www.goe.go.kr/resource/old/BBSMSTR_000000030111/BBS_202404010322151180.pdf",
+      "https://ultari.co.kr/goe/",
+      "https://ultari.co.kr/goe/file/AtMessenger7Enable_Banner_Setup.exe"
+    ],
+    "installer": {
+      "sha256": "7346bc46adb720420a3cd684cdaf09c996267ea90b0469973fc2cc78688fe7eb",
+      "product": "GOE메신저",
+      "publisher": "ULTARI",
+      "fileVersion": "7.0.2",
+      "signature": "valid",
+      "runtimeTested": false
+    },
+    "messengerIdentityChecked": true,
+    "support": "dedicated-local-cache-static-verified",
+    "installedArtifact": {
+      "sha256": "b631b4db84371036666fdc3ffa63389e1df1d3dcfdeaf626fbd620ad1783421d",
+      "executable": "AtMessengerMobileEdition.exe",
+      "reaEvidence": "ev_63b4e77aa332c8a915ca6c9f9a4f066f6ed9579d86e96e2ec36e0000bb615680",
+      "runtimeVerified": false,
+      "authenticatedLiveTested": false
+    }
+  },
+  {
+    "id": "kwe",
+    "region": "강원",
+    "label": "강원특별자치도교육청",
+    "portalUrl": "https://kwe.eduptl.kr/bpm_lgn_lg00_001.do",
+    "neisUrl": "https://kwe.neis.go.kr/",
+    "edufineUrl": "https://klef.kwe.go.kr/",
+    "evpnUrl": "https://evpn.kwe.go.kr/",
+    "sources": [
+      "https://www.blsoft.co.kr/menu7/index.html?pg=neis-address"
+    ],
+    "addressChecked": "2026-11-01",
+    "liveTested": false,
+    "messenger": "이음 EUM",
+    "adapter": "ucware-delphi",
+    "messengerSources": [
+      "https://www.gwe.go.kr/main/bbs/view.do?bbsSn=48393&key=m2307211199274",
+      "https://www.gwe.go.kr/main/bbs/view.do?bbsSn=53811&key=bTIzMDcyMTExOTkyNzQ%3D"
+    ],
+    "messengerIdentityChecked": true,
+    "support": "dedicated-local-cache-static-verified",
+    "installedArtifact": {
+      "sha256": "a0c7849d288a98b44a0c1d423b4d47abd738a33a5e3fcebc150efa4e737f24bf",
+      "executable": "ucware_m.exe",
+      "reaEvidence": "ev_ec4ca322c4f182f308a790172d3484179d9f6332ad72e6c738903f894f9de672",
+      "runtimeVerified": false,
+      "authenticatedLiveTested": false
+    }
+  },
+  {
+    "id": "cbe",
+    "region": "충북",
+    "label": "충청북도교육청",
+    "portalUrl": "https://cbe.eduptl.kr/bpm_lgn_lg00_001.do",
+    "neisUrl": "https://cbe.neis.go.kr/",
+    "edufineUrl": "https://klef.cbe.go.kr/",
+    "evpnUrl": "https://evpn.cbe.go.kr/",
+    "sources": [
+      "https://www.blsoft.co.kr/menu7/index.html?pg=neis-address",
+      "https://www.cbe.go.kr/cbe/cm/cntnts/cntntsView.do?cntntsId=35660&mi=11772"
+    ],
+    "addressChecked": "2026-11-01",
+    "liveTested": true,
+    "messenger": "충북소통메신저",
+    "adapter": "cbe",
+    "messengerIdentityChecked": true,
+    "support": "dedicated-cli-live-connected"
+  },
+  {
+    "id": "cne",
+    "region": "충남",
+    "label": "충청남도교육청",
+    "portalUrl": "https://cne.eduptl.kr/bpm_lgn_lg00_001.do",
+    "neisUrl": "https://cne.neis.go.kr/",
+    "edufineUrl": "https://klef.cne.go.kr/",
+    "evpnUrl": "https://evpn.cne.go.kr/",
+    "sources": [
+      "https://www.blsoft.co.kr/menu7/index.html?pg=neis-address"
+    ],
+    "addressChecked": "2026-11-01",
+    "liveTested": false,
+    "messenger": "충남 교직원 메신저",
+    "adapter": "uia",
+    "messengerIdentityChecked": false,
+    "support": "dedicated-driver-pending"
+  },
+  {
+    "id": "jbe",
+    "region": "전북",
+    "label": "전북특별자치도교육청",
+    "portalUrl": "https://jbe.eduptl.kr/bpm_lgn_lg00_001.do",
+    "neisUrl": "https://jbe.neis.go.kr/",
+    "edufineUrl": "https://klef.jbe.go.kr/",
+    "evpnUrl": "https://evpn.jbe.go.kr/",
+    "sources": [
+      "https://www.blsoft.co.kr/menu7/index.html?pg=neis-address"
+    ],
+    "addressChecked": "2026-11-01",
+    "liveTested": false,
+    "messenger": "JBEdu Messenger+",
+    "adapter": "ultari-atmessenger7",
+    "messengerSources": [
+      "https://it.jbe.go.kr/board/view.jbe?boardId=BBS_0000011&dataSid=6230&menuCd=DOM_000000105006002000&paging=ok&startPage=1",
+      "https://www.jbedu.kr/index.jbedu?menuCd=DOM_000000513001000000"
+    ],
+    "messengerIdentityChecked": true,
+    "support": "dedicated-local-cache-static-verified",
+    "installedArtifact": {
+      "sha256": "c3789580af186d298fd0b2a0dc83314171e45fb16d0d7bbbedfb885a75f11e8d",
+      "executable": "AtMessengerMobileEdition.exe",
+      "reaEvidence": "ev_35231ea2759f274dbaf1f7dc65a51f60b10cb8b5f830d6ca9b980e69f264ae21",
+      "runtimeVerified": false,
+      "authenticatedLiveTested": false
+    }
+  },
+  {
+    "id": "jne",
+    "region": "전남",
+    "label": "전라남도교육청",
+    "portalUrl": "https://jne.eduptl.kr/bpm_lgn_lg00_001.do",
+    "neisUrl": "https://jne.neis.go.kr/",
+    "edufineUrl": "https://klef.jne.go.kr/",
+    "evpnUrl": "https://evpn.jne.go.kr/",
+    "sources": [
+      "https://www.blsoft.co.kr/menu7/index.html?pg=neis-address"
+    ],
+    "addressChecked": "2026-11-01",
+    "liveTested": false,
+    "messenger": "전남메신저",
+    "adapter": "uia",
+    "messengerSources": [
+      "https://www.jne.go.kr/main/jo/jobshare/selectJobShareView.do?deptCd=R&mi=261"
+    ],
+    "messengerIdentityChecked": true,
+    "support": "dedicated-driver-pending"
+  },
+  {
+    "id": "gbe",
+    "region": "경북",
+    "label": "경상북도교육청",
+    "portalUrl": "https://gbe.eduptl.kr/bpm_lgn_lg00_001.do",
+    "neisUrl": "https://gbe.neis.go.kr/",
+    "edufineUrl": "https://klef.gbe.go.kr/",
+    "evpnUrl": "https://evpn.gbe.kr/",
+    "sources": [
+      "https://www.blsoft.co.kr/menu7/index.html?pg=neis-address"
+    ],
+    "addressChecked": "2026-11-01",
+    "liveTested": false,
+    "messenger": "GBeeTalk 지비톡",
+    "adapter": "ultari-atmessenger7",
+    "messengerSources": [
+      "https://www.gbe.kr/us/na/ntt/selectNttList.do?bbsId=2508&mi=6355",
+      "https://www.gbe.kr/main/na/ntt/selectNttInfo.do?mi=9120&nttSn=1608809",
+      "https://www.gbe.kr/us/na/ntt/selectNttInfo.do?mi=6355&bbsId=2508&nttSn=1370718"
+    ],
+    "messengerIdentityChecked": true,
+    "support": "dedicated-local-cache-static-verified",
+    "installedArtifact": {
+      "sha256": "3b706b5a7def5f3fcc01af3ae07d64228f13fdbb4fde1699d74cb6ef584e26e2",
+      "executable": "AtMessengerMobileEdition.exe",
+      "reaEvidence": "ev_990950dc3b162b6f71586cebdc2f544dea98a621f07b4f61a116e09d5e807622",
+      "runtimeVerified": false,
+      "authenticatedLiveTested": false
+    }
+  },
+  {
+    "id": "gne",
+    "region": "경남",
+    "label": "경상남도교육청",
+    "portalUrl": "https://gne.eduptl.kr/bpm_lgn_lg00_001.do",
+    "neisUrl": "https://gne.neis.go.kr/",
+    "edufineUrl": "https://klef.gne.go.kr/",
+    "evpnUrl": "https://evpn.gne.go.kr/",
+    "sources": [
+      "https://www.blsoft.co.kr/menu7/index.html?pg=neis-address"
+    ],
+    "addressChecked": "2026-11-01",
+    "liveTested": false,
+    "messenger": "아이좋아 메신저",
+    "adapter": "ucware-delphi",
+    "messengerSources": [
+      "https://hyedu.gne.go.kr/hyedu/na/ntt/selectNttInfo.do?nttSn=2509524"
+    ],
+    "messengerIdentityChecked": true,
+    "support": "dedicated-local-cache-static-verified",
+    "installedArtifact": {
+      "sha256": "569533a285c5e5496b8304fc64fb0fec03014af8d85f2453541acfcc6dc7315c",
+      "executable": "ucware_m.exe",
+      "reaEvidence": "ev_a1a1c1a95b69021252c05cb9442df5fe7fbae546bee4b4a4539ce4e0ea13e351",
+      "runtimeVerified": false,
+      "authenticatedLiveTested": false
+    }
+  },
+  {
+    "id": "jje",
+    "region": "제주",
+    "label": "제주특별자치도교육청",
+    "portalUrl": "https://jje.eduptl.kr/bpm_lgn_lg00_001.do",
+    "neisUrl": "https://jje.neis.go.kr/",
+    "edufineUrl": "https://klef.jje.go.kr/",
+    "evpnUrl": "https://evpn.jje.go.kr/",
+    "sources": [
+      "https://www.blsoft.co.kr/menu7/index.html?pg=neis-address"
+    ],
+    "addressChecked": "2026-11-01",
+    "liveTested": false,
+    "messenger": "제주특별자치도교육청 메신저",
+    "adapter": "ucware-delphi",
+    "messengerSources": [
+      "https://www.jje.go.kr/index.jje?menuCd=DOM_000000109003000000"
+    ],
+    "installer": {
+      "sha256": "cd0c54e7907040f0381fad2e2d11139127fb13df0404e518d7a9ee59d862c017",
+      "product": "제주특별자치도교육청 메신저",
+      "publisher": "UCWARE Inc",
+      "fileVersion": "746",
+      "signature": "valid",
+      "runtimeTested": false
+    },
+    "messengerIdentityChecked": true,
+    "support": "dedicated-local-cache-static-verified",
+    "installedArtifact": {
+      "sha256": "1284f620f4da3adeba3a78034f54dddb4e18a05ec71769a6dc8375db12f21294",
+      "executable": "ucware_m.exe",
+      "reaEvidence": "ev_3e7378cedbc8447a04304ac4c1456f0400bbcfccfb0967bde4197b1be348e61b",
+      "runtimeVerified": false,
+      "authenticatedLiveTested": false
+    }
+  }
+]

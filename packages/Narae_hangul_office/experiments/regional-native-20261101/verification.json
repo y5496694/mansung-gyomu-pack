@@ -1,0 +1,86 @@
+{
+  "schema": 1,
+  "date": "2026-11-01T10:51:22.763Z",
+  "verification": "installed-product-identity-plus-synthetic-cache",
+  "authenticatedLiveTested": false,
+  "networkActions": 0,
+  "regions": [
+    {
+      "region": "경기",
+      "id": "goe",
+      "family": "ultari-atmessenger7",
+      "installationVerified": true,
+      "sha256": "b631b4db84371036666fdc3ffa63389e1df1d3dcfdeaf626fbd620ad1783421d",
+      "syntheticAccountsBindSearchReadPassed": true,
+      "authenticatedLiveTested": false
+    },
+    {
+      "region": "경북",
+      "id": "gbe",
+      "family": "ultari-atmessenger7",
+      "installationVerified": true,
+      "sha256": "3b706b5a7def5f3fcc01af3ae07d64228f13fdbb4fde1699d74cb6ef584e26e2",
+      "syntheticAccountsBindSearchReadPassed": true,
+      "authenticatedLiveTested": false
+    },
+    {
+      "region": "강원",
+      "id": "kwe",
+      "family": "ucware-delphi",
+      "installationVerified": true,
+      "sha256": "a0c7849d288a98b44a0c1d423b4d47abd738a33a5e3fcebc150efa4e737f24bf",
+      "syntheticAccountsBindSearchReadPassed": true,
+      "authenticatedLiveTested": false
+    },
+    {
+      "region": "경남",
+      "id": "gne",
+      "family": "ucware-delphi",
+      "installationVerified": true,
+      "sha256": "569533a285c5e5496b8304fc64fb0fec03014af8d85f2453541acfcc6dc7315c",
+      "syntheticAccountsBindSearchReadPassed": true,
+      "authenticatedLiveTested": false
+    },
+    {
+      "region": "제주",
+      "id": "jje",
+      "family": "ucware-delphi",
+      "installationVerified": true,
+      "sha256": "1284f620f4da3adeba3a78034f54dddb4e18a05ec71769a6dc8375db12f21294",
+      "syntheticAccountsBindSearchReadPassed": true,
+      "authenticatedLiveTested": false
+    },
+    {
+      "region": "전북",
+      "id": "jbe",
+      "family": "ultari-atmessenger7",
+      "installationVerified": true,
+      "sha256": "c3789580af186d298fd0b2a0dc83314171e45fb16d0d7bbbedfb885a75f11e8d",
+      "syntheticAccountsBindSearchReadPassed": true,
+      "authenticatedLiveTested": false
+    }
+  ],
+  "regionalCliCommit": "a7dcf2adbe7bf73f7f57781940860e8e5e053355",
+  "officeVersion": "0.13.0-preview.22",
+  "regression": {
+    "regionalCli": {
+      "passed": 11,
+      "failed": 0
+    },
+    "officeTargeted": {
+      "passed": 10,
+      "failed": 0,
+      "scope": [
+        "regional forwarding and path policy",
+        "region separation",
+        "committed vendor hashes",
+        "read-only query routing",
+        "approval policy"
+      ]
+    }
+  },
+  "electronSQLite": {
+    "node": "24.22.0",
+    "sqlite": "function"
+  }
+}

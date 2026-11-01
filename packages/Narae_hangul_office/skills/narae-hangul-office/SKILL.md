@@ -31,6 +31,8 @@ python <skill-dir>/scripts/narae.py run <job.json> --result <result.json>
 
 ## 나래4 오피스 에이전트
 
+교육청 지역 선택, 지역 메신저·카카오톡 프로그램 연결과 cron 예약/조회는 [지역·메신저·예약 작업](references/region-messenger-cron.md)을 따른다. 지역별 주소·공통 어댑터와 충북 실제 검증 범위를 구분한다.
+
 사용자가 지정한 필수 학교 업무 10개, 다른 PC의 보안 문서 설정, 6개월 탐색·전송·기안·복무·출장 및 합격 기준은 [기초 벤치](references/basic-benchmark.md)를 읽는다. `bench` 판정에서 미지원·미검증을 합격으로 바꾸지 않는다.
 
 앱의 나래 에이전트 → **필수 업무 벤치 10개**에서 같은 목록과 모의·실환경 검증 상태를 확인한다. CLI는 `bench status`, 에이전트는 `gyomu_office_benchmark`로 조회한다. `bench import 실행기록.json`은 기존 계약의 해시·원문 근거를 다시 검사해 로컬 검증 기록을 연결한다. 코드 회귀시험 수나 별도 문서 시험 점수를 이 10개 과제의 합격 수로 바꾸지 않는다.

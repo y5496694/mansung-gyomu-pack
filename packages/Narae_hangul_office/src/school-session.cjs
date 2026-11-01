@@ -1,6 +1,6 @@
 'use strict';
 const {randomUUID}=require('node:crypto');
-const HOSTS={'cbe.eduptl.kr':'세션 시간 초기화','klef.cbe.go.kr':'로그아웃 30분 연장'};
+const HOSTS=Object.fromEntries(require('./school-region.cjs').regions.flatMap(r=>[[new URL(r.portalUrl).hostname,'세션 시간 초기화'],[new URL(r.edufineUrl).hostname,'로그아웃 30분 연장']]));
 async function extendSessionPage(page,host,{signal}={}){
  const result={host,verified:false};if(signal?.aborted)return {...result,status:'cancelled'};if(page.isClosed())return {...result,status:'closed'};
  const tag=randomUUID();let control;

@@ -1,0 +1,4 @@
+'use strict';
+const tool={type:'function',name:'gyomu_wxs_startup',description:'새로 관찰한 빈 기안의 HwpCtrl 준비와 실제 자동저장 복원·기안기 전환 안내를 원본 CLI로 확인한다. apply는 관찰한 지문과 일치할 때 알려진 안내의 취소만 눌러 기존 문서를 보존한다.',parameters:{type:'object',properties:{operation:{enum:['preview','apply']},hwnd:{type:'string'},fingerprint:{type:'string'}},required:['operation','hwnd'],additionalProperties:false}};
+async function execute(args,{instance,policy,signal}){if(args.operation==='apply'){if(!args.fingerprint)throw Error('실제 새 빈 기안의 시작 안내 지문이 필요합니다.');await policy.approve('새 빈 기안의 이전 자동저장·기존 기안기 보존',{hwnd:args.hwnd,fingerprint:args.fingerprint},signal);}return instance.wxs(['draft-startup','--hwnd',args.hwnd,...(args.operation==='apply'?['--apply','--expected-fingerprint',args.fingerprint]:[])],signal);}
+module.exports={tool,execute};

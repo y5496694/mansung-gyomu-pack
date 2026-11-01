@@ -6,6 +6,7 @@ const id=()=>randomBytes(16).toString('hex'),hash=s=>createHash('sha256').update
 const equal=(a,b)=>{if(typeof a!=='string'||typeof b!=='string')return false;const aa=Buffer.from(a),bb=Buffer.from(b);return aa.length===bb.length&&timingSafeEqual(aa,bb);};
 const terminal=new Set(['completed','failed','cancelled','unknown']);
 function pagesOf(text){const pages=[];let page='';for(const char of text){if(page.length+char.length>880){pages.push(page);page='';}page+=char;}pages.push(page);return pages;}
+function schedulePages(jobs){const pages=[];let page='';for(const j of jobs){const block=`${j.enabled?'켜짐':'꺼짐'} · ${j.name}\n${j.expression} · ${j.timeZone}\n최근: ${j.last?.state||'실행 전'}`;if(page&&page.length+block.length+2>850){pages.push(page);page='';}page+=(page?'\n\n':'')+block;}pages.push(page||'등록된 예약 작업이 없어.');return pages;}
 const textReply=(text,buttons=[])=>({version:'2.0',template:{outputs:[{simpleText:{text:text.slice(0,1000)}}],quickReplies:buttons.map(([label,messageText])=>({label,action:'message',messageText}))}});
 function fail(status,code){const error=new Error(code);error.status=status;throw error;}
 class KakaoRelay{
@@ -18,7 +19,7 @@ class KakaoRelay{
   this.save();this.server=http.createServer((req,res)=>this.handle(req,res));this.server.requestTimeout=15000;this.server.headersTimeout=15000;
   this.timer=setInterval(()=>this.expire(),1000);this.timer.unref();
  }
- save(){if(!this.file)return;fs.mkdirSync(path.dirname(this.file),{recursive:true});const tmp=this.file+'.'+id()+'.tmp';fs.writeFileSync(tmp,JSON.stringify(this.data),{mode:0o600});fs.renameSync(tmp,this.file);}
+ save(){if(!this.file)return;fs.mkdirSync(path.dirname(this.file),{recursive:true});const tmp=this.file+'.'+id()+'.tmp';fs.writeFileSync(tmp,JSON.stringify(this.data),{mode:0o600});require('./agent-conversations.cjs').replaceFile(tmp,this.file);}
  expire(){let changed=false;const now=this.clock();for(const [key,value]of this.callbacks)if(value.expires<=now)this.callbacks.delete(key);
   for(const d of Object.values(this.data.devices))if(['pending','confirmed'].includes(d.state)&&d.expires<=now){d.state='expired';changed=true;}
   for(const j of Object.values(this.data.jobs))if(!terminal.has(j.state)&&((j.state==='queued'&&now-j.created>20000)||(j.state==='running'&&now-j.heartbeat>45000))){j.state='unknown';j.error='PC_CONNECTION_UNCERTAIN';this.callbacks.delete(j.id);changed=true;}
@@ -52,7 +53,10 @@ class KakaoRelay{
   }
   const d=Object.values(this.data.devices).find(d=>d.uid===u.uid&&d.state==='approved');
   if(t==='연결 해제'){for(const dev of Object.values(this.data.devices))if(dev.uid===u.uid&&!['revoked','expired'].includes(dev.state))this.revoke(dev);return textReply('이 카톡의 PC 원격 연결을 해제했어. UID는 유지돼.');}
-  if(t==='연결 상태')return textReply(d?`연결 PC: ${d.name}\n${this.clock()-d.lastSeen<30000?'온라인':'오프라인 · PC와 나래 오피스를 켜 줘.'}`:'아직 승인된 PC가 없어.\n나래 UID: '+u.uid);
+  if(t==='연결 상태')return textReply(d?`연결 PC: ${d.name}\n${this.clock()-d.lastSeen<30000?'온라인':'오프라인 · PC와 나래 오피스를 켜 줘.'}`:'아직 승인된 PC가 없어.\n나래 UID: '+u.uid,d?[['예약 목록','cron'],['최근 대화','대화 확인']]:[]);
+  if(['cron','/cron','cron 조회','예약 조회','예약 목록'].includes(t)||/^(?:cron|\/cron) \d+$/.test(t)){
+   if(!d)return textReply('승인된 PC를 먼저 연결해 줘.');const schedules=d.schedules;if(!schedules)return textReply('아직 PC의 예약 작업 목록이 동기화되지 않았어. 나래 오피스를 실행해 줘.');const pages=schedulePages(schedules.jobs),page=Math.max(1,Math.min(pages.length,Number(t.split(' ')[1])||1));return textReply('예약 작업 '+schedules.jobs.length+'개 · '+page+'/'+pages.length+'페이지\n'+(this.clock()-d.lastSeen>=30000?'PC 오프라인 · 마지막 동기화 목록\n':'')+pages[page-1],[...(page>1?[['이전 예약','cron '+(page-1)]]:[]),...(page<pages.length?[['다음 예약','cron '+(page+1)]]:[]),['연결 상태','연결 상태']]);
+  }
   if(t==='대화 확인'||t==='최근 대화'||/^대화 \d+$/.test(t)){
    if(!d)return textReply('승인된 PC를 먼저 연결해 줘.');const messages=d.conversation?.messages||[];if(!messages.length)return textReply('공유된 에이전트 대화가 없어. PC의 에이전트(실험) 탭에서 시작해 줘.');
    const text=messages.map(m=>(m.role==='user'?'나':m.role==='assistant'?'나래':'안내')+' · '+(m.origin==='pc'?'PC':'카톡')+'\n'+m.content).join('\n\n'),pages=pagesOf(text),page=Math.min(Math.max(Number(t.split(' ')[1])||1,1),pages.length);
@@ -87,6 +91,11 @@ class KakaoRelay{
    if(url.pathname==='/v1/device/revoke'){this.revoke(d);return {revoked:true};}
    if(url.pathname==='/v1/device/approve'){if(d.state!=='confirmed')fail(409,'CHAT_CONFIRMATION_REQUIRED');if(Object.values(this.data.devices).some(x=>x.uid===d.uid&&x.state==='approved'&&x.id!==d.id))fail(409,'EXISTING_PC_REQUIRES_UNLINK');d.state='approved';d.lastSeen=this.clock();this.save();return this.publicDevice(d);}
    if(d.state!=='approved')fail(403,'LOCAL_APPROVAL_REQUIRED');d.lastSeen=this.clock();
+   if(url.pathname==='/v1/device/schedules'){
+    if(!Number.isSafeInteger(body.revision)||body.revision<0||!Array.isArray(body.jobs)||body.jobs.length>50)fail(400,'SCHEDULE_FORMAT');
+    const jobs=body.jobs.map(j=>{if(!j||typeof j.id!=='string'||j.id.length>80||typeof j.name!=='string'||j.name.length>80||typeof j.expression!=='string'||j.expression.length>100||typeof j.timeZone!=='string'||j.timeZone.length>80||typeof j.enabled!=='boolean'||j.nextAt!==null&&!Number.isSafeInteger(j.nextAt)||j.last&&(!['completed','failed','running','unknown','skipped_busy'].includes(j.last.state)||!Number.isSafeInteger(j.last.at)))fail(400,'SCHEDULE_FORMAT');return {id:j.id,name:j.name,expression:j.expression,timeZone:j.timeZone,enabled:j.enabled,nextAt:j.nextAt,last:j.last?{state:j.last.state,at:j.last.at}:null};});
+    if(d.schedules&&body.revision<d.schedules.revision)return {accepted:false,revision:d.schedules.revision};d.schedules={revision:body.revision,jobs,updated:this.clock()};this.save();return {accepted:true,revision:body.revision};
+   }
    if(url.pathname==='/v1/device/conversation'){
     if(!Number.isSafeInteger(body.revision)||body.revision<0||!Array.isArray(body.messages)||body.messages.length>20)fail(400,'CONVERSATION_FORMAT');
     const messages=body.messages.map(m=>{if(!m||!['user','assistant','error'].includes(m.role)||!['pc','kakao'].includes(m.origin)||typeof m.content!=='string'||m.content.length>800||!Number.isSafeInteger(m.created)||m.created<0)fail(400,'CONVERSATION_FORMAT');return {role:m.role,origin:m.origin,content:m.content,created:m.created};});

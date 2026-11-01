@@ -16,4 +16,4 @@ class AgentConversations{
  append(session,role,content,origin){if(!['user','assistant','error'].includes(role)||!['pc','kakao','telegram'].includes(origin))throw new Error('AGENT_MESSAGE');const value=this.read(session);value.messages.push({id:randomUUID(),role,content:String(content).slice(0,50000),origin,created:Date.now()});value.messages=value.messages.slice(-100);value.revision++;const file=this.file(session),tmp=file+'.'+randomUUID()+'.tmp';fs.writeFileSync(tmp,JSON.stringify(value),{mode:0o600});replaceTranscript(tmp,file);return value;}
  history(session){return this.read(session).messages.filter(m=>['user','assistant'].includes(m.role)).map(({role,content})=>({role,content}));}
 }
-module.exports={AgentConversations};
+module.exports={AgentConversations,replaceFile:replaceTranscript};

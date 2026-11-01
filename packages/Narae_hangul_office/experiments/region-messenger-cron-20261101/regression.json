@@ -1,0 +1,59 @@
+{
+  "schema": 1,
+  "checkedAt": "2026-11-01T10:01:20.296Z",
+  "officeVersion": "0.13.0-preview.21",
+  "office": {
+    "passed": 336,
+    "failed": 0,
+    "skipped": 0,
+    "durationMs": 225676.3271
+  },
+  "canonicalPortal": {
+    "passed": 102
+  },
+  "commonCli": {
+    "passed": 19
+  },
+  "kakaoCli": {
+    "passed": 154
+  },
+  "regionalMessengerCli": {
+    "passed": 3
+  },
+  "electronSettings": {
+    "regionAndCron": true,
+    "syntheticHome": true,
+    "realJobsCreated": false
+  },
+  "installedSources": {
+    "gyomu": 568,
+    "messengers": 31
+  },
+  "live": {
+    "chungbukCbeConnected": true,
+    "narae4CronQuery": {
+      "model": "Narae4-Qwen3.5-2B-Office-LoRA-v1",
+      "tool": "gyomu_cron",
+      "operation": "list",
+      "calls": 1,
+      "storedJobs": 0
+    },
+    "kakaoSelfDelivery": {
+      "verified": false,
+      "deferredByUser": true
+    },
+    "nonChungbukMessenger": {
+      "verified": false
+    },
+    "externalRelayDeployment": {
+      "verified": false
+    },
+    "narae4SoloDraftCycle": {
+      "passed": false,
+      "latestStop": "startup_SendMessageTimeout",
+      "lastVerifiedPartialRun": "source_login_draft_visual_review_temporary_save"
+    }
+  },
+  "weightTrainingPerformed": false,
+  "requiredTenLiveReleaseVerified": false
+}

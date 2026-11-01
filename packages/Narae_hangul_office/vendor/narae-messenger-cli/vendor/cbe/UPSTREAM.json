@@ -1,0 +1,9 @@
+{
+  "files": [
+    "cli.mjs",
+    "messenger.mjs",
+    "LICENSE"
+  ],
+  "repository": "https://github.com/y5496694/CBE_CLI",
+  "commit": "2a5cab7ee2dc2760cc739c5e0168ecc7dbb3efa9"
+}

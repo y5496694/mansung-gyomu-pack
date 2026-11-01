@@ -34,3 +34,5 @@ llama.cpp CPU runtime b11960: https://github.com/ggml-org/llama.cpp · MIT. 공�
 모델 가중치는 앱 소스와 별도이며 각 원본 조건을 따릅니다. 나래1·3은 Qwen Apache-2.0, 나래2는 EXAONE 1.1 NC 연구·평가용입니다. 원문 이용조건은 resources/model-licenses 및 각 Hugging Face 모델 저장소의 LICENSE에 유지합니다. 앱의 MIT가 모델 이용조건을 대체하지 않습니다.
 
 나래4는 Qwen3.5-2B 본체와 Office LoRA(Apache-2.0), 별도로 호출되는 LiquidAI/d1-2B 판단기(LFM Open License v1.0)를 사용합니다. 두 모델의 가중치를 합친 sparse MoE는 아닙니다. 각 원문은 resources/model-licenses/Narae4-LICENSE.txt에 유지합니다.
+
+`vendor/kakao-cli` and `vendor/narae-messenger-cli` preserve the MIT-licensed upstream sources and LICENSE files. `vendor/MESSENGER_LOCK.json` pins their commits and SHA256 hashes. The messenger applications, personal messages, captured screens and credential stores are not distributed. Native inspection can use a separately installed REA/Frida runtime; that runtime is not included in these source snapshots.

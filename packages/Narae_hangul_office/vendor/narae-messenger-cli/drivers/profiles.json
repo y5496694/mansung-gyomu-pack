@@ -1,0 +1,647 @@
+{
+  "goe": {
+    "installDirectory": "goe",
+    "family": "ultari-atmessenger7",
+    "product": "GOE메신저",
+    "executable": "AtMessengerMobileEdition.exe",
+    "sha256": "b631b4db84371036666fdc3ffa63389e1df1d3dcfdeaf626fbd620ad1783421d",
+    "installerVersion": "7.0.2",
+    "config": {
+      "file": "Client.ini",
+      "encoding": "euc-kr",
+      "key": "APP_NAME",
+      "value": "GOE메신저"
+    },
+    "reaEvidence": "ev_63b4e77aa332c8a915ca6c9f9a4f066f6ed9579d86e96e2ec36e0000bb615680",
+    "source": "https://ultari.co.kr/goe/file/AtMessenger7Enable_Banner_Setup.exe",
+    "nativeSchemas": {
+      "tblMessage": {
+        "columns": [
+          "cIsSend",
+          "cRead",
+          "sAttach",
+          "sContent",
+          "sDate",
+          "sImage",
+          "sMsgId",
+          "sOwnerId",
+          "sReceivers",
+          "sSenderId",
+          "sSenderName",
+          "sSenderPart",
+          "sSubject"
+        ],
+        "locations": [
+          {
+            "fileOffset": 6373496,
+            "encoding": "utf-16le"
+          }
+        ]
+      },
+      "tblChatContent": {
+        "columns": [
+          "sChatId",
+          "sOwnerId",
+          "sRoomId",
+          "sSendComplete",
+          "sTalkDate",
+          "sTalkerContent",
+          "sTalkerId",
+          "sTalkerName",
+          "sTalkerNickName",
+          "sUnReadUserIds"
+        ],
+        "locations": [
+          {
+            "fileOffset": 6372408,
+            "encoding": "utf-16le"
+          }
+        ]
+      },
+      "tblChatRoomInfo": {
+        "columns": [
+          "cAlwaysTop",
+          "cNotify",
+          "sLastTalkContent",
+          "sLastTalkDate",
+          "sOwnerId",
+          "sPicturePath",
+          "sRoomId",
+          "sRoomName",
+          "sSkinPath",
+          "sUnReadCount",
+          "sUserIds",
+          "sUserNames"
+        ],
+        "locations": [
+          {
+            "fileOffset": 6371256,
+            "encoding": "utf-16le"
+          }
+        ]
+      }
+    },
+    "installed": true,
+    "runtimeVerified": false,
+    "authenticatedLiveTested": false
+  },
+  "gbe": {
+    "installDirectory": "gbe",
+    "family": "ultari-atmessenger7",
+    "product": "GBeeTALK",
+    "executable": "AtMessengerMobileEdition.exe",
+    "sha256": "3b706b5a7def5f3fcc01af3ae07d64228f13fdbb4fde1699d74cb6ef584e26e2",
+    "installerVersion": "7.0.2",
+    "config": {
+      "file": "Client.ini",
+      "encoding": "euc-kr",
+      "key": "APP_NAME",
+      "value": "GBeeTALK"
+    },
+    "reaEvidence": "ev_990950dc3b162b6f71586cebdc2f544dea98a621f07b4f61a116e09d5e807622",
+    "source": "https://www.gbe.kr/us/na/ntt/selectNttInfo.do?mi=6355&bbsId=2508&nttSn=1370718",
+    "nativeSchemas": {
+      "tblMessage": {
+        "columns": [
+          "cIsSend",
+          "cRead",
+          "sAttach",
+          "sContent",
+          "sDate",
+          "sImage",
+          "sMsgId",
+          "sOwnerId",
+          "sReceivers",
+          "sSenderId",
+          "sSenderName",
+          "sSenderPart",
+          "sSubject"
+        ],
+        "locations": [
+          {
+            "fileOffset": 6351096,
+            "encoding": "utf-16le"
+          }
+        ]
+      },
+      "tblChatContent": {
+        "columns": [
+          "sChatId",
+          "sOwnerId",
+          "sRoomId",
+          "sSendComplete",
+          "sTalkDate",
+          "sTalkerContent",
+          "sTalkerId",
+          "sTalkerName",
+          "sTalkerNickName",
+          "sUnReadUserIds"
+        ],
+        "locations": [
+          {
+            "fileOffset": 6350008,
+            "encoding": "utf-16le"
+          }
+        ]
+      },
+      "tblChatRoomInfo": {
+        "columns": [
+          "cAlwaysTop",
+          "cNotify",
+          "sLastTalkContent",
+          "sLastTalkDate",
+          "sOwnerId",
+          "sPicturePath",
+          "sRoomId",
+          "sRoomName",
+          "sSkinPath",
+          "sUnReadCount",
+          "sUserIds",
+          "sUserNames"
+        ],
+        "locations": [
+          {
+            "fileOffset": 6348856,
+            "encoding": "utf-16le"
+          }
+        ]
+      }
+    },
+    "installed": true,
+    "runtimeVerified": false,
+    "authenticatedLiveTested": false
+  },
+  "kwe": {
+    "installDirectory": "gwe",
+    "family": "ucware-delphi",
+    "product": "이음(EUM)",
+    "executable": "ucware_m.exe",
+    "sha256": "a0c7849d288a98b44a0c1d423b4d47abd738a33a5e3fcebc150efa4e737f24bf",
+    "installerVersion": "678",
+    "config": {
+      "file": "ucw_config.ini",
+      "encoding": "euc-kr",
+      "key": "program_title",
+      "value": "이음(EUM)"
+    },
+    "reaEvidence": "ev_ec4ca322c4f182f308a790172d3484179d9f6332ad72e6c738903f894f9de672",
+    "source": "https://www.gwe.go.kr/main/bbs/view.do?bbsSn=53811&key=bTIzMDcyMTExOTkyNzQ%3D",
+    "nativeSchemas": {
+      "tbl_message": {
+        "columns": [
+          "group_id",
+          "msg_back_image",
+          "msg_content",
+          "msg_etc1",
+          "msg_etc2",
+          "msg_etc3",
+          "msg_file_list",
+          "msg_gubun",
+          "msg_hidden_recv_ids",
+          "msg_hidden_recv_name",
+          "msg_key",
+          "msg_kind",
+          "msg_owner_id",
+          "msg_read_date",
+          "msg_recv_date",
+          "msg_recv_ids",
+          "msg_recv_name",
+          "msg_refer_recv_ids",
+          "msg_refer_recv_name",
+          "msg_res_date",
+          "msg_res_gubun",
+          "msg_send_date",
+          "msg_send_id",
+          "msg_send_name",
+          "msg_srh_content",
+          "msg_subject"
+        ],
+        "locations": [
+          {
+            "fileOffset": 6240428,
+            "encoding": "ascii"
+          },
+          {
+            "fileOffset": 6254080,
+            "encoding": "ascii"
+          },
+          {
+            "fileOffset": 6256808,
+            "encoding": "ascii"
+          }
+        ]
+      },
+      "tbl_chat": {
+        "columns": [
+          "chat_content",
+          "chat_end_date",
+          "chat_entry_ids",
+          "chat_entry_names",
+          "chat_key",
+          "chat_owner_id",
+          "chat_start_date",
+          "chat_subject",
+          "group_id",
+          "room_key"
+        ],
+        "locations": [
+          {
+            "fileOffset": 6237668,
+            "encoding": "ascii"
+          },
+          {
+            "fileOffset": 6251472,
+            "encoding": "ascii"
+          },
+          {
+            "fileOffset": 6252428,
+            "encoding": "ascii"
+          }
+        ]
+      },
+      "tbl_users": {
+        "columns": [
+          "class_name",
+          "group_id",
+          "user_addr_no",
+          "user_address",
+          "user_bigo",
+          "user_birth_gubun",
+          "user_birthday",
+          "user_cel_gubun",
+          "user_celday",
+          "user_company",
+          "user_company_dept",
+          "user_email",
+          "user_homepage",
+          "user_id",
+          "user_name",
+          "user_office_addr_no",
+          "user_office_address",
+          "user_owner_id",
+          "user_tel_fax",
+          "user_tel_home",
+          "user_tel_mobile",
+          "user_tel_office"
+        ],
+        "locations": [
+          {
+            "fileOffset": 6244960,
+            "encoding": "ascii"
+          },
+          {
+            "fileOffset": 6261228,
+            "encoding": "ascii"
+          }
+        ]
+      }
+    },
+    "installed": true,
+    "runtimeVerified": false,
+    "authenticatedLiveTested": false
+  },
+  "gne": {
+    "installDirectory": "gne",
+    "family": "ucware-delphi",
+    "product": "아이좋아 메신저",
+    "executable": "ucware_m.exe",
+    "sha256": "569533a285c5e5496b8304fc64fb0fec03014af8d85f2453541acfcc6dc7315c",
+    "installerVersion": "706",
+    "config": {
+      "file": "ucw_config.ini",
+      "encoding": "euc-kr",
+      "key": "program_title",
+      "value": "아이좋아 메신저"
+    },
+    "reaEvidence": "ev_a1a1c1a95b69021252c05cb9442df5fe7fbae546bee4b4a4539ce4e0ea13e351",
+    "source": "https://hyedu.gne.go.kr/hyedu/na/ntt/selectNttInfo.do?nttSn=2509524",
+    "nativeSchemas": {
+      "tbl_message": {
+        "columns": [
+          "group_id",
+          "msg_back_image",
+          "msg_content",
+          "msg_etc1",
+          "msg_etc2",
+          "msg_etc3",
+          "msg_file_list",
+          "msg_gubun",
+          "msg_hidden_recv_ids",
+          "msg_hidden_recv_name",
+          "msg_key",
+          "msg_kind",
+          "msg_owner_id",
+          "msg_read_date",
+          "msg_recv_date",
+          "msg_recv_ids",
+          "msg_recv_name",
+          "msg_refer_recv_ids",
+          "msg_refer_recv_name",
+          "msg_res_date",
+          "msg_res_gubun",
+          "msg_send_date",
+          "msg_send_id",
+          "msg_send_name",
+          "msg_srh_content",
+          "msg_subject"
+        ],
+        "locations": [
+          {
+            "fileOffset": 4457080,
+            "encoding": "ascii"
+          },
+          {
+            "fileOffset": 4470800,
+            "encoding": "ascii"
+          },
+          {
+            "fileOffset": 4473528,
+            "encoding": "ascii"
+          }
+        ]
+      },
+      "tbl_chat": {
+        "columns": [
+          "chat_content",
+          "chat_end_date",
+          "chat_entry_ids",
+          "chat_entry_names",
+          "chat_key",
+          "chat_owner_id",
+          "chat_start_date",
+          "chat_subject",
+          "group_id",
+          "room_key"
+        ],
+        "locations": [
+          {
+            "fileOffset": 4454252,
+            "encoding": "ascii"
+          },
+          {
+            "fileOffset": 4468124,
+            "encoding": "ascii"
+          },
+          {
+            "fileOffset": 4469080,
+            "encoding": "ascii"
+          }
+        ]
+      },
+      "tbl_users": {
+        "columns": [
+          "class_name",
+          "group_id",
+          "user_addr_no",
+          "user_address",
+          "user_bigo",
+          "user_birth_gubun",
+          "user_birthday",
+          "user_cel_gubun",
+          "user_celday",
+          "user_company",
+          "user_company_dept",
+          "user_email",
+          "user_homepage",
+          "user_id",
+          "user_name",
+          "user_office_addr_no",
+          "user_office_address",
+          "user_owner_id",
+          "user_tel_fax",
+          "user_tel_home",
+          "user_tel_mobile",
+          "user_tel_office"
+        ],
+        "locations": [
+          {
+            "fileOffset": 4461612,
+            "encoding": "ascii"
+          },
+          {
+            "fileOffset": 4477964,
+            "encoding": "ascii"
+          }
+        ]
+      }
+    },
+    "installed": true,
+    "runtimeVerified": false,
+    "authenticatedLiveTested": false
+  },
+  "jje": {
+    "installDirectory": "jje",
+    "family": "ucware-delphi",
+    "product": "제주특별자치도교육청 메신저",
+    "executable": "ucware_m.exe",
+    "sha256": "1284f620f4da3adeba3a78034f54dddb4e18a05ec71769a6dc8375db12f21294",
+    "installerVersion": "746",
+    "config": {
+      "file": "ucw_config.ini",
+      "encoding": "euc-kr",
+      "key": "program_title",
+      "value": "제주특별자치도교육청 메신저"
+    },
+    "reaEvidence": "ev_3e7378cedbc8447a04304ac4c1456f0400bbcfccfb0967bde4197b1be348e61b",
+    "source": "https://www.jje.go.kr/index.jje?menuCd=DOM_000000109003000000",
+    "nativeSchemas": {
+      "tbl_message": {
+        "columns": [
+          "group_id",
+          "msg_back_image",
+          "msg_content",
+          "msg_etc1",
+          "msg_etc2",
+          "msg_etc3",
+          "msg_file_list",
+          "msg_gubun",
+          "msg_hidden_recv_ids",
+          "msg_hidden_recv_name",
+          "msg_key",
+          "msg_kind",
+          "msg_owner_id",
+          "msg_read_date",
+          "msg_recv_date",
+          "msg_recv_ids",
+          "msg_recv_name",
+          "msg_refer_recv_ids",
+          "msg_refer_recv_name",
+          "msg_res_date",
+          "msg_res_gubun",
+          "msg_send_date",
+          "msg_send_id",
+          "msg_send_name",
+          "msg_srh_content",
+          "msg_subject"
+        ],
+        "locations": [
+          {
+            "fileOffset": 4470060,
+            "encoding": "ascii"
+          },
+          {
+            "fileOffset": 4483712,
+            "encoding": "ascii"
+          },
+          {
+            "fileOffset": 4486440,
+            "encoding": "ascii"
+          }
+        ]
+      },
+      "tbl_chat": {
+        "columns": [
+          "chat_content",
+          "chat_end_date",
+          "chat_entry_ids",
+          "chat_entry_names",
+          "chat_key",
+          "chat_owner_id",
+          "chat_start_date",
+          "chat_subject",
+          "group_id",
+          "room_key"
+        ],
+        "locations": [
+          {
+            "fileOffset": 4467300,
+            "encoding": "ascii"
+          },
+          {
+            "fileOffset": 4481104,
+            "encoding": "ascii"
+          },
+          {
+            "fileOffset": 4482060,
+            "encoding": "ascii"
+          }
+        ]
+      },
+      "tbl_users": {
+        "columns": [
+          "class_name",
+          "group_id",
+          "user_addr_no",
+          "user_address",
+          "user_bigo",
+          "user_birth_gubun",
+          "user_birthday",
+          "user_cel_gubun",
+          "user_celday",
+          "user_company",
+          "user_company_dept",
+          "user_email",
+          "user_homepage",
+          "user_id",
+          "user_name",
+          "user_office_addr_no",
+          "user_office_address",
+          "user_owner_id",
+          "user_tel_fax",
+          "user_tel_home",
+          "user_tel_mobile",
+          "user_tel_office"
+        ],
+        "locations": [
+          {
+            "fileOffset": 4474592,
+            "encoding": "ascii"
+          },
+          {
+            "fileOffset": 4490860,
+            "encoding": "ascii"
+          }
+        ]
+      }
+    },
+    "installed": true,
+    "runtimeVerified": false,
+    "authenticatedLiveTested": false
+  },
+  "jbe": {
+    "installDirectory": "jbe",
+    "family": "ultari-atmessenger7",
+    "product": "JBEdu Messenger+",
+    "executable": "AtMessengerMobileEdition.exe",
+    "sha256": "c3789580af186d298fd0b2a0dc83314171e45fb16d0d7bbbedfb885a75f11e8d",
+    "installerVersion": "7.0.2",
+    "config": {
+      "file": "Client.ini",
+      "encoding": "euc-kr",
+      "key": "APP_NAME",
+      "value": "JBEdu Messenger+"
+    },
+    "reaEvidence": "ev_35231ea2759f274dbaf1f7dc65a51f60b10cb8b5f830d6ca9b980e69f264ae21",
+    "source": "https://www.jbedu.kr/index.jbedu?menuCd=DOM_000000513001000000",
+    "nativeSchemas": {
+      "tblMessage": {
+        "columns": [
+          "cIsSend",
+          "cRead",
+          "sAttach",
+          "sContent",
+          "sDate",
+          "sImage",
+          "sMsgId",
+          "sOwnerId",
+          "sReceivers",
+          "sSenderId",
+          "sSenderName",
+          "sSenderPart",
+          "sSubject"
+        ],
+        "locations": [
+          {
+            "fileOffset": 7148144,
+            "encoding": "utf-16le"
+          }
+        ]
+      },
+      "tblChatContent": {
+        "columns": [
+          "sChatId",
+          "sOwnerId",
+          "sRoomId",
+          "sSendComplete",
+          "sTalkDate",
+          "sTalkerContent",
+          "sTalkerId",
+          "sTalkerName",
+          "sTalkerNickName",
+          "sUnReadUserIds"
+        ],
+        "locations": [
+          {
+            "fileOffset": 7147056,
+            "encoding": "utf-16le"
+          }
+        ]
+      },
+      "tblChatRoomInfo": {
+        "columns": [
+          "cAlwaysTop",
+          "cNotify",
+          "sLastTalkContent",
+          "sLastTalkDate",
+          "sOwnerId",
+          "sPicturePath",
+          "sRoomId",
+          "sRoomName",
+          "sSkinPath",
+          "sUnReadCount",
+          "sUserIds",
+          "sUserNames"
+        ],
+        "locations": [
+          {
+            "fileOffset": 7145904,
+            "encoding": "utf-16le"
+          }
+        ]
+      }
+    },
+    "installed": true,
+    "runtimeVerified": false,
+    "authenticatedLiveTested": false
+  }
+}

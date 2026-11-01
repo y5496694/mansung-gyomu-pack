@@ -20,6 +20,16 @@ def parser():
     notices = commands.add_parser("native-notices", help="Read native web messages in the selected WXS process without accepting them")
     notices.add_argument("--hwnd", type=lambda value: int(value, 0), required=True)
     notices.add_argument("--out", type=Path)
+    startup = commands.add_parser("draft-startup", help="Inspect or decline known restore/switch notices on one unchanged blank new draft")
+    startup.add_argument("--hwnd", type=lambda value: int(value, 0), required=True)
+    startup.add_argument("--expected-fingerprint")
+    startup.add_argument("--apply", action="store_true")
+    startup.add_argument("--out", type=Path)
+    close_blank = commands.add_parser("close-blank", help="Preview or close one unchanged blank editable draft; never accepts a close prompt")
+    close_blank.add_argument("--hwnd", type=lambda value: int(value, 0), required=True)
+    close_blank.add_argument("--expected-fingerprint")
+    close_blank.add_argument("--apply", action="store_true")
+    close_blank.add_argument("--out", type=Path)
     failure = commands.add_parser("final-failure-ack", help="Dismiss the exact failed-processing notice without unlocking or retrying its attempt")
     failure.add_argument("--receipt", type=Path, required=True)
     failure.add_argument("--expected-message", required=True)
@@ -267,6 +277,42 @@ def run(args):
             from wxs_final import confirm
             return confirm(args.receipt, args.expected_message, args.confirm_final_action, wxs_runtime, args.expected_fingerprint)
         window = native.select_window(args)
+        if args.command == "close-blank":
+            import time
+            import win32gui
+            import wxs_runtime
+            from wxs_startup import prepare
+            session = wxs_runtime.Session(window)
+            preview = prepare(session, wxs_runtime)
+            if not preview['ready'] or session.frame_errors:
+                raise ValueError('Only an enabled unchanged blank draft with all frames verified can close')
+            if not args.apply:
+                return preview
+            if not args.expected_fingerprint or args.expected_fingerprint != preview['fingerprint']:
+                raise ValueError('Blank draft changed; no close')
+            session.check_window()
+            win32gui.PostMessage(window['hwnd'], 0x0010, 0, 0)
+            deadline = time.monotonic() + 5
+            while win32gui.IsWindow(window['hwnd']) and time.monotonic() < deadline:
+                time.sleep(.1)
+            if win32gui.IsWindow(window['hwnd']):
+                raise ValueError('Blank draft did not close. No prompt accepted; do not force terminate.')
+            return {'closed': True, 'unchanged_blank': True, 'window': window, 'submission': 'not_attempted'}
+        if args.command == "draft-startup":
+            import time
+            import wxs_runtime
+            from wxs_startup import prepare, apply
+            deadline = time.monotonic() + 20
+            while True:
+                try:
+                    session = wxs_runtime.Session(window)
+                    preview = prepare(session, wxs_runtime)
+                    break
+                except (ValueError, RuntimeError) as error:
+                    if 'Expected one editor1 HwpCtrl' not in str(error) or time.monotonic() >= deadline:
+                        raise
+                    time.sleep(.3)
+            return apply(session, wxs_runtime, args.expected_fingerprint) if args.apply else preview
         if args.command == "open-attachment":
             from wxs_runtime import Session
             session = Session(window)
@@ -339,12 +385,9 @@ def run(args):
                         return {"window": matches[0], "search_requested": args.task_query, "selected": False,
                                 "next": "Read the same task dialog again to inspect the refreshed candidates"}
                     if args.apply:
-                        session.action("task_select", {"name": args.task_card}, root)
-                        session.wait_closed(matches[0])
-                        after = session.status()
-                        if args.task_card not in after["task_card"]:
-                            raise ValueError("Task card readback mismatch")
-                        return {"applied": True, "status": after}
+                        from wxs_startup import select_task_once
+                        return select_task_once(session, {'window': matches[0], 'root': root},
+                                                args.expected_title, args.task_card, Session)
                     return {"window": matches[0], "options": session.action("task_options", root=root)}
                 if args.confirm_route:
                     config = load_config(args.confirm_route)

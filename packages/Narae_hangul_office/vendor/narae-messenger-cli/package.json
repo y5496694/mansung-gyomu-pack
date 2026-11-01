@@ -1,0 +1,1 @@
+{"name":"narae-messenger-cli","version":"0.2.0","type":"module","license":"MIT","bin":{"narae-messenger":"cli.mjs"},"scripts":{"test":"node --test tests.mjs tests/*.test.mjs"},"engines":{"node":">=22.19"},"repository":"https://github.com/y5496694/narae-messenger-cli"}

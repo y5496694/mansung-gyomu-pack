@@ -1,0 +1,8 @@
+'use strict';
+// Import immutable CLI snapshots from their owning repositories; never patch
+// the resulting vendor directories in place.
+const fs=require('node:fs'),path=require('node:path'),{execFileSync}=require('node:child_process'),{createHash}=require('node:crypto');
+const root=path.resolve(__dirname,'..'),sources=[['kakao-cli',process.argv[2]],['narae-messenger-cli',process.argv[3]]];
+const lock={schema:1,sources:{}};
+for(const [name,source]of sources){if(!source)throw Error('두 원본 저장소 경로를 지정하세요.');const git=args=>execFileSync('git',['-C',source,...args],{encoding:'utf8'}).trim(),commit=git(['rev-parse','HEAD']);if(git(['status','--porcelain']))throw Error('원본 저장소 변경을 먼저 커밋하세요: '+name);const directory=path.join(root,'vendor',name),files={};for(const file of git(['ls-files']).split(/\r?\n/)){if(name==='kakao-cli'&&!/^(src\/kakaocli_win\/|skills\/kakao-cli\/|README\.md$|ANALYSIS\.md$|LICENSE$|pyproject\.toml$)/.test(file))continue;if(name==='narae-messenger-cli'&&!/^(vendor\/cbe\/|drivers\/|skills\/|cli\.mjs$|uia\.ps1$|regions\.json$|README\.md$|ANALYSIS\.md$|LICENSE$|package\.json$)/.test(file))continue;const data=execFileSync('git',['-C',source,'show',commit+':'+file]),target=path.join(directory,file);fs.mkdirSync(path.dirname(target),{recursive:true});fs.writeFileSync(target,data);files[file]=createHash('sha256').update(data).digest('hex');}lock.sources[name]={repository:git(['remote','get-url','origin']),commit,files};}
+fs.writeFileSync(path.join(root,'vendor/MESSENGER_LOCK.json'),JSON.stringify(lock,null,2));process.stdout.write(JSON.stringify({sources:Object.fromEntries(Object.entries(lock.sources).map(([k,v])=>[k,{commit:v.commit,files:Object.keys(v.files).length}]))})+'\n');

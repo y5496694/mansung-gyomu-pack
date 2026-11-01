@@ -2,11 +2,13 @@
 const fs=require('node:fs'),path=require('node:path'),{execFile}=require('node:child_process');
 const tool={type:'function',name:'gyomu_portal_login',description:'PC의 DPAPI 보안 문서로 업무포털 자동 로그인을 한 번 시도하고 요청한 나이스·에듀파인 진입을 실제 화면으로 확인한다. 비밀값은 모델·로그에 반환하지 않는다. 사용자가 맡긴 로컬 인증서 프로그램 접근은 allow_local_access로 해당 포털에만 허용한다. WXS 추가 보안문서 인증은 별도다.',parameters:{type:'object',properties:{operation:{enum:['status','login']},systems:{type:'array',items:{enum:['neis','edufine']},uniqueItems:true},allow_local_access:{type:'boolean',description:'사용자가 자동 로그인에 필요한 로컬 인증서 프로그램 접근까지 맡긴 경우만 true. 등록된 HTTPS 업무포털 origin 한 곳에만 브라우저 로컬 네트워크 권한을 부여한다.'}},required:['operation'],additionalProperties:false}};
 const helper=path.join(__dirname,'certificate-profile.ps1');
-function config(home){const file=path.join(home,'data/school-profile.json'),defaults={region:'충북',portalUrl:'https://cbe.eduptl.kr/bpm_lgn_lg00_001.do'};return {...defaults,...(fs.existsSync(file)?JSON.parse(fs.readFileSync(file,'utf8')):{})};}
+const regional=require('./regions.cjs');
+function config(home){const file=path.join(home,'data/school-profile.json'),saved=fs.existsSync(file)?JSON.parse(fs.readFileSync(file,'utf8')):{},region=regional.resolve(saved.region||'충북');return {...region,...saved,region:region.region};}
 function configure(home,value){
  if(!value||Array.isArray(value)||Object.keys(value).some(k=>!['region','portalUrl','credentialsPath','certificateOrigins'].includes(k)))throw new Error('region, portalUrl, credentialsPath, certificateOrigins만 설정할 수 있습니다. 암호는 DPAPI 보안 문서로 등록하세요.');
- if(!value.region?.trim()||!value.portalUrl)throw new Error('교육청 지역과 확인된 업무포털 주소가 필요합니다.');
- const url=new URL(value.portalUrl);if(url.protocol!=='https:'||url.username||url.password)throw new Error('인증정보 없는 HTTPS 업무포털 주소가 필요합니다.');
+ const selected=regional.resolve(value.region),previous=config(home),changed=previous.region!==selected.region;
+ value={...(!changed?{credentialsPath:previous.credentialsPath,certificateOrigins:previous.certificateOrigins}:{}),...value,region:selected.region,portalUrl:value.portalUrl||selected.portalUrl};
+ const url=new URL(value.portalUrl);if(url.protocol!=='https:'||url.username||url.password||url.origin!==new URL(selected.portalUrl).origin)throw new Error('선택한 교육청과 일치하는 HTTPS 업무포털 주소가 필요합니다.');
  if(value.credentialsPath&&(!path.isAbsolute(value.credentialsPath)||!fs.existsSync(value.credentialsPath)||path.extname(value.credentialsPath).toLowerCase()!=='.clixml'))throw new Error('기존 DPAPI CLIXML 보안 문서의 절대 경로를 지정하세요.');
  if(value.certificateOrigins&&(!Array.isArray(value.certificateOrigins)||value.certificateOrigins.some(o=>{try{const u=new URL(o);return u.protocol!=='https:'||u.origin!==o;}catch{return true;}})))throw new Error('인증서 출처는 확인한 HTTPS origin 문자열 배열이어야 합니다.');
  const file=path.join(home,'data/school-profile.json');fs.mkdirSync(path.dirname(file),{recursive:true});if(fs.existsSync(file)){const backup=path.join(home,'backups','school-profile-'+Date.now()+'.json');fs.mkdirSync(path.dirname(backup),{recursive:true});fs.copyFileSync(file,backup);}fs.writeFileSync(file,JSON.stringify(value,null,2));return {configured:true,region:value.region,customCredentials:Boolean(value.credentialsPath),certificateOriginsConfigured:Boolean(value.certificateOrigins?.length)};
@@ -20,6 +22,13 @@ async function observe(browser){return browser.execute({action:'snapshot',select
 async function settle(browser,test,signal,tries=12){
  let screen=await observe(browser);
  for(let i=0;i<tries&&!test(screen);i++){if(signal?.aborted)throw Error('로그인을 중단했습니다.');await browser.execute({action:'wait',ms:350});screen=await observe(browser);}
+ return screen;
+}
+async function closeInformationalNotices(browser,screen,signal){
+ for(let i=0;i<8&&screen.dialog&&!/인증|암호|접근.*허용|다른 앱 및 서비스/.test(screen.dialog);i++){
+  const close=(screen.elements||[]).filter(e=>!e.disabled&&/^(?:전체닫기|전체 닫기|닫기|공지사항 닫기)$/.test(e.label)),target=close.find(e=>/^전체\s*닫기$/.test(e.label))||(close.length===1?close[0]:null);
+  if(!target)break;if(signal?.aborted)throw Error('로그인을 중단했습니다.');await browser.execute({action:'click',ref:target.ref});screen=await observe(browser);
+ }
  return screen;
 }
 async function authenticatedPortal(browser,portalOrigin,signal,olderPages=new Set()){
@@ -84,18 +93,21 @@ async function login({systems=[],allow_local_access=false},{cfg,browser,readProf
    if(origin(screen.url)!==portalOrigin)screen=await browser.execute({action:'open',url:cfg.portalUrl});
    // Dismiss only an observed informational notice, never an authentication or
    // device-access approval. It may otherwise hide the login button entirely.
-   if(screen.dialog&&!/인증|암호|접근.*허용|다른 앱 및 서비스/.test(screen.dialog)){
-    const close=(screen.elements||[]).filter(e=>!e.disabled&&/^(?:전체닫기|전체 닫기|닫기|공지사항 닫기)$/.test(e.label));
-    const target=close.find(e=>/^전체\s*닫기$/.test(e.label))||(close.length===1?close[0]:null);
-    if(target)screen=await browser.execute({action:'click',ref:target.ref});
-   }
+   screen=await closeInformationalNotices(browser,screen,signal);
    screen=await settle(browser,s=>logged(s)||(s.elements||[]).some(e=>/교육행정.*전자서명.*인증서.*로그인/.test(e.label)),signal);
+   screen=await closeInformationalNotices(browser,screen,signal);
    if(logged(screen))return login({systems},{cfg,browser,readProfile,state,signal});
-   const certButton=screen.elements?.filter(e=>!e.disabled&&/교육행정.*전자서명.*인증서.*로그인/.test(e.label));
+   let certButton=screen.elements?.filter(e=>!e.disabled&&/교육행정.*전자서명.*인증서.*로그인/.test(e.label));
    if(certButton?.length!==1)return stop('certificate_button_unconfirmed','인증서 로그인 버튼을 유일하게 확인하지 못했습니다. 현재 창에서 직접 로그인하세요.');
    state.stage='profile_status';const status=await readProfile('Status',cfg,signal);if(!status.valid||status.certificate_path_exists===false)return stop('profile_required','등록된 보안 문서와 인증서 위치를 먼저 확인해야 합니다.');
    state.stage='profile_read';profile=await readProfile('ReadForBrowser',cfg,signal);
    if(profile.region!==cfg.region)return stop('region_mismatch','보안 문서와 업무포털 교육청 설정이 다릅니다.');
+   // Reading the protected profile may take long enough for another on-load
+   // notice to appear. Reobserve before the first certificate click; never
+   // retry an already dispatched or submitted authentication attempt.
+   screen=await closeInformationalNotices(browser,await observe(browser),signal);
+   certButton=screen.elements?.filter(e=>!e.disabled&&/교육행정.*전자서명.*인증서.*로그인/.test(e.label));
+   if(certButton?.length!==1)return stop('certificate_button_unconfirmed','보안 문서 확인 후 현재 인증서 로그인 버튼을 확정하지 못했습니다. 인증서 제출은 실행하지 않았습니다.');
    const olderPages=new Set((browser.context?.pages?.()||[]).filter(page=>page!==browser.page));state.attempted=true;state.stage='certificate_open';
    screen=await browser.execute({action:'click',ref:certButton[0].ref});
    const allowed=new Set([portalOrigin,...(cfg.certificateOrigins||[])]),selected=new Set();

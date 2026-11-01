@@ -1,0 +1,54 @@
+{
+  "schema": 1,
+  "sources": {
+    "kakao-cli": {
+      "repository": "https://github.com/y5496694/kakao-cli.git",
+      "commit": "509d5c45a23532670898a3d167700ef653c789e5",
+      "files": {
+        "ANALYSIS.md": "577b2eab3465137de2b011730187f7aacb853c1ed15d20c0b7cbc8c397b90474",
+        "LICENSE": "1126322e2cc8d165adc4c792eeb195717de2bcc7b39be1ce77959d78e87ef685",
+        "README.md": "d22d849883ca57cb3bc52a7cd995637fa89ea1aab8045e1d4d4770e574108cd4",
+        "pyproject.toml": "b2e83567cfc31351c5a262d9feafefc5dd7b85d0e27fb853205f511c50cb08e6",
+        "skills/kakao-cli/SKILL.md": "dce003b5bc32a8666b115ecdf70185aa87cabd775c34a080137725855c525be1",
+        "src/kakaocli_win/__init__.py": "e6380c5ab0ed5d7a3991edca253f26e932c15577833af8cf00523c2b935c7148",
+        "src/kakaocli_win/active_database.py": "be602ec72321a0c4a2bd7caf19f5de06b1a1572e0be9ab6b0ce0f09348fc9bce",
+        "src/kakaocli_win/attachment_analysis.py": "4ebca014fe2f3c7245cc486fcb7d623da45a055a43efbdb47f288705b1099c6b",
+        "src/kakaocli_win/attachments.py": "c465bd0abb0150b5d51e65c3be88154f9c03e75b059e8031a085ff4a8c470724",
+        "src/kakaocli_win/backend.py": "c57f326a20edcaaf13255fbb8afa44181a7e1e8052a922268b3e0f1b2a99ee3b",
+        "src/kakaocli_win/background.py": "e05ecb853ce4516c419fab4e2a29c8e7d758ad7136eee69c31f37da76a747bd9",
+        "src/kakaocli_win/background_agent.js": "c9708c3e735425bd122a3dbb5cb9475b78aa0101d51a94b75c679e3b47cbc3b1",
+        "src/kakaocli_win/background_driver.mjs": "8522d63bb51ffd89f4b35274af7651f0c701d50f93904e6fcf6d4fa43d78ac59",
+        "src/kakaocli_win/cli.py": "2690c3891a6353ffdbd3a34cbbeda3248d1243bb4a2e897d44fa0cd77bbfd676",
+        "src/kakaocli_win/db_reader.py": "a60c2ddf387c2b8251afabe7761e9d9a4f14fe26cc2eac8423103d4774b369db",
+        "src/kakaocli_win/key_recovery.py": "3c2539cafe092b33973ba612082a2f756c417a77900e89a714b5552741590255",
+        "src/kakaocli_win/outgoing.py": "a459cddae3dcd4683cf369ac3f1ad04632f6d9314746b940a522b3b2baca34dc",
+        "src/kakaocli_win/transcript.py": "f24668cc51137646bc5c5761d54df0811a8a3b10761aee2907295ec31dd68bd8",
+        "src/kakaocli_win/windows_ocr.ps1": "4bf878d8abb7aaded41a5e543bf03ca0afc14d9ede86ef7e750959d06942a7ee",
+        "src/kakaocli_win/windows_ocr.py": "a02645d3a0cf66acf2ff56ce5feed73f12dc60086f1c2e598e2d35640167a1eb"
+      }
+    },
+    "narae-messenger-cli": {
+      "repository": "https://github.com/y5496694/narae-messenger-cli.git",
+      "commit": "a7dcf2adbe7bf73f7f57781940860e8e5e053355",
+      "files": {
+        "ANALYSIS.md": "2e02aefd3dd6d92f0da2e73b554e58d7f53f5e29defe35971a870519d1d37f19",
+        "LICENSE": "55d74ecf3c6533468afaccbd1ad357bf952b6f76304452a9aa99f3c49e57bb1e",
+        "README.md": "cb2139906a3caa143027a212b9b69f88099f89f5ba443ace59c5656b21534349",
+        "cli.mjs": "265cca48787f31b710638078491e92b80712f1008bf811ba1c3bfab5f1c2b971",
+        "drivers/installed.mjs": "d97b4c0ded64125372bd117f6ae834376e254359b279d971be2e496e9e396525",
+        "drivers/local-store.mjs": "2636b367e307454fb635b379528e00511e6733f282cf6016b63379c6630a8528",
+        "drivers/profiles.json": "1d653309de00f6f6d59ff065df3f2346085c0194e913f4d8f6dedc7974a2b954",
+        "drivers/ucware.mjs": "ea80521f1af51b6c3251ccac03260ccad8af50f30674faea85712754dbef6d76",
+        "drivers/ultari.mjs": "86d8cbe3e4e5ce197d5e4b3598a727666cdef0ed057ae2763de70a675e483cd6",
+        "package.json": "1448b40ec2c0869b01d858f8197378d8166082e5072865b577b49d112bd60895",
+        "regions.json": "67254dd2498eb7fce861504507c527c0f89551ed5abe8f0c3d612e26a7361d72",
+        "skills/narae-regional-messenger/SKILL.md": "b11bfd026b0e5ba2281147df29abaa30bd3600b156ca6014b71b7d46969fac6c",
+        "uia.ps1": "b70fe0bbb5c553a21a6b034dacd47e3baf6f8b71d21f8b9388dc17e3c8435b95",
+        "vendor/cbe/LICENSE": "55d74ecf3c6533468afaccbd1ad357bf952b6f76304452a9aa99f3c49e57bb1e",
+        "vendor/cbe/UPSTREAM.json": "b61fd1c95b355a0e1679ce505c3c1ae94e46f5ce764b81c50456e327bf506ce9",
+        "vendor/cbe/cli.mjs": "4d5412dc2b4c60bedfae8393c5c370ede3784d6bd674ccfcde89c938efeb3352",
+        "vendor/cbe/messenger.mjs": "53adef939212e6a22b6ff1c34b5e68d937076c141f8c1fd149bfbe3d01e42bf0"
+      }
+    }
+  }
+}

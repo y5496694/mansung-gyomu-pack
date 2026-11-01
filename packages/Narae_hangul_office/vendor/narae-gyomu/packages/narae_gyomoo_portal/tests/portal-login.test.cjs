@@ -65,6 +65,12 @@ test('an observed informational notice is dismissed before reading credentials',
  const result=await login({}, {cfg,browser:f.browser,state:{},readProfile:async a=>{assert.equal(notice,false);reads++;return a==='Status'?{valid:true}:f.profile;}});
  assert.equal(result.complete,true);assert.equal(reads,2);assert.equal(f.calls.filter(a=>a.ref==='notice-close').length,1);
 });
+test('late sequential informational notices after the DPAPI read are closed before one certificate click',async()=>{
+ const f=fixture(),execute=f.browser.execute;let notices=0;
+ f.browser.execute=async a=>{if(a.action==='click'&&a.ref==='late-'+notices){f.calls.push(a);notices--;return notices?{url:cfg.portalUrl,dialog:'서비스 안내',elements:[{ref:'late-'+notices,label:'전체닫기'}]}:execute({action:'snapshot'});}if(notices)return {url:cfg.portalUrl,dialog:'서비스 안내',elements:[{ref:'late-'+notices,label:'전체닫기'}]};return execute(a);};
+ const result=await login({}, {cfg,browser:f.browser,state:{},readProfile:async a=>{if(a==='Status')return {valid:true};notices=2;return f.profile;}});
+ assert.equal(result.complete,true);assert.equal(f.calls.filter(a=>a.ref?.startsWith('late-')).length,2);assert.equal(f.calls.filter(a=>a.ref==='l').length,1);assert.equal(f.calls.filter(a=>a.ref==='ok').length,1);assert.equal(f.profile.password,null);
+});
 
 test('searching other portal tabs refreshes notice refs on the original page',async()=>{
  const f=fixture(),execute=f.browser.execute,original=f.browser.page,other={url:()=>cfg.portalUrl,isClosed:()=>false};let serial=0,currentRef,notice=true;
@@ -80,3 +86,4 @@ test('local certificate access is opt-in, dedicated and scoped to the configured
  await login({allow_local_access:true},deps);assert.deepEqual(grants,[[['local-network-access'],{origin:'https://portal.test'}]]);
  f.browser.attached=true;await login({allow_local_access:true},deps);assert.equal(grants.length,1);
 });
+test('an informational notice that arrives during the initial loading wait is closed before authentication',async()=>{const f=fixture(),execute=f.browser.execute;let waiting=true,notice=false,closes=0;f.browser.execute=async a=>{if(a.action==='wait'&&waiting){waiting=false;notice=true;}if(a.action==='click'&&a.ref==='loading-notice'){notice=false;closes++;return execute({action:'snapshot'});}if(notice)return {url:cfg.portalUrl,dialog:'서비스 안내',elements:[{ref:'loading-notice',label:'전체닫기'}]};if(waiting)return {url:cfg.portalUrl,elements:[]};return execute(a);};const result=await login({}, {cfg,browser:f.browser,state:{},readProfile:async a=>a==='Status'?{valid:true}:f.profile});assert.equal(result.complete,true);assert.equal(closes,1);assert.equal(f.calls.filter(a=>a.privateFill).length,1);});
