@@ -1,0 +1,119 @@
+{
+  "kind": "hangul",
+  "path": "D:\\Codex\\training\\narae4-agent-reliability-20261101-r3\\workspace\\가상안내.hwpx",
+  "name": "가상안내.hwpx",
+  "hash": "2196ce7f5b4a1d21af326014f97a6fd44cf4c6282d0d7192db7d34a3aadcd913",
+  "bytes": 3815,
+  "tables": [],
+  "images": [],
+  "textDetailsLoaded": true,
+  "paragraphs": [
+    {
+      "id": "body/0",
+      "text": "장소: 솔빛교실",
+      "editable_text": true,
+      "text_style": {
+        "font": "맑은 고딕",
+        "size": 11,
+        "bold": false,
+        "italic": false,
+        "underline": false,
+        "strike": false,
+        "color": "#000000",
+        "background": "",
+        "superscript": false,
+        "subscript": false,
+        "stretch": 100,
+        "letter_spacing": 0
+      },
+      "paragraph_style": {
+        "align": "LEFT",
+        "left": 0,
+        "right": 0,
+        "indent": 0,
+        "before": 0,
+        "after": 0,
+        "line": 160,
+        "line_type": "PERCENT",
+        "page_break": false
+      }
+    },
+    {
+      "id": "body/1",
+      "text": "일시: 2039년 5월 16일 14:10",
+      "editable_text": true,
+      "text_style": {
+        "font": "맑은 고딕",
+        "size": 11,
+        "bold": false,
+        "italic": false,
+        "underline": false,
+        "strike": false,
+        "color": "#000000",
+        "background": "",
+        "superscript": false,
+        "subscript": false,
+        "stretch": 100,
+        "letter_spacing": 0
+      },
+      "paragraph_style": {
+        "align": "LEFT",
+        "left": 0,
+        "right": 0,
+        "indent": 0,
+        "before": 0,
+        "after": 0,
+        "line": 160,
+        "line_type": "PERCENT",
+        "page_break": false
+      }
+    },
+    {
+      "id": "body/2",
+      "text": "훈련용 가상 자료이며 실제 학교 일정이 아닙니다.",
+      "editable_text": true,
+      "text_style": {
+        "font": "맑은 고딕",
+        "size": 11,
+        "bold": false,
+        "italic": false,
+        "underline": false,
+        "strike": false,
+        "color": "#000000",
+        "background": "",
+        "superscript": false,
+        "subscript": false,
+        "stretch": 100,
+        "letter_spacing": 0
+      },
+      "paragraph_style": {
+        "align": "LEFT",
+        "left": 0,
+        "right": 0,
+        "indent": 0,
+        "before": 0,
+        "after": 0,
+        "line": 160,
+        "line_type": "PERCENT",
+        "page_break": false
+      }
+    }
+  ],
+  "counts": {
+    "paragraphs": 3,
+    "tables": 0
+  },
+  "view": "compact",
+  "offset": 0,
+  "nextOffset": 3,
+  "hasMore": false,
+  "input": "D:\\Codex\\training\\narae4-agent-reliability-20261101-r3\\workspace\\가상안내.hwpx",
+  "input_sha256": "2196ce7f5b4a1d21af326014f97a6fd44cf4c6282d0d7192db7d34a3aadcd913",
+  "input_unchanged": true,
+  "format": "hwpx",
+  "warnings": [
+    "한컴과 동일한 전체 기능·쪽 나눔·픽셀 배치는 아직 검증되지 않았습니다.",
+    "독립 보존 편집에는 지원 범위가 있습니다. 고급 HWP 표·그림 편집에는 Windows 한컴 COM이 필요합니다.",
+    "HWP 3.0 원본은 표현 가능한 텍스트만 보존 편집하며 서식 변경은 거부합니다."
+  ]
+}

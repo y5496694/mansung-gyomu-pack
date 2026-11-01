@@ -19,6 +19,7 @@ function trimOldestTurn(messages){
  const latestUser=messages.findLastIndex(m=>m.role==='user'&&!textOf(m.content).startsWith('도구 관찰 결과:'));
  for(let i=1;i<messages.length-4;i++){
   if(i===latestUser)continue;
+  if(Array.isArray(messages[i].content)&&messages[i].content.some(p=>p.type==='image_url'))continue;
   const count=messages[i].role==='assistant'&&textOf(messages[i+1]?.content).startsWith('도구 관찰 결과:')?2:1;
   messages.splice(i,count);return true;
  }return false;

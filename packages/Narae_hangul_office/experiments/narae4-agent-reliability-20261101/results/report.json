@@ -1,0 +1,155 @@
+{
+  "at": "2026-10-31T22:18:57.234Z",
+  "model": "Narae4-Qwen3.5-2B-Office-LoRA-v1",
+  "adapterSha256": "19f20486e744bcb9636efcdaf6583c1b9bef545733987a8837e63afdfeecf105",
+  "actualLocalWeights": true,
+  "syntheticOnly": true,
+  "scope": "Bounded executor + installed v1 model + real image and HWPX tools. Not raw model choices or public OfficeBench.",
+  "fullTenTaskPass": false,
+  "releasePassed": false,
+  "passed": 4,
+  "total": 4,
+  "sourceSha256": {
+    "src/agent.cjs": "072f5724eab98112e82d99a06d749c168ba3e2fe782f3b725febb2c5fa2e1cd6",
+    "src/image-task.cjs": "77ce1ce7700c954c25336483101c03a32a3a60487b163dc9e1d313fe52c4f636",
+    "src/document-task.cjs": "f9f77391693bbf4f4c9052cf0ea7c747ca8ada3326c9ea2c4f12388bb462f955",
+    "src/local-ai.cjs": "5f2311f08cc638f0a9b3431d0ae40bd25e158b6ac2e676edc92775a8f6522361"
+  },
+  "scriptSha256": "6c901394bad890e738cf69b46152bc0cce489981af94752981a61887c0a795b6",
+  "fixtureScriptSha256": "ef6625e4971bee11c8a3a18928f4581f15292b21a66ce58d2769f58c05f6ff1d",
+  "sourceUnchanged": true,
+  "fixtures": [
+    {
+      "file": "가상과학.png",
+      "sha256": "f7b21297636322bbf368a1ca091f5b9bcbc4d62c3f03b6d369f3232f39ba0635"
+    },
+    {
+      "file": "가상미술.png",
+      "sha256": "f694c92fe1c511fee7b9900499d3e74594fbdd1459401e9f61bb0cfb7a72ad6d"
+    }
+  ],
+  "defaultAdapterChanged": false,
+  "results": [
+    {
+      "id": "image-0",
+      "passed": true,
+      "seconds": 30.645,
+      "memory": {
+        "freeBytes": 5131681792,
+        "totalBytes": 16905089024
+      },
+      "result": {
+        "model": "narae4",
+        "workspace": "D:\\Codex\\training\\narae4-agent-reliability-20261101-r3\\workspace",
+        "text": "가상과학 체험 안내\n\n장소: 은하체험관\n비용: 286,000원\n시작: 10:10\n종료: 12:30\n훈련용 가상 자료입니다."
+      },
+      "events": [
+        {
+          "type": "tool",
+          "name": "read_image",
+          "args": {
+            "path": "D:\\Codex\\training\\narae4-agent-reliability-20261101-r3\\workspace\\가상과학.png"
+          }
+        }
+      ]
+    },
+    {
+      "id": "image-1",
+      "passed": true,
+      "seconds": 31.718,
+      "memory": {
+        "freeBytes": 5216874496,
+        "totalBytes": 16905089024
+      },
+      "result": {
+        "model": "narae4",
+        "workspace": "D:\\Codex\\training\\narae4-agent-reliability-20261101-r3\\workspace",
+        "text": "가상미술.png을 분석한 결과:\n\n- 장소: 노을미술관\n- 비용: 93,000원\n- 시작: 13:40\n- 종료: 15:10\n\n이 정보는 훈련용 가상미술 체험 안내 자료입니다."
+      },
+      "events": [
+        {
+          "type": "tool",
+          "name": "read_image",
+          "args": {
+            "path": "D:\\Codex\\training\\narae4-agent-reliability-20261101-r3\\workspace\\가상미술.png"
+          }
+        }
+      ]
+    },
+    {
+      "id": "image-comparison",
+      "passed": true,
+      "seconds": 59.627,
+      "memory": {
+        "freeBytes": 5246291968,
+        "totalBytes": 16905089024
+      },
+      "result": {
+        "model": "narae4",
+        "workspace": "D:\\Codex\\training\\narae4-agent-reliability-20261101-r3\\workspace",
+        "text": "가상과학\n장소: 은하체험관\n비용: 286,000원\n\n가상미술\n장소: 노을미술관\n비용: 93,000원"
+      },
+      "events": [
+        {
+          "type": "tool",
+          "name": "read_image",
+          "args": {
+            "path": "D:\\Codex\\training\\narae4-agent-reliability-20261101-r3\\workspace\\가상과학.png"
+          }
+        },
+        {
+          "type": "tool",
+          "name": "read_image",
+          "args": {
+            "path": "D:\\Codex\\training\\narae4-agent-reliability-20261101-r3\\workspace\\가상미술.png"
+          }
+        }
+      ]
+    },
+    {
+      "id": "text-replacement",
+      "passed": true,
+      "seconds": 21.575,
+      "memory": {
+        "freeBytes": 5248929792,
+        "totalBytes": 16905089024
+      },
+      "result": {
+        "model": "narae4",
+        "workspace": "D:\\Codex\\training\\narae4-agent-reliability-20261101-r3\\workspace",
+        "text": "선택 문서의 변경을 저장하고 다시 읽어 확인했습니다.\nD:\\Codex\\training\\narae4-agent-reliability-20261101-r3\\workspace\\가상안내.hwpx\n솔빛교실 → 물결교실\n그 밖의 문단 텍스트가 유지된 것도 대조했습니다."
+      },
+      "events": [
+        {
+          "type": "tool",
+          "name": "read_document",
+          "args": {
+            "path": "D:\\Codex\\training\\narae4-agent-reliability-20261101-r3\\workspace\\가상안내.hwpx"
+          }
+        },
+        {
+          "type": "tool",
+          "name": "edit_document",
+          "args": {
+            "path": "D:\\Codex\\training\\narae4-agent-reliability-20261101-r3\\workspace\\가상안내.hwpx",
+            "expectedHash": "2196ce7f5b4a1d21af326014f97a6fd44cf4c6282d0d7192db7d34a3aadcd913",
+            "operations": [
+              {
+                "op": "set_text",
+                "target": "body/0",
+                "text": "장소: 물결교실"
+              }
+            ]
+          }
+        },
+        {
+          "type": "tool",
+          "name": "read_document",
+          "args": {
+            "path": "D:\\Codex\\training\\narae4-agent-reliability-20261101-r3\\workspace\\가상안내.hwpx"
+          }
+        }
+      ]
+    }
+  ]
+}

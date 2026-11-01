@@ -1,0 +1,45 @@
+{
+  "id": "text-replacement",
+  "passed": true,
+  "seconds": 21.575,
+  "memory": {
+    "freeBytes": 5248929792,
+    "totalBytes": 16905089024
+  },
+  "result": {
+    "model": "narae4",
+    "workspace": "D:\\Codex\\training\\narae4-agent-reliability-20261101-r3\\workspace",
+    "text": "선택 문서의 변경을 저장하고 다시 읽어 확인했습니다.\nD:\\Codex\\training\\narae4-agent-reliability-20261101-r3\\workspace\\가상안내.hwpx\n솔빛교실 → 물결교실\n그 밖의 문단 텍스트가 유지된 것도 대조했습니다."
+  },
+  "events": [
+    {
+      "type": "tool",
+      "name": "read_document",
+      "args": {
+        "path": "D:\\Codex\\training\\narae4-agent-reliability-20261101-r3\\workspace\\가상안내.hwpx"
+      }
+    },
+    {
+      "type": "tool",
+      "name": "edit_document",
+      "args": {
+        "path": "D:\\Codex\\training\\narae4-agent-reliability-20261101-r3\\workspace\\가상안내.hwpx",
+        "expectedHash": "2196ce7f5b4a1d21af326014f97a6fd44cf4c6282d0d7192db7d34a3aadcd913",
+        "operations": [
+          {
+            "op": "set_text",
+            "target": "body/0",
+            "text": "장소: 물결교실"
+          }
+        ]
+      }
+    },
+    {
+      "type": "tool",
+      "name": "read_document",
+      "args": {
+        "path": "D:\\Codex\\training\\narae4-agent-reliability-20261101-r3\\workspace\\가상안내.hwpx"
+      }
+    }
+  ]
+}

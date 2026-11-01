@@ -6,13 +6,28 @@ function timeReplacement(prompt){
  const end=prompt.indexOf(times[1]),old=prompt.lastIndexOf(times[0],end),marker=[...prompt.slice(0,old).matchAll(/(\d+교시)\s*문단/g)].at(-1)?.[1];
  return {from:times[0],to:times[1],marker};
 }
-function verifiedTimeChange(prompt,records,edit,read,same){
- if(!/만(?:\s|바꾸|고쳐|수정|변경)/.test(prompt)||/PDF|첨부|전송|보내|기안|상신|결재|나이스|복무|메신저|쪽지|이어서|그다음|비교|요약|여러|각각|다른\s*(?:문서|파일)|검토(?:해|하|도|부탁)/i.test(prompt))return null;
- const change=timeReplacement(prompt);if(!change||!edit?.value.saved||edit.value.modeledContentVerified===false)return null;const times=[change.from,change.to];
+function textReplacement(prompt){
+ const quoted=[...prompt.matchAll(/["“‘']([^"“”‘’'\r\n]+)["”’']/g)];
+ if(quoted.length===2&&quoted[0][1]!==quoted[1][1]&&/^\s*(?:으로|로)/.test(prompt.slice(quoted[1].index+quoted[1][0].length))&&/^\s*(?:만|을|를|에서|대신|\s)*$/.test(prompt.slice(quoted[0].index+quoted[0][0].length,quoted[1].index)))return {from:quoted[0][1],to:quoted[1][1]};
+ return timeReplacement(prompt);
+}
+function singleTextChange(prompt){
+ if(!/만(?:\s|바꾸|고쳐|수정|변경)/.test(prompt)||/PDF|첨부|전송|보내|기안|상신|결재|나이스|복무|메신저|쪽지|이어서|그다음|그 다음|비교|요약|여러|각각|다른\s*(?:문서|파일)|검토(?:해|하|도|부탁)|만들|생성|작성|추가|삭제|삽입|서식|글꼴|굵게|정렬|강조|기울|밑줄|출력|내보내/i.test(prompt))return null;
+ return textReplacement(prompt);
+}
+function revisionRead(records,same){
+ const last=records.findLast(r=>r.name==='read_document'&&same(r.args.path)&&!r.value?.error);if(!last)return null;
+ const hash=last.value.hash||last.value.input_sha256;
+ const parts=records.filter(r=>r.name==='read_document'&&same(r.args.path)&&!r.value.error&&(r.value.hash||r.value.input_sha256)===hash);
+ return {...last,value:{...last.value,paragraphs:[...new Map(parts.flatMap(r=>r.value.paragraphs||r.value.blocks||[]).map(p=>[p.id,p])).values()]}};
+}
+function incompleteRead(read){return read?.value.hasMore||read?.value.textDetailsLoaded===false||read?.value.counts?.paragraphs!==undefined&&read.value.paragraphs.length!==read.value.counts.paragraphs;}
+function verifiedTextChange(prompt,records,edit,read,same){
+ const change=singleTextChange(prompt);if(!change||!edit?.value.saved||edit.value.modeledContentVerified===false)return null;const times=[change.from,change.to];
  const ops=edit.args.operations;if(ops?.length!==1||!['replace_text','set_text'].includes(ops[0].op))return null;const op=ops[0];
  if(op.op==='replace_text'&&(op.expected!==1||typeof op.find!=='string'||!op.find.includes(times[0])||op.replace!==op.find.replace(times[0],times[1])))return null;
- const before=records.slice(0,records.indexOf(edit)).findLast(r=>r.name==='read_document'&&same(r.args.path)&&!r.value.error);
- if(!before||before.value.hasMore||read.value.hasMore||before.value.textDetailsLoaded===false||read.value.textDetailsLoaded===false)return null;
+ const before=revisionRead(records.slice(0,records.indexOf(edit)),same);
+ if(!before||incompleteRead(before)||incompleteRead(read))return null;
  if((before.value.hash||before.value.input_sha256)!==edit.args.expectedHash||(read.value.hash||read.value.input_sha256)!==edit.value.hash)return null;
  const a=before.value.paragraphs||before.value.blocks,b=read.value.paragraphs||read.value.blocks;if(!Array.isArray(a)||!Array.isArray(b)||a.length!==b.length||a.some(p=>typeof p.text!=='string')||b.some(p=>typeof p.text!=='string'))return null;
  const indexes=a.flatMap((p,i)=>p.id===op.target?[i]:[]);if(indexes.length!==1)return null;const index=indexes[0],expected=a.map(p=>p.text);
@@ -51,18 +66,18 @@ function documentStep(prompt,input,all,workspace,allowReceipt=false,selectedFile
  if(typeof selectedFile==='string'&&/수정|고쳐|바꾸|바꿔|변경|굵게|글꼴|서식/.test(prompt)&&!/열려\s*있|열린\s*한글|실시간|현재\s*한글/.test(prompt)){
   const same=p=>typeof p==='string'&&path.resolve(p).toLowerCase()===path.resolve(selectedFile).toLowerCase();
   const lastRead=records.findLast(r=>r.name==='read_document'&&same(r.args.path)&&!r.value?.error),edit=records.findLast(r=>['edit_document','edit_live_document'].includes(r.name)&&same(r.args.path));
-  const read=lastRead&&{...lastRead,value:{...lastRead.value,paragraphs:[...new Map(records.filter(r=>r.name==='read_document'&&same(r.args.path)&&!r.value.error&&(r.value.hash||r.value.input_sha256)===(lastRead.value.hash||lastRead.value.input_sha256)).flatMap(r=>r.value.paragraphs||r.value.blocks||[]).map(p=>[p.id,p])).values()]}};
+  const read=revisionRead(records,same);
   if(!read||edit&&records.indexOf(edit)>records.indexOf(lastRead)){
    const tool=structuredClone(all.find(t=>t.name==='read_document'));if(tool){tool.parameters={type:'object',properties:{path:{type:'string',enum:[selectedFile]}},required:['path'],additionalProperties:false};return {tools:[tool],required:true,context:{source:'사용자가 선택한 실제 문서',path:selectedFile},instructions:'편집 전 또는 편집 시도 후에는 선택한 파일을 실제로 다시 읽어 최신 해시·문단 ID·저장된 내용을 확인한다.'};}
   }
-  const verified=verifiedTimeChange(prompt,records,edit,read,same);if(verified)return {tools:[],receipt:'선택 문서의 시간 변경을 저장하고 다시 읽어 확인했습니다.\n'+selectedFile+'\n'+verified.from+' → '+verified.to+'\n그 밖의 문단 텍스트가 유지된 것도 대조했습니다.'};
+  const verified=verifiedTextChange(prompt,records,edit,read,same);if(verified)return {tools:[],receipt:'선택 문서의 변경을 저장하고 다시 읽어 확인했습니다.\n'+selectedFile+'\n'+verified.from+' → '+verified.to+'\n그 밖의 문단 텍스트가 유지된 것도 대조했습니다.'};
   if(read?.value?.textDetailsLoaded!==false&&(read?.value?.hash||read?.value?.input_sha256)){
    const tools=structuredClone(all.filter(t=>['edit_document',...(read.value.hasMore?['read_document']:[]),...(/PDF/i.test(prompt)?['export_pdf']:[])].includes(t.name))),tool=tools.find(t=>t.name==='edit_document');
    if(tool){tool.parameters.properties.path={type:'string',enum:[selectedFile]};tool.parameters.properties.expectedHash={type:'string',enum:[read.value.hash||read.value.input_sha256]};tool.parameters.required=['path','expectedHash','operations'];if(!/사본|별도.{0,8}파일|다른.{0,8}파일|새.{0,8}이름/.test(prompt))delete tool.parameters.properties.target;else tool.parameters.required.push('target');const ids=[...new Set([...(read.value.paragraphs||[]),...(read.value.blocks||[])].map(p=>p.id).filter(Boolean))];if(ids.length)for(const op of tool.parameters.properties.operations.items.anyOf)if(op.properties?.target)op.properties.target={type:'string',enum:ids};}
-   const change=timeReplacement(prompt);
-   if(tool&&change&&/만/.test(prompt)&&!/서식|글꼴|굵게|PDF|첨부|전송|기안|상신|요약/.test(prompt)){
-    const candidates=(read.value.paragraphs||[]).filter(p=>p.text?.split(change.from).length===2&&(!change.marker||new RegExp('(?:^|[^0-9])'+change.marker).test(p.text)));
-    if(candidates.length===1){tool.parameters.properties.operations={type:'array',minItems:1,maxItems:1,items:{type:'object',properties:{op:{type:'string',enum:['set_text']},target:{type:'string',enum:[candidates[0].id]},text:{type:'string',enum:[candidates[0].text.replace(change.from,change.to)]}},required:['op','target','text'],additionalProperties:false}};return {tools:[tool],required:true,instructions:'사용자 요청의 시각 변경 대상 문단을 실제 원문에서 유일하게 확인했다. 지정된 해시·문단·변경 원문으로 편집을 실행한 뒤 다시 읽어 검증한다.'};}
+   const change=singleTextChange(prompt);
+   if(tool&&change&&!incompleteRead(read)){
+    const candidates=(read.value.paragraphs||[]).filter(p=>p.text?.includes(change.from)&&(!change.marker||new RegExp('(?:^|[^0-9])'+change.marker).test(p.text)));
+    if(candidates.length===1&&candidates[0].text.split(change.from).length===2){tool.parameters.properties.operations={type:'array',minItems:1,maxItems:1,items:{type:'object',properties:{op:{type:'string',enum:['set_text']},target:{type:'string',enum:[candidates[0].id]},text:{type:'string',enum:[candidates[0].text.replace(change.from,change.to)]}},required:['op','target','text'],additionalProperties:false}};return {tools:[tool],required:true,instructions:'사용자 요청의 변경 대상 문단을 실제 원문에서 유일하게 확인했다. 지정된 해시·문단·변경 원문으로 편집을 실행한 뒤 다시 읽어 검증한다.'};}
    }
    return {tools,instructions:'선택 파일은 방금 일반 파일 엔진으로 읽었다. 같은 파일의 같은 내용을 다시 읽지 않는다. 실제 해시와 문단 ID로 edit_document를 사용한다. 저장 후 다시 읽은 내용이 이미 요청대로 바뀌었으면 도구를 호출하지 말고 최종 확인 결과를 답한다. liveRevision을 파일 해시로 지어내지 않는다.'};
   }
