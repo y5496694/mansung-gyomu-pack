@@ -12,14 +12,14 @@ const {browserStep}=require('./browser-task.cjs');
 const {ezeduStep}=require('./ezedu-task.cjs');
 const school=/나이스|NEIS|복무|조퇴|연가|근무상황|개인결재선|기안문서상신|업무\s*포[털탈]/i;
 const navigationLabel=label=>String(label||'').replace(/\s/g,'').replace(/\(새창열림\)$/,'').replace(/^선택됨,/,'');
-function taskFor(prompt,history=[],now=new Date()){
+function taskFor(prompt,history=[],now=new Date(),{portalWorkflow=false}={}){
  const requisition=requisitionTask(prompt);if(requisition)return requisition;
  const cycle=cycleTask(prompt);if(cycle)return cycle;
  const query=queryTask(prompt);if(query)return query;
  const lifecycle=lifecycleTask(prompt);if(lifecycle)return lifecycle;
  const intent=prompt.replace(/"[^"]*"|“[^”]*”/g,'');
  if(/벤치|benchmark/i.test(intent)&&!/훈련|학습|개발|개선|수정|실행|돌려/.test(intent))return {area:'benchmark',observe:false};
- if(/업무\s*포[털탈]/.test(prompt)&&/로그인/.test(prompt)&&/보안\s*문서|자동\s*로그인/.test(prompt)&&!/사용법|벤치|기능.*(?:개발|보완)/.test(prompt))return {area:'portal-login',observe:false,allowLocalAccess:/로컬.*(?:연결|접근|프로그램).*(?:허용|처리|맡)/.test(prompt)&&!/허용하지|연결하지|접근하지|처리하지/.test(prompt),systems:[...(/나이스|NEIS/i.test(prompt)?['neis']:[]),...(/에듀파인/.test(prompt)?['edufine']:[])],instructions:'등록된 보안 문서로 자동 로그인을 한 번 시도한다. 사용자가 맡긴 로컬 프로그램 연결은 현재 등록 포털 한 곳에만 허용한다. 암호·인증서 개인 값은 응답에 넣지 않는다. 최초 기기 접근 승인과 추가 보안 인증은 사용자에게 남긴다.'};
+ if(!portalWorkflow&&/업무\s*포[털탈]/.test(prompt)&&/로그인/.test(prompt)&&/보안\s*문서|자동\s*로그인/.test(prompt)&&!/사용법|벤치|기능.*(?:개발|보완)/.test(prompt))return {area:'portal-login',observe:false,allowLocalAccess:/로컬.*(?:연결|접근|프로그램).*(?:허용|처리|맡)/.test(prompt)&&!/허용하지|연결하지|접근하지|처리하지/.test(prompt),systems:[...(/나이스|NEIS/i.test(prompt)?['neis']:[]),...(/에듀파인/.test(prompt)?['edufine']:[])],instructions:'등록된 보안 문서로 자동 로그인을 한 번 시도한다. 사용자가 맡긴 로컬 프로그램 연결은 현재 등록 포털 한 곳에만 허용한다. 암호·인증서 개인 값은 응답에 넣지 않는다. 최초 기기 접근 승인과 추가 보안 인증은 사용자에게 남긴다.'};
  if(/업무\s*포[털탈]|에듀파인|gyomu_portal_session/.test(prompt)&&/(?:세션(?:을|의)?\s*(?:시간(?:을)?\s*)?(?:자동\s*)?(?:연장|유지|상태|확인)|남은\s*시간|로그인(?:을)?\s*유지|gyomu_portal_session)/.test(prompt))return {area:'session',observe:false,operation:/연장|extend/.test(prompt)?'extend':'status',instructions:'기존 업무 창의 세션만 확인한다. 새 창이나 로그인을 만들지 않는다.'};
  const messenger=messengerTask(prompt,history,now);if(messenger)return messenger;
  const final=schoolFinalTask(prompt,history);if(final&&!/나이스|NEIS|연가|조퇴|출장/i.test(prompt))return final;

@@ -19,7 +19,7 @@ function evidenceReport(context,footer=''){
  };
  for(const [index,d]of context.documents.entries()){
   const card={title:d.title||d.id||'문서 '+(index+1),sources:[],notes:[]};cards.push(card);
-  if(cbe){add(card,'본문',bodyText(d));if(typeof d.sender==='string')card.notes.push('보낸 사람: '+d.sender);if(typeof d.date==='string')card.notes.push('작성 시각: '+d.date);const attachments=d.files||d.attachments||d.items?.flatMap(m=>m.attachment?[m.attachment]:[])||[];if(attachments.length)card.notes.push('첨부 '+attachments.length+'개 내용 미확인');}
+  if(cbe){add(card,'본문',bodyText(d));if(d.items?.some(m=>m.excerpted))card.notes.push('일부 대화 본문은 서버 길이 제한으로 발췌되었습니다.');if(typeof d.sender==='string')card.notes.push('보낸 사람: '+d.sender);if(typeof d.date==='string')card.notes.push('작성 시각: '+d.date);const attachments=d.files||d.attachments||d.items?.flatMap(m=>m.attachment?[m.attachment]:[])||[];if(d.attachmentContents){for(const a of d.attachmentContents)add(card,'첨부 '+baseName(a.path),a.text,!a.unconfirmed,a.error);}else if(attachments.length)card.notes.push('첨부 '+attachments.length+'개 내용 미확인');}
   else{if(d.listing?.headers&&d.listing?.rows)add(card,'목록',d.listing.rows.map(row=>d.listing.headers.map((h,i)=>h+': '+String(row[i]??'')).join(' | ')).join('\n'));add(card,context.listing?'목록':'본문',d.body,d.bodyRead===true);for(const a of d.attachments||[])add(card,'첨부 '+baseName(a.path),a.text,!a.unconfirmed,a.error);if(d.attachments?.some(a=>a.unconfirmed))card.notes.push('미확인 첨부에만 기재된 제출처·양식 등은 미확인입니다.');}
  }
  for(const d of context.unconfirmed||[])cards.push({title:d.title||d.id||'문서',sources:[],notes:['본문 미확인'+(d.error?' — '+d.error:'')]});

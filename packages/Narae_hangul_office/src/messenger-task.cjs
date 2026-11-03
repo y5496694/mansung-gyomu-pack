@@ -17,6 +17,7 @@ function messengerTask(prompt,history=[],now=new Date()){
 function observations(input){return input.filter(i=>i.type==='function_call_output').flatMap(i=>{const call=input.find(c=>c.type==='function_call'&&c.call_id===i.call_id);if(!call)return [];try{return [{name:call.name,args:JSON.parse(call.arguments||'{}'),value:JSON.parse(i.output)}];}catch{return [];}});}
 function messengerTools(all){return all.filter(t=>t.name.startsWith('gyomu_cbe_')||['gyomu_skill_read','gyomu_system_status'].includes(t.name));}
 function messengerStep(task,input,all){
+ if(task.dialog)return require('./messenger-dialog.cjs').dialogStep(task,input,all);
  const observed=observations(input),tools=structuredClone(messengerTools(all));
  function required(name,values,instructions){const tool=tools.find(t=>t.name===name);if(!tool?.parameters)return {tools,instructions};for(const [key,value]of Object.entries(values)){tool.parameters.properties[key]={...(tool.parameters.properties[key]||{}),...(Array.isArray(value)?{enum:value}:{enum:[value]})};}tool.parameters.required=[...new Set([...(tool.parameters.required||[]),...Object.keys(values)])];return {tools:[tool],required:true,instructions,...(task.archive?{context:{source:'현재 실제 탐색 결과의 다음 단계',next:values}}:{})};}
  if(task.archive){

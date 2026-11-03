@@ -16,7 +16,7 @@ async function scan(args,{call,directory,signal,notify=()=>{}}){
  const result={schema:1,id:crypto.randomUUID(),createdAt:new Date().toISOString(),scope:{from:args.from,to:args.to,kinds:args.kinds||['note','chat'],box:args.box||'all',query:args.query||'',submissionOnly:args.submissionOnly===true,attachments:'본문 탐색. 첨부 내용은 별도 확인 대상'},complete:true,pages:[],unconfirmed:[],records:[],matches:[]},budget=args.pageBudget||1000;let pages=0;
  const fault=(source,error)=>{result.complete=false;result.unconfirmed.push({source,error:String(error).slice(0,250)});};
  const query=async argv=>{if(signal?.aborted)throw new Error('탐색을 중단했습니다.');return call(argv,signal);};
- async function walk(source,argv,handle,{anchored=false}={}){
+ async function walk(source,argv,handle,{anchored=false,dated=false}={}){
   let anchor='0',page=1;const seen=new Set(),seenIds=new Set();
   for(;;){
    if(++pages>budget){fault(source,'페이지 예산에 도달했습니다. 전체 확인 미완료');return;}
@@ -27,6 +27,7 @@ async function scan(args,{call,directory,signal,notify=()=>{}}){
    if(items.length&&(!ids.every(Boolean)||new Set(ids).size!==ids.length||seen.has(signature)||ids.some(id=>seenIds.has(id)))){fault(source,'중복 페이지·항목 또는 식별자 누락. 페이지 전체성을 확인할 수 없음');return;}seen.add(signature);ids.forEach(id=>seenIds.add(id));
    if(anchored&&page===1){anchor=value.offset;if(items.length&&!anchor){fault(source,'첫 페이지 날짜 기준점 없음');return;}}
    await handle(items);
+   if(dated&&items.length&&items.every(i=>date(i.date)&&date(i.date)<args.from)){result.pages.at(-1).stoppedBefore=args.from;return;}
    if(!items.length||items.length<100)return;
    // Unknown totals are normal. A short/empty last page is required; never
    // trust a total alone while the server list may change.
@@ -40,14 +41,14 @@ async function scan(args,{call,directory,signal,notify=()=>{}}){
   result.records.push(record);
   // A room title describes the container, not this message's contents.
   const text=(record.source==='chat'?'':String(record.title||'')+'\n')+String(record.text||'');
-  if((!args.query||text.toLocaleLowerCase().includes(args.query.toLocaleLowerCase()))&&(!args.submissionOnly||submission.test(text)))result.matches.push(record);
+  if((!args.query||String(args.query).toLocaleLowerCase().split(/\s+/).filter(Boolean).every(word=>text.toLocaleLowerCase().replace(/\s/g,'').includes(word.replace(/\s/g,''))))&&(!args.submissionOnly||submission.test(text)))result.matches.push(record);
  };
  try{
   if(result.scope.kinds.includes('note'))await walk('notes',['notes','list','--box',result.scope.box],async items=>{
-   for(const n of items){const d=date(n.date);if(d&&(d<args.from||d>args.to))continue;let full;try{full=await query(['notes','read',n.id,'--type',result.scope.box==='sent'||n.type==='S'?'S':'R']);}catch(e){fault('note:'+n.id,e.message);continue;}if(full?.error)fault('note:'+n.id,full.error);else retain({...full,id:n.id,source:'note',date:full.date||n.date});}
-  },{anchored:true});
+   for(const n of items){const d=date(n.date);if(d&&(d<args.from||d>args.to))continue;let full;try{full=await query(['notes','read',n.id,'--type',result.scope.box==='sent'||n.type==='S'?'S':'R']);}catch(e){fault('note:'+n.id,e.message);continue;}if(full?.error)fault('note:'+n.id,full.error);else retain({...full,id:n.id,type:full.type||n.type||(result.scope.box==='sent'?'S':'R'),source:'note',date:full.date||n.date});}
+  },{anchored:true,dated:true});
   if(result.scope.kinds.includes('chat'))await walk('rooms',['chats','list'],async rooms=>{
-   for(const room of rooms)await walk('chat:'+room.id,['chats','read',room.id],async items=>{for(const m of items)retain({...m,source:'chat',roomId:room.id,title:room.title||room.id});});
+   for(const room of rooms){if(date(room.date)&&date(room.date)<args.from)continue;await walk('chat:'+room.id,['chats','read',room.id],async items=>{for(const m of items)retain({...m,source:'chat',roomId:room.id,title:room.title||room.id});},{dated:true});}
   });
  }catch(e){fault('scan',e.message);}
  // Keep private source evidence out of model prompts and public repositories.

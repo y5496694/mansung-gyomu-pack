@@ -27,6 +27,8 @@ jobs:
           "NARAE_OFFICE_PYTHON=$((Get-Command python).Source)" >> $env:GITHUB_ENV
       - name: Unit and security regression
         run: npm test
+      - name: Pinned CBE CLI attachment and delivery regression with synthetic data
+        run: node --test vendor/cbe-messenger-cli/test.mjs
       - name: Offline and public user guide consistency
         run: npm run guide:check
       - name: Profile, regional CLI friends, chat, settings and document-only Office
@@ -37,10 +39,16 @@ jobs:
         run: node tests/talk-personal-desktop.cjs
       - name: Ezedu bounded read and message clipboard copy
         run: node tests/talk-ezedu-desktop.cjs
+      - name: Messenger titles, numbered follow-ups, attachments and recipient selection
+        run: node tests/talk-messenger-desktop.cjs
       - name: Weekly calendar banner and daily schedule counts
         run: node tests/talk-calendar-desktop.cjs
       - name: Live process, native drag-drop and clipboard image attachments
         run: node tests/talk-chat-input-desktop.cjs
+      - name: All-file native attachments and real HWPX editing in the Hangul friend
+        run: node tests/talk-hangul-attachments-desktop.cjs
+      - name: Regional portal authentication, manual login continuation and school service handoff
+        run: node tests/talk-portal-desktop.cjs
       - name: Browser friend public website reading and source summaries
         run: node tests/browser-talk-desktop.cjs
       - name: Browser navigation, approval status and cancellation isolation

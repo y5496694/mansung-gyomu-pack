@@ -26,6 +26,7 @@ async function run(job,{base=process.cwd(),home=defaultHome(),signal=new AbortCo
  const python=require('./runtime-python.cjs').resolvePython(root),policy=new RemotePolicy({workspace:()=>settings.workspace,autoAllow:()=>job.allowChanges===true,notify:view=>{if(view){onEvent({type:'approvalRequired',name:view.name});policy.decide({id:view.id,digest:view.digest,allow:false});}}});
  const addons=process.env.NARAE_PRODUCT==='talk'?new (require('./talk-addons.cjs').TalkAddons)({root,home,python}):null;
  const ai=createAI({root,home}),integrations=createIntegrations({root,home,python,addons,kakaoCLI:process.env.NARAE_PRODUCT==='talk',workspace:()=>settings.workspace,settings:()=>settings,policy,headed:true,busy:()=>true});
+ integrations.region=talkTools.definition(friend)?.region;
  let denied;
  const execute=async(name,args,toolSignal)=>{
   talkTools.assertTool(friend,name,args);if(denied)throw denied;

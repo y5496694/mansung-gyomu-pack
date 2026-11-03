@@ -49,6 +49,27 @@
         "vendor/cbe/cli.mjs": "4d5412dc2b4c60bedfae8393c5c370ede3784d6bd674ccfcde89c938efeb3352",
         "vendor/cbe/messenger.mjs": "53adef939212e6a22b6ff1c34b5e68d937076c141f8c1fd149bfbe3d01e42bf0"
       }
+    },
+    "cbe-messenger-cli": {
+      "repository": "https://github.com/y5496694/CBE_CLI",
+      "commit": "d40cdfef306f88fc578f179703211702bb222127",
+      "files": {
+        ".gitattributes": "998d536393ff3a100eea514c4e4eca9284ad0b21b0c97e6e3c1a6cf86a9dcad2",
+        ".gitignore": "4f2d033cc9aeaeadbff2095bf4b57ae9e465c412fd4dcaf15d2cb6f22436723b",
+        "LICENSE": "55d74ecf3c6533468afaccbd1ad357bf952b6f76304452a9aa99f3c49e57bb1e",
+        "README.md": "edb9a84d8711f4d676c53891bb7fa2da285a5ed0811873283a0de3c627119bb9",
+        "cbe.cmd": "eecdb03ae8979d47c6e7094bea23d2ccc4064a38c4a2cad06d8b132b457dcb38",
+        "cli.mjs": "ab9e9f8ba279897a1e4cbca52dde4ddd1b76988a8c38088564e4ffe88ab32be0",
+        "messenger.mjs": "80a7453773f57c2274f7f6ee9ef6d91346bed121289d2ffda073c58dee8e5f9d",
+        "package.json": "3b63d59baec42504e53313516a6bfa1415a738df3210e336d577215c71371efe",
+        "skills/cbe-messenger/SKILL.md": "1fb912dd0f48feb6fd07f813a4b61d7ece9d59f226cd98b8abeb2c65f858ad97",
+        "skills/cbe-messenger/agents/openai.yaml": "f66738639f7e55724712abffd86d5f747b8d701dff606f36b44a2d3b1d591205",
+        "skills/cbe-messenger/references/commands.md": "51a6d15d61b3153c08e390e325206e78744d90bf90024cf0ae96979a8765c545",
+        "skills/cbe-messenger/scripts/cli.mjs": "ab9e9f8ba279897a1e4cbca52dde4ddd1b76988a8c38088564e4ffe88ab32be0",
+        "skills/cbe-messenger/scripts/messenger.mjs": "80a7453773f57c2274f7f6ee9ef6d91346bed121289d2ffda073c58dee8e5f9d",
+        "skills/cbe-messenger/scripts/test.mjs": "2a05ca2a9a0d8eb45e89de975d5b344688ae528329895d5ede19020d8075a34c",
+        "test.mjs": "2a05ca2a9a0d8eb45e89de975d5b344688ae528329895d5ede19020d8075a34c"
+      }
     }
   }
 }
