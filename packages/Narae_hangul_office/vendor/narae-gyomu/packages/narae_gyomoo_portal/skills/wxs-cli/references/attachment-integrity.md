@@ -20,6 +20,8 @@ python $wxsCli open-attachment --hwnd $readonlyHwnd --expected-title $title --na
 
 다운로드 폴더는 새 경로여야 한다. 모든 파일의 `exported`, `size_matches`, `sha256`을 원본과 대조한다. `all_exported`는 파일 확보 결과이며 원본 일치·내용 검토를 대신하지 않는다. 편집 가능 사본은 추출 전후 전체 상태가 같아야 한다. `open-attachment`는 변경되지 않은 읽기 전용 서버 문서에서 정확히 한 개로 확인된 PDF의 네이티브 `Attach.open`만 호출한다. 반환은 스크립트 예외 없이 핸들러가 돌아왔다는 근거이며 결재 완료를 뜻하지 않는다.
 
+`handler_returned:true`는 앱 함수가 돌아왔다는 뜻이다. `viewer_window_detected`는 창 발견 여부이며 실제 쪽 검수 전에는 `viewer_open_verified:false`를 유지한다. 클릭해도 창이 안 뜨면 같은 서버 다운로드를 파서·렌더러와 설치된 PDF 앱으로 확인한다. 직접 열리면 파일 손상으로 단정하거나 정상 PDF를 다시 생성·업로드하지 않는다. 메모리 부족과 창 없이 남은 PDF 프로세스도 확인한다. 사용자의 다른 작업을 보존하고 PDF 프로세스를 일괄 종료하지 않는다. 사용자가 정리를 맡겼을 때만 정확한 대상 프로세스를 확인해 종료한다. 연결 프로그램·보안 설정은 임의로 바꾸지 않는다.
+
 ## 이름만 남거나 서버 파일이 없는 기존 첨부
 
 ```powershell

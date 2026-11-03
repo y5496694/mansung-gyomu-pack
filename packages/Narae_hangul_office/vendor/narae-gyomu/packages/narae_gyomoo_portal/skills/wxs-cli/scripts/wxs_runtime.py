@@ -205,7 +205,9 @@ class Session:
                 verify_attachment(file)
             if ("approver" in config or "approval_route" in config) and len(before["approval_rows"]) != 1:
                 raise ValueError("Expected a drafter-only approval line before changes")
-            if "recipient" in config and before["recipient"]:
+            # A new standard form displays 내부결재 before any recipient is added.
+            # recipient_search still verifies the native RecptList is empty.
+            if "recipient" in config and before["recipient"] not in ("", "내부결재"):
                 raise ValueError("Expected an empty recipient list before changes")
             if "auto_send" in config and before["auto_send"]:
                 raise ValueError("Automatic send is already selected; inspect its existing settings first")

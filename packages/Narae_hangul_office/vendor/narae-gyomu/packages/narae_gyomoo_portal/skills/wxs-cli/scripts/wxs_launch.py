@@ -9,11 +9,11 @@ import os
 from pathlib import Path
 import re
 import subprocess
-from urllib.parse import unquote, urlsplit
+from urllib.parse import unquote, urlsplit, parse_qs
 
 
 def validate_request(request):
-    if not isinstance(request, dict) or set(request) != {"url", "source_origin", "format_title"}:
+    if not isinstance(request, dict) or set(request) not in ({"url", "source_origin", "format_title"}, {"url", "source_origin", "format_title", "document"}):
         raise ValueError("Expected a private browser WXS launch request")
     if request["source_origin"] != "https://klef.cbe.go.kr":
         raise ValueError("Launch source is not the observed K-Ed ufine HTTPS origin")
@@ -27,9 +27,28 @@ def validate_request(request):
         valid = parsed.scheme == "https" and parsed.hostname == "klef.cbe.go.kr" and parsed.port in (None, 443) and not parsed.username and not parsed.password and parsed.path == "/bms/cz/cb/prc/wxsLogin.do" and not parsed.fragment
     except Exception:
         raise ValueError("Invalid private WXS launch payload") from None
-    if not valid or title != request["format_title"] or not title.strip() or len(title) > 200 or not re.fullmatch(r"\d{3,4},\d{3,4}", size):
+    document = request.get('document')
+    title_matches = title == request['format_title'] and bool(title.strip())
+    if document is not None:
+        if (not isinstance(document, dict) or set(document) != {'id', 'title', 'operation'}
+                or not isinstance(document['id'], str) or not re.fullmatch(r'[A-Z][A-Z0-9]{17,31}', document['id'])
+                or document['title'] != request['format_title'] or not document['title'].strip()
+                or len(document['title']) > 200 or document['operation'] not in ('read', 'edit-recalled', 'edit-saved')):
+            raise ValueError('Expected the exact browser-observed document binding')
+        # Existing-document launches use a blank native window title and an
+        # opaque authenticated handoff. Bind the observed row and operation;
+        # verify the actual title/ID again after the native window opens.
+        try:
+            query = parse_qs(parsed.query)
+            envelope = parse_qs(base64.b64decode(query['path'][0], validate=True).decode('utf-8'))
+            opaque_handoff = set(query) == {'path'} and all(envelope.get(k) for k in ('__key','__sId','__type')) and envelope['__type'] == ['GET']
+        except Exception:
+            opaque_handoff = False
+        blank_title = title == '   ' or (title == '    ' and document['operation'] == 'edit-saved')
+        title_matches = title_matches or (blank_title and opaque_handoff)
+    if not valid or not title_matches or len(title) > 200 or not re.fullmatch(r"\d{3,4},\d{3,4}", size):
         raise ValueError("WXS target, observed format title or window size differs")
-    return {"protocol": "wxsclient", "format_title": title, "source_origin": request["source_origin"]}
+    return {"protocol": "wxsclient", "format_title": request['format_title'], "source_origin": request["source_origin"], **({'document':document} if document else {})}
 
 
 def registered_handler():

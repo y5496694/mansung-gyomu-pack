@@ -1,3 +1,5 @@
+import {createRequire} from 'node:module';
+const {tool:requisitionTool}=createRequire(import.meta.url)('../packages/narae_gyomoo_portal/skills/narae-gyomu-edufine/scripts/school-accounting.cjs');
 const string = {type: 'string'}, strings = {type: 'array', items: string}, integer = {type: 'integer'};
 const enumeration = values => ({type: 'string', enum: values});
 export const object = (properties = {}, required = []) => ({type: 'object', properties, required, additionalProperties: false});
@@ -11,13 +13,14 @@ export const wxsConfig=object({expected_title:string,title:string,body:string,bo
   approver:object({name:string,id:string},['name']),recipient:object({search:string,name:string},['search','name']),
   auto_send:{type:'boolean',enum:[true]}},['expected_title','title']);
 export const tools = [
+  requisitionTool,
   {name: 'system.status', label: '연결 상태', description: '선택 AI, 네 도구 설치 경로, 출력 폴더와 실행 환경을 확인한다.', parameters: object()},
   {name: 'skill.read', label: '업무 절차', description: '작업 전에 해당 영역의 절차와 한계를 읽는다. 긴 문서는 offset으로 이어 읽는다.',
     parameters: object({area: enumeration(['overview', 'portal', 'neis', 'edufine', 'wxs', 'hangul', 'hangul-jobs', 'cbe']), document: string, offset: integer}, ['area'])},
   {name: 'browser', label: '나래 브라우저', description: '실제 Chrome/Edge를 제어한다. snapshot의 실제 ref만 사용한다. 명시적으로 요청한 상신·결재·회수는 문서·결재선을 확인한 뒤 confirmFinalAction:true와 expectedDocument/expectedLabel/expectedUrl/expectedState(직전 snapshot.finalState)로 실행한다. 회수는 문서진행에서 선택한 한 행의 expectedDocumentId도 필요하다. 네이티브 확인창은 관찰한 정확한 confirmationText만 수락한다. 클릭만으로 완료 보고하지 않는다. 발송·삭제는 지원하지 않는다.',
-    parameters: object({action: enumeration(['open','snapshot','inspect','read','click','hover','fill','select','check','uncheck','press','expand','collapse','scroll','wait','back','tabs','tab','frames','frame','dialog']),
-      url: string, ref: string, text: string, value: string, key: string, index: integer, offset: integer, limit: integer, chars: integer, filter: string, selector: string, pixels: integer,
-      method:enumeration(['pointer','dom']),force:{type:'boolean'},ms:integer,timeout:integer,decision:enumeration(['accept','dismiss']),expectedId:string,expectedMessage:string,
+    parameters: object({action: enumeration(['open','snapshot','inspect','read','click','hover','fill','type','upload','download','select','check','uncheck','press','expand','collapse','scroll','wait','back','tabs','tab','frames','frame','dialog']),
+      url: string, ref: string, path:string, expectedSha256:string, text: string, value: string, key: string, index: integer, offset: integer, limit: integer, chars: integer, filter: string, selector: string, pixels: integer,
+      method:enumeration(['pointer','dom']),part:enumeration(['toggle']),clickCount:{type:'integer',enum:[1,2]},files:strings,force:{type:'boolean'},ms:integer,timeout:integer,decision:enumeration(['accept','dismiss']),expectedId:string,expectedMessage:string,
       confirmFinalAction: {type:'boolean'}, expectedDocument: string, expectedDocumentId: string, expectedLabel: string, expectedUrl: string, expectedState: string, confirmationText: string}, ['action'])},
   {name: 'portal.open', label: '업무포털 열기', description: '등록된 교육청 업무포털을 나래 브라우저로 연다. 사용자가 직접 로그인하며 기존 창은 재사용한다. 로그인 성공 여부는 실제 화면으로 확인한다.', parameters: object()},
   {name:'portal.login',label:'보안 문서로 독립 브라우저 로그인',description:'사용자가 요청한 자동 로그인만 PC의 기존 DPAPI 보안 문서로 독립 브라우저에서 한 번 수행한다. 인증서·암호는 모델 인자나 결과에 포함하지 않는다. 사용자가 맡긴 로컬 인증서 프로그램 연결은 allow_local_access로 등록된 업무포털 origin에만 허용한다. 추가 보안 인증은 별도이며 요청한 서비스의 실제 화면으로 확인한다.',parameters:object({operation:enumeration(['status','login']),systems:{type:'array',items:enumeration(['neis','edufine']),uniqueItems:true},allow_local_access:{type:'boolean'}},['operation'])},
@@ -59,6 +62,7 @@ export const tools = [
 ];
 export function forRequest(text, attached = []) {
   const names = new Set(['system.status','skill.read','files.list']);
+  if (/품의|학교\s*회계/.test(text)) names.add('edufine.requisition');
   if (attached.length || /hwp|한글|문서.*(?:만들|작성|수정|읽)|보고서/i.test(text))
     tools.filter(t => t.name.startsWith('hangul.')).forEach(t => names.add(t.name));
   if (/메신저|쪽지|대화|교직원.*연락|CBE/i.test(text))

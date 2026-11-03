@@ -1,11 +1,11 @@
 const fs=require('node:fs'),path=require('node:path'),{execFileSync}=require('node:child_process'),{createHash}=require('node:crypto');
-const root=path.resolve(__dirname,'..'),version=require('../package.json').version,dist=path.join(root,'dist'),stage=path.join(dist,'Narae-Hangul-Office-'+version);
+const root=path.resolve(__dirname,'..'),pkg=require('../package.json'),version=pkg.version,product=pkg.naraeProduct==='talk'?'Narae-Talk':'Narae-Hangul-Office',dist=path.join(root,'dist'),stage=path.join(dist,product+'-'+version);
 if(path.dirname(stage)!==dist||path.dirname(dist)!==root)throw new Error('Invalid package path');
 fs.mkdirSync(dist,{recursive:true});fs.rmSync(stage,{recursive:true,force:true});fs.mkdirSync(stage);
-const names=['.gitignore','.gitattributes','.github','src','ui','resources','vendor','skills','scripts','docs','tests','experiments','package.json','package-lock.json','requirements.txt','LICENSE','README.md','THIRD_PARTY_NOTICES.md','설치.cmd','실행.cmd','narae-office.cmd'];
+const names=['.gitignore','.gitattributes','.github','src','ui','resources','vendor','skills','scripts','docs','tests','experiments','package.json','package-lock.json','requirements.txt','LICENSE','README.md','THIRD_PARTY_NOTICES.md','설치.cmd','실행.cmd','narae-office.cmd','narae-talk.cmd','나래톡 실행.cmd','나래톡 설치.cmd'];
 for(const name of names)fs.cpSync(path.join(root,name),path.join(stage,name),{recursive:true,filter:file=>!file.split(path.sep).includes('__pycache__')&&!/\.pyc$/i.test(file)});
 const files=[];function visit(dir){for(const entry of fs.readdirSync(dir,{withFileTypes:true})){const file=path.join(dir,entry.name);if(entry.isSymbolicLink())throw new Error('Symlink is not allowed in source release');if(entry.isDirectory())visit(file);else{if(/\.(exe|dll|pyd|hwp|hwpx|pdf|bin|log|gguf|safetensors|pt)$/i.test(file))throw new Error('Unexpected binary or private artifact: '+file);files.push({file:path.relative(stage,file).replaceAll('\\','/'),sha256:createHash('sha256').update(fs.readFileSync(file)).digest('hex')});}}}visit(stage);
 fs.writeFileSync(path.join(stage,'SOURCE_MANIFEST.json'),JSON.stringify({version,naraeEngineSource:'https://github.com/y5496694/narae_hangul',naraeEngineCommit:'c4ad1460e6b0ead94f7d13814ead8f948470e4fa',files},null,2));
-const archive=path.join(dist,'Narae-Hangul-Office-'+version+'-windows-x64.zip');
+const archive=path.join(dist,product+'-'+version+'-windows-x64.zip');
 execFileSync('powershell.exe',['-NoProfile','-ExecutionPolicy','Bypass','-File',path.join(__dirname,'create-archive.ps1'),'-Source',stage,'-Destination',archive],{windowsHide:true,stdio:'inherit'});
 const digest=createHash('sha256').update(fs.readFileSync(archive)).digest('hex');fs.writeFileSync(path.join(dist,'SHA256SUMS.txt'),digest+'  '+path.basename(archive)+'\n');console.log(JSON.stringify({archive,sha256:digest,sourceFiles:files.length}));

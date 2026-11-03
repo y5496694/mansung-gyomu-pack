@@ -1,0 +1,9 @@
+'use strict';
+const catalog=[
+ {id:'ezedu',name:'나래교무 이지에듀',description:'학교·개인 일정 조회와 입력',icon:'calendar.svg',cli:'이지에듀 일정 CLI',repository:'https://github.com/y5496694/narae-gyomoo_ezedu',version:'a1519abd3dd068e40e1a693e7e85c1d3fb068bcb',url:'https://codeload.github.com/y5496694/narae-gyomoo_ezedu/zip/a1519abd3dd068e40e1a693e7e85c1d3fb068bcb',bytes:12514,sha256:'4ad387b6ac6d836251b7c8d95c408aca04090060c4b6f281d461a5c05eda6762',files:['scripts/easyedu_schedule.py','SKILL.md'],guides:{guide:'SKILL.md'}},
+ {id:'hiclass',name:'나래교무 하이클래스',description:'학부모 소통·알림장·공지 업무',icon:'hiclass.svg',cli:'나래 브라우저 · 하이클래스 스킬',repository:'https://github.com/y5496694/narae_gyomoo_highclass',version:'4aa4a6aac963d1f6bcb378a56a458e0cc482b5be',url:'https://codeload.github.com/y5496694/narae_gyomoo_highclass/zip/4aa4a6aac963d1f6bcb378a56a458e0cc482b5be',bytes:13016,sha256:'eab78af379e27015261ca6f3496f2a8143aee476e1ea0ac22d402d133a603348',files:['skills/narae-gyomu-hiclass/SKILL.md','skills/narae-gyomu-hiclass/references/ui-workflows.md'],guides:{guide:'skills/narae-gyomu-hiclass/SKILL.md',workflows:'skills/narae-gyomu-hiclass/references/ui-workflows.md'}},
+ {id:'movie',name:'나래 무비 메이커',description:'영상 만들기·편집·자막·렌더링',icon:'movie.svg',cli:'나래 무비메이커 독립 CLI',repository:'https://github.com/y5496694/narae-movie-maker',version:'1.0.0',url:'https://github.com/y5496694/narae-movie-maker/releases/download/v1.0.0/NaraeMovieMaker-CLI-1.0.0-win-x64.zip',bytes:512635239,sha256:'ab05437a42518ae9edc470deadade5265d68082fb43bee7a98417c49d6353404',files:['cli/narae.mjs','runtime/narae-engine.exe','사용설명서.txt'],guides:{guide:'사용설명서.txt'}}
+];
+function entry(id){const item=catalog.find(item=>item.id===id);if(!item)throw Error('추가할 친구를 찾을 수 없습니다.');return item;}
+catalog.push(...require('../resources/regional-friends.json'));
+module.exports={catalog,entry};

@@ -1,9 +1,12 @@
 const endpoints={openai:'https://api.openai.com/v1/responses',anthropic:'https://api.anthropic.com/v1/messages'};
 function normalize(raw,defaults={}){
- const provider=['openai','anthropic','local'].includes(raw.provider)?raw.provider:'openai',connectionMode=provider==='local'?'local':['oauth','api'].includes(raw.connectionMode)?raw.connectionMode:'oauth';
+ const legacyCloud=raw.provider===undefined&&(typeof raw.endpoint==='string'||typeof raw.model==='string');
+ const provider=['openai','anthropic','local'].includes(raw.provider)?raw.provider:legacyCloud?'openai':'local',connectionMode=provider==='local'?'local':['oauth','api'].includes(raw.connectionMode)?raw.connectionMode:'oauth';
  const localSource=raw.localSource==='external'?'external':'managed',aiConnections=structuredClone(raw.aiConnections||{'openai:api':{endpoint:raw.endpoint||endpoints.openai,model:raw.model||''}});
  // Migrate the previously shared local slot to its known source without guessing the other source.
  if(aiConnections['local:local']&&!aiConnections['local:'+localSource])aiConnections['local:'+localSource]=structuredClone(aiConnections['local:local']);
+ if(raw.provider==='local'&&!raw.aiConnections&&raw.model)aiConnections['local:'+localSource]={endpoint:raw.endpoint||'http://127.0.0.1:11434/v1',model:raw.model};
+ if(!aiConnections['local:managed'])aiConnections['local:managed']={endpoint:'http://127.0.0.1:11434/v1',model:'narae4'};
  const selected=aiConnections[provider==='local'?'local:'+localSource:provider+':'+connectionMode]||{},browserExistingOptIn=raw.browserExistingOptIn===true&&raw.browserMode==='extension';
  return {...defaults,...raw,provider,connectionMode,aiConnections,model:selected.model||'',endpoint:connectionMode==='oauth'?endpoints[provider]:(selected.endpoint||endpoints[provider]||'http://127.0.0.1:11434/v1'),localSource,browserExistingOptIn,browserMode:browserExistingOptIn?'extension':'isolated'};
 }

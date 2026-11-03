@@ -14,5 +14,5 @@
  const cards=[...topics.children];let expanded=false;
  function filter(){const query=$('guideSearch').value.trim().normalize('NFC').toLocaleLowerCase('ko'),category=$('guideCategory').value;let count=0;for(const card of cards){card.hidden=Boolean(category&&card.dataset.category!==category||query&&!query.split(/\s+/u).every(word=>card.dataset.search.includes(word)));if(!card.hidden)count++;}$('guideResults').textContent=guide.topics.length+'개 영역 중 '+count+'개 표시 · 예시 복사는 작업을 실행하지 않습니다.';$('guideEmpty').hidden=count>0;$('guideCopyStatus').textContent='';}
  $('guideSearch').addEventListener('input',filter);$('guideCategory').addEventListener('change',filter);$('guideExpand').onclick=()=>{expanded=!expanded;for(const card of cards)card.open=expanded;$('guideExpand').textContent=expanded?'모두 접기':'모두 펼치기';$('guideExpand').setAttribute('aria-pressed',String(expanded));};
- $('agentUserGuide').onclick=()=>void window.naraeSettings.open('guide');filter();
+ if($('agentUserGuide'))$('agentUserGuide').onclick=()=>void window.naraeSettings.open('guide');filter();
 })();

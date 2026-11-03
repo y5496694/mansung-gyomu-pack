@@ -3,9 +3,10 @@ const fs=require('node:fs'),path=require('node:path'),os=require('node:os'),net=
 const {spawn}=require('node:child_process'),{once}=require('node:events'),{randomBytes,randomUUID}=require('node:crypto');
 const {validate}=require('./remote-policy.cjs');
 const pause=ms=>new Promise(r=>setTimeout(r,ms));
-const READ=new Set(['read_document','read_live_document','list_files','gyomu_portal_session','gyomu_skill_read','gyomu_cbe_notes','gyomu_cbe_chats','gyomu_cbe_archive','gyomu_wxs','gyomu_wxs_read','gyomu_wxs_attachment']);
-const READ_OPERATIONS={gyomu_cbe_notes:['list','read'],gyomu_cbe_chats:['list','read'],gyomu_cbe_archive:['scan','read'],gyomu_wxs:['doctor','windows','inspect','text','attachments','draft-status'],gyomu_wxs_read:['prepare','open','result']};
+const READ=new Set(['read_document','read_live_document','list_files','gyomu_portal_session','gyomu_skill_read','gyomu_addon_read','gyomu_ezedu','gyomu_cbe_notes','gyomu_cbe_chats','gyomu_cbe_archive','gyomu_wxs','gyomu_wxs_read','gyomu_wxs_attachment']);
+const READ_OPERATIONS={gyomu_ezedu:['list'],gyomu_cbe_notes:['list','read'],gyomu_cbe_chats:['list','read'],gyomu_cbe_archive:['scan','read'],gyomu_wxs:['doctor','windows','inspect','text','attachments','draft-status'],gyomu_wxs_read:['prepare','open','result']};
 const SAFE_BROWSER=new Set(['snapshot','read','tabs','frames','frame','scroll','wait','click','fill','select']);
+const FIXED_FINANCE=new Set(['prepare-input','fill','budget-options','select-budget','enter-items','attach','prepare-save','save','dialog','confirm','verify-save','verify-attachments','prepare-delete','delete','verify-delete']);
 const PROTECTED=/상신|결재|승인|회수|삭제|발송|전송|반려|인증|암호|서명|로그인|비밀번호|결제|구매|주문|저장|등록|신청/;
 function textOf(content){return typeof content==='string'?content:(content||[]).filter(p=>['text','input_text','output_text'].includes(p.type)).map(p=>p.text).join('\n');}
 function candidatesFor(body){
@@ -16,12 +17,13 @@ function candidatesFor(body){
  if(context?.nativeDialog||PROTECTED.test(context?.dialog||''))return [];
  const result=[];
  for(const tool of body.tools||[]){
-  if(!READ.has(tool.name)&&tool.name!=='gyomu_browser')continue;
+  if(!READ.has(tool.name)&&tool.name!=='gyomu_browser'&&tool.name!=='gyomu_edufine_requisition')continue;
   const schema=tool.parameters||{},required=schema.required||[];
   if(!required.length&&Object.keys(schema.properties||{}).length)continue;
   let values=[{}];
   for(const key of required){const s=schema.properties?.[key],options=s?.enum||(Object.hasOwn(s||{},'const')?[s.const]:null);if(!options?.length||options.length>16){values=[];break;}values=values.flatMap(args=>options.map(v=>({...args,[key]:v})));if(values.length>32){values=[];break;}}
   for(const args of values){
+   if(tool.name==='gyomu_edufine_requisition'&&!FIXED_FINANCE.has(args.operation))return [];
    if(READ_OPERATIONS[tool.name]&&!READ_OPERATIONS[tool.name].includes(args.operation))return [];
    if(tool.name==='gyomu_browser'){
     if(!SAFE_BROWSER.has(args.action))return [];

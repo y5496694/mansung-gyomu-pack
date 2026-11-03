@@ -1,0 +1,40 @@
+{
+  "scope": "Actual three weight-trained local models and owned-process switching; not benchmark scores",
+  "data": "D:\\Codex\\tmp\\gyomu-real-ai-D0KeAJ",
+  "home": "D:\\Codex\\workspaces\\narae-gyomu",
+  "results": [
+    {
+      "id": "narae1",
+      "pid": 24596,
+      "status": "completed",
+      "actualStatusToolUsed": true,
+      "jobId": "d8bfd208-77fd-4f1c-9df5-20dedd551dad",
+      "answer": "나래 브라우저: 설치 확인\n나래 한글: 설치 확인\nCBE CLI: 설치 확인\n나래교무포털: 설치 확인\n\n포털·CBE의 실제 로그인 상태는 해당 업무를 조회할 때 확인합니다.\n작성 파일 저장 위치: D:\\Codex\\tmp\\gyomu-real-ai-D0KeAJ\\outputs"
+    },
+    {
+      "id": "narae2",
+      "pid": 30168,
+      "status": "completed",
+      "actualStatusToolUsed": true,
+      "jobId": "74261f38-2a3a-4d26-9582-68d0bb8767cf",
+      "answer": "나래 브라우저: 설치 확인\n나래 한글: 설치 확인\nCBE CLI: 설치 확인\n나래교무포털: 설치 확인\n\n포털·CBE의 실제 로그인 상태는 해당 업무를 조회할 때 확인합니다.\n작성 파일 저장 위치: D:\\Codex\\tmp\\gyomu-real-ai-D0KeAJ\\outputs"
+    },
+    {
+      "id": "narae3",
+      "pid": 30040,
+      "status": "completed",
+      "actualStatusToolUsed": true,
+      "jobId": "3d339234-66c0-45f5-8eb2-6e98c00a754c",
+      "answer": "나래 브라우저: 설치 확인\n나래 한글: 설치 확인\nCBE CLI: 설치 확인\n나래교무포털: 설치 확인\n\n포털·CBE의 실제 로그인 상태는 해당 업무를 조회할 때 확인합니다.\n작성 파일 저장 위치: D:\\Codex\\tmp\\gyomu-real-ai-D0KeAJ\\outputs"
+    }
+  ],
+  "singleOwnedModelVerified": true,
+  "documentJob": {
+    "id": "65411777-2bae-4416-a3a4-e13091082d4f",
+    "status": "completed",
+    "answer": "문서 파일을 만들었습니다.\nD:\\Codex\\tmp\\gyomu-real-ai-D0KeAJ\\outputs\\AI작성확인.hwpx\n나래한글 엔진에서 저장한 내용을 다시 읽어 대조했습니다."
+  },
+  "liveSchoolServiceActions": 0,
+  "actualMessageSends": 0,
+  "weightTrainingPerformed": false
+}

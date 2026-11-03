@@ -1,0 +1,12 @@
+'use strict';
+const fs=require('node:fs'),path=require('node:path'),{randomUUID}=require('node:crypto');
+const extensions=['hwp','hwpx','pdf','docx','xlsx','pptx','txt','csv','png','jpg','jpeg','webp','mp4','mov','webm','mkv','avi','mp3','wav','m4a','srt','ass','nmm','ngt'];
+class TalkAttachments{
+ constructor({output,workspace,nativeImage}){Object.assign(this,{output,workspace,nativeImage});}
+ directory(){const directory=this.output(path.join(this.workspace(),'나래톡-첨부'));fs.mkdirSync(directory,{recursive:true});return directory;}
+ describe(target,name){const result={path:target,name};if(/\.(png|jpe?g|webp)$/i.test(target)&&fs.statSync(target).size<20*1024*1024){try{const image=this.nativeImage.createFromPath(target);if(!image.isEmpty())result.preview=image.resize({width:48,height:48,quality:'good'}).toDataURL();}catch{}}return result;}
+ async importPaths(paths){if(!Array.isArray(paths)||!paths.length||paths.length>50)throw Error('첨부할 파일을 1~50개 선택하세요.');const sources=paths.map(file=>{if(typeof file!=='string'||!path.isAbsolute(file))throw Error('첨부 파일 경로를 확인하세요.');const source=fs.realpathSync(file);if(!fs.statSync(source).isFile())throw Error('폴더 대신 파일을 첨부하세요.');if(!extensions.includes(path.extname(source).slice(1).toLowerCase()))throw Error('지원하는 문서·이미지·영상·음성 파일을 선택하세요.');return source;});const directory=this.directory(),created=[];try{const files=[];for(const source of sources){const name=path.basename(source),target=this.output(path.join(directory,randomUUID()+'-'+name));await fs.promises.copyFile(source,target,fs.constants.COPYFILE_EXCL);created.push(target);files.push(this.describe(target,name));}return files;}catch(error){for(const target of created)await fs.promises.unlink(target).catch(()=>{});throw error;}}
+ async pasteImage(image){if(image.isEmpty())throw Error('붙여넣을 사진이 없습니다.');const name='붙여넣은 사진 '+new Date().toISOString().replace(/[:.]/g,'-')+'.png',target=this.output(path.join(this.directory(),randomUUID()+'.png'));await fs.promises.writeFile(target,image.toPNG(),{flag:'wx'});return this.describe(target,name);}
+ async pasteClipboard(clipboard){for(const item of await clipboard.read()){const type=item.types.find(type=>['image/png','image/jpeg','image/webp','image/bmp'].includes(type));if(type){const blob=await item.getType(type),image=this.nativeImage.createFromBuffer(Buffer.from(await blob.arrayBuffer()));return this.pasteImage(image);}}throw Error('붙여넣을 사진이 없습니다.');}
+}
+module.exports={TalkAttachments,extensions};

@@ -1,0 +1,12 @@
+{
+  "verified": true,
+  "name": "나래교무",
+  "version": "0.1.0",
+  "electron": "44.9.1",
+  "packaged": true,
+  "userData": "D:\\Codex\\tmp\\gyomu-desktop-pYhFi7\\ui",
+  "threeButtons": true,
+  "nativeFilePicker": true,
+  "screenshotRenderer": "same packaged UI via isolated headless Chrome",
+  "syntheticNoSchoolActions": true
+}

@@ -7,6 +7,18 @@ test('six calendar months include both message sources, leap/month boundaries an
  assert.equal(archive.archiveTask('소통 내용 "가상 훈련" 검색해줘',new Date('2026-08-31T00:00:00Z')).from,'2026-02-28');
  assert.equal(archive.archiveTask('소통 내용 "가상 훈련" 검색해줘').query,'가상 훈련');
 });
+test('read-only archives preserve both mailboxes and quoted benchmark content remains a send request',()=>{
+ const prompt='소통메신저 6개월 받은·보낸 쪽지와 모든 대화방을 탐색해서 제출 후보 목록을 정리해 줘. 메시지는 보내지 마.';
+ const t=archive.archiveTask(prompt);assert.equal(t.box,'all');assert.deepEqual(t.kinds,['note','chat']);
+ assert.equal(archive.archiveTask('소통 쪽지 검색해서 보내 줘'),null);
+ assert.equal(archive.archiveTask('소통 받은 쪽지 6개월 탐색').box,'received');
+ assert.equal(archive.archiveTask('소통 보낸 쪽지 6개월 탐색').box,'sent');
+ const {taskFor}=require('../src/agent-task.cjs');
+ const task=taskFor('소통메신저 쪽지를 가상초 가상담당에게 보내 줘. 제목은 "벤치 테스트". 본문은 "벤치 테스트입니다."');
+ assert.equal(task.area,'cbe');assert.equal(task.send,true);assert.equal(task.message,'벤치 테스트입니다.');
+ assert.equal(taskFor('나래오피스 벤치 상태 알려줘').area,'benchmark');
+});
+
 test('archive reads all full pages, fixes the note anchor and searches messages rather than room names',async()=>{
  const directory=temporary(),calls=[],notes=Array.from({length:101},(_,i)=>({id:'n'+i,date:'2039-06-01',title:'가상 제출',type:i%2?'S':'R'}));
  try{const result=await archive.scan({from:'2039-01-01',to:'2039-06-30',kinds:['note','chat'],query:'최종 제출'}, {directory,call:async a=>{calls.push(a);const page=Number(a[a.indexOf('--page')+1]||1);if(a[0]==='notes'&&a[1]==='list'){if(page===2)assert.equal(a[a.indexOf('--offset')+1],'20390601090000');return {items:notes.slice((page-1)*100,page*100),offset:'20390601090000',total:101};}if(a[0]==='notes')return {...notes.find(n=>n.id===a[2]),text:'최종 제출은 2039-06-20까지 가상기관에 회신. 이전 요청은 취소.'};if(a[1]==='list'){assert(!a.includes('--search'));return {items:[{id:'r1',title:'검색어 없는 방'}]};}return {items:[{id:'m1',sender:'가상담당',date:'2039-06-02',text:'최종 제출 기한 2039-06-21. 제출처 가상실.'}]};}});

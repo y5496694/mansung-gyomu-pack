@@ -1,0 +1,350 @@
+[
+  {
+    "id": "messenger_goe",
+    "name": "GOE메신저",
+    "region": "경기",
+    "category": "messenger",
+    "description": "경기 · 로컬 캐시 조회 CLI · 서버 전송 미검증",
+    "icon": "messenger-goe.png",
+    "cli": "GOE메신저 CLI",
+    "repository": "https://github.com/y5496694/goe-messenger-cli",
+    "version": "1bc403390850a2ad21f4e371e18a990f36c7c2d1",
+    "url": "https://codeload.github.com/y5496694/goe-messenger-cli/zip/1bc403390850a2ad21f4e371e18a990f36c7c2d1",
+    "bytes": 58943,
+    "sha256": "cfc85a6787295e98f4d6bcddfaf112e8f4146472ce02dffa6c0605e38f8d593b",
+    "files": [
+      "narae.mjs",
+      "cli.mjs",
+      "drivers/profiles.json",
+      "skills/goe-messenger-cli/SKILL.md"
+    ],
+    "guides": {
+      "guide": "skills/goe-messenger-cli/SKILL.md"
+    }
+  },
+  {
+    "id": "messenger_gbe",
+    "name": "GBeeTalk 지비톡",
+    "region": "경북",
+    "category": "messenger",
+    "description": "경북 · 로컬 캐시 조회 CLI · 서버 전송 미검증",
+    "icon": "messenger-gbe.png",
+    "cli": "GBeeTalk 지비톡 CLI",
+    "repository": "https://github.com/y5496694/gbeetalk-cli",
+    "version": "510fa022ff0c2ca82f91f6ced1715c05ee3e9e6c",
+    "url": "https://codeload.github.com/y5496694/gbeetalk-cli/zip/510fa022ff0c2ca82f91f6ced1715c05ee3e9e6c",
+    "bytes": 58568,
+    "sha256": "51aedd0c45dcb441b7dba09228fa7db7f1838126bbaeebd712cd6b5a28c50cb6",
+    "files": [
+      "narae.mjs",
+      "cli.mjs",
+      "drivers/profiles.json",
+      "skills/gbeetalk-cli/SKILL.md"
+    ],
+    "guides": {
+      "guide": "skills/gbeetalk-cli/SKILL.md"
+    }
+  },
+  {
+    "id": "messenger_jbe",
+    "name": "JBEdu Messenger+",
+    "region": "전북",
+    "category": "messenger",
+    "description": "전북 · 로컬 캐시 조회 CLI · 서버 전송 미검증",
+    "icon": "messenger-jbe.png",
+    "cli": "JBEdu Messenger+ CLI",
+    "repository": "https://github.com/y5496694/jbedu-messenger-cli",
+    "version": "d867f720f662442da8e1ddb36ef6b1a98c893862",
+    "url": "https://codeload.github.com/y5496694/jbedu-messenger-cli/zip/d867f720f662442da8e1ddb36ef6b1a98c893862",
+    "bytes": 59094,
+    "sha256": "b797d47c316ab2b17351ecc5bfadd640756a25caf67e5fde644c63b976c6db44",
+    "files": [
+      "narae.mjs",
+      "cli.mjs",
+      "drivers/profiles.json",
+      "skills/jbedu-messenger-cli/SKILL.md"
+    ],
+    "guides": {
+      "guide": "skills/jbedu-messenger-cli/SKILL.md"
+    }
+  },
+  {
+    "id": "messenger_kwe",
+    "name": "이음 EUM",
+    "region": "강원",
+    "category": "messenger",
+    "description": "강원 · 로컬 캐시 조회 CLI · 서버 전송 미검증",
+    "icon": "messenger-kwe.png",
+    "cli": "이음 EUM CLI",
+    "repository": "https://github.com/y5496694/eum-messenger-cli",
+    "version": "b76f98f6c0f0836bcb5dc25310b31529b7053611",
+    "url": "https://codeload.github.com/y5496694/eum-messenger-cli/zip/b76f98f6c0f0836bcb5dc25310b31529b7053611",
+    "bytes": 58938,
+    "sha256": "110f3c5c36e2bce0ffd241aab17e044c65d5a18a26ad9457343c5ab46d96d80f",
+    "files": [
+      "narae.mjs",
+      "cli.mjs",
+      "drivers/profiles.json",
+      "skills/eum-messenger-cli/SKILL.md"
+    ],
+    "guides": {
+      "guide": "skills/eum-messenger-cli/SKILL.md"
+    }
+  },
+  {
+    "id": "messenger_gne",
+    "name": "아이좋아 메신저",
+    "region": "경남",
+    "category": "messenger",
+    "description": "경남 · 로컬 캐시 조회 CLI · 서버 전송 미검증",
+    "icon": "messenger-gne.png",
+    "cli": "아이좋아 메신저 CLI",
+    "repository": "https://github.com/y5496694/ijoa-messenger-cli",
+    "version": "fcc7e645c39c32799b6f6c844910ed9856d52f2c",
+    "url": "https://codeload.github.com/y5496694/ijoa-messenger-cli/zip/fcc7e645c39c32799b6f6c844910ed9856d52f2c",
+    "bytes": 59029,
+    "sha256": "443ca1726c8f9c291ec268d06f4d1cce296e8100c6467ce53e461e7f6e434ed2",
+    "files": [
+      "narae.mjs",
+      "cli.mjs",
+      "drivers/profiles.json",
+      "skills/ijoa-messenger-cli/SKILL.md"
+    ],
+    "guides": {
+      "guide": "skills/ijoa-messenger-cli/SKILL.md"
+    }
+  },
+  {
+    "id": "messenger_jje",
+    "name": "제주특별자치도교육청 메신저",
+    "region": "제주",
+    "category": "messenger",
+    "description": "제주 · 로컬 캐시 조회 CLI · 서버 전송 미검증",
+    "icon": "messenger-jje.png",
+    "cli": "제주특별자치도교육청 메신저 CLI",
+    "repository": "https://github.com/y5496694/jeju-education-messenger-cli",
+    "version": "c34c8dab3ad056114e95cb779e6e959b0318962e",
+    "url": "https://codeload.github.com/y5496694/jeju-education-messenger-cli/zip/c34c8dab3ad056114e95cb779e6e959b0318962e",
+    "bytes": 59802,
+    "sha256": "39fa990fb98d42f68c0a7fb46c9a0bcd708ab836d088e015fb3d01cd50e998c3",
+    "files": [
+      "narae.mjs",
+      "cli.mjs",
+      "drivers/profiles.json",
+      "skills/jeju-education-messenger-cli/SKILL.md"
+    ],
+    "guides": {
+      "guide": "skills/jeju-education-messenger-cli/SKILL.md"
+    }
+  },
+  {
+    "id": "messenger_sen",
+    "name": "서울 교직원 메신저",
+    "region": "서울",
+    "category": "messenger",
+    "description": "서울 · 전용 CLI 준비 중 · 공통 UIA 관찰 도구",
+    "icon": "messenger.svg",
+    "cli": "지역 메신저 공통 CLI",
+    "repository": "https://github.com/y5496694/narae-messenger-cli",
+    "version": "a7dcf2adbe7bf73f7f57781940860e8e5e053355",
+    "url": "https://codeload.github.com/y5496694/narae-messenger-cli/zip/a7dcf2adbe7bf73f7f57781940860e8e5e053355",
+    "bytes": 56676,
+    "sha256": "e98cd2417bcacd51a6c15d16efa6cef2ae486a014d0ba238b9dc5775a9d291c9",
+    "files": [
+      "cli.mjs",
+      "skills/narae-regional-messenger/SKILL.md"
+    ],
+    "guides": {
+      "guide": "skills/narae-regional-messenger/SKILL.md"
+    }
+  },
+  {
+    "id": "messenger_pen",
+    "name": "펜메신저",
+    "region": "부산",
+    "category": "messenger",
+    "description": "부산 · 전용 CLI 준비 중 · 공통 UIA 관찰 도구",
+    "icon": "messenger.svg",
+    "cli": "지역 메신저 공통 CLI",
+    "repository": "https://github.com/y5496694/narae-messenger-cli",
+    "version": "a7dcf2adbe7bf73f7f57781940860e8e5e053355",
+    "url": "https://codeload.github.com/y5496694/narae-messenger-cli/zip/a7dcf2adbe7bf73f7f57781940860e8e5e053355",
+    "bytes": 56676,
+    "sha256": "e98cd2417bcacd51a6c15d16efa6cef2ae486a014d0ba238b9dc5775a9d291c9",
+    "files": [
+      "cli.mjs",
+      "skills/narae-regional-messenger/SKILL.md"
+    ],
+    "guides": {
+      "guide": "skills/narae-regional-messenger/SKILL.md"
+    }
+  },
+  {
+    "id": "messenger_dge",
+    "name": "대구 교직원 메신저",
+    "region": "대구",
+    "category": "messenger",
+    "description": "대구 · 전용 CLI 준비 중 · 공통 UIA 관찰 도구",
+    "icon": "messenger.svg",
+    "cli": "지역 메신저 공통 CLI",
+    "repository": "https://github.com/y5496694/narae-messenger-cli",
+    "version": "a7dcf2adbe7bf73f7f57781940860e8e5e053355",
+    "url": "https://codeload.github.com/y5496694/narae-messenger-cli/zip/a7dcf2adbe7bf73f7f57781940860e8e5e053355",
+    "bytes": 56676,
+    "sha256": "e98cd2417bcacd51a6c15d16efa6cef2ae486a014d0ba238b9dc5775a9d291c9",
+    "files": [
+      "cli.mjs",
+      "skills/narae-regional-messenger/SKILL.md"
+    ],
+    "guides": {
+      "guide": "skills/narae-regional-messenger/SKILL.md"
+    }
+  },
+  {
+    "id": "messenger_ice",
+    "name": "아이스톡",
+    "region": "인천",
+    "category": "messenger",
+    "description": "인천 · 전용 CLI 준비 중 · 공통 UIA 관찰 도구",
+    "icon": "messenger.svg",
+    "cli": "지역 메신저 공통 CLI",
+    "repository": "https://github.com/y5496694/narae-messenger-cli",
+    "version": "a7dcf2adbe7bf73f7f57781940860e8e5e053355",
+    "url": "https://codeload.github.com/y5496694/narae-messenger-cli/zip/a7dcf2adbe7bf73f7f57781940860e8e5e053355",
+    "bytes": 56676,
+    "sha256": "e98cd2417bcacd51a6c15d16efa6cef2ae486a014d0ba238b9dc5775a9d291c9",
+    "files": [
+      "cli.mjs",
+      "skills/narae-regional-messenger/SKILL.md"
+    ],
+    "guides": {
+      "guide": "skills/narae-regional-messenger/SKILL.md"
+    }
+  },
+  {
+    "id": "messenger_gen",
+    "name": "광주 교직원 메신저",
+    "region": "광주",
+    "category": "messenger",
+    "description": "광주 · 전용 CLI 준비 중 · 공통 UIA 관찰 도구",
+    "icon": "messenger.svg",
+    "cli": "지역 메신저 공통 CLI",
+    "repository": "https://github.com/y5496694/narae-messenger-cli",
+    "version": "a7dcf2adbe7bf73f7f57781940860e8e5e053355",
+    "url": "https://codeload.github.com/y5496694/narae-messenger-cli/zip/a7dcf2adbe7bf73f7f57781940860e8e5e053355",
+    "bytes": 56676,
+    "sha256": "e98cd2417bcacd51a6c15d16efa6cef2ae486a014d0ba238b9dc5775a9d291c9",
+    "files": [
+      "cli.mjs",
+      "skills/narae-regional-messenger/SKILL.md"
+    ],
+    "guides": {
+      "guide": "skills/narae-regional-messenger/SKILL.md"
+    }
+  },
+  {
+    "id": "messenger_dje",
+    "name": "대전 교직원 메신저",
+    "region": "대전",
+    "category": "messenger",
+    "description": "대전 · 전용 CLI 준비 중 · 공통 UIA 관찰 도구",
+    "icon": "messenger.svg",
+    "cli": "지역 메신저 공통 CLI",
+    "repository": "https://github.com/y5496694/narae-messenger-cli",
+    "version": "a7dcf2adbe7bf73f7f57781940860e8e5e053355",
+    "url": "https://codeload.github.com/y5496694/narae-messenger-cli/zip/a7dcf2adbe7bf73f7f57781940860e8e5e053355",
+    "bytes": 56676,
+    "sha256": "e98cd2417bcacd51a6c15d16efa6cef2ae486a014d0ba238b9dc5775a9d291c9",
+    "files": [
+      "cli.mjs",
+      "skills/narae-regional-messenger/SKILL.md"
+    ],
+    "guides": {
+      "guide": "skills/narae-regional-messenger/SKILL.md"
+    }
+  },
+  {
+    "id": "messenger_use",
+    "name": "울산 교직원 메신저",
+    "region": "울산",
+    "category": "messenger",
+    "description": "울산 · 전용 CLI 준비 중 · 공통 UIA 관찰 도구",
+    "icon": "messenger.svg",
+    "cli": "지역 메신저 공통 CLI",
+    "repository": "https://github.com/y5496694/narae-messenger-cli",
+    "version": "a7dcf2adbe7bf73f7f57781940860e8e5e053355",
+    "url": "https://codeload.github.com/y5496694/narae-messenger-cli/zip/a7dcf2adbe7bf73f7f57781940860e8e5e053355",
+    "bytes": 56676,
+    "sha256": "e98cd2417bcacd51a6c15d16efa6cef2ae486a014d0ba238b9dc5775a9d291c9",
+    "files": [
+      "cli.mjs",
+      "skills/narae-regional-messenger/SKILL.md"
+    ],
+    "guides": {
+      "guide": "skills/narae-regional-messenger/SKILL.md"
+    }
+  },
+  {
+    "id": "messenger_sje",
+    "name": "세종 교직원 메신저",
+    "region": "세종",
+    "category": "messenger",
+    "description": "세종 · 전용 CLI 준비 중 · 공통 UIA 관찰 도구",
+    "icon": "messenger.svg",
+    "cli": "지역 메신저 공통 CLI",
+    "repository": "https://github.com/y5496694/narae-messenger-cli",
+    "version": "a7dcf2adbe7bf73f7f57781940860e8e5e053355",
+    "url": "https://codeload.github.com/y5496694/narae-messenger-cli/zip/a7dcf2adbe7bf73f7f57781940860e8e5e053355",
+    "bytes": 56676,
+    "sha256": "e98cd2417bcacd51a6c15d16efa6cef2ae486a014d0ba238b9dc5775a9d291c9",
+    "files": [
+      "cli.mjs",
+      "skills/narae-regional-messenger/SKILL.md"
+    ],
+    "guides": {
+      "guide": "skills/narae-regional-messenger/SKILL.md"
+    }
+  },
+  {
+    "id": "messenger_cne",
+    "name": "충남 교직원 메신저",
+    "region": "충남",
+    "category": "messenger",
+    "description": "충남 · 전용 CLI 준비 중 · 공통 UIA 관찰 도구",
+    "icon": "messenger.svg",
+    "cli": "지역 메신저 공통 CLI",
+    "repository": "https://github.com/y5496694/narae-messenger-cli",
+    "version": "a7dcf2adbe7bf73f7f57781940860e8e5e053355",
+    "url": "https://codeload.github.com/y5496694/narae-messenger-cli/zip/a7dcf2adbe7bf73f7f57781940860e8e5e053355",
+    "bytes": 56676,
+    "sha256": "e98cd2417bcacd51a6c15d16efa6cef2ae486a014d0ba238b9dc5775a9d291c9",
+    "files": [
+      "cli.mjs",
+      "skills/narae-regional-messenger/SKILL.md"
+    ],
+    "guides": {
+      "guide": "skills/narae-regional-messenger/SKILL.md"
+    }
+  },
+  {
+    "id": "messenger_jne",
+    "name": "전남메신저",
+    "region": "전남",
+    "category": "messenger",
+    "description": "전남 · 전용 CLI 준비 중 · 공통 UIA 관찰 도구",
+    "icon": "messenger.svg",
+    "cli": "지역 메신저 공통 CLI",
+    "repository": "https://github.com/y5496694/narae-messenger-cli",
+    "version": "a7dcf2adbe7bf73f7f57781940860e8e5e053355",
+    "url": "https://codeload.github.com/y5496694/narae-messenger-cli/zip/a7dcf2adbe7bf73f7f57781940860e8e5e053355",
+    "bytes": 56676,
+    "sha256": "e98cd2417bcacd51a6c15d16efa6cef2ae486a014d0ba238b9dc5775a9d291c9",
+    "files": [
+      "cli.mjs",
+      "skills/narae-regional-messenger/SKILL.md"
+    ],
+    "guides": {
+      "guide": "skills/narae-regional-messenger/SKILL.md"
+    }
+  }
+]

@@ -50,7 +50,9 @@ test('PDF open uses only the unique observed read-only server path',()=>{
   files[0].atSancbox=false;assert.throws(()=>c.wxsAction('attachment_open',{name:'합성.pdf'}));
   files[0].atSancbox=true;c.rInfo.appType='sancgian';assert.throws(()=>c.wxsAction('attachment_open',{name:'합성.pdf'}));
   assert.equal(opened.length,0);c.rInfo.appType='sancview';
-  assert.equal(c.wxsAction('attachment_open',{name:'합성.pdf'}).handler_returned,true);
+  const result=c.wxsAction('attachment_open',{name:'합성.pdf'});
+  assert.equal(result.handler_returned,true);
+  assert.equal(result.viewer_open_verified,false);
   assert.deepEqual(opened,['observed-server-path']);
 });
 test('route review proof requires the original native guard and processing gate',()=>{

@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "recommended": "narae3",
+  "recommended": "narae4",
   "models": [
     {
       "id": "narae1",
@@ -90,27 +90,29 @@
         "path": "Qwen3.5-2B-Q4_K_M.gguf",
         "bytes": 1280835840,
         "sha256": "aaf42c8b7c3cab2bf3d69c355048d4a0ee9973d48f16c731c0520ee914699223",
-        "repoId": "unsloth/Qwen3.5-2B-GGUF",
-        "revision": "f6d5376be1edb4d416d56da11e5397a961aca8ae"
+        "repoId": "inhow/Narae4-Qwen3.5-2B-Office-LoRA-v1",
+        "revision": "9710629d49829edf462680278b94f282b8b5b480"
       },
       "adapter": {
         "path": "Narae4-Qwen3.5-2B-Office-LoRA-v1-f32.gguf",
         "bytes": 2557408,
-        "sha256": "19f20486e744bcb9636efcdaf6583c1b9bef545733987a8837e63afdfeecf105"
+        "sha256": "19f20486e744bcb9636efcdaf6583c1b9bef545733987a8837e63afdfeecf105",
+        "repoId": "inhow/Narae4-Qwen3.5-2B-Office-LoRA-v1",
+        "revision": "9710629d49829edf462680278b94f282b8b5b480"
       },
       "projector": {
         "path": "mmproj-F16.gguf",
         "bytes": 668227264,
         "sha256": "7035e9cb8d7c6a9681d07eef9a364783e86ea4cd73faab2eabb4f43a101830c7",
-        "repoId": "unsloth/Qwen3.5-2B-GGUF",
-        "revision": "f6d5376be1edb4d416d56da11e5397a961aca8ae"
+        "repoId": "inhow/Narae4-Qwen3.5-2B-Office-LoRA-v1",
+        "revision": "9710629d49829edf462680278b94f282b8b5b480"
       },
       "decision": {
         "path": "d1-2B-Q4_K_M.gguf",
         "bytes": 1099629888,
         "sha256": "adca5789ad30ae6027e8e936749bb9f19673097492ab26fa1c5b69643ca50b4b",
-        "repoId": "LiquidAI/d1-2B-GGUF",
-        "revision": "e968f6575f0d4fad928312d7af15cad90fd365c0"
+        "repoId": "inhow/Narae4-Qwen3.5-2B-Office-LoRA-v1",
+        "revision": "9710629d49829edf462680278b94f282b8b5b480"
       },
       "decisionAlias": "Narae4-d1-2B",
       "strength": 1,
@@ -122,7 +124,9 @@
       "license": "Apache-2.0 / LFM Open License v1.0",
       "researchOnly": false,
       "experimental": true,
-      "note": "Office LoRA v1 · 이미지 분석 · 선택형 판단기 · 미리보기"
+      "note": "Office LoRA v1 · 이미지 분석 · 선택형 판단기 · 미리보기",
+      "repoId": "inhow/Narae4-Qwen3.5-2B-Office-LoRA-v1",
+      "revision": "9710629d49829edf462680278b94f282b8b5b480"
     }
   ]
 }

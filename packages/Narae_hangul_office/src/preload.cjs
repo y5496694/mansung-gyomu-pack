@@ -1,2 +1,2 @@
-const {contextBridge,ipcRenderer}=require('electron');
-contextBridge.exposeInMainWorld('narae',{call:(name,args)=>ipcRenderer.invoke('narae:call',name,args),onEvent:callback=>{const listener=(_event,event)=>callback(event);ipcRenderer.on('narae:event',listener);return()=>ipcRenderer.removeListener('narae:event',listener);}});
+const {contextBridge,ipcRenderer,webUtils}=require('electron');
+contextBridge.exposeInMainWorld('narae',{call:(name,args)=>ipcRenderer.invoke('narae:call',name,args),importFiles:files=>ipcRenderer.invoke('narae:call','talkImportAttachments',{paths:Array.from(files,file=>webUtils.getPathForFile(file))}),onEvent:callback=>{const listener=(_event,event)=>callback(event);ipcRenderer.on('narae:event',listener);return()=>ipcRenderer.removeListener('narae:event',listener);}});

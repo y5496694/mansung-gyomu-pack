@@ -14,6 +14,6 @@ test('compact inspection has one paragraph representation and explicit paginatio
 test('Office skill installation preserves the independent Hangul skill',()=>{
  const directory=fs.mkdtempSync(path.join(os.tmpdir(),'office-skills-'));
  try{fs.mkdirSync(path.join(directory,'narae-hangul'));const file=path.join(directory,'narae-hangul/SKILL.md');fs.writeFileSync(file,'independent');
-  const result=require('../scripts/install-skills.cjs').install({directory});assert.deepEqual(result.installed,['narae-hangul-office']);assert.equal(fs.readFileSync(file,'utf8'),'independent');
+  const result=require('../scripts/install-skills.cjs').install({directory,product:'Office'});assert.deepEqual(result.installed,['narae-hangul-office']);assert.equal(fs.readFileSync(file,'utf8'),'independent');
  }finally{fs.rmSync(directory,{recursive:true,force:true});}
 });

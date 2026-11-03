@@ -1,0 +1,8 @@
+{
+  "schema": 1,
+  "llama": {
+    "path": "runtime/llama/llama-server.exe",
+    "sha256": "6a4635aeb35656153d4bfeeddf761d24ed84aada9c9108d580737cbed465141b"
+  },
+  "python": "runtime/python/python.exe"
+}

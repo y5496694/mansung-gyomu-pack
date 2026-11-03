@@ -1,0 +1,5 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {Tools} from '../src/tools.mjs';
+import {tools,forRequest} from '../src/catalog.mjs';
+test('standalone requisition language offers the typed finance tool and calculates without starting Chrome',async()=>{const t=new Tools({status:()=>({})});t.browserCall=()=>{throw Error('No browser for a local draft');};const result=await t.call('edufine.requisition',{operation:'draft',draft:{title:'합성 재료',items:[{name:'종이',quantity:'0.5',unitPrice:200}]}});assert.equal(result.draft.total,100);assert.equal(result.saved,false);assert.equal(result.submitted,false);assert(forRequest('학교회계 품의목록 조회').some(t=>t.name==='edufine.requisition'));const tool=tools.find(t=>t.name==='edufine.requisition');assert(tool.parameters.properties.operation.enum.includes('save'));await assert.rejects(t.call('edufine.requisition',{operation:'save',id:'unowned',digest:'invented'}),/미리보기|ID\/digest/);await assert.rejects(t.call('edufine.requisition',{operation:'submit'}));});

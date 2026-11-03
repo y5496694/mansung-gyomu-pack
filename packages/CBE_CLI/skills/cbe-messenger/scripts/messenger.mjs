@@ -442,9 +442,21 @@ export class Messenger {
     const d=await this.query('/pc/message/sessionlist',{pageNo:page,pageSize:limit,searchValue:search,searchType:'nic',nelStatus:box,offset});
     return {page,limit,total:knownCount(d.LIST_COUNT),items:d.LIST.map(r=>({id:r.LCODE,lastMessageId:r.NMC_CODE,title:plain(r.NMU_CHAT_NAME||r.CHAT_TITLE||r.NIC),participants:r.CHAT_USER_COUNT,date:r.REGDATE,preview:plain(r.CONTENTS),type:r.NMS_TYPE,offset:r.NMU_OFFSET}))};
   }
-  async messages(id,{page=1,limit=30,offset=0}={}) {
-    const d=await this.messageData(id,{page,limit,offset});
-    return {id,page,limit,title:plain(d.CHAT_INFO?.TITLE),items:d.LIST.map(m=>({id:m.NMC_CODE,number:m.NMC_NO,sender:m.NUR_NIC,senderId:m.NUR_UUID,date:m.NMC_REGDATE,type:m.NMC_CTYPE,text:(m.NMC_WITHDRAW_FLAG==='Y'||m.DELETE_YN==='Y')?'[삭제 또는 회수된 메시지]':chatText(m),attachment:m.MAF_ORI_NAME?{name:m.MAF_ORI_NAME,size:m.MAF_FILE_SIZE}:null}))};
+  async messages(id,{page=1,limit=30,offset=0,chars=12000}={}) {
+    const d=await this.messageData(id,{page,limit,offset,contentsLength:chars});
+    return {id,page,limit,title:plain(d.CHAT_INFO?.TITLE),items:d.LIST.map(m=>({id:m.NMC_CODE,number:m.NMC_NO,sender:m.NUR_NIC,senderId:m.NUR_UUID,date:m.NMC_REGDATE,type:m.NMC_CTYPE,text:(m.NMC_WITHDRAW_FLAG==='Y'||m.DELETE_YN==='Y')?'[삭제 또는 회수된 메시지]':chatText(m),excerpted:chatText(m).length>=chars,attachment:m.MAF_ORI_NAME||m.FILE_LIST?.length?{name:m.MAF_ORI_NAME||'첨부파일',size:m.MAF_FILE_SIZE,count:m.FILE_LIST?.length||1}:null}))};
+  }
+  async downloadChat(id,{messageId,outDir}={}){
+    if(!isId(id)||!isId(messageId)||!outDir?.trim())throw Error('대화방 ID, 메시지 ID 및 --out-dir을 확인하세요.');
+    let message;const seen=new Set();
+    for(let page=1;page<=1000;page++){const d=await this.messageData(id,{page,limit:100});if(!Array.isArray(d.LIST))throw Error('대화 메시지 목록을 확인할 수 없습니다.');for(const m of d.LIST){if(!m.NMC_CODE||seen.has(m.NMC_CODE))throw Error('대화 페이지가 중복되었습니다.');seen.add(m.NMC_CODE);}message=d.LIST.find(m=>m.NMC_CODE===messageId);if(message||d.LIST.length<100)break;}
+    if(!message)throw Error('해당 대화방에서 메시지를 찾지 못했습니다.');
+    if(message.NMC_WITHDRAW_FLAG==='Y'||message.DELETE_YN==='Y'||message.NMC_FILEYN==='A'||message.NMC_SCODE&&message.NMC_SCODE!==id)throw Error('삭제·회수되었거나 지원하지 않는 대화 첨부입니다.');
+    const settings=JSON.parse(await this.evaluate(`JSON.stringify({account:common_activityData.getData('nurUuid'),allowed:common_activityData.getData('permission').PC.P07,now:common_controller.getTodayString()})`));
+    if(!isId(settings.account)||settings.allowed!=='Y')throw Error('앱에서 첨부파일 다운로드 권한이 제한되었습니다.');
+    const entries=message.FILE_LIST?.length?message.FILE_LIST:[message],files=entries.map((f,i)=>{if(!f.MAF_ORI_NAME||f.VALID_YN!=='Y'||f.DELETE_YN==='Y'||f.VALID_DATE&&(!/^\d{14,17}$/.test(f.VALID_DATE)||!/^\d{14,17}$/.test(settings.now)||f.VALID_DATE<settings.now))throw Error('만료·삭제된 대화 첨부입니다.');if(typeof f.MAF_FILEURL!=='string'||!/^\/upload\/(?:message|chat)\/[-A-Za-z0-9_./]+$/.test(f.MAF_FILEURL)||f.MAF_FILEURL.split('/').some(p=>['.','..',''].includes(p)&&p!==''))throw Error('지원하지 않는 대화 첨부 경로입니다.');return {id:f.MAF_CODE||messageId+'-'+i,name:downloadName(f.MAF_ORI_NAME),url:f.MAF_FILEURL};});
+    await mkdir(resolve(outDir),{recursive:true});const directory=await realpath(resolve(outDir)),result={roomId:id,messageId,downloaded:false,verified:false,files:[],background:true};
+    try{for(const [i,file]of files.entries()){const target=files.length>1?join(directory,String(i+1)):directory;await mkdir(target,{recursive:true});result.files.push(await this.downloadAttachment(file,target,settings.account));}return {...result,downloaded:true,verified:true};}catch(error){error.receipt={...result,partial:result.files.length>0,retry:false};throw error;}
   }
   async messageData(id,{page=1,limit=30,offset=0,contentsLength=500}={}){
     const params={pageNo:page,pageSize:limit,scode:id,ruids:'',mode:'',offset,contentsLength,type:'new',newMessageClick:false};

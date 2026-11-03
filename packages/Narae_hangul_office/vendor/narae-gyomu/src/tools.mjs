@@ -14,6 +14,7 @@ const hangulRoot = path.join(APP, 'packages/Narae_hangul_office/skills/narae-han
 const officeRoot = () => process.env.NARAE_OFFICE_ROOT || readJSON(path.join(process.env.CODEX_HOME||path.join(process.env.USERPROFILE||'.','.codex'),'skills/narae-hangul-office/runtime.json'),{}).officeRoot || path.join(process.env.LOCALAPPDATA||'.','Programs/NaraeHangulOffice');
 const portalRoot = path.join(APP, 'packages/narae_gyomoo_portal/skills');
 const portalLogin = createRequire(import.meta.url)(path.join(portalRoot,'narae-gyomu-work-portal/scripts/portal-login.cjs'));
+const {SchoolAccounting}=createRequire(import.meta.url)(path.join(portalRoot,'narae-gyomu-edufine/scripts/school-accounting.cjs'));
 const cbeEntry = path.join(APP, 'packages/CBE_CLI/cli.mjs');
 const wxsEntry = path.join(portalRoot, 'wxs-cli/scripts/wxs_cli.py');
 const skillPaths = {
@@ -31,6 +32,7 @@ export class Tools {
   constructor(models, {headed = true, subprocess = run} = {}) {
     this.models = models; this.headed = headed; this.subprocess = subprocess;
     this.browser = null; this.pending = new Map(); this.approvedFiles = new Map();
+    this.downloadRoot=OUTPUTS;
     this.people = new Map(); this.jobs = new Map();
     this.windows = new Set();
     this.wxsOptionDialogs = new Map();
@@ -134,6 +136,11 @@ export class Tools {
     if (signal?.aborted) throw new Fault('CANCELLED', '작업을 중단했습니다.');
     if (!a || typeof a !== 'object' || Array.isArray(a)) throw new Fault('ARGUMENTS', '인자는 JSON 객체로 지정하세요.');
     switch (name) {
+      case 'edufine.requisition': {
+        if(a.files)a={...a,files:a.files.map(file=>this.input(file))};
+        this.accounting ||= new SchoolAccounting({browser:args=>this.browserCall(args),outputDirectory:path.join(DATA,'jobs/requisition-files')});
+        return this.accounting.execute(a,signal);
+      }
       case 'system.status': {
         let browser;
         try {browser = browserPath();} catch {browser = null;}
@@ -178,7 +185,10 @@ export class Tools {
         try{return await portalLogin.login(a,{cfg,browser:this.browser,state:this.portalLoginState,signal,readProfile:portalLogin.loadProfile});}
         catch(error){if(signal?.aborted)throw new Fault('CANCELLED','로그인을 중단했습니다.');return {authenticated:false,complete:false,stage:'runtime_unconfirmed',message:'로그인 경로를 확인하지 못했습니다. 현재 독립 브라우저를 보존합니다.'};}
       }
-      case 'browser': return this.browserCall(a);
+      case 'browser': {
+        if(a.action==='download'){const target=path.resolve(a.path||'');if(!target.startsWith(path.resolve(this.downloadRoot)+path.sep))throw new Fault('DOWNLOAD_PATH','다운로드는 현재 작업의 출력 폴더 안에 새 파일로 저장하세요.');a={...a,path:target};}
+        return this.browserCall(a.action==='upload'?{...a,files:(a.files||[]).map(file=>this.input(file))}:a);
+      }
       case 'cbe.search': {
         const result = await this.cbe(['users','search',a.name,'--scope',a.scope || 'auto','--page',String(a.page || 1),'--limit','100'],signal);
         for (const person of result.items || []) this.people.set(person.id, person);

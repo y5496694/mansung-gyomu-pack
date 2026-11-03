@@ -39,6 +39,8 @@ narae-browser press Enter --session work
 - `open`, `click`, `back`, `snapshot`은 페이지 상태와 ref 목록을 돌려줍니다.
 - **새 snapshot·이동·입력 뒤에는 이전 ref를 폐기**합니다. 만료된 ref는 `STALE_REF` 오류이며 다른 요소를 대신 누르지 않습니다.
 - `fill`, `select`, `press`, `scroll`, `wait`, `tabs`, `tab`도 지원합니다. 전체 계약은 `narae-browser schema`로 확인합니다.
+- `type REF TEXT`는 실제 키 입력과 삭제 키를 거칩니다. Nexacro처럼 `fill`의 표시 문자열만으로 내부 값이 확정되지 않는 입력에서 사용하고 Tab 후 값을 다시 읽습니다. 줄바꿈은 textarea·여러 줄 편집기에만 허용합니다.
+- `upload REF ABSOLUTE_FILE...`은 관찰한 파일 선택 컨트롤에 원본 바이트를 전달합니다. 표시 파일명만으로 서버 업로드 성공을 단정하지 않습니다. `download REF NEW_OUTPUT_FILE --expected-sha256 HASH`로 서버 첨부를 새 경로에 저장하고 바이트 해시를 대조할 수 있습니다. 기존 파일은 덮어쓰지 않습니다.
 - `read --selector '#dic_area' --chars 5000 --offset 0`처럼 본문 범위를 지정할 수 있습니다.
 - 지정한 본문 선택자가 없으면 `SELECTOR_NOT_FOUND` 오류를 반환합니다. 빈 본문을 성공으로 처리하지 않으며, `serve`에서도 해당 줄에 `ok:false`를 반환합니다.
 - `--headed`는 **새 세션을 시작할 때** 브라우저 창을 띄웁니다. 기존 headless 세션은 먼저 `close`해야 합니다.

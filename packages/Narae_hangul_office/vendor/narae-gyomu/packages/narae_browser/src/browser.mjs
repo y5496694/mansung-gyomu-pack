@@ -2,6 +2,7 @@ import { chromium } from "playwright-core";
 import fs from "node:fs";
 import path from "node:path";
 import os from "node:os";
+import { createHash, randomUUID } from "node:crypto";
 import { connectExistingBrowser } from "./existing-browser.mjs";
 export class Fault extends Error {
   constructor(code, message) {
@@ -90,7 +91,7 @@ export class BrowserEngine {
     this.context = await this.browser.newContext({
       viewport: { width: 1280, height: 900 },
       locale: "ko-KR",
-      acceptDownloads: false,
+      acceptDownloads: true,
       serviceWorkers: "block",
     });
     this.context.setDefaultTimeout(12000);
@@ -660,6 +661,31 @@ export class BrowserEngine {
           return {
             tag: element.tagName.toLowerCase(),
             attributes,
+            ...(element.getAttribute("role") === "combobox"
+              ? {
+                  controls: [...element.querySelectorAll("[id],button,[role]")]
+                    .slice(0, 30)
+                    .map((e) => {
+                      const rect = e.getBoundingClientRect(),
+                        style = getComputedStyle(e);
+                      return {
+                        tag: e.tagName.toLowerCase(),
+                        id: e.id || "",
+                        role: e.getAttribute("role") || "",
+                        className: String(e.className || "").slice(0, 160),
+                        ariaHidden: e.getAttribute("aria-hidden"),
+                        visible:
+                          rect.width > 0 &&
+                          rect.height > 0 &&
+                          style.display !== "none" &&
+                          style.visibility !== "hidden",
+                        disabled:
+                          Boolean(e.disabled) ||
+                          e.getAttribute("aria-disabled") === "true",
+                      };
+                    }),
+                }
+              : {}),
             ...(element.tagName === "FORM"
               ? {
                   fields: [...element.elements].slice(0, 100).map((e) => ({
@@ -708,6 +734,42 @@ export class BrowserEngine {
             "INVALID_ARGUMENT",
             "click method must be mouse or dom",
           );
+        if (command.part && command.part !== "toggle")
+          throw new Fault("INVALID_ARGUMENT", "click part must be toggle");
+        if (
+          command.clickCount !== undefined &&
+          ![1, 2].includes(command.clickCount)
+        )
+          throw new Fault("INVALID_ARGUMENT", "clickCount is one or two");
+        if (
+          command.clickCount === 2 &&
+          !/\.body\.gridrow_\d+\.cell_\d+_\d+(?::text)?$/.test(entry.id || "")
+        )
+          throw new Fault(
+            "GRID_CELL_REQUIRED",
+            "Double click is limited to an observed data-grid cell",
+          );
+        let clickTarget = locator;
+        if (command.part === "toggle") {
+          if (entry.role !== "combobox" || command.method === "dom")
+            throw new Fault(
+              "COMBOBOX_REQUIRED",
+              "toggle은 관찰한 combobox의 실제 펼침 버튼에만 사용합니다.",
+            );
+          const candidates = locator.locator(
+              '[id$=".dropbutton"], [id$=".combobutton"], [class~="dropbutton"]',
+            ),
+            visible = [];
+          for (let i = 0; i < (await candidates.count()); i++)
+            if (await candidates.nth(i).isVisible())
+              visible.push(candidates.nth(i));
+          if (visible.length !== 1 || !(await visible[0].isEnabled()))
+            throw new Fault(
+              "COMBOBOX_TOGGLE_UNCONFIRMED",
+              "보이고 활성화된 펼침 버튼을 유일하게 확인하지 못했습니다.",
+            );
+          clickTarget = visible[0];
+        }
         if (this.policy && command.method === "dom")
           throw new Fault("READ_ONLY", "Agent cannot dispatch DOM clicks");
         if (
@@ -743,7 +805,9 @@ export class BrowserEngine {
                     element.dispatchEvent(new MouseEvent("mouseup", init));
                     element.click();
                   })
-                : locator.click({ force: command.force === true }),
+                : command.clickCount === 2
+                  ? clickTarget.dblclick({ force: command.force === true })
+                  : clickTarget.click({ force: command.force === true }),
             )
           )
             return { actionPending: true, dialog: this.dialogState() };
@@ -751,6 +815,165 @@ export class BrowserEngine {
           this.invalidate();
           return await this.snapshot(command);
         });
+      }
+      case "download": {
+        if (this.policy)
+          throw new Fault("READ_ONLY", "Model session cannot download files");
+        if (
+          typeof command.path !== "string" ||
+          !path.isAbsolute(command.path) ||
+          fs.existsSync(command.path)
+        )
+          throw new Fault(
+            "NEW_DOWNLOAD_PATH_REQUIRED",
+            "Select a new absolute output path",
+          );
+        const { entry, locator } = this.ref(command.ref);
+        if (entry.disabled || !/파일|다운로드|download/i.test(entry.label))
+          throw new Fault(
+            "DOWNLOAD_CONTROL_REQUIRED",
+            "Observe the actual attachment download control",
+          );
+        fs.mkdirSync(path.dirname(command.path), { recursive: true });
+        const temp = path.join(
+          path.dirname(command.path),
+          ".download-" + randomUUID() + ".tmp",
+        );
+        const event = this.page.waitForEvent("download", { timeout: 20000 });
+        event.catch(() => {});
+        await locator.click();
+        const download = await event;
+        try {
+          await download.saveAs(temp);
+          const bytes = fs.statSync(temp).size,
+            sha256 = createHash("sha256")
+              .update(fs.readFileSync(temp))
+              .digest("hex");
+          fs.copyFileSync(temp, command.path, fs.constants.COPYFILE_EXCL);
+          const verified = command.expectedSha256
+            ? sha256 === command.expectedSha256
+            : null;
+          return {
+            downloaded: true,
+            path: command.path,
+            name: download.suggestedFilename(),
+            bytes,
+            sha256,
+            verified,
+            source: "observed native browser download",
+          };
+        } finally {
+          if (fs.existsSync(temp)) fs.unlinkSync(temp);
+          await download.delete().catch(() => {});
+        }
+      }
+      case "upload": {
+        if (this.policy)
+          throw new Fault("READ_ONLY", "Model session cannot upload files");
+        if (
+          !Array.isArray(command.files) ||
+          !command.files.length ||
+          command.files.length > 10
+        )
+          throw new Fault(
+            "FILES_REQUIRED",
+            "Select one to ten explicit local files",
+          );
+        const files = command.files.map((file) => {
+          if (
+            typeof file !== "string" ||
+            !path.isAbsolute(file) ||
+            !fs.statSync(file).isFile()
+          )
+            throw new Fault(
+              "FILE_REQUIRED",
+              "An existing absolute file path is required",
+            );
+          return {
+            path: file,
+            name: path.basename(file),
+            bytes: fs.statSync(file).size,
+            sha256: createHash("sha256")
+              .update(fs.readFileSync(file))
+              .digest("hex"),
+          };
+        });
+        const { entry, locator } = this.ref(command.ref);
+        if (
+          entry.disabled ||
+          !(await locator.isVisible()) ||
+          !(await locator.isEnabled())
+        )
+          throw new Fault(
+            "CONTROL_UNAVAILABLE",
+            "Observe an available upload control",
+          );
+        if (entry.tag === "input" && entry.type === "file")
+          await locator.setInputFiles(files.map((f) => f.path));
+        else {
+          if (!/파일|첨부|찾아보기|browse|upload/i.test(entry.label))
+            throw new Fault(
+              "FILE_CONTROL_REQUIRED",
+              "Observe the actual file attachment control",
+            );
+          const chooser = this.page.waitForEvent("filechooser", {
+            timeout: 12000,
+          });
+          chooser.catch(() => {});
+          await locator.click();
+          const selected = await chooser;
+          if (!selected.isMultiple() && files.length > 1)
+            throw new Fault(
+              "SINGLE_FILE_CONTROL",
+              "This observed control accepts one file",
+            );
+          await selected.setFiles(files.map((f) => f.path));
+        }
+        for (const f of files)
+          if (
+            fs.statSync(f.path).size !== f.bytes ||
+            createHash("sha256")
+              .update(fs.readFileSync(f.path))
+              .digest("hex") !== f.sha256
+          )
+            throw new Fault(
+              "UPLOAD_SOURCE_CHANGED",
+              "The local source changed during file selection",
+            );
+        this.invalidate();
+        return {
+          selected: true,
+          files: files.map(({ path, ...f }) => f),
+          serverVerified: false,
+          ...(await this.snapshot(command)),
+        };
+      }
+      case "type": {
+        if (this.policy)
+          throw new Fault("READ_ONLY", "Model session cannot type into forms");
+        if (typeof command.text !== "string" || command.text.length > 20000)
+          throw new Fault("INVALID_ARGUMENT", "text string max 20000 required");
+        const { locator } = this.ref(command.ref);
+        if (
+          /[\r\n]/.test(command.text) &&
+          !(await locator.evaluate(
+            (e) => e.tagName === "TEXTAREA" || e.isContentEditable,
+          ))
+        )
+          throw new Fault(
+            "MULTILINE_CONTROL_REQUIRED",
+            "Newlines require an observed multiline editor",
+          );
+        await locator.click();
+        await locator.press("ControlOrMeta+a");
+        await locator.press("Backspace");
+        const parts = command.text.split("\n");
+        for (let i = 0; i < parts.length; i++) {
+          if (i) await locator.press("Enter");
+          await locator.pressSequentially(parts[i], { delay: 1 });
+        }
+        this.invalidate();
+        return { typed: true, refresh: "snapshot" };
       }
       case "fill": {
         if (this.policy)

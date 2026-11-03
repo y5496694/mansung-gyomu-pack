@@ -360,6 +360,17 @@ function downloadFixture(options={}){
 }
 function downloadDir(){return mkdtempSync(join(attachmentDir,'download-'));}
 
+test('대화 첨부는 실제 방의 메시지에서만 선택하고 바이트·해시를 검증하며 URL을 반환하지 않음',async()=>{
+ const {c,state}=downloadFixture(),messageId='cccccccccccccccccccccccc';let queries=0;c.messageData=async(id,options)=>{assert.equal(id,UID);assert.equal(options.limit,100);queries++;return {LIST:[{NMC_CODE:messageId,NMC_SCODE:UID,MAF_ORI_NAME:'합성 대화 자료.txt',MAF_FILEURL:'/upload/message/synthetic.txt',VALID_YN:'Y',VALID_DATE:'20270622235900000'}]};};const result=await c.downloadChat(UID,{messageId,outDir:downloadDir()});assert.equal(queries,1);assert(result.downloaded&&result.verified);assert.deepEqual(readFileSync(result.files[0].path),Buffer.from([0,255,128,13,10,32]));assert(!JSON.stringify(result).includes('mockSession'));assert.match(state.urls[0],/upload\/message\/synthetic.txt/);
+});
+test('회수·만료·외부 URL·다른 방·없는 대화 메시지는 다운로드하지 않음',async()=>{
+ const messageId='cccccccccccccccccccccccc';for(const overrides of [{NMC_WITHDRAW_FLAG:'Y'},{DELETE_YN:'Y'},{VALID_YN:'N'},{VALID_DATE:'20200101000000000'},{MAF_FILEURL:'https://example.org/file'},{MAF_FILEURL:'/upload/message/../private.txt'},{NMC_SCODE:OTHER},{NMC_CODE:OTHER}]){const {c,state}=downloadFixture();c.messageData=async()=>({LIST:[{NMC_CODE:messageId,NMC_SCODE:UID,MAF_ORI_NAME:'합성.txt',MAF_FILEURL:'/upload/message/synthetic.txt',VALID_YN:'Y',VALID_DATE:'20270622235900000',...overrides}]});await assert.rejects(()=>c.downloadChat(UID,{messageId,outDir:downloadDir()}));assert.equal(state.urls.length,0);}
+});
+test('대화 읽기는 요청한 본문 길이를 서버로 보내고 첨부 메시지와 발췌 상태를 표시',async()=>{
+ const c=new Messenger();let options;c.messageData=async(_id,o)=>{options=o;return {LIST:[{NMC_CODE:UID,NMC_CONTENT:'합성 본문',MAF_ORI_NAME:'합성.txt',MAF_FILE_SIZE:6}]};};const result=await c.messages(UID,{chars:12000});assert.equal(options.contentsLength,12000);assert.equal(result.items[0].attachment.name,'합성.txt');assert.equal(result.items[0].excerpted,false);
+});
+test('대화 다운로드의 메시지 ID와 출력 폴더를 연결 전에 검사',async()=>{for(const args of [['chats','download',UID],['chats','download',UID,'--message','invalid','--out-dir','D:/Codex/tmp'],['chats','read',UID,'--message',UID]])await assert.rejects(()=>run(args));});
+
 test('쪽지 첨부는 로그인된 앱에서 GET하고 한글 파일명·바이트·해시를 검증',async()=>{
   const {c,state,context}=downloadFixture(),outDir=downloadDir();
   const result=await c.downloadNote(UID,{outDir});

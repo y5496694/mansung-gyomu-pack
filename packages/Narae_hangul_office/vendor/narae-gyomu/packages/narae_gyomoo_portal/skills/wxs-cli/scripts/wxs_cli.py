@@ -42,7 +42,7 @@ def parser():
     diagnostics.add_argument("--hwnd", type=lambda value: int(value, 0), required=True)
     diagnostics.add_argument("--expected-title", required=True)
     diagnostics.add_argument("--out", type=Path)
-    open_attachment = commands.add_parser("open-attachment", help="Verify opening one exact PDF through the read-only server document's native handler")
+    open_attachment = commands.add_parser("open-attachment", help="Open one exact server PDF and report viewer-window evidence separately from content verification")
     open_attachment.add_argument("--hwnd", type=lambda value: int(value, 0), required=True)
     open_attachment.add_argument("--expected-title", required=True)
     open_attachment.add_argument("--name", required=True)
@@ -121,6 +121,23 @@ def parser():
     options.add_argument("--confirm-route", type=Path, help="Confirm only an already selected route matching this draft config; never add people")
     options.add_argument("--apply", action="store_true")
     options.add_argument("--out", type=Path)
+    rename_attachment = commands.add_parser("rename-local-attachment", help="Rename one unassigned local PDF attachment using byte-identical source files")
+    rename_attachment.add_argument("--hwnd", type=lambda value: int(value, 0), required=True)
+    rename_attachment.add_argument("--expected-title", required=True)
+    rename_attachment.add_argument("--old-name", required=True)
+    rename_attachment.add_argument("--new-path", type=Path, required=True)
+    rename_attachment.add_argument("--expected-fingerprint")
+    rename_attachment.add_argument("--apply", action="store_true")
+    rename_attachment.add_argument("--out", type=Path)
+    recipient_options = commands.add_parser("recipient-options", help="Inspect or resume one observed empty recipient selector on the same draft")
+    recipient_options.add_argument("--hwnd", type=lambda value: int(value, 0), required=True)
+    recipient_options.add_argument("--expected-title", required=True)
+    recipient_options.add_argument("--dialog-hwnd", type=lambda value: int(value, 0), required=True)
+    recipient_choice = recipient_options.add_mutually_exclusive_group()
+    recipient_choice.add_argument("--query")
+    recipient_choice.add_argument("--name")
+    recipient_options.add_argument("--apply", action="store_true")
+    recipient_options.add_argument("--out", type=Path)
     notice = commands.add_parser("route-notice", help="Preview or acknowledge one exact informational absence notice without changing the route")
     notice.add_argument("--hwnd", type=lambda value: int(value, 0), required=True)
     notice.add_argument("--expected-title", required=True)
@@ -277,6 +294,14 @@ def run(args):
             from wxs_final import confirm
             return confirm(args.receipt, args.expected_message, args.confirm_final_action, wxs_runtime, args.expected_fingerprint)
         window = native.select_window(args)
+        if args.command == "rename-local-attachment":
+            from wxs_local_rename import run
+            from wxs_runtime import Session
+            return run(Session(window), args)
+        if args.command == "recipient-options":
+            from wxs_recipient import resume_selector
+            from wxs_runtime import Session
+            return resume_selector(Session(window), args, native)
         if args.command == "close-blank":
             import time
             import win32gui
@@ -320,6 +345,8 @@ def run(args):
             if session.frame_errors or before['title'] != args.expected_title or before['edit_mode'] != 0 or before['is_modified']:
                 raise ValueError('Expected the exact unchanged read-only document')
             result = session.action('attachment_open', {'name': args.name})
+            from wxs_pdf_viewer import wait_for_viewer
+            result.update(wait_for_viewer(args.name))
             if session.status() != before:
                 raise ValueError('Document state changed during native attachment open; inspect before continuing')
             return result

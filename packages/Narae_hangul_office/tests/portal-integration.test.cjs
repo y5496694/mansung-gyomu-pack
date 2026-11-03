@@ -1,6 +1,14 @@
 'use strict';
 const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
 const portal=require('../src/portal-login.cjs'),{OfficeIntegrations}=require('../src/office-integrations.cjs');
+
+test('explicit local certificate connection authorization is bound and cannot be omitted or invented by the model',()=>{
+ const {taskFor,taskStep}=require('../src/agent-task.cjs');
+ for(const [suffix,allowed]of [['필요한 로컬 인증서 프로그램 연결도 현재 등록된 포털 한 곳에서 처리해.',true],['로컬 프로그램 접근도 허용해.',true],['로컬 프로그램 접근은 허용하지 마.',false],['',false]]){
+  const task=taskFor('등록된 보안 문서로 업무포털 자동 로그인하고 나이스와 에듀파인에 접속해. '+suffix),step=taskStep(task,[],[portal.tool]),schema=step.tools[0].parameters;
+  assert.equal(task.allowLocalAccess,allowed);assert.deepEqual(schema.properties.allow_local_access.enum,[allowed]);assert(schema.required.includes('allow_local_access'));
+ }
+});
 test('automatic login switches an attached browser to dedicated and keeps one attempt state per browser',async()=>{
  const before=portal.login,states=[],switches=[];
  const integration=new OfficeIntegrations({home:'D:/Codex/tmp',settings:()=>({browserMode:'extension'}),policy:{approve:async()=>{}}});
@@ -34,7 +42,7 @@ test('an unknown login result ends the agent handoff without asking the model to
  const {run}=require('../src/agent-cli.cjs'),home=fs.mkdtempSync('D:/Codex/tmp/office-login-unknown-');let requests=0,executions=0;
  try{
   const result=await run({prompt:'등록된 보안 문서로 업무포털 자동 로그인하고 나이스 에듀파인 진입해줘',workspace:home,allowChanges:true},{home,
-   createAI:()=>({request:async()=>{requests++;if(requests>1)throw Error('A second model request could retry authentication');return {output:[{type:'function_call',name:'gyomu_portal_login',arguments:JSON.stringify({operation:'login',systems:['neis','edufine']}),call_id:'fixture-auth'}]};},close:async()=>{}}),
+   createAI:()=>({request:async()=>{requests++;if(requests>1)throw Error('A second model request could retry authentication');return {output:[{type:'function_call',name:'gyomu_portal_login',arguments:JSON.stringify({operation:'login',systems:['neis','edufine'],allow_local_access:false}),call_id:'fixture-auth'}]};},close:async()=>{}}),
    createIntegrations:()=>({tools:async()=>[portal.tool,{type:'function',name:'gyomu_browser',parameters:{type:'object',properties:{action:{type:'string'}}}}],execute:async()=>{executions++;return {authenticated:false,complete:false,stage:'login_result_unknown',message:'제출 후 결과 미확인'};},close:async()=>{}})});
   assert.equal(requests,1);assert.equal(executions,1);assert.match(result.text,/미완료/);assert.match(result.text,/반복하지/);assert.doesNotMatch(result.text,/진입 확인|로그인 완료/);
  }finally{fs.rmSync(home,{recursive:true,force:true});}

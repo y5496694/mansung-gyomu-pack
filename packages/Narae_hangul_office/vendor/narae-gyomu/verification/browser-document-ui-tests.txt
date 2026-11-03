@@ -1,0 +1,15 @@
+
+> narae-gyomu@0.1.0 test:e2e
+> node --test tests/*.e2e.mjs
+
+✔ real Narae browser handles iframe observations, stale refs and checkbox state (5564.842ms)
+✔ portable native Hangul creates and edits HWP/HWPX without changing originals (8142.6889ms)
+✔ chat UI switches exactly one AI, shows real execution and renders hostile text inert (5547.0567ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 8466.0304

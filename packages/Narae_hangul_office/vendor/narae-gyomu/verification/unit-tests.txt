@@ -1,0 +1,20 @@
+
+> narae-gyomu@0.1.0 test
+> node --test tests/*.test.mjs
+
+✔ API binds localhost, authenticates calls and serializes tool operations (60.4129ms)
+✔ model switch waits for old process exit and verifies the actual adapter (106.8379ms)
+✔ unselected files and output traversal cannot enter a document job (1.7734ms)
+✔ CBE prepare is a dry run and a confirmed request cannot send twice (4.1642ms)
+✔ uncertain send stays nonretryable instead of claiming success (3.0383ms)
+✔ agent cannot complete document creation after only reading a skill (73.5067ms)
+✔ agent executes selected model calls and persists observed results (18.5118ms)
+✔ single confirmed result ends without repeated model calls and old goals do not restart (35.6821ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 8
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 681.4073

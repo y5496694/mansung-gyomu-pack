@@ -1,0 +1,966 @@
+{
+  "type": "Relocated portable executable + real learned models + actual CLI; not a benchmark score",
+  "executable": "D:/Codex/apps/NaraeGyomu/NaraeGyomu.exe",
+  "node": "v24.22.0",
+  "data": "D:/Codex/tmp/gyomu-portable-dj8556",
+  "sources": {
+    "src/agent.mjs": "c9a3c5ab38bbd6e124b550bbc444f266d5c61bbe7fe20c08755f1a78b6d3d7de",
+    "src/catalog.mjs": "8f157367d7bf7de920f4cb4b07b75f3be21a65d6ce35285caa547d862fe155b4",
+    "src/completion.mjs": "61844606af18060950277a3397db606db14ac7b0294c683ae30740290feb0d45",
+    "src/models.mjs": "6b8b69bbfafaab08db52a6e8a496ac6f97a5df086561b81206d00f72f686450c",
+    "src/paths.mjs": "203c1c410f4e4f955fb2cb9068570c1f470f0690eb3b3d32ac47b2bad2c0c9c9",
+    "src/process.mjs": "c63af14b5f308b9a1985b56f40ebf1c91431aba70d9ba9e2d0066ca02f834339",
+    "src/school-browser.mjs": "1e25bb7443201fb6a0213eb7a69e72a0e108e3f506e4ab25798e850761c23d94",
+    "src/server.mjs": "cfd202b9a9f16de752cdaab17795cfdc95ef432e6c7e08f87f7a346e733edb77",
+    "src/tools.mjs": "c5ee1aa26204f488e24ebfa36b8297675fc110fc0ae405eff484ed9046099d43",
+    "web/app.js": "8c604c60f2bc0887289bae3c0d05056635783baa13e6c378cb9684952c372674",
+    "web/index.html": "ebae63d6e0de3f2852c17cfe75ce2f4381d2c90fb3fe204a3e2bbde18fc2f9cc",
+    "web/mark.svg": "0e737aa8cd68c37d3b9a38dd9b9cd4f027bb06b5345e58b40865dfd2e7035d1b",
+    "web/style.css": "9b0daa896c08da376023440307851c4ce47dc09f79e053a00483aea790908524",
+    "desktop/main.cjs": "ce4c3115e3c0924861ce4024bb6cff60e2b6e7074ace2a322fab685c4a5a1d92",
+    "desktop/preload.cjs": "35a5871bf3ad97b9383b8304033bc6db0e729b0fc180b1a86b9e5648e42a45de",
+    "bin/narae-gyomu.mjs": "0aca4d2ca1cd9039df7dd18b9028c54c832efdfc53ec3c4ac5060ab0f1280921"
+  },
+  "models": [
+    {
+      "id": "narae1",
+      "alias": "Narae1-Qwen3-0.6B-SFT-v1",
+      "pid": 27308,
+      "baseSha256": "7f4030143c1c477224c5434f8272c662a8b042079a0a584f0a27a1684fe2e1fa",
+      "adapterSha256": "2358980f2da78185741e0ccb4f988cf4dd6a28dcd019e852718266841e7c3ead",
+      "loaded": [
+        {
+          "id": 0,
+          "path": "D:\\Codex\\apps\\NaraeGyomu\\models\\narae1\\adapter.gguf",
+          "scale": 1,
+          "task_name": "",
+          "prompt_prefix": ""
+        }
+      ],
+      "status": "completed",
+      "completionMode": "verified-tool-result",
+      "jobId": "e6eda296-2abc-4432-9901-f22fcf948dcc",
+      "events": [
+        {
+          "index": 0,
+          "type": "thinking",
+          "at": "2026-10-20T04:37:26.519Z",
+          "turn": 1
+        },
+        {
+          "index": 1,
+          "type": "model",
+          "at": "2026-10-20T04:37:28.195Z",
+          "action": {
+            "tool": "system.status",
+            "args": {}
+          },
+          "usage": {
+            "completion_tokens": 11,
+            "prompt_tokens": 671,
+            "total_tokens": 682,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "model": "Narae1-Qwen3-0.6B-SFT-v1"
+        },
+        {
+          "index": 2,
+          "type": "tool",
+          "at": "2026-10-20T04:37:28.197Z",
+          "name": "system.status",
+          "args": {}
+        },
+        {
+          "index": 3,
+          "type": "observation",
+          "at": "2026-10-20T04:37:28.202Z",
+          "name": "system.status",
+          "result": {
+            "ok": true,
+            "data": {
+              "models": {
+                "selected": "narae1",
+                "active": "narae1",
+                "loading": null,
+                "error": null,
+                "models": [
+                  {
+                    "id": "narae1",
+                    "label": "나래1",
+                    "size": "0.6B",
+                    "upstream": "Qwen/Qwen3-0.6B",
+                    "alias": "Narae1-Qwen3-0.6B-SFT-v1",
+                    "note": "경량 · SFT v1",
+                    "researchOnly": false,
+                    "actualWeightTraining": true,
+                    "license": "Apache-2.0",
+                    "installed": true
+                  },
+                  {
+                    "id": "narae2",
+                    "label": "나래2",
+                    "size": "2.4B",
+                    "upstream": "LGAI-EXAONE/EXAONE-3.5-2.4B-Instruct",
+                    "alias": "EXAONE-Narae2-2.4B-Tool-SFT-v2",
+                    "note": "EXAONE · 연구·평가용",
+                    "researchOnly": true,
+                    "actualWeightTraining": true,
+                    "license": "EXAONE-1.1-NC",
+                    "installed": true
+                  },
+                  {
+                    "id": "narae3",
+                    "label": "나래3",
+                    "size": "4B",
+                    "upstream": "Qwen/Qwen3-4B-Instruct-2507",
+                    "alias": "Narae3-Qwen3-4B-LoRA-v1",
+                    "note": "Qwen · LoRA v1",
+                    "researchOnly": false,
+                    "actualWeightTraining": true,
+                    "license": "Apache-2.0",
+                    "installed": true
+                  }
+                ]
+              },
+              "outputs": "D:\\Codex\\tmp\\gyomu-portable-dj8556\\outputs",
+              "data": "D:\\Codex\\tmp\\gyomu-portable-dj8556",
+              "components": {
+                "browser": {
+                  "installed": true,
+                  "executable": "C:\\Program Files/Google/Chrome/Application/chrome.exe",
+                  "open": false
+                },
+                "hangul": {
+                  "installed": true,
+                  "engine": "D:\\Codex\\apps\\NaraeGyomu\\resources\\app\\packages\\narae_hangul\\1_나래엔진\\narae-hangul"
+                },
+                "cbe": {
+                  "installed": true,
+                  "requires": "충북소통메신저 실행·로그인"
+                },
+                "portal": {
+                  "installed": true,
+                  "requires": "브라우저에서 직접 로그인"
+                }
+              },
+              "pending": []
+            }
+          }
+        },
+        {
+          "index": 4,
+          "type": "answer",
+          "at": "2026-10-20T04:37:28.205Z",
+          "answer": "나래 브라우저: 설치 확인\n나래 한글: 설치 확인\nCBE CLI: 설치 확인\n나래교무포털: 설치 확인\n\n포털·CBE의 실제 로그인 상태는 해당 업무를 조회할 때 확인합니다.\n작성 파일 저장 위치: D:\\Codex\\tmp\\gyomu-portable-dj8556\\outputs",
+          "status": "completed",
+          "completionMode": "verified-tool-result",
+          "toolCalls": 1,
+          "toolErrors": 0
+        }
+      ]
+    },
+    {
+      "id": "narae2",
+      "alias": "EXAONE-Narae2-2.4B-Tool-SFT-v2",
+      "pid": 19180,
+      "baseSha256": "d6e077ce2bb2d36ad179739ea96d8b8d387f024b0bedede04741745d21c41b28",
+      "adapterSha256": "66b0bfd8efbd6c41d2f26c22212fc6dc0c75ac0a05a27bce56b8f62999764607",
+      "loaded": [
+        {
+          "id": 0,
+          "path": "D:\\Codex\\apps\\NaraeGyomu\\models\\narae2\\adapter.gguf",
+          "scale": 1,
+          "task_name": "",
+          "prompt_prefix": ""
+        }
+      ],
+      "status": "completed",
+      "completionMode": "verified-tool-result",
+      "jobId": "4b95490f-6065-4887-ade4-cedab808a832",
+      "events": [
+        {
+          "index": 0,
+          "type": "thinking",
+          "at": "2026-10-20T04:37:41.328Z",
+          "turn": 1
+        },
+        {
+          "index": 1,
+          "type": "model",
+          "at": "2026-10-20T04:37:46.067Z",
+          "action": {
+            "tool": "system.status",
+            "args": {}
+          },
+          "usage": {
+            "completion_tokens": 13,
+            "prompt_tokens": 623,
+            "total_tokens": 636,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "model": "EXAONE-Narae2-2.4B-Tool-SFT-v2"
+        },
+        {
+          "index": 2,
+          "type": "tool",
+          "at": "2026-10-20T04:37:46.069Z",
+          "name": "system.status",
+          "args": {}
+        },
+        {
+          "index": 3,
+          "type": "observation",
+          "at": "2026-10-20T04:37:46.073Z",
+          "name": "system.status",
+          "result": {
+            "ok": true,
+            "data": {
+              "models": {
+                "selected": "narae2",
+                "active": "narae2",
+                "loading": null,
+                "error": null,
+                "models": [
+                  {
+                    "id": "narae1",
+                    "label": "나래1",
+                    "size": "0.6B",
+                    "upstream": "Qwen/Qwen3-0.6B",
+                    "alias": "Narae1-Qwen3-0.6B-SFT-v1",
+                    "note": "경량 · SFT v1",
+                    "researchOnly": false,
+                    "actualWeightTraining": true,
+                    "license": "Apache-2.0",
+                    "installed": true
+                  },
+                  {
+                    "id": "narae2",
+                    "label": "나래2",
+                    "size": "2.4B",
+                    "upstream": "LGAI-EXAONE/EXAONE-3.5-2.4B-Instruct",
+                    "alias": "EXAONE-Narae2-2.4B-Tool-SFT-v2",
+                    "note": "EXAONE · 연구·평가용",
+                    "researchOnly": true,
+                    "actualWeightTraining": true,
+                    "license": "EXAONE-1.1-NC",
+                    "installed": true
+                  },
+                  {
+                    "id": "narae3",
+                    "label": "나래3",
+                    "size": "4B",
+                    "upstream": "Qwen/Qwen3-4B-Instruct-2507",
+                    "alias": "Narae3-Qwen3-4B-LoRA-v1",
+                    "note": "Qwen · LoRA v1",
+                    "researchOnly": false,
+                    "actualWeightTraining": true,
+                    "license": "Apache-2.0",
+                    "installed": true
+                  }
+                ]
+              },
+              "outputs": "D:\\Codex\\tmp\\gyomu-portable-dj8556\\outputs",
+              "data": "D:\\Codex\\tmp\\gyomu-portable-dj8556",
+              "components": {
+                "browser": {
+                  "installed": true,
+                  "executable": "C:\\Program Files/Google/Chrome/Application/chrome.exe",
+                  "open": false
+                },
+                "hangul": {
+                  "installed": true,
+                  "engine": "D:\\Codex\\apps\\NaraeGyomu\\resources\\app\\packages\\narae_hangul\\1_나래엔진\\narae-hangul"
+                },
+                "cbe": {
+                  "installed": true,
+                  "requires": "충북소통메신저 실행·로그인"
+                },
+                "portal": {
+                  "installed": true,
+                  "requires": "브라우저에서 직접 로그인"
+                }
+              },
+              "pending": []
+            }
+          }
+        },
+        {
+          "index": 4,
+          "type": "answer",
+          "at": "2026-10-20T04:37:46.075Z",
+          "answer": "나래 브라우저: 설치 확인\n나래 한글: 설치 확인\nCBE CLI: 설치 확인\n나래교무포털: 설치 확인\n\n포털·CBE의 실제 로그인 상태는 해당 업무를 조회할 때 확인합니다.\n작성 파일 저장 위치: D:\\Codex\\tmp\\gyomu-portable-dj8556\\outputs",
+          "status": "completed",
+          "completionMode": "verified-tool-result",
+          "toolCalls": 1,
+          "toolErrors": 0
+        }
+      ]
+    },
+    {
+      "id": "narae3",
+      "alias": "Narae3-Qwen3-4B-LoRA-v1",
+      "pid": 22976,
+      "baseSha256": "2fde00ce69dd4899c70d020845e2638353015bba0fdf161b3eb965f2bca4464e",
+      "adapterSha256": "aed6f97ff68581b31a52821625653bb0edbf3e42583af2408e70c35ad9d7abe7",
+      "loaded": [
+        {
+          "id": 0,
+          "path": "D:\\Codex\\apps\\NaraeGyomu\\models\\narae3\\adapter.gguf",
+          "scale": 1,
+          "task_name": "",
+          "prompt_prefix": ""
+        }
+      ],
+      "status": "completed",
+      "completionMode": "verified-tool-result",
+      "jobId": "dfd5a801-f9cc-49f8-b147-c7e0868d5e58",
+      "events": [
+        {
+          "index": 0,
+          "type": "thinking",
+          "at": "2026-10-20T04:38:14.716Z",
+          "turn": 1
+        },
+        {
+          "index": 1,
+          "type": "model",
+          "at": "2026-10-20T04:38:23.785Z",
+          "action": {
+            "tool": "system.status",
+            "args": {}
+          },
+          "usage": {
+            "completion_tokens": 11,
+            "prompt_tokens": 667,
+            "total_tokens": 678,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "model": "Narae3-Qwen3-4B-LoRA-v1"
+        },
+        {
+          "index": 2,
+          "type": "tool",
+          "at": "2026-10-20T04:38:23.788Z",
+          "name": "system.status",
+          "args": {}
+        },
+        {
+          "index": 3,
+          "type": "observation",
+          "at": "2026-10-20T04:38:23.792Z",
+          "name": "system.status",
+          "result": {
+            "ok": true,
+            "data": {
+              "models": {
+                "selected": "narae3",
+                "active": "narae3",
+                "loading": null,
+                "error": null,
+                "models": [
+                  {
+                    "id": "narae1",
+                    "label": "나래1",
+                    "size": "0.6B",
+                    "upstream": "Qwen/Qwen3-0.6B",
+                    "alias": "Narae1-Qwen3-0.6B-SFT-v1",
+                    "note": "경량 · SFT v1",
+                    "researchOnly": false,
+                    "actualWeightTraining": true,
+                    "license": "Apache-2.0",
+                    "installed": true
+                  },
+                  {
+                    "id": "narae2",
+                    "label": "나래2",
+                    "size": "2.4B",
+                    "upstream": "LGAI-EXAONE/EXAONE-3.5-2.4B-Instruct",
+                    "alias": "EXAONE-Narae2-2.4B-Tool-SFT-v2",
+                    "note": "EXAONE · 연구·평가용",
+                    "researchOnly": true,
+                    "actualWeightTraining": true,
+                    "license": "EXAONE-1.1-NC",
+                    "installed": true
+                  },
+                  {
+                    "id": "narae3",
+                    "label": "나래3",
+                    "size": "4B",
+                    "upstream": "Qwen/Qwen3-4B-Instruct-2507",
+                    "alias": "Narae3-Qwen3-4B-LoRA-v1",
+                    "note": "Qwen · LoRA v1",
+                    "researchOnly": false,
+                    "actualWeightTraining": true,
+                    "license": "Apache-2.0",
+                    "installed": true
+                  }
+                ]
+              },
+              "outputs": "D:\\Codex\\tmp\\gyomu-portable-dj8556\\outputs",
+              "data": "D:\\Codex\\tmp\\gyomu-portable-dj8556",
+              "components": {
+                "browser": {
+                  "installed": true,
+                  "executable": "C:\\Program Files/Google/Chrome/Application/chrome.exe",
+                  "open": false
+                },
+                "hangul": {
+                  "installed": true,
+                  "engine": "D:\\Codex\\apps\\NaraeGyomu\\resources\\app\\packages\\narae_hangul\\1_나래엔진\\narae-hangul"
+                },
+                "cbe": {
+                  "installed": true,
+                  "requires": "충북소통메신저 실행·로그인"
+                },
+                "portal": {
+                  "installed": true,
+                  "requires": "브라우저에서 직접 로그인"
+                }
+              },
+              "pending": []
+            }
+          }
+        },
+        {
+          "index": 4,
+          "type": "answer",
+          "at": "2026-10-20T04:38:23.794Z",
+          "answer": "나래 브라우저: 설치 확인\n나래 한글: 설치 확인\nCBE CLI: 설치 확인\n나래교무포털: 설치 확인\n\n포털·CBE의 실제 로그인 상태는 해당 업무를 조회할 때 확인합니다.\n작성 파일 저장 위치: D:\\Codex\\tmp\\gyomu-portable-dj8556\\outputs",
+          "status": "completed",
+          "completionMode": "verified-tool-result",
+          "toolCalls": 1,
+          "toolErrors": 0
+        }
+      ]
+    }
+  ],
+  "document": {
+    "jobId": "01bc8bd7-3d85-4718-826c-49d425b7db3e",
+    "status": "completed",
+    "bodyPreserved": true,
+    "events": [
+      {
+        "index": 0,
+        "type": "thinking",
+        "at": "2026-10-20T04:38:24.045Z",
+        "turn": 1
+      },
+      {
+        "index": 1,
+        "type": "model",
+        "at": "2026-10-20T04:38:38.473Z",
+        "action": {
+          "tool": "hangul.create",
+          "args": {
+            "title": "가상 연수 안내",
+            "body": "기제출자는 재제출하지 않습니다.",
+            "format": "hwpx",
+            "filename": "배포AI작성.hwpx"
+          }
+        },
+        "usage": {
+          "completion_tokens": 46,
+          "prompt_tokens": 1207,
+          "total_tokens": 1253,
+          "prompt_tokens_details": {
+            "cached_tokens": 594
+          }
+        },
+        "model": "Narae3-Qwen3-4B-LoRA-v1"
+      },
+      {
+        "index": 2,
+        "type": "tool",
+        "at": "2026-10-20T04:38:38.476Z",
+        "name": "hangul.create",
+        "args": {
+          "title": "가상 연수 안내",
+          "body": "기제출자는 재제출하지 않습니다.",
+          "format": "hwpx",
+          "filename": "배포AI작성.hwpx"
+        }
+      },
+      {
+        "index": 3,
+        "type": "observation",
+        "at": "2026-10-20T04:38:42.237Z",
+        "name": "hangul.create",
+        "result": {
+          "ok": true,
+          "data": {
+            "schema": 1,
+            "application": "NaraeHangul",
+            "display_name": "나래 한글",
+            "version": "0.6.0",
+            "action": "create",
+            "success": true,
+            "uses_hancom_runtime": false,
+            "zero_difference_verified": false,
+            "limitations": [
+              "한컴과 동일한 전체 기능·쪽 나눔·픽셀 배치는 아직 검증되지 않았습니다.",
+              "독립 보존 편집에는 지원 범위가 있습니다. 고급 HWP 표·그림 편집에는 Windows 한컴 COM이 필요합니다.",
+              "HWP 3.0 원본은 표현 가능한 텍스트만 보존 편집하며 서식 변경은 거부합니다."
+            ],
+            "warnings": [
+              "HWPX는 지원하는 본문·글자 서식·표·그림·글상자·머리말·꼬리말로 새로 생성했습니다. 일부 고급 조판·필드·변경 이력은 보존되지 않습니다."
+            ],
+            "artifacts": {
+              "document": "D:\\Codex\\tmp\\gyomu-portable-dj8556\\outputs\\배포AI작성.hwpx"
+            },
+            "preservation": "new_native_document",
+            "format": "hwpx",
+            "modeled_content_verified": true,
+            "output_sha256": "b0852909797dc033b5e2a4732b85bd5f776e05109905bc47be2d5962ccce6b97",
+            "paragraphs": [
+              {
+                "id": "body/0",
+                "text_style": {
+                  "font": "맑은 고딕",
+                  "size": 16,
+                  "bold": true,
+                  "italic": false,
+                  "underline": false,
+                  "strike": false,
+                  "color": "#000000",
+                  "background": "",
+                  "superscript": false,
+                  "subscript": false,
+                  "stretch": 100,
+                  "letter_spacing": 0,
+                  "language_fonts": [
+                    "맑은 고딕",
+                    "맑은 고딕",
+                    "맑은 고딕",
+                    "맑은 고딕",
+                    "맑은 고딕",
+                    "맑은 고딕",
+                    "맑은 고딕"
+                  ],
+                  "font_type": "TTF",
+                  "language_font_types": [
+                    "TTF",
+                    "TTF",
+                    "TTF",
+                    "TTF",
+                    "TTF",
+                    "TTF",
+                    "TTF"
+                  ],
+                  "use_font_space": false,
+                  "use_kerning": false,
+                  "language_ratios": [
+                    100,
+                    100,
+                    100,
+                    100,
+                    100,
+                    100,
+                    100
+                  ],
+                  "language_spacing": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "language_relative_sizes": [
+                    100,
+                    100,
+                    100,
+                    100,
+                    100,
+                    100,
+                    100
+                  ],
+                  "language_offsets": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ]
+                },
+                "paragraph_style": {
+                  "align": "CENTER",
+                  "left": 0,
+                  "right": 0,
+                  "indent": 0,
+                  "before": 0,
+                  "after": 0,
+                  "line": 160,
+                  "line_type": "PERCENT",
+                  "page_break": false,
+                  "break_latin": "KEEP_WORD",
+                  "break_nonlatin": "BREAK_WORD",
+                  "vertical_align": "BASELINE",
+                  "condense": 0,
+                  "snap_to_grid": false,
+                  "font_line_height": false,
+                  "widow_orphan": false,
+                  "keep_with_next": false,
+                  "keep_lines": false,
+                  "line_wrap": "BREAK",
+                  "auto_spacing_eng": false,
+                  "auto_spacing_num": false,
+                  "background": "",
+                  "borders": [
+                    {
+                      "style": "NONE",
+                      "width_pt": 0.2834645669291339,
+                      "color": "#000000"
+                    },
+                    {
+                      "style": "NONE",
+                      "width_pt": 0.2834645669291339,
+                      "color": "#000000"
+                    },
+                    {
+                      "style": "NONE",
+                      "width_pt": 0.2834645669291339,
+                      "color": "#000000"
+                    },
+                    {
+                      "style": "NONE",
+                      "width_pt": 0.2834645669291339,
+                      "color": "#000000"
+                    }
+                  ],
+                  "border_offsets": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "border_connect": false,
+                  "border_ignore_margin": false
+                },
+                "editable_text": true,
+                "text": "가상 연수 안내",
+                "runs": [
+                  {
+                    "text": "가상 연수 안내",
+                    "text_style": {
+                      "font": "맑은 고딕",
+                      "size": 16,
+                      "bold": true,
+                      "italic": false,
+                      "underline": false,
+                      "strike": false,
+                      "color": "#000000",
+                      "background": "",
+                      "superscript": false,
+                      "subscript": false,
+                      "stretch": 100,
+                      "letter_spacing": 0,
+                      "language_fonts": [
+                        "맑은 고딕",
+                        "맑은 고딕",
+                        "맑은 고딕",
+                        "맑은 고딕",
+                        "맑은 고딕",
+                        "맑은 고딕",
+                        "맑은 고딕"
+                      ],
+                      "font_type": "TTF",
+                      "language_font_types": [
+                        "TTF",
+                        "TTF",
+                        "TTF",
+                        "TTF",
+                        "TTF",
+                        "TTF",
+                        "TTF"
+                      ],
+                      "use_font_space": false,
+                      "use_kerning": false,
+                      "language_ratios": [
+                        100,
+                        100,
+                        100,
+                        100,
+                        100,
+                        100,
+                        100
+                      ],
+                      "language_spacing": [
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0
+                      ],
+                      "language_relative_sizes": [
+                        100,
+                        100,
+                        100,
+                        100,
+                        100,
+                        100,
+                        100
+                      ],
+                      "language_offsets": [
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0
+                      ]
+                    },
+                    "image": false,
+                    "field": false
+                  }
+                ]
+              },
+              {
+                "id": "body/1",
+                "text_style": {
+                  "font": "맑은 고딕",
+                  "size": 11,
+                  "bold": false,
+                  "italic": false,
+                  "underline": false,
+                  "strike": false,
+                  "color": "#000000",
+                  "background": "",
+                  "superscript": false,
+                  "subscript": false,
+                  "stretch": 100,
+                  "letter_spacing": 0,
+                  "language_fonts": [
+                    "맑은 고딕",
+                    "맑은 고딕",
+                    "맑은 고딕",
+                    "맑은 고딕",
+                    "맑은 고딕",
+                    "맑은 고딕",
+                    "맑은 고딕"
+                  ],
+                  "font_type": "TTF",
+                  "language_font_types": [
+                    "TTF",
+                    "TTF",
+                    "TTF",
+                    "TTF",
+                    "TTF",
+                    "TTF",
+                    "TTF"
+                  ],
+                  "use_font_space": false,
+                  "use_kerning": false,
+                  "language_ratios": [
+                    100,
+                    100,
+                    100,
+                    100,
+                    100,
+                    100,
+                    100
+                  ],
+                  "language_spacing": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "language_relative_sizes": [
+                    100,
+                    100,
+                    100,
+                    100,
+                    100,
+                    100,
+                    100
+                  ],
+                  "language_offsets": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ]
+                },
+                "paragraph_style": {
+                  "align": "LEFT",
+                  "left": 0,
+                  "right": 0,
+                  "indent": 0,
+                  "before": 0,
+                  "after": 0,
+                  "line": 160,
+                  "line_type": "PERCENT",
+                  "page_break": false,
+                  "break_latin": "KEEP_WORD",
+                  "break_nonlatin": "BREAK_WORD",
+                  "vertical_align": "BASELINE",
+                  "condense": 0,
+                  "snap_to_grid": false,
+                  "font_line_height": false,
+                  "widow_orphan": false,
+                  "keep_with_next": false,
+                  "keep_lines": false,
+                  "line_wrap": "BREAK",
+                  "auto_spacing_eng": false,
+                  "auto_spacing_num": false,
+                  "background": "",
+                  "borders": [
+                    {
+                      "style": "NONE",
+                      "width_pt": 0.2834645669291339,
+                      "color": "#000000"
+                    },
+                    {
+                      "style": "NONE",
+                      "width_pt": 0.2834645669291339,
+                      "color": "#000000"
+                    },
+                    {
+                      "style": "NONE",
+                      "width_pt": 0.2834645669291339,
+                      "color": "#000000"
+                    },
+                    {
+                      "style": "NONE",
+                      "width_pt": 0.2834645669291339,
+                      "color": "#000000"
+                    }
+                  ],
+                  "border_offsets": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "border_connect": false,
+                  "border_ignore_margin": false
+                },
+                "editable_text": true,
+                "text": "기제출자는 재제출하지 않습니다.",
+                "runs": [
+                  {
+                    "text": "기제출자는 재제출하지 않습니다.",
+                    "text_style": {
+                      "font": "맑은 고딕",
+                      "size": 11,
+                      "bold": false,
+                      "italic": false,
+                      "underline": false,
+                      "strike": false,
+                      "color": "#000000",
+                      "background": "",
+                      "superscript": false,
+                      "subscript": false,
+                      "stretch": 100,
+                      "letter_spacing": 0,
+                      "language_fonts": [
+                        "맑은 고딕",
+                        "맑은 고딕",
+                        "맑은 고딕",
+                        "맑은 고딕",
+                        "맑은 고딕",
+                        "맑은 고딕",
+                        "맑은 고딕"
+                      ],
+                      "font_type": "TTF",
+                      "language_font_types": [
+                        "TTF",
+                        "TTF",
+                        "TTF",
+                        "TTF",
+                        "TTF",
+                        "TTF",
+                        "TTF"
+                      ],
+                      "use_font_space": false,
+                      "use_kerning": false,
+                      "language_ratios": [
+                        100,
+                        100,
+                        100,
+                        100,
+                        100,
+                        100,
+                        100
+                      ],
+                      "language_spacing": [
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0
+                      ],
+                      "language_relative_sizes": [
+                        100,
+                        100,
+                        100,
+                        100,
+                        100,
+                        100,
+                        100
+                      ],
+                      "language_offsets": [
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0
+                      ]
+                    },
+                    "image": false,
+                    "field": false
+                  }
+                ]
+              }
+            ],
+            "tables": [],
+            "images": [],
+            "counts": {
+              "paragraphs": 2,
+              "tables": 0,
+              "images": 0
+            },
+            "input_unchanged": true
+          }
+        }
+      },
+      {
+        "index": 4,
+        "type": "answer",
+        "at": "2026-10-20T04:38:42.238Z",
+        "answer": "문서 파일을 만들었습니다.\nD:\\Codex\\tmp\\gyomu-portable-dj8556\\outputs\\배포AI작성.hwpx\n나래한글 엔진에서 저장한 내용을 다시 읽어 대조했습니다.",
+        "status": "completed",
+        "completionMode": "verified-tool-result",
+        "toolCalls": 1,
+        "toolErrors": 0
+      }
+    ]
+  },
+  "portablePythonHwpVerified": true,
+  "wxsPrerequisitesVerified": true,
+  "singleOwnedModelVerified": true,
+  "liveSchoolServiceActions": 0,
+  "actualMessagesSent": 0
+}

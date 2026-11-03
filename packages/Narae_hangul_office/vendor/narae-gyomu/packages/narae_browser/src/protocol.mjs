@@ -7,6 +7,9 @@ export const actions = [
   "click",
   "hover",
   "fill",
+  "type",
+  "upload",
+  "download",
   "select",
   "check",
   "uncheck",
@@ -38,6 +41,9 @@ export function actionFromArgs(name, pos, flags) {
       "click",
       "hover",
       "fill",
+      "type",
+      "upload",
+      "download",
       "select",
       "check",
       "uncheck",
@@ -45,6 +51,14 @@ export function actionFromArgs(name, pos, flags) {
   )
     c.ref = required(0, "ref");
   if (name === "fill") c.text = required(1, "text");
+  if (name === "type") c.text = required(1, "text");
+  if (name === "upload") c.files = pos.slice(1);
+  if (name === "download") {
+    c.path = required(1, "new output path");
+    if (flags["expected-sha256"]) c.expectedSha256 = flags["expected-sha256"];
+  }
+  if (name === "click" && flags.part) c.part = flags.part;
+  if (name === "click" && flags.count) c.clickCount = Number(flags.count);
   if (name === "select") c.value = required(1, "value");
   if (name === "press") {
     c.key = required(0, "key");
@@ -156,9 +170,30 @@ export const schema = {
       ref: "s1/e1",
       note: "Read bounded element attributes and form fields; secret values are redacted",
     },
-    click: { ref: "s1/e1", force: false, method: "mouse (default) or dom" },
+    click: {
+      ref: "s1/e1",
+      force: false,
+      method: "mouse (default) or dom",
+      part: "optional toggle for a uniquely observed combobox dropdown",
+      clickCount: "optional 2 for an observed Nexacro data-grid cell only",
+    },
     hover: { ref: "s1/e1", force: false },
     fill: { ref: "s1/e2", text: "value" },
+    type: {
+      ref: "s1/e2",
+      text: "value",
+      note: "Physical focus and keyboard events for stateful form components",
+    },
+    upload: {
+      ref: "s1/e2",
+      files: ["D:/Codex/workspaces/explicit-file.pdf"],
+      note: "Observed file input or native file chooser; server integrity needs separate verification",
+    },
+    download: {
+      ref: "s1/e2",
+      path: "D:/Codex/outputs/new-file.pdf",
+      expectedSha256: "optional expected content hash",
+    },
     select: { ref: "s1/e3", value: "option" },
     check: { ref: "s1/e4" },
     uncheck: { ref: "s1/e4" },

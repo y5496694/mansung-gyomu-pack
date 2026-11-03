@@ -5,7 +5,7 @@ import { resolve } from 'node:path';
 import { realpathSync } from 'node:fs';
 import { Messenger } from './messenger.mjs';
 
-const HELP=`충북소통메신저 CLI 0.6.0 — 로그인된 앱에 연결
+const HELP=`충북소통메신저 CLI 0.7.0 — 로그인된 앱에 연결
 
 사용법:
   cbe status
@@ -15,6 +15,7 @@ const HELP=`충북소통메신저 CLI 0.6.0 — 로그인된 앱에 연결
   cbe notes download <쪽지ID> --out-dir "저장폴더" [--attachment 첨부ID] [--type R|S] [--reserved]
   cbe notes send --to <사용자ID[,사용자ID...]> [--text "내용"] [--title "제목"] [--file "경로"]
   cbe chats list [--search "참여자 또는 방 이름"]
+  cbe chats download <대화방ID> --message <메시지ID> --out-dir "저장폴더"
   cbe chats read <대화방ID>
   cbe chats send --to <사용자ID> [--text "내용"] [--file "경로"]
   cbe chats create --to <사용자ID[,사용자ID...]> [--text "첫 메시지"] [--title "그룹 제목"] [--file "경로"]
@@ -43,7 +44,7 @@ const HELP=`충북소통메신저 CLI 0.6.0 — 로그인된 앱에 연결
 
 앱을 실행하고 로그인해 두세요. 비밀번호·키를 파일에 저장하지 않습니다.
 목록은 서버가 제공한 한 페이지입니다. total:null은 전체 건수를 알 수 없다는 뜻입니다.
-chats read는 최신 메시지부터 반환하며 긴 내용은 서버에서 500자로 제한될 수 있습니다.
+chats read는 최신 메시지부터 반환하며 --chars 기본 12000자입니다. excerpted:true는 본문 일부입니다. chats download는 조회한 메시지의 유효한 대화 첨부를 검증 저장합니다.
 open은 앱의 일반 열기 동작으로 읽음 처리될 수 있습니다.
 compose는 수신자를 지정한 작성창만 엽니다. 실제 전송은 앱에서 합니다.
 chats send는 기존 1:1 방을 사용하고, 없으면 첫 메시지와 함께 새 방을 만듭니다.
@@ -88,7 +89,7 @@ export function printResult(result,json) {
 }
 
 export async function run(argv=process.argv.slice(2)) {
-  const {values:v,positionals:p}=parseArgs({args:argv,allowPositionals:true,strict:true,options:{help:{type:'boolean',short:'h'},json:{type:'boolean'},port:{type:'string',default:'9000'},page:{type:'string',default:'1'},limit:{type:'string',default:'30'},offset:{type:'string',default:'0'},search:{type:'string',default:''},'search-type':{type:'string',default:'send'},box:{type:'string',default:'all'},type:{type:'string',default:'R'},reserved:{type:'boolean'},to:{type:'string'},text:{type:'string'},title:{type:'string'},file:{type:'string',multiple:true,default:[]},'out-dir':{type:'string'},attachment:{type:'string'},'dry-run':{type:'boolean'},'confirm-many':{type:'boolean'},scope:{type:'string',default:'auto'}}});
+  const {values:v,positionals:p}=parseArgs({args:argv,allowPositionals:true,strict:true,options:{help:{type:'boolean',short:'h'},json:{type:'boolean'},port:{type:'string',default:'9000'},page:{type:'string',default:'1'},limit:{type:'string',default:'30'},offset:{type:'string',default:'0'},search:{type:'string',default:''},'search-type':{type:'string',default:'send'},box:{type:'string',default:'all'},type:{type:'string',default:'R'},reserved:{type:'boolean'},to:{type:'string'},text:{type:'string'},title:{type:'string'},file:{type:'string',multiple:true,default:[]},'out-dir':{type:'string'},attachment:{type:'string'},message:{type:'string'},chars:{type:'string',default:'12000'},'dry-run':{type:'boolean'},'confirm-many':{type:'boolean'},scope:{type:'string',default:'auto'}}});
   if(v.help||!p.length){console.log(HELP);return;}
   const options={page:positive(v.page,'--page'),limit:positive(v.limit,'--limit',100),search:v.search,offset:v.offset};
   const port=positive(v.port,'--port',65535);
@@ -97,9 +98,10 @@ export async function run(argv=process.argv.slice(2)) {
   if(!['send','receive','title','content'].includes(v['search-type']))throw new Error('--search-type은 send, receive, title, content 중 하나입니다.');
   if(!['auto','my','all'].includes(v.scope))throw new Error('--scope는 auto, my, all 중 하나입니다.');
   const group=p[0],action=p[1]||'list';
-  const downloading=group==='notes'&&action==='download';
-  if(downloading&&!v['out-dir']?.trim())throw new Error('notes download에는 --out-dir 저장폴더가 필요합니다.');
-  if(!downloading&&(v['out-dir']!==undefined||v.attachment!==undefined))throw new Error('--out-dir과 --attachment는 notes download에서만 사용하세요.');
+  const downloading=['notes','chats'].includes(group)&&action==='download';
+  if(group==='chats'&&downloading)requiredId(v.message);if(v.message!==undefined&&!(group==='chats'&&downloading))throw Error('--message는 chats download에서만 사용하세요.');if(group==='chats'&&v.attachment!==undefined)throw Error('대화 첨부는 --message로 선택하세요.');
+  if(downloading&&!v['out-dir']?.trim())throw new Error('첨부 다운로드에는 --out-dir 저장폴더가 필요합니다.');
+  if(!downloading&&(v['out-dir']!==undefined||v.attachment!==undefined))throw new Error('--out-dir은 첨부 다운로드에서, --attachment는 notes download에서만 사용하세요.');
   if(v.attachment!==undefined&&!/^[a-f0-9]{24}$/i.test(v.attachment))throw new Error('--attachment에는 notes read에서 확인한 files[].id를 입력하세요.');
   if(v.reserved&&!((group==='notes'&&['read','download'].includes(action))||(group==='open'&&action==='note')))throw new Error('--reserved는 notes read, notes download 또는 open note에서만 사용하세요. 예약 전송은 지원하지 않습니다.');
   const idCommands=(group==='open'&&action!=='main')||(['notes','chats'].includes(group)&&action==='read')||downloading||(group==='users'&&action==='show');
@@ -122,12 +124,13 @@ export async function run(argv=process.argv.slice(2)) {
     if(group==='status')result=await client.status();
     else if(group==='notes'&&action==='list')result=await client.notes({...options,box:boxes[v.box],searchType:v['search-type']});
     else if(group==='notes'&&action==='send')result=await client.sendNote(v.to,v.text,{title:v.title,dryRun:!!v['dry-run'],confirmMany:!!v['confirm-many'],files:v.file});
+    else if(downloading&&group==='chats')result=await client.downloadChat(p[2],{messageId:v.message,outDir:v['out-dir']});
     else if(downloading)result=await client.downloadNote(p[2],{type:v.type,reserved:!!v.reserved,attachmentId:v.attachment,outDir:v['out-dir']});
     else if(group==='notes')result=await client.note(p[2],v.type,!!v.reserved);
     else if(group==='chats'&&action==='list')result=await client.chats({...options,box:boxes[v.box]});
     else if(group==='chats'&&['send','create'].includes(action))result=await client[action==='send'?'sendChat':'createChat'](v.to,v.text,{title:v.title,dryRun:!!v['dry-run'],files:v.file});
     else if(group==='chats'){
-      result=await client.messages(p[2],{...options,offset:Number(v.offset)});
+      result=await client.messages(p[2],{...options,offset:Number(v.offset),chars:positive(v.chars,'--chars',12000)});
     }
     else if(group==='users'&&action==='search')result=await client.users(p[2],{...options,scope:v.scope});
     else if(group==='users')result=await client.user(p[2]);

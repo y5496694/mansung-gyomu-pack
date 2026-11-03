@@ -38,6 +38,27 @@ test('an uncertain attempt is not reset and attached personal browsers are not u
  f.browser.attached=true;assert.equal((await login({},deps)).stage,'dedicated_browser_required');
 });
 
+test('an existing certificate selection can continue only before any password attempt',async()=>{
+ for(const passwordAttempted of [false,true]){
+  const f=fixture(),execute=f.browser.execute;
+  await execute({action:'click',ref:'l'});
+  const certScreen={url:cfg.portalUrl,elements:[{ref:'disk',label:'하드디스크'},{ref:'pw',type:'password'}]};
+  let first=true;f.browser.execute=async a=>{if(first&&a.action==='snapshot'){first=false;return certScreen;}return execute(a);};
+  const state={attempted:true,stage:'certificate_open',passwordAttempted};
+  const result=await login({}, {cfg,browser:f.browser,state,readProfile:async a=>a==='Status'?{valid:true}:f.profile});
+  assert.equal(f.calls.filter(a=>a.ref==='l').length,1);
+  assert.equal(f.calls.filter(a=>a.privateFill).length,passwordAttempted?0:1);
+  assert.equal(result.complete,!passwordAttempted);
+ }
+});
+
+test('storage click waits for a delayed certificate inventory without opening authentication again',async()=>{
+ const f=fixture(),execute=f.browser.execute;let pending=false,waits=0;
+ f.browser.execute=async a=>{const result=await execute(a);if(a.ref==='disk')pending=true;if(pending&&a.action==='wait'&&++waits>=2)pending=false;return pending?{url:cfg.portalUrl,elements:[{type:'password'},{ref:'ok',label:'확인'}]}:result;};
+ const result=await login({}, {cfg,browser:f.browser,state:{},readProfile:async a=>a==='Status'?{valid:true}:f.profile});
+ assert.equal(result.complete,true);assert.equal(f.calls.filter(a=>a.ref==='l').length,1);assert.equal(f.calls.filter(a=>a.privateFill).length,1);
+});
+
 test('a service product title cannot turn a permission or error page into verified login',async()=>{
  for(const text of ['다른 앱 및 서비스 접근 허용','접속 실패 오류코드 1005','페이지가 작동하지 않습니다. HTTP ERROR 500']){
   const portal={isClosed:()=>false},popup={isClosed:()=>false};let screen={url:'https://portal.test/main',text:'로그아웃',elements:[{ref:'n',tag:'a',label:'나이스'}]};
@@ -87,3 +108,17 @@ test('local certificate access is opt-in, dedicated and scoped to the configured
  f.browser.attached=true;await login({allow_local_access:true},deps);assert.equal(grants.length,1);
 });
 test('an informational notice that arrives during the initial loading wait is closed before authentication',async()=>{const f=fixture(),execute=f.browser.execute;let waiting=true,notice=false,closes=0;f.browser.execute=async a=>{if(a.action==='wait'&&waiting){waiting=false;notice=true;}if(a.action==='click'&&a.ref==='loading-notice'){notice=false;closes++;return execute({action:'snapshot'});}if(notice)return {url:cfg.portalUrl,dialog:'서비스 안내',elements:[{ref:'loading-notice',label:'전체닫기'}]};if(waiting)return {url:cfg.portalUrl,elements:[]};return execute(a);};const result=await login({}, {cfg,browser:f.browser,state:{},readProfile:async a=>a==='Status'?{valid:true}:f.profile});assert.equal(result.complete,true);assert.equal(closes,1);assert.equal(f.calls.filter(a=>a.privateFill).length,1);});
+
+test('an informational notice appearing after authentication does not hide the authenticated portal',async()=>{
+ const f=fixture(),execute=f.browser.execute;let notice=true,closed=0;
+ f.browser.execute=async a=>{if(a.action==='click'&&a.ref==='post-auth-close'){notice=false;closed++;return execute({action:'snapshot'});}const screen=await execute(a);return notice&&screen.text==='Logout'?{url:'https://portal.test/main',dialog:'로그인 후 이용 안내',elements:[{ref:'post-auth-close',label:'전체닫기'}]}:screen;};
+ const result=await login({}, {cfg,browser:f.browser,state:{},readProfile:async a=>a==='Status'?{valid:true}:f.profile});assert.equal(result.authenticated,true);assert.equal(closed,1);assert.equal(f.calls.filter(a=>a.ref==='ok').length,1);
+});
+
+test('a late main-page notice between system launches is closed without another certificate submission',async()=>{
+ const portal={url:()=> 'https://portal.test/main',isClosed:()=>false},opened=[],calls=[];let notice=false;
+ const main=()=>notice?{url:portal.url(),dialog:'새 전달사항 안내',elements:[{ref:'close-notice',label:'전체닫기'}]}:{url:portal.url(),title:'업무포털 메인',text:'Logout',elements:[{ref:'n',tag:'a',label:'나이스'},{ref:'e',tag:'a',label:'K-에듀파인'}]};
+ const browser={page:portal,context:{pages:()=>[portal,...opened]},invalidate(){},execute:async a=>{calls.push(a);if(a.action==='click'&&a.ref==='close-notice')notice=false;else if(a.action==='click'&&['n','e'].includes(a.ref)){const neis=a.ref==='n',popup={url:()=>neis?'https://neis.test/main':'https://edufine.test/main',title:async()=>neis?'나이스':'K-에듀파인',isClosed:()=>false};opened.push(popup);browser.page=popup;if(neis)notice=true;}return browser.page===portal?main():{url:browser.page.url(),title:await browser.page.title(),text:'실제 화면 대신 사용하는 회귀용 합성 화면',elements:[{label:'업무 메뉴'}]};}};
+ const result=await login({systems:['neis','edufine']},{cfg,browser,readProfile:()=>{throw Error('Already authenticated; credentials must not be read again');}});
+ assert.equal(result.complete,true);assert.deepEqual(result.systems,{neis:true,edufine:true});assert.equal(calls.filter(a=>a.ref==='close-notice').length,1);assert.equal(calls.filter(a=>a.ref==='e').length,1);
+});

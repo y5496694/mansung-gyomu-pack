@@ -4,11 +4,12 @@ const tool={type:'function',name:'gyomu_cbe_archive',description:'쪽지와 대�
 const date=value=>{const s=String(value||'').trim(),m=s.match(/^(20\d{2})[-./]?(\d{2})[-./]?(\d{2})/);if(!m)return null;const d=m.slice(1).join('-');return Number.isNaN(Date.parse(d+'T00:00:00Z'))?null:d;};
 const submission=/제출|회신|신청|보고서|취합|마감|기한|수합|명단|계획서|결과보고/;
 function archiveTask(prompt,now=new Date()){
- if(!/쪽지|대화|소통|CBE/i.test(prompt)||/보내|전송|발송/.test(prompt)||!/개월|탐색|검색|찾아|찾고|찾아서|제출할/.test(prompt))return null;
+ const send=/보내|발송|전송/.test(prompt)&&!/보내지|발송하지|전송하지|발송\s*금지|전송\s*금지|보내거나\s*수정하지|읽기\s*전용/.test(prompt);
+ if(!/쪽지|대화|소통|CBE/i.test(prompt)||send||!/개월|탐색|검색|찾아|찾고|찾아서|제출할/.test(prompt))return null;
  const today=new Intl.DateTimeFormat('sv-SE',{timeZone:'Asia/Seoul',year:'numeric',month:'2-digit',day:'2-digit'}).format(now),dates=[...prompt.matchAll(/20\d{2}-\d{2}-\d{2}/g)].map(m=>m[0]);
  let from=dates[0];if(!from){const months=Number(prompt.match(/(\d+)\s*개월/)?.[1]||6),d=new Date(today+'T00:00:00Z'),day=d.getUTCDate();d.setUTCDate(1);d.setUTCMonth(d.getUTCMonth()-months);const end=new Date(Date.UTC(d.getUTCFullYear(),d.getUTCMonth()+1,0)).getUTCDate();d.setUTCDate(Math.min(day,end));from=d.toISOString().slice(0,10);}
  const query=prompt.match(/(?:검색어|내용|주제)(?:는|은|[:：])?\s*["“]([^"”]+)["”]/)?.[1]||prompt.match(/["“]([^"”]+)["”]/)?.[1]||'';
- return {from,to:dates[1]||today,kinds:/쪽지/.test(prompt)&&/대화/.test(prompt)||/소통|CBE/i.test(prompt)&&!/쪽지|대화/.test(prompt)?['note','chat']:[/쪽지/.test(prompt)?'note':'chat'],box:/보낸/.test(prompt)?'sent':/받은/.test(prompt)?'received':'all',query,submissionOnly:/제출할|제출.*리스트|제출.*목록/.test(prompt)};
+ return {from,to:dates[1]||today,kinds:/쪽지/.test(prompt)&&/대화/.test(prompt)||/소통|CBE/i.test(prompt)&&!/쪽지|대화/.test(prompt)?['note','chat']:[/쪽지/.test(prompt)?'note':'chat'],box:/받은/.test(prompt)&&/보낸/.test(prompt)?'all':/보낸/.test(prompt)?'sent':/받은/.test(prompt)?'received':'all',query,submissionOnly:/제출할|제출.*리스트|제출.*목록/.test(prompt)};
 }
 async function scan(args,{call,directory,signal,notify=()=>{}}){
  if(!date(args.from)||!date(args.to)||args.from>args.to)throw new Error('실제 조회 시작일·종료일을 YYYY-MM-DD로 지정하세요.');

@@ -7,13 +7,14 @@
 <title>나래 한글 오피스</title>
 <link rel="stylesheet" href="app.css">
 <link rel="stylesheet" href="local-ai.css">
-<link rel="stylesheet" href="remote.css">
-<link rel="stylesheet" href="agent.css">
-<link rel="stylesheet" href="benchmark.css">
+<link rel="stylesheet" href="model-reliability.css">
+
+
+
 <link rel="stylesheet" href="brand.css">
 <link rel="stylesheet" href="settings.css">
-<link rel="stylesheet" href="guide.css">
-<link rel="stylesheet" href="quick-window.css">
+
+
 </head>
 <body>
 <header><div class="brand">
@@ -24,7 +25,7 @@
 <div class="header-actions">
 <span id="connectionBadge" class="badge">로컬 작업 공간</span><button id="settingsButton" class="settings-icon" type="button" aria-label="설정" title="설정"><svg viewbox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="m9 3-.6 2.1-1.8 1L4.5 5.6l-2 3.5L4 10.7v2.1l-1.5 1.6 2 3.5 2.1-.5 1.8 1L9 21h4l.6-2.6 1.8-1 2.1.5 2-3.5-1.5-1.6v-2.1l1.5-1.6-2-3.5-2.1.5-1.8-1L13 3Z"></path><circle cx="11" cy="12" r="3"></circle></svg></button>
 </div></header>
-<nav class="workspace-tabs" role="tablist" aria-label="작업 공간"><button id="documentTab" role="tab" aria-selected="true" aria-controls="documentWorkspace">한글 문서</button><button id="agentTab" role="tab" aria-selected="false" aria-controls="agentWorkspace" tabindex="-1">나래 에이전트</button></nav>
+
 <div id="quickToolbar" hidden><span id="quickDocumentName">선택한 문서 없음</span><div id="quickDocumentActions"><button id="quickOpen" type="button">문서 열기</button><button id="quickNew" type="button">새 문서</button></div><button id="quickExpand" type="button" title="전체 창으로 전환">전체 창 ↗</button></div>
 <main id="documentWorkspace" role="tabpanel" aria-labelledby="documentTab">
 <aside><button id="openFile" class="primary">＋ 문서 열기</button><button id="newDocument">새 한글 문서</button><h2>최근 문서</h2>
@@ -41,8 +42,8 @@
 </div>
 </div>
 <div id="documentView"><div class="welcome">
-<img class="welcome-mark" src="assets/narae-office.png" alt=""><span class="eyebrow">나를위한 문서 에이전트</span><h1>안심하고 AI로 업무를 할 수 있는 공간.</h1>
-<p>한국 자체AI를 사용하여 한글 문서를 작성하고,<br>다른 프로그램/업무 사이트도 자동화해보세요.</p>
+<img class="welcome-mark" src="assets/narae-office.png" alt=""><span class="eyebrow">나래한글 문서 작업 공간</span><h1>한글 문서를 편하게 작성하세요.</h1>
+<p>나래한글로 문서를 읽고, 작성하고, 편집하세요.<br>연결한 AI와 함께 문서 작업을 이어갈 수 있습니다.</p>
 <div class="welcome-actions">
 <button id="welcomeOpen"><span class="action-icon blue">↗</span><strong>문서 열기</strong><small>HWP · HWPX 이어서 작업</small></button><button id="welcomeNew"><span class="action-icon mint">＋</span><strong>새 문서</strong><small>빈 문서에서 시작하기</small></button><button id="welcomeModels"><span class="action-icon amber">✦</span><strong>나래AI</strong><small>이 PC에서 실행할 모델 선택</small></button>
 </div>
@@ -52,7 +53,7 @@
 <button id="previousPage">이전</button><span id="pageNumber"></span><button id="nextPage">다음</button>
 </div></section>
 <section class="chat"><div class="chat-header">
-<strong>문서 에이전트</strong><button id="clearHistory" class="text-button">대화 비우기</button>
+<strong>문서 AI</strong><button id="clearHistory" class="text-button">대화 비우기</button>
 </div>
 <div id="messages"><div class="chat-intro">
 <span class="spark">✧</span><h2>어떻게 도와드릴까요?</h2>
@@ -66,40 +67,7 @@
 </div>
 </form></section>
 </main>
-<section id="agentWorkspace" class="agent-workspace" role="tabpanel" aria-labelledby="agentTab" hidden>
- <aside class="agent-sidebar">
-  <div class="agent-introduction">
-<img class="agent-logo" src="assets/narae-office.png" alt=""><h2>나래 에이전트</h2>
-<p>선생님의 업무를 도와주는<br>나래 에이전트입니다.</p>
-<p>한글문서, 메신저, 업무포탈<br>업무를 도와드려요.</p>
-<button id="agentUserGuide" type="button" class="text-button">나래3 사용 안내 ›</button>
-<button id="agentBenchmark" type="button" class="text-button">필수 업무 벤치 10개 ›</button>
-</div>
-  <div class="agent-sidebar-bottom">
-   <div class="agent-preferences">
-<label class="agent-view-label" for="agentChannel">대화</label><select id="agentChannel"><option value="kakao">PC · 카카오톡</option>
-<option value="telegram">텔레그램</option></select><button id="agentModelSettings" class="agent-model-control" type="button"><span><small>사용 중인 AI</small><strong id="agentModel">AI 연결 설정 필요</strong></span><span aria-hidden="true">›</span></button>
-</div>
-   <div class="agent-channel">
-<div class="agent-channel-title">
-<span class="kakao-symbol" aria-hidden="true">●</span><div>
-<strong>카카오톡 나래</strong><small>narae_bot</small>
-</div>
-</div>
-<div class="agent-channel-actions">
-<button id="agentOpenChannel" type="button">카톡 열기 ↗</button><button id="agentConnect" type="button">연결 설정</button>
-</div>
-</div>
-  </div>
- </aside>
- <section class="agent-conversation"><div id="agentMessages" role="log" aria-label="PC와 카톡 공유 대화" aria-live="polite"></div>
-<div id="agentProgress" role="status">준비됨</div>
-<form id="agentForm">
-<label for="agentPrompt" class="sr-only">통합 업무 요청</label><textarea id="agentPrompt" rows="3" maxlength="4000" placeholder="나래에게 요청하세요. Enter로 보내기, Shift+Enter로 줄바꿈"></textarea><div class="composer-footer"><div>
-<button id="agentStop" type="button" hidden>중지</button><button id="agentSend" type="submit" class="primary">보내기 ↑</button>
-</div></div>
-</form></section>
-</section>
+
 
 <dialog id="createDialog"><form id="createForm">
 <div class="dialog-header">
@@ -113,11 +81,12 @@
 
 
 
-<dialog id="officeBenchDialog" aria-labelledby="officeBenchTitle">
- <div class="bench-heading"><div><h2 id="officeBenchTitle">나래오피스 필수 업무 벤치</h2><p>모든 과제의 모든 조건을 확인해야 전체 합격입니다.</p></div><button id="closeOfficeBench" type="button" aria-label="벤치 목록 닫기">닫기</button></div>
- <p id="officeBenchSummary" role="status"></p><p id="officeBenchNotice" role="alert" hidden></p>
- <div class="bench-actions"><button id="refreshOfficeBench" type="button">새로고침</button><button id="copyOfficeBench" type="button">목록 복사</button><button id="importOfficeBench" type="button">검증 기록 불러오기</button></div>
- <div id="officeBenchTasks" class="bench-tasks"></div>
+
+<dialog id="modelReliabilityDialog" aria-labelledby="modelReliabilityTitle">
+<div class="reliability-heading"><div><h2 id="modelReliabilityTitle">모델 신뢰도</h2><p>이 PC에서 확인한 실제 업무 수행 기록 · 모델과 오피스 실행기를 함께 평가합니다.</p></div><button id="closeModelReliability" type="button" aria-label="신뢰도 닫기">닫기</button></div>
+<p id="modelReliabilitySummary" role="status"></p><p id="modelReliabilityRule" class="muted"></p>
+<div class="button-row"><button id="refreshModelReliability" type="button">기록 새로고침</button></div>
+<p id="modelReliabilityNotice" role="alert" hidden></p><ol id="modelReliabilityRecords"></ol>
 </dialog>
 <dialog id="settingsDialog" aria-labelledby="settingsTitle">
  <div class="settings-shell">
@@ -126,10 +95,11 @@
 </div>
 <nav class="settings-tabs" role="tablist" aria-label="설정 항목" aria-orientation="vertical">
    <button id="settingsGeneralTab" type="button" role="tab" data-settings-tab="general" aria-controls="generalSettingsPanel" aria-selected="true">일반</button>
+
    <button id="settingsAITab" type="button" role="tab" data-settings-tab="ai" aria-controls="aiSettingsPanel" aria-selected="false" tabindex="-1">AI 연결</button>
-   <button id="settingsMessengerTab" type="button" role="tab" data-settings-tab="messenger" aria-controls="messengerSettingsPanel" aria-selected="false" tabindex="-1">메신저</button>
-   <button id="settingsCronTab" type="button" role="tab" data-settings-tab="cron" aria-controls="cronSettingsPanel" aria-selected="false" tabindex="-1">예약 작업</button>
-   <button id="settingsGuideTab" type="button" role="tab" data-settings-tab="guide" aria-controls="guideSettingsPanel" aria-selected="false" tabindex="-1">사용 안내</button></nav><small>나에게 맞는 작업 공간</small></aside>
+
+
+   </nav><small>나에게 맞는 작업 공간</small></aside>
   <div class="settings-main">
 <div class="settings-header">
 <h2 id="settingsTitle">설정</h2>
@@ -137,46 +107,19 @@
 </div>
 <p id="settingsNotice" class="settings-notice" role="alert" hidden></p>
 <div class="settings-content">
-   <section id="guideSettingsPanel" class="settings-panel" role="tabpanel" aria-labelledby="settingsGuideTab" hidden>
-<div class="guide-heading"><span class="eyebrow">나래3와 함께하는 업무</span><h3>무엇을 맡길 수 있나요?</h3><p id="guideIntro"></p><small id="guideVersion"></small></div>
-<div id="guideModelNote" class="guide-note"></div>
-<details class="guide-legend"><summary>검증 수준 읽는 법</summary><dl id="guideLegend"></dl></details>
-<div class="guide-controls"><label for="guideSearch">업무 검색<input id="guideSearch" type="search" placeholder="쪽지 요약, 조퇴, PDF, 첨부…" autocomplete="off"></label><label for="guideCategory">업무 영역<select id="guideCategory"><option value="">전체 영역</option></select></label><button id="guideExpand" type="button" aria-pressed="false">모두 펼치기</button></div>
-<p id="guideResults" class="muted" role="status" aria-live="polite"></p><div id="guideTopics"></div><p id="guideEmpty" hidden>일치하는 안내가 없습니다. 다른 검색어나 전체 영역으로 찾아보세요.</p>
-<p id="guideCopyStatus" class="muted" role="status" aria-live="polite"></p>
-   </section>
+
+
    <section id="generalSettingsPanel" class="settings-panel" role="tabpanel" aria-labelledby="settingsGeneralTab"><h3>일반</h3>
 <p class="muted">문서 작업과 저장 방식을 설정하세요.</p>
-<form id="generalSettingsForm">
-<label>교육청 지역<select id="schoolRegion" aria-describedby="schoolRegionHelp"></select></label><p id="schoolRegionHelp" class="muted"></p>
-<button id="kakaoProgram" type="button" aria-pressed="false">카톡 프로그램 사용</button><p id="kakaoProgramStatus" class="muted" role="status">카카오톡 CLI로 나와의 채팅에 에이전트 결과를 보냅니다.</p>
-<label class="check-label"><input id="closeToTray" type="checkbox" checked>창을 닫으면 트레이에서 백그라운드 실행</label><p class="muted">카카오톡·텔레그램 연결과 업무 세션 연장을 유지합니다. 완전히 종료하려면 트레이 아이콘 메뉴에서 종료하세요.</p>
-<div class="shortcut-settings"><label>작은 한글 명령 창<input id="hangulShortcut" type="text" readonly autocomplete="off" aria-describedby="shortcutHelp" placeholder="눌러서 단축키 입력"></label><button id="clearHangulShortcut" type="button">사용 안 함</button><label>작은 에이전트 명령 창<input id="agentShortcut" type="text" readonly autocomplete="off" aria-describedby="shortcutHelp" placeholder="눌러서 단축키 입력"></label><button id="clearAgentShortcut" type="button">사용 안 함</button></div><p id="shortcutHelp" class="muted">입력칸을 선택하고 Ctrl·Alt 등을 포함한 키 조합을 누른 뒤 저장하세요. 다른 프로그램을 쓰는 중에도 호출할 수 있습니다.</p><p id="shortcutStatus" role="status"></p>
-<label class="check-label"><input id="toolAutoAllow" type="checkbox">모든 도구 실행 자동 허용 · 승인창 없이 실행</label><p class="muted">문서 변경, 브라우저 조작, 메신저 발송에 적용합니다. 설정은 이 PC에 저장됩니다.</p>
-<label class="check-label"><input id="keepSchoolSession" type="checkbox" checked>업무포털·에듀파인 자동 세션 연장</label><p class="muted">다음 요청을 기다리는 동안 10분마다 기존 창의 연장 버튼을 누르고 남은 시간을 확인합니다. 작업 중에는 잠시 대기하며, 앱을 종료하거나 로그아웃하면 연장하지 않습니다.</p>
-<h4>업무 브라우저</h4><p class="muted">기본은 나래 전용 브라우저입니다. 평소 사용하던 Chrome의 탭과 분리해서 업무를 진행합니다.</p>
-<label class="check-label"><input id="browserUseExisting" type="checkbox" aria-controls="browserExtensionFields">기존 Chrome의 열린 탭 사용 · 확장 설정 필요</label>
-<section id="browserExtensionFields" hidden aria-label="기존 Chrome 확장 연결 설정">
-<p class="muted">이 옵션을 체크하고 확장 연결을 설정한 경우에만 기존 탭을 사용합니다. 연결을 해제해도 Chrome과 열린 탭은 남습니다.</p>
-<ol class="muted"><li>아래 설치 버튼으로 Playwright 확장을 Chrome에 추가합니다.</li><li>Chrome의 확장 아이콘 → Playwright 상태 화면에서 <code>PLAYWRIGHT_MCP_EXTENSION_TOKEN</code> 값을 복사합니다.</li><li>아래에 붙여 넣고 저장하면 다음 브라우저 작업부터 해당 설정으로 자동 연결합니다.</li></ol>
-<label>PLAYWRIGHT_MCP_EXTENSION_TOKEN<input id="browserExtensionToken" type="password" autocomplete="new-password" spellcheck="false" placeholder="확장 토큰 값 또는 변수=값 붙여넣기"></label>
-<label>PLAYWRIGHT_MCP_BROWSER<select id="browserEnvironmentBrowser"><option value="">자동 · 현재 환경 설정</option><option value="chrome">Chrome</option><option value="msedge">Edge</option></select></label>
-<label>PLAYWRIGHT_MCP_PROFILE_DIR_NAME<input id="browserEnvironmentProfile" type="text" autocomplete="off" placeholder="선택 사항 · Default 또는 Profile 1"></label><p class="muted">프로필을 지정하려면 chrome://version의 프로필 경로에서 마지막 이름을 입력하세요. 토큰은 같은 프로필의 값을 사용합니다. 입력값은 이 PC에 암호화해 저장하며, 비워 둔 토큰은 기존 값을 유지합니다.</p>
-<div class="button-row"><button id="browserEnvironmentSave" type="button">연결 환경변수 저장</button><button id="browserEnvironmentClear" type="button">오피스에 저장한 토큰 삭제</button></div><p id="browserEnvironmentStatus" role="status"></p>
-<button id="browserExtensionInstall" type="button">Chrome 연결 확장 설치</button></section>
-<div class="button-row"><button id="browserConnect" type="button">브라우저 연결</button><button id="browserDisconnect" type="button">연결 해제</button></div><p id="browserConnectionStatus" role="status"></p>
-<label>작업 폴더<span id="workspace" class="path-label"></span></label><button id="chooseFolder" type="button">작업 폴더 변경</button><label class="check-label"><input id="autoSave" type="checkbox" checked>AI의 열린 한글 편집 후 자동 저장</label><p class="muted">문서와 대화는 이 컴퓨터에 보관합니다.</p>
-<button id="settingsDataFolder" type="button">저장 폴더 열기</button><p id="generalSettingsStatus" role="status"></p>
-<button type="submit" class="primary save-settings">일반 설정 저장</button>
-</form></section>
-   <section id="cronSettingsPanel" class="settings-panel" role="tabpanel" aria-labelledby="settingsCronTab" hidden><h3>예약 작업</h3><p class="muted">나래 오피스가 실행 중일 때 현재 AI와 도구 승인 설정으로 처리합니다. PC가 꺼졌거나 다른 작업 중이면 놓친 실행을 나중에 몰아서 처리하지 않습니다. 카톡 나래 챗봇에서 ‘cron’을 보내 목록을 조회할 수 있습니다.</p><div id="cronJobs"></div><form id="cronForm"><input id="cronId" type="hidden"><label>이름<input id="cronName" required maxlength="80"></label><label>cron 식 (분 시 일 월 요일)<input id="cronExpression" required value="0 8 * * 1-5" aria-describedby="cronHelp"></label><p id="cronHelp" class="muted">예: 0 8 * * 1-5 → 평일 오전 8시. 요일 0은 일요일입니다.</p><label>시간대<input id="cronZone" required value="Asia/Seoul"></label><label>요청<textarea id="cronPrompt" required maxlength="4000" rows="4"></textarea></label><label>결과 수신<select id="cronDelivery"><option value="pc">PC 에이전트 대화</option><option value="self">카카오톡 나와의 채팅</option></select></label><label class="check-label"><input id="cronEnabled" type="checkbox" checked>예약 켜기</label><button type="submit" class="primary">예약 저장</button><button id="cronNew" type="button">새 예약</button></form><p id="cronStatus" role="status"></p></section>
+<form id="generalSettingsForm"><label class="check-label"><input id="closeToTray" type="checkbox" checked>창을 닫으면 트레이에서 실행</label><label>작업 폴더<span id="workspace" class="path-label"></span></label><button id="chooseFolder" type="button">작업 폴더 변경</button><label class="check-label"><input id="autoSave" type="checkbox" checked>AI의 열린 한글 편집 후 자동 저장</label><button id="settingsDataFolder" type="button">저장 폴더 열기</button><p id="generalSettingsStatus" role="status"></p><button type="submit" class="primary save-settings">일반 설정 저장</button></form></section>
+
    <section id="aiSettingsPanel" class="settings-panel" role="tabpanel" aria-labelledby="settingsAITab" hidden><h3>AI 연결</h3>
 <p class="muted">사용할 AI를 선택하고 아래에서 연결을 설정하세요.</p>
 <div class="ai-provider-choices" role="group" aria-label="AI 제공자">
 <button id="localAIButton" type="button" data-ai-provider="managed" aria-pressed="false" aria-controls="localAIDialog"><span class="provider-symbol narae-provider"><img src="assets/narae-office.png" alt=""></span><strong>나래AI</strong><small>로컬</small></button><button id="gptAIButton" type="button" data-ai-provider="openai" aria-pressed="false" aria-controls="cloudAIFields"><span class="provider-symbol">G</span><strong>GPT</strong><small>OAuth · API</small></button><button id="claudeAIButton" type="button" data-ai-provider="anthropic" aria-pressed="false" aria-controls="cloudAIFields"><span class="provider-symbol claude-provider">✳</span><strong>Claude</strong><small>OAuth · API</small></button><button id="otherAIButton" type="button" data-ai-provider="external" aria-pressed="false" aria-controls="otherAIFields"><span class="provider-symbol">···</span><strong>기타</strong><small>다른 로컬 서버</small></button>
 </div>
 <section id="localAIDialog" class="ai-provider-panel" aria-labelledby="localAITitle" hidden><h4 id="localAITitle">나래AI 모델</h4>
-<p class="model-dialog-intro">나래3을 추천합니다. 사용을 누르면 선택한 모델 하나만 이 PC에서 실행합니다.</p>
+<p class="model-dialog-intro">기본 모델은 나래4입니다. 설치하면 본체·학습 어댑터·시각 프로젝터·판단기를 함께 받습니다. 사용을 누르면 선택한 모델을 이 PC에서 실행합니다.</p>
 <p id="localAIStatus" role="status"></p>
 <div id="localAICards"></div>
 <div class="local-storage">
@@ -209,34 +152,12 @@
 <p>Ollama·LM Studio 등에서 OpenAI 호환 서버를 실행한 뒤 연결하세요. JSON Schema 응답을 지원해야 합니다.</p>
 <label>서버 주소<input id="localAIEndpoint" value="http://127.0.0.1:11434/v1" type="url"></label><label>모델 ID<input id="localAIExternalModel" placeholder="서버에 설치한 모델 이름"></label><button id="localAIExternal">연결 확인 · 사용</button><p id="externalAIStatus" role="status"></p>
 <p id="externalAIError" role="alert"></p></section></section>
-   <section id="messengerSettingsPanel" class="settings-panel" role="tabpanel" aria-labelledby="settingsMessengerTab" hidden><h3>메신저</h3>
-<p class="muted">메신저를 선택해 이 PC의 나래 에이전트와 연결하세요.</p>
-<nav class="messenger-tabs" role="tablist" aria-label="메신저 선택"><button id="telegramButton" type="button" role="tab" data-messenger-tab="telegram" aria-controls="telegramDialog" aria-selected="true">텔레그램</button><button id="remoteButton" type="button" role="tab" data-messenger-tab="kakao" aria-controls="remoteDialog" aria-selected="false" tabindex="-1">카카오톡</button></nav><section id="telegramDialog" class="messenger-panel" role="tabpanel" aria-labelledby="telegramButton" hidden><h4 id="telegramTitle">텔레그램 · 내 PC 연결</h4>
-<p>BotFather에서 전용 봇을 만든 뒤 토큰을 등록하세요. 토큰은 이 Windows 사용자의 암호화 저장소에 보관합니다.</p>
-<button id="telegramBotFather">BotFather 열기 ↗</button><label>봇 토큰<input id="telegramToken" type="password" autocomplete="off" placeholder="BotFather의 토큰"></label><button id="telegramConnect">봇 연결</button><p id="telegramStatus" role="status"></p>
-<div class="button-row">
-<button id="telegramPair">내 계정 연결 링크 만들기</button><button id="telegramOpenPair">텔레그램에서 연결 ↗</button><button id="telegramUnlink">연결 해제</button>
-</div>
-<p>연결 링크는 10분간 유효하며 한 개인 채팅만 연결합니다. HWP·HWPX 첨부, /files, /get 파일명, /cancel을 사용할 수 있습니다. PC 앱이 켜져 있어야 하며 도구 실행 승인은 이 PC의 일반 설정을 따릅니다.</p>
-<p id="telegramError" role="alert"></p></section>
-   <section id="remoteDialog" class="messenger-panel" role="tabpanel" aria-labelledby="remoteButton" hidden><h4 id="remoteTitle">카카오톡 · 내 PC 연결</h4>
-<p class="muted">나래 챗봇의 업무 요청과 프롬프트를 유지하고, 처리 결과는 카카오톡 CLI로 나와의 채팅에 보냅니다. 일반 설정의 카톡 프로그램 사용을 켜고 본인 계정으로 PC 카카오톡에 로그인하세요. PC와 나래 오피스가 켜져 있어야 합니다. 챗봇에서 cron 또는 예약 목록으로 예약을 조회할 수 있습니다.</p>
-<div id="remoteStatus" role="status">연결 안 됨</div>
-<form id="remotePairForm">
-<label>나래 중계 서버 주소<input id="remoteRelay" type="url" required placeholder="https://중계서버주소" autocomplete="off"></label><label>카톡에서 받은 내 UID<input id="remoteUid" required placeholder="카톡에서 ‘내 UID’를 보내 확인" autocomplete="off" spellcheck="false"></label><label>이 PC 이름<input id="remoteName" required maxlength="60" value="내 PC"></label><label class="check-label"><input id="remoteConsent" type="checkbox" required>이 카톡 사용자의 작업 폴더 읽기와 에이전트 대화 공유에 동의합니다.</label><p class="muted">요청과 답변, 처리한 문서 내용은 카카오·중계 서버와 선택한 AI를 통과할 수 있습니다. 학교 로그인·인증서·AI 계정 토큰은 이 PC에 둡니다. 작업 폴더 밖 접근·임의 명령 실행은 허용하지 않으며, 도구 실행 시 승인창을 표시하며, 설정 → 일반에서 자동 허용으로 바꿀 수 있습니다.</p>
-<button id="remotePair" type="submit" class="primary">UID로 연결 요청</button>
-</form>
-<p id="remoteCode" class="info" hidden></p>
-<div class="button-row">
-<button id="remoteRefresh" type="button">상태 새로고침</button><button id="remoteApprove" type="button" class="primary" hidden>이 카톡 사용자의 PC 연결 승인</button><button id="remoteCancel" type="button" hidden>원격 작업 중단</button><button id="remoteUnlink" type="button" hidden>PC 연결 해제</button>
-</div>
-<p id="remoteNotice" role="status"></p></section>
-  </section>
+
 </div>
 </div>
  </div>
 </dialog>
-<dialog id="approvalDialog" aria-labelledby="approvalTitle"><div class="approval-heading"><img src="assets/narae-office.png" width="40" height="40" alt=""><div><small>나래 에이전트</small><h2 id="approvalTitle">도구 실행 승인</h2></div><button id="approvalClose" type="button" aria-label="거절하고 닫기">×</button></div><p>요청한 작업과 내용을 확인해 주세요.</p><section id="remoteApproval" hidden><pre id="remoteApprovalDetails"></pre><div class="button-row"><button id="remoteDeny" type="button">거절</button><button id="remoteAllow" type="button" class="primary">이 작업 허용</button></div></section><section id="telegramApproval" hidden><pre id="telegramApprovalDetails"></pre><div class="button-row"><button id="telegramDeny" type="button">거절</button><button id="telegramAllow" type="button" class="primary">이 작업 허용</button></div></section><p id="approvalError" role="alert"></p><small>설정 → 일반에서 모든 도구 실행 자동 허용을 선택할 수 있습니다.</small></dialog>
-<script src="settings.js"></script><script src="narae3-guide-data.js"></script><script src="guide.js"></script><script src="browser-settings.js"></script><script src="app.js"></script><script src="office-settings.js"></script><script src="remote.js"></script><script src="agent.js"></script><script src="benchmark.js"></script><script src="local-ai.js"></script><script src="telegram.js"></script><script src="approval.js"></script><script src="quick-window.js"></script>
-</body>
+
+
+<script src="settings.js"></script><script src="app.js"></script><script src="ai-settings.js"></script><script src="model-reliability.js"></script><script src="local-ai.js"></script><script src="office-window.js"></script></body>
 </html>

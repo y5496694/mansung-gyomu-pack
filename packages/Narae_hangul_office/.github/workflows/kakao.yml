@@ -1,4 +1,4 @@
-name: Remote links and local AI checks
+name: NaraeTalk and document Office checks
 on:
   push:
     branches: [main, 'feat/kakao-pc-link']
@@ -21,6 +21,7 @@ jobs:
       - name: Prepare isolated test dependencies
         shell: pwsh
         run: |
+          New-Item -ItemType Directory -Force -Path D:\Codex\tmp | Out-Null
           npm ci
           python -m pip install -r requirements.txt
           "NARAE_OFFICE_PYTHON=$((Get-Command python).Source)" >> $env:GITHUB_ENV
@@ -28,32 +29,28 @@ jobs:
         run: npm test
       - name: Offline and public user guide consistency
         run: npm run guide:check
-      - name: Real desktop and document-engine integration with synthetic ingress and AI
+      - name: Profile, regional CLI friends, chat, settings and document-only Office
         env:
-          NARAE_QA_ROOT: ${{ runner.temp }}/narae-kakao-qa
-        run: npm run test:kakao:desktop
-      - name: Local AI and Telegram desktop integration
-        env:
-          NARAE_QA_ROOT: ${{ runner.temp }}/narae-local-qa
-        run: npm run test:local:desktop
-      - name: Unified settings and agent layout
-        run: npm run test:settings:desktop
-      - name: Existing Chrome connection settings with synthetic tabs
-        run: node tests/browser-settings-desktop.cjs
-      - name: Tray lifecycle and compact command windows
-        run: node tests/quick-window-desktop.cjs
-      - name: Independent approval dialog and automatic tool permission
-        run: node tests/approvals-desktop.cjs
-      - name: Package complete source candidate
+          NARAE_QA_ROOT: ${{ runner.temp }}/narae-talk-qa
+        run: npm run test:talk:desktop
+      - name: Memo, calendar, notifications and group rooms
+        run: node tests/talk-personal-desktop.cjs
+      - name: Ezedu bounded read and message clipboard copy
+        run: node tests/talk-ezedu-desktop.cjs
+      - name: Weekly calendar banner and daily schedule counts
+        run: node tests/talk-calendar-desktop.cjs
+      - name: Live process, native drag-drop and clipboard image attachments
+        run: node tests/talk-chat-input-desktop.cjs
+      - name: Browser friend public website reading and source summaries
+        run: node tests/browser-talk-desktop.cjs
+      - name: Browser navigation, approval status and cancellation isolation
+        run: node tests/browser-navigation-desktop.cjs
+      - name: Package complete source
         run: npm run package
       - name: Upload sanitized synthetic verification only
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: kakao-pc-verification
-          path: |
-            ${{ runner.temp }}/narae-kakao-qa/**/result.json
-            ${{ runner.temp }}/narae-kakao-qa/**/paired-ui.png
-            ${{ runner.temp }}/narae-local-qa/**/result.json
-            ${{ runner.temp }}/narae-local-qa/**/models.png
+          name: narae-talk-office-verification
+          path: ${{ runner.temp }}/narae-talk-qa/**
           if-no-files-found: warn

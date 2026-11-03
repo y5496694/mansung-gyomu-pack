@@ -1,0 +1,10 @@
+node_modules/
+runtime/
+models/*/*.gguf
+models/*/*.safetensors
+dist/
+work/
+local/
+__pycache__/
+*.pyc
+TASK_STATE.md

@@ -1,0 +1,12 @@
+(()=>{'use strict';
+ const el=id=>document.getElementById(id),call=(name,args)=>window.narae.call(name,args),form=el('certificateForm');let region='';
+ const fields={certificate_name:'certificateName',certificate_path:'certificatePath',storage_type:'certificateStorage',storage_name:'certificateStorageName',disk_label:'certificateDiskLabel',disk_drive:'certificateDiskDrive'};
+ function media(){const removable=el('certificateStorage').value==='Removable';el('certificateRemovable').hidden=!removable;for(const id of ['certificateDiskLabel','certificateDiskDrive'])el(id).disabled=!removable;}
+ function show(state){region=state.region;const saved=state.hasPassword&&!state.regionMismatch;el('certificateRegion').textContent=region;for(const [key,id]of Object.entries(fields))el(id).value=state[key]||(key==='storage_type'?'HardDisk':'');el('certificatePassword').value='';el('certificatePassword').required=!saved;el('certificatePassword').placeholder=saved?'비워 두면 저장된 비밀번호 유지':'처음 등록할 비밀번호 입력';el('certificateSave').textContent=state.exists?'인증서 정보 수정 저장':'인증서 정보 저장';media();el('certificateStatus').textContent=state.regionMismatch?'저장된 인증서의 교육청이 다릅니다. 현재 지역의 인증서와 비밀번호를 등록하세요.':state.valid?(state.certificate_path_exists?'등록된 인증서 정보가 있습니다. 수정 후 저장할 수 있습니다.':'인증서 정보는 저장되어 있으나 경로를 찾을 수 없습니다. 디스크 연결을 확인하세요.'):state.exists?'기존 인증서 정보를 읽을 수 없습니다. 정보를 다시 입력해 저장하세요.':'등록된 인증서 정보가 없습니다.';}
+ async function busy(work){for(const button of form.querySelectorAll('button'))button.disabled=true;try{await work();}catch(e){el('certificateStatus').textContent=e.message;}finally{for(const button of form.querySelectorAll('button'))button.disabled=false;}}
+ el('certificateStorage').onchange=media;
+ el('certificateBrowse').onclick=()=>busy(async()=>{const result=await call('certificateChoosePath');if(result)el('certificatePath').value=result;});
+ form.onsubmit=event=>{event.preventDefault();void busy(async()=>{const input={region,password:el('certificatePassword').value};for(const [key,id]of Object.entries(fields))input[key]=el(id).value;try{show(await call('certificateSave',input));el('certificateStatus').textContent='인증서 정보를 저장했습니다. 다음 업무포털 로그인부터 사용합니다.';}finally{input.password=null;el('certificatePassword').value='';}});};
+ window.naraeSettings.onOpen('certificate',async()=>{show(await call('certificateState'));});
+ el('settingsDialog').addEventListener('close',()=>{el('certificatePassword').value='';});
+})();

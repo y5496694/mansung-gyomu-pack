@@ -9,6 +9,13 @@ import {
   newsLinks,
   validateAgentAction,
 } from "../src/protocol.mjs";
+test("the direct click CLI preserves the explicit combobox toggle part", () => {
+  assert.deepEqual(actionFromArgs("click", ["s1/e1"], { part: "toggle" }), {
+    action: "click",
+    ref: "s1/e1",
+    part: "toggle",
+  });
+});
 test("only credential-free HTTP URLs and exact authorized hosts", () => {
   assert.equal(
     webUrl("https://news.naver.com/section/105", ["news.naver.com"]),

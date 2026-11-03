@@ -20,6 +20,8 @@ description: 실제 Chrome/Edge를 짧은 JSON 명령으로 제어하는 나래 
 
 새 snapshot, 이동, 입력 후에는 이전 ref를 쓰지 않는다. `STALE_REF`가 나면 snapshot을 다시 읽는다. 코드·명령·ref를 지어내지 않는다. 로그인이 필요한 상태를 성공했다고 가정하지 않는다. 명령이 실패하면 실제 error를 보고하며 가짜 본문으로 대신하지 않는다.
 
+Nexacro 입력이 표시만 바뀌고 저장 검사에서 누락되면 `type REF TEXT`의 실제 키 입력과 Tab을 사용하고 다시 읽는다. `fill` 뒤 같은 문자열이 보인다는 이유로 내부 값 확정을 주장하지 않는다. 단일 줄 입력에는 Enter를 보내지 않는다. `upload REF ABSOLUTE_FILE...`은 관찰한 파일 입력/파일 선택 버튼으로 원본을 전달한다. 서버 검증은 `download REF NEW_OUTPUT_FILE --expected-sha256 HASH`로 내려받은 바이트·해시까지 대조한다. 다운로드는 새 경로만 허용하며 파일명 표시를 첨부 무결성 검증으로 대신하지 않는다.
+
 ## 기존 Chrome 탭 연결
 
 사용자가 기존 Chrome/Edge를 사용하라고 요청하면 `narae-browser extension`의 설치 안내를 확인하고 `attach --session TASK`를 실행한다. 공식 Playwright 확장에서 사용자가 선택한 기존 탭을 제어하며 새 프로필을 열거나 쿠키를 복사하지 않는다. 이후 같은 세션의 snapshot·tabs·tab과 실제 ref를 사용한다. 연결 실패를 새 창 실행으로 대신하지 않는다. `close`는 기존 Chrome을 닫지 않고 연결만 해제한다. Edge·프로필 및 로컬 CDP 선택은 [기존 Chrome 연결](README.md#이미-열린-chrome-연결)을 따른다. 뉴스·읽기 전용 agent의 전용 세션 정책은 유지한다.

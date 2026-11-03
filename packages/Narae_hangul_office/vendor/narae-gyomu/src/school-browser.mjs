@@ -1,6 +1,7 @@
 // Extend the frozen Narae browser engine with school iframe/form observations.
 import {BrowserEngine, bound, Fault} from '../packages/narae_browser/src/browser.mjs';
 import {createHash} from 'node:crypto';
+import requisitionUI from '../packages/narae_gyomoo_portal/skills/narae-gyomu-edufine/scripts/requisition-ui.cjs';
 
 function finalDOM(element) {
   const visible = e => {const r=e.getBoundingClientRect(),s=getComputedStyle(e);return r.width>0&&r.height>0&&s.display!=='none'&&s.visibility!=='hidden';};
@@ -140,6 +141,7 @@ export class SchoolBrowser extends BrowserEngine {
     }, {chars: bound(args.chars, 100, 20000, 5000), offset: bound(args.offset, 0, 1000000, 0), selector: args.selector || null});
   }
   async execute(command) {
+    if(['requisition-observe','requisition-click','requisition-confirm','requisition-status'].includes(command.action))return requisitionUI.execute(this,command);
     if(command.action==='dialog'&&command.decision==='accept'&&/상신|결재|승인|회수|삭제|발송|전송|반려|인증|암호|서명/.test(this.pendingDialog?.message||''))throw new Fault('FINAL_DIALOG_AUTH_REQUIRED','상신·결재·인증 등은 문서와 권한을 확인한 전용 절차로 처리하세요. 확인창만 직접 수락할 수 없습니다.');
     if(this.pendingDialog&&command.action!=='dialog'&&!['tabs','snapshot'].includes(command.action))throw new Fault('DIALOG_PENDING','현재 사이트 확인창의 실제 ID와 원문으로 먼저 응답하세요. 클릭을 반복하지 마세요.');
     if (['open', 'back', 'tab'].includes(command.action)) this.frame = null;

@@ -51,6 +51,8 @@ K-에듀파인 회수의 일반적인 실제 흐름은 **선택한 한 건 → �
 
 ## 선택 컨트롤과 Nexacro 메뉴
 
+Nexacro combobox의 가운데를 클릭해도 선택지가 열리지 않는 경우 `inspect CURRENT_REF`의 `controls`에서 실제 펼침 버튼과 표시 상태를 확인한다. `click CURRENT_REF --part toggle`은 현재 관찰한 combobox 안의 보이고 활성화된 `.dropbutton`/`.combobutton` 하나만 누른다. 중복·미표시 버튼과 일반 요소는 거절하며, 임의 좌표·DOM 업무 함수를 받지 않는다. 이후 새 snapshot에서 실제 옵션을 선택하고 반영값을 확인한다.
+
 `check REF`·`uncheck REF`는 현재 snapshot의 선택 상태와 실제 checkbox/radio를 대조하고 적용 후 다시 읽는다. 숨긴 input을 보이는 행/label로 표현한 표도 선택할 수 있다. 행의 제목·기안자·현재 상태를 대조하고 정확히 한 건만 선택한다. 전체 선택을 개별 문서 선택으로 혼동하지 않는다.
 
 ```powershell

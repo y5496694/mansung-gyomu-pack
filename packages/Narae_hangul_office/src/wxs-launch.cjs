@@ -16,7 +16,7 @@ async function execute(args,{root,python,instance,signal,run=privateCLI}){
   const windows=await instance.wxs(['windows'],signal),identity=rows=>rows.map(({hwnd,pid,title})=>[String(hwnd),pid,title]).sort((a,b)=>a[0].localeCompare(b[0]));if(!Array.isArray(windows.windows)||windows.windows.length&&(!Array.isArray(entry.nativeBaseline)||JSON.stringify(identity(windows.windows))!==JSON.stringify(identity(entry.nativeBaseline))))throw Error('서식 클릭 뒤 새 WXS 창이 있거나 기존 창이 변경되어 중복 실행하지 않았습니다. 현재 창을 확인하세요.');
   entry.attempted=true;
  }
- const result=await run({root,python,env:instance.pythonEnv,request:{url:entry.url,source_origin:entry.sourceOrigin,format_title:entry.formatTitle},apply:args.operation==='apply',fingerprint:args.fingerprint,signal});
+ const result=await run({root,python,env:instance.pythonEnv,request:{url:entry.url,source_origin:entry.sourceOrigin,format_title:entry.formatTitle,...(entry.document?{document:entry.document}:{})},apply:args.operation==='apply',fingerprint:args.fingerprint,signal});
  if(args.operation==='preview')entry.preview=result;else entry.launched=Boolean(result.applied);
  return {...result,requestId:entry.id,documentOpenVerified:false};
 }

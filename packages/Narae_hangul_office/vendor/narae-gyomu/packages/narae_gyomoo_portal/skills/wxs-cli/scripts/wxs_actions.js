@@ -167,6 +167,30 @@ function wxsAction(action, p) {
         for (var rw = 0; rw < stagedValues.length; rw++) replacementMap.set(stagedValues[rw].key, stagedValues[rw]);
         return wxsAction("attachment_staging_status", {});
     }
+    if (action === "attachment_local_rename_info" || action === "attachment_local_rename") {
+        requireDraft();
+        need(typeof Attach !== "undefined" && Attach.fileBox && typeof Attach.fileBox.files === "function", "Attachment control unavailable");
+        var renameBox = Attach.fileBox, renameFiles = renameBox.files(), renameRows = [];
+        need(renameFiles.length === 1 && renameBox.fileListAtGroup().length === 1, "Only a single local attachment rename is supported");
+        var renameFile = renameFiles[0];
+        need(renameFile.atPc === true && !renameFile.id && !renameFile.atSancbox && !renameFile.atFileTrans && !renameFile._deleted, "Only an unassigned local attachment can be renamed");
+        renameBox.children.listview.children().each(function() { if ($(this).data("file") === renameFile) renameRows.push($(this)); });
+        need(renameRows.length === 1 && typeof renameBox._setDeleteFile === "function" && typeof renameBox._updateFileSizeInfo === "function", "Expected one native attachment view");
+        var renameInfo = {name:String(renameFile.name), path:String(renameFile.path), size:Number(renameFile.size)};
+        if (action === "attachment_local_rename_info") return renameInfo;
+        need(JSON.stringify(renameInfo) === JSON.stringify(p.expected), "Attachment changed since rename preview");
+        need(/\.pdf$/i.test(renameInfo.name) && /\.pdf$/i.test(p.name) && p.name !== renameInfo.name, "Expected a different PDF filename");
+        need(Number(FileManager.GetFile(renameInfo.path).Size) === renameInfo.size && Number(FileManager.GetFile(p.path).Size) === renameInfo.size, "Local source size changed");
+        ensureLocalAttachmentUpload();
+        // Replace this one unsent local file through the observed native remove/add handlers.
+        renameBox._setDeleteFile(renameRows[0]);
+        renameBox._updateFileSizeInfo();
+        need(renameBox.files().length === 0, "Native removal did not leave an empty local attachment list");
+        Attach.addFiles([new HsFile(p.path, p.name, renameInfo.size)]); Attach.onrefresh();
+        var renamedFiles = renameBox.files();
+        need(renamedFiles.length === 1 && String(renamedFiles[0].name) === p.name && Number(renamedFiles[0].size) === renameInfo.size, "Partial rename may remain; inspect before continuing");
+        return wxsAction("attachment_local_rename_info", {});
+    }
     if (action === "attachment_diagnostics") {
         need(typeof Attach !== "undefined" && Attach.fileBox, "Attachment control unavailable");
         function attachmentFields(file) {
@@ -185,13 +209,15 @@ function wxsAction(action, p) {
         for (var di = 0; di < diagnosticFiles.length; di++) filesInfo.push(attachmentFields(diagnosticFiles[di]));
         for (var gi = 0; gi < groupFiles.length; gi++) groupsInfo.push(attachmentFields(groupFiles[gi]));
         for (var method in Attach) if (typeof Attach[method] === "function") methods.push(method);
-        var known = ["addFiles", "saveFilesAs", "open", "save", "onopen", "onsave", "onload", "onadd", "ondelete", "onmodify", "checkModified", "checkModifiedUpdate", "checkModifiedCheck", "checkModifiedByTempSave", "sync", "syncNew", "attachAtts", "refresh", "onrefresh"];
+        var known = ["addFiles", "saveFilesAs", "open", "save", "onopen", "onsave", "onload", "onadd", "ondelete", "onmodify", "checkModified", "checkModifiedUpdate", "checkModifiedCheck", "checkModifiedByTempSave", "sync", "syncNew", "attachAtts", "refresh", "onrefresh", "fncRefreshPublicationType", "bindPubMod"];
         for (var ki = 0; ki < known.length; ki++) if (typeof Attach[known[ki]] === "function") definitions[known[ki]] = String(Attach[known[ki]]);
         var boxDefinitions = {}, uploadDefinitions = {};
-        var boxKnown = ["openFileDialog", "addFiles", "_assertFiles", "deleteFiles", "_setDeleteFile", "files", "fileListAtGroup", "selectedFiles", "reload"];
+        var boxKnown = ["openFileDialog", "addFiles", "_assertFiles", "deleteFiles", "_setDeleteFile", "files", "fileListAtGroup", "selectedFiles", "reload", "_appendFile", "_createFileView", "_addFile", "_setPublicType"];
         for (var bk = 0; bk < boxKnown.length; bk++) if (typeof Attach.fileBox[boxKnown[bk]] === "function") boxDefinitions[boxKnown[bk]] = String(Attach.fileBox[boxKnown[bk]]);
         if (typeof hsattach !== "undefined") uploadDefinitions.addFlashFileType = typeof hsattach.AddFlashFile;
-        return {files: filesInfo, groups: groupsInfo, methods: methods, definitions: definitions,
+        var openDefinitions = {}, openKnown = ["openFileFromUrl", "saveFileFromUrl", "attachfile_url", "transfile_url"];
+        for(var ok=0;ok<openKnown.length;ok++) if(typeof window[openKnown[ok]] === "function") openDefinitions[openKnown[ok]]=String(window[openKnown[ok]]);
+        return {files: filesInfo, groups: groupsInfo, methods: methods, definitions: definitions, open_definitions:openDefinitions,
                 filebox_definitions: boxDefinitions, upload_definitions: uploadDefinitions,
                 document_id: typeof domHox1 !== "undefined" && typeof get_text === "function" ? String(get_text(domHox1, "/hox/docInfo/ID")) : "",
                 message_id: typeof rInfo === "object" ? String(rInfo.apprMsgID) : "",
@@ -206,7 +232,8 @@ function wxsAction(action, p) {
         for (var oi = 0; oi < openFiles.length; oi++) if (String(openFiles[oi].name) === p.name) openMatches.push(openFiles[oi]);
         need(openMatches.length === 1 && (openMatches[0].atSancbox || openMatches[0].atFileTrans), "Expected one exact server PDF attachment");
         Attach.open(openMatches[0].path);
-        return {handler_returned: true, name: p.name, evidence: "Native attachment open handler returned without a script exception"};
+        return {handler_returned: true, name: p.name, viewer_open_verified: false,
+                evidence: "Native handler returned only; verify the PDF viewer and displayed pages separately"};
     }
     if (action === "attachment_manifest" || action === "attachment_export") {
         need(typeof Attach !== "undefined" && Attach.fileBox && typeof Attach.fileBox.fileListAtGroup === "function", "Attachment file list unavailable");

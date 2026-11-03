@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="ko">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>나래교무</title><link rel="icon" href="/mark.svg"><link rel="stylesheet" href="/style.css"></head>
+<body>
+  <aside class="sidebar">
+    <div class="brand"><img src="/mark.svg" alt=""><div><strong>나래교무</strong><span>내 PC에서 함께하는 교무</span></div></div>
+    <button id="new-chat" class="new-chat">＋ 새 대화</button>
+    <div class="section-label">대화 기록</div><nav id="conversations"></nav>
+    <div class="sidebar-bottom"><span class="local-dot"></span> 로컬 AI · 미리보기 0.1<div>문서와 대화는 이 PC에 보관합니다.</div></div>
+  </aside>
+  <main>
+    <header><div><h1>교무를 잇는 작은 날개</h1><p>브라우저, 한글, 메신저, 업무포털을 한 대화에서.</p></div><button id="outputs-button" class="quiet">작성 파일 ↗</button></header>
+    <section class="model-panel" aria-label="AI 선택"><div class="model-title"><span>함께할 AI</span><small id="model-status" role="status">실행기 연결 중</small></div><div class="models" id="models"></div></section>
+    <div id="notice" role="status" class="notice" hidden></div>
+    <section id="messages" class="messages" aria-label="대화 내용">
+      <div class="welcome" id="welcome"><div class="welcome-icon">✦</div><h2>어떤 업무를 도와드릴까요?</h2><p>파일을 첨부하거나, 하고 싶은 일을 편하게 적어주세요.</p>
+        <div class="suggestions"><button data-prompt="사용할 수 있는 도구의 연결 상태를 확인해줘">도구 준비 상태 확인</button><button data-prompt="업무포털을 열어줘">업무포털 열기</button><button data-prompt="CBE 메신저에서 읽지 않은 쪽지를 조회해줘">읽지 않은 쪽지</button><button data-prompt="제목은 연수 안내, 본문은 11월 25일 오후 2시에 연수를 진행합니다. 라고 적은 HWPX 문서를 만들어줘">한글 문서 만들기</button></div>
+      </div>
+    </section>
+    <div id="pending" class="pending"></div>
+    <footer><div id="attachments" class="attachments"></div><form id="chat-form"><button id="attach" type="button" class="attach" aria-label="파일 첨부">＋</button><textarea id="input" rows="2" placeholder="나래교무에게 부탁할 일을 적어주세요" aria-label="명령 입력"></textarea><button id="send" class="send" type="submit" aria-label="명령 보내기">↑</button><button id="cancel" class="cancel" type="button" hidden>중단</button></form><div class="footer-note"><span id="activity">AI를 선택하면 실제 로컬 모델이 실행됩니다.</span><span>Enter 보내기 · Shift+Enter 줄바꿈</span></div></footer>
+  </main>
+  <aside class="toolbox"><div class="section-label">나래교무팩</div><h2>네 가지 도구, 한곳에</h2><p class="tools-intro">선택한 AI가 필요한 도구를 골라 업무를 이어갑니다.</p><div id="components"></div><div class="tool-hint"><strong>처음 사용할 때</strong><p>업무포털과 CBE는 본인 계정의 로그인이 필요합니다. 포털은 열린 브라우저에서 직접 로그인하세요.</p></div><button id="portal-button" class="outline">업무포털 열기</button><button id="check-button" class="outline">도구 상태 확인</button><div class="path-note">기본 저장 위치<div id="output-path"></div></div></aside>
+  <dialog id="files-dialog"><div class="dialog-top"><h2>작성한 파일</h2><button id="close-files" class="quiet">닫기</button></div><div id="file-list"></div></dialog>
+  <script type="module" src="/app.js"></script>
+</body></html>

@@ -1,6 +1,6 @@
 // Office integration layer; preserve the vendored browser snapshot.
 import {SchoolBrowser,finalOperation} from '../vendor/narae-gyomu/src/school-browser.mjs';
-import {bound,Fault,browserPath} from '../vendor/narae-gyomu/packages/narae_browser/src/browser.mjs';
+import {BrowserEngine,bound,Fault,browserPath} from '../vendor/narae-gyomu/packages/narae_browser/src/browser.mjs';
 import {chromium} from 'playwright-core';
 import {randomUUID} from 'node:crypto';
 import session from './school-session.cjs';
@@ -11,7 +11,8 @@ function calendarChanged(expected){
  return expected===undefined?state:state!==expected;
 }
 function documentRowsDOM(){
- if(!/\/retrieveSanctnProgrsDocList\.do$/.test(location.pathname))return [];
+ if(!/\/(retrieveSanctnProgrsDocList|retrieveTmprCstdyDocList)\.do$/.test(location.pathname))return [];
+ const saved=/\/retrieveTmprCstdyDocList\.do$/.test(location.pathname);
  return [...document.querySelectorAll('tr')].flatMap(row=>{
   const checkbox=row.querySelector('input[type=checkbox]');if(!checkbox)return [];
   const cells=[...row.cells].map(c=>c.innerText.replace(/\s+/g,' ').trim()),headers=[...row.closest('table')?.querySelectorAll('thead tr:last-child th')||[]].map(c=>c.innerText.replace(/\s+/g,''));
@@ -23,31 +24,36 @@ function documentRowsDOM(){
   if(/^[A-Z][A-Z0-9]{17,31}$/.test(checkboxId))ids.add(checkboxId);
   else for(const e of row.querySelectorAll('a[onclick]'))for(const id of (e.getAttribute('onclick')||'').match(/\b[A-Z][A-Z0-9]{17,31}\b/g)||[])ids.add(id);
   const title=titleIndex>=0?cells[titleIndex]:[...row.querySelectorAll('a')].find(e=>(e.innerText||'').trim().length>5)?.innerText.replace(/\s+/g,' ').trim();
-  return title&&ids.size?[{title,status:statusIndex>=0?cells[statusIndex]:cells.find(c=>/^(?:기안)?회수$/.test(c))||'',text:row.innerText.replace(/\s+/g,' ').trim(),documentIds:[...ids],selected:checkbox.checked,checkboxRef:checkbox.getAttribute('data-narae-ref')}]:[];
+  return title&&ids.size?[{title,status:statusIndex>=0?cells[statusIndex]:cells.find(c=>/^(?:기안)?회수$/.test(c))||'',text:row.innerText.replace(/\s+/g,' ').trim(),documentIds:[...ids],selected:checkbox.checked,checkboxRef:checkbox.getAttribute('data-narae-ref'),...(saved?{saved:true}:{})}]:[];
  });
 }
 export class OfficeSchoolBrowser extends SchoolBrowser {
  constructor({profile,connection='isolated',connectionDirectory,endpoint,environment={}}={}){super();Object.assign(this,{profile,connection,connectionDirectory,endpoint,environment});this.closed=false;}
  resetTask(){this.launchAttempts=new Set();this.clickAttempts=new Map();}
+ clickIdentity(entry,label){this.clickPages||=new WeakMap();if(!this.clickPages.has(this.page))this.clickPages.set(this.page,randomUUID());return JSON.stringify({page:this.clickPages.get(this.page),frame:this.scope().url(),control:entry.id||[entry.role,entry.tag,label],label,dialog:this.lastObservation?.dialog,values:this.lastObservation?.elements?.filter(e=>Object.hasOwn(e,'value')).map(e=>[e.id||e.label,e.value])});}
  async diagnostics(){
   const current=await this.scope().evaluate(async()=>{
    const permissions={};for(const name of ['local-network-access','loopback-network','local-network'])try{permissions[name]=(await navigator.permissions.query({name})).state;}catch{permissions[name]='unsupported';}
    return {title:document.title,origin:location.origin,permissions,loading:[...document.querySelectorAll('.isloading-overlay,[role=progressbar]')].map(e=>({visible:e.getBoundingClientRect().width>0&&getComputedStyle(e).display!=='none',text:(e.innerText||'').slice(0,150)})),localResources:performance.getEntriesByType('resource').flatMap(e=>{try{const u=new URL(e.name);return /^(?:localhost|127\.0\.0\.1|\[::1\])$/.test(u.hostname)?[{origin:u.origin,path:u.pathname,duration:Math.round(e.duration),transferSize:e.transferSize}]:[];}catch{return [];}}).slice(-20)};
   });
-  return {...current,networkFailures:(this.networkFailures||[]).map(({origin,path,code})=>/^https?:\/\//.test(origin)?{origin,path:/^\/[\w/.-]{0,160}$/.test(path)?path:'[redacted]',code}:{origin:'[local-application]',code}),externalClickObserved:Boolean(this.externalIntent),...(this.pendingExternalApp?{externalApplication:{id:this.pendingExternalApp.id,scheme:this.pendingExternalApp.scheme,sourceOrigin:this.pendingExternalApp.sourceOrigin,formatTitle:this.pendingExternalApp.formatTitle,authority:(/^[A-Za-z0-9.:-]{0,50}$/.test(new URL(this.pendingExternalApp.url).host)?new URL(this.pendingExternalApp.url).host:'[redacted]'),launched:Boolean(this.pendingExternalApp.launched)}}:{}),untrusted:true};
+  return {...current,networkFailures:(this.networkFailures||[]).map(({origin,path,scheme,code})=>/^https?:\/\//.test(origin)?{origin,path:/^\/[\w/.-]{0,160}$/.test(path)?path:'[redacted]',code}:{origin:'[local-application]',...(/^[a-z][a-z0-9+.-]{0,30}:$/.test(scheme||'')?{scheme}:{}),code}),externalClickObserved:Boolean(this.externalIntent),...(this.pendingExternalApp?{externalApplication:{id:this.pendingExternalApp.id,scheme:this.pendingExternalApp.scheme,sourceOrigin:this.pendingExternalApp.sourceOrigin,formatTitle:this.pendingExternalApp.formatTitle,authority:(/^[A-Za-z0-9.:-]{0,50}$/.test(new URL(this.pendingExternalApp.url).host)?new URL(this.pendingExternalApp.url).host:'[redacted]'),launched:Boolean(this.pendingExternalApp.launched)}}:{}),untrusted:true};
  }
- captureExternalUri(raw,intent){let url;try{url=new URL(raw);}catch{return;}if(!intent||Date.now()-intent.at>15000||url.protocol!=='wxsclient:'||!/^\/open&url:[A-Za-z0-9+/%=]+&title:/.test(url.pathname))return;if(this.pendingExternalApp?.url===raw)return;this.pendingExternalApp={id:randomUUID(),scheme:'wxsclient',sourceOrigin:intent.sourceOrigin,formatTitle:intent.formatTitle,url:raw,launched:false,...(Array.isArray(intent.nativeBaseline)?{nativeBaseline:intent.nativeBaseline}:{})};}
- async prepareExternalCapture(locator,entry){
-  this.externalIntent={page:this.page,at:Date.now(),sourceOrigin:new URL(this.scope().url()).origin,formatTitle:entry.label.replace(/\s*새창열기$/,'').trim(),nativeBaseline:this.externalNativeBaseline};this.externalNativeBaseline=undefined;
+ captureExternalUri(raw,intent){let url;try{url=new URL(raw);}catch{return;}if(!intent||Date.now()-intent.at>15000||url.protocol!=='wxsclient:'||!/^\/open&url:[A-Za-z0-9+/%=]+&title:/.test(url.pathname))return;if(this.pendingExternalApp?.url===raw)return;this.pendingExternalApp={id:randomUUID(),scheme:'wxsclient',sourceOrigin:intent.sourceOrigin,formatTitle:intent.formatTitle,url:raw,launched:false,...(intent.document?{document:intent.document}:{}),...(Array.isArray(intent.nativeBaseline)?{nativeBaseline:intent.nativeBaseline}:{})};}
+ async prepareExternalCapture(locator,entry,document){
+  this.externalIntent={page:this.page,at:Date.now(),sourceOrigin:new URL(this.scope().url()).origin,formatTitle:entry.label.replace(/\s*새창열기$/,'').trim(),nativeBaseline:this.externalNativeBaseline,...(document?{document}:{})};this.externalNativeBaseline=undefined;
   this.externalBindings||=new WeakMap();let binding=this.externalBindings.get(this.page);if(!binding){binding='__naraeWxs_'+randomUUID().replaceAll('-','');const page=this.page;await page.exposeBinding(binding,(_source,raw)=>{const intent=this.externalIntent;if(intent?.page===page)this.captureExternalUri(raw,intent);});this.externalBindings.set(page,binding);}
-  await this.scope().evaluate(binding=>{const record=value=>{if(typeof value==='string'&&/^wxsclient:/i.test(value))void window[binding](value);},scan=node=>{if(node.nodeType!==1)return;if(node.matches('iframe,frame'))record(node.getAttribute('src'));node.querySelectorAll?.('iframe,frame').forEach(e=>record(e.getAttribute('src')));};const observer=new MutationObserver(records=>{for(const r of records){if(r.type==='attributes'){record(r.oldValue);record(r.target.getAttribute('src'));}for(const node of r.addedNodes)scan(node);}});observer.observe(document.documentElement,{subtree:true,childList:true,attributes:true,attributeFilter:['src'],attributeOldValue:true});setTimeout(()=>observer.disconnect(),15000);},binding);
+  const origin=this.externalIntent.sourceOrigin;
+  for(const frame of this.page.frames()){
+   let sameOrigin=false;try{sameOrigin=new URL(frame.url()).origin===origin;}catch{}if(!sameOrigin)continue;
+   await frame.evaluate(binding=>{const record=value=>{if(typeof value==='string'&&/^wxsclient:/i.test(value))void window[binding](value);},scan=node=>{if(node.nodeType!==1)return;if(node.matches('iframe,frame'))record(node.getAttribute('src'));node.querySelectorAll?.('iframe,frame').forEach(e=>record(e.getAttribute('src')));};const observer=new MutationObserver(records=>{for(const r of records){if(r.type==='attributes'){record(r.oldValue);record(r.target.getAttribute('src'));}for(const node of r.addedNodes)scan(node);}});observer.observe(document.documentElement,{subtree:true,childList:true,attributes:true,attributeFilter:['src'],attributeOldValue:true});setTimeout(()=>observer.disconnect(),15000);},binding);
+  }
  }
  watchExternalApps(){
   if(!this.context?.pages)return;
   this.externalIntentPages||=new WeakSet();for(const page of this.context.pages())if(!this.externalIntentPages.has(page)){this.externalIntentPages.add(page);page.on('requestfailed',request=>{const intent=this.externalIntent;if(intent?.page===page)this.captureExternalUri(request.url(),intent);});}
  }
  watchNetwork(){
-  this.networkPages||=new WeakSet();for(const page of this.context.pages())if(!this.networkPages.has(page)){this.networkPages.add(page);page.on('requestfailed',request=>{let u;try{u=new URL(request.url());}catch{return;}this.networkFailures||=[];this.networkFailures.push({origin:['http:','https:'].includes(u.protocol)?u.origin:'[local-application]',...(['http:','https:'].includes(u.protocol)?{path:u.pathname}:{}),code:String(request.failure()?.errorText||'').match(/(?:net::)?ERR_[A-Z0-9_]+/)?.[0]||'NETWORK_FAILED'});this.networkFailures=this.networkFailures.slice(-20);});}
+  this.networkPages||=new WeakSet();for(const page of this.context.pages())if(!this.networkPages.has(page)){this.networkPages.add(page);page.on('requestfailed',request=>{let u;try{u=new URL(request.url());}catch{return;}this.networkFailures||=[];this.networkFailures.push({origin:['http:','https:'].includes(u.protocol)?u.origin:'[local-application]',...(['http:','https:'].includes(u.protocol)?{path:u.pathname}:{scheme:u.protocol}),code:String(request.failure()?.errorText||'').match(/(?:net::)?ERR_[A-Z0-9_]+/)?.[0]||'NETWORK_FAILED'});this.networkFailures=this.networkFailures.slice(-20);});}
  }
  installFinalDialogs(){
   const watch=page=>{page.removeAllListeners('dialog');page.on('dialog',async dialog=>{const auth=this.finalAuthorization;
@@ -86,12 +92,25 @@ export class OfficeSchoolBrowser extends SchoolBrowser {
  async start({headed=false}={}){
   if(this.connection!=='isolated'){const result=await super.start({headed:true,connection:this.connection,endpoint:this.endpoint,directory:this.connectionDirectory,environment:this.environment});this.browser.on('disconnected',()=>{this.closed=true;});this.context.on('close',()=>{this.closed=true;});return result;}
   if(!this.profile){const result=await super.start({headed});this.context.on('close',()=>{this.closed=true;});return result;}
-  this.context=await chromium.launchPersistentContext(this.profile,{headless:!headed,chromiumSandbox:true,executablePath:browserPath(),args:['--hide-crash-restore-bubble','--restore-last-session'],viewport:{width:1280,height:900},locale:'ko-KR',acceptDownloads:false,serviceWorkers:'block'});
+  this.context=await chromium.launchPersistentContext(this.profile,{headless:!headed,chromiumSandbox:true,executablePath:browserPath(),args:['--hide-crash-restore-bubble','--restore-last-session'],viewport:{width:1280,height:900},locale:'ko-KR',acceptDownloads:true,serviceWorkers:'block'});
   this.context.on('close',()=>{this.closed=true;});
   this.browser={close:()=>this.context.close()};this.context.setDefaultTimeout(12000);
   const watch=p=>{if(this.pages.includes(p))return;this.pages.push(p);p.on('framenavigated',f=>{if(f===p.mainFrame()&&p===this.page)this.invalidate();});p.on('pageerror',e=>{this.errors.push(e.message.slice(0,200));this.errors=this.errors.slice(-10);});p.on('dialog',d=>d.dismiss().catch(()=>{}));};
   this.context.on('page',watch);for(const p of this.context.pages())watch(p);this.page=this.pages.findLast(p=>/^https?:/.test(p.url()))||this.pages[0]||await this.context.newPage();this.installFinalDialogs();
   return {browser:'chromium',headless:!headed,isolated:true,persistent:true};
+ }
+ async read(args={}){
+  const host=new URL(this.scope().url()).hostname;
+  if(regional.regions.some(r=>[r.portalUrl,r.neisUrl,r.edufineUrl,r.evpnUrl].some(url=>new URL(url).hostname===host)))return super.read(args);
+  const selector=args.selector||await this.scope().evaluate(()=>['#dic_area','article','main','[role=main]'].find(s=>document.querySelector(s))||'body');
+  const result=await BrowserEngine.prototype.read.call(this,{...args,selector});
+  const sourceKind=await this.scope().evaluate(()=>{
+   if(/captcha|access.denied|접근.{0,5}(?:차단|제한)|자동입력 방지/i.test(document.title+' '+(document.body?.innerText||'').slice(0,250)))return 'blocked';
+   if(document.querySelector('#dic_area,article h1')||document.querySelector('meta[property="og:type"]')?.content==='article')return 'article';
+   if(/search\./.test(location.hostname)||/\/search(?:\/|$)/.test(location.pathname))return 'search';
+   return location.pathname==='/'||/\/(?:section|category|list)(?:\/|$)/.test(location.pathname)?'listing':'page';
+  });
+  return {...result,sourceKind};
  }
  async snapshot(args={}){
   this.watchNetwork();
@@ -123,6 +142,7 @@ export class OfficeSchoolBrowser extends SchoolBrowser {
   this.lastObservation=result;return this.withFinalState({version,frameIndex:this.page.frames().indexOf(this.scope()),...result,untrusted:true});
  }
  async execute(command){
+  if(['requisition-observe','requisition-click','requisition-confirm','requisition-status'].includes(command.action))return super.execute(command);
   if(command.action==='dialog'){
    const prior=this.pendingUi,dialogPage=this.pendingDialog?.page;if(dialogPage&&dialogPage!==this.page){this.page=dialogPage;this.frame=null;this.invalidate();}const result=await this.executeObserved(command);if(prior){let timer;try{await Promise.race([prior,new Promise((_resolve,reject)=>{timer=setTimeout(()=>reject(new Fault('NAVIGATION_PENDING','안내를 닫은 뒤 원래 화면 전환이 끝나지 않았습니다. 같은 클릭을 반복하지 마세요.')),15000);})]);}finally{clearTimeout(timer);}if(this.pendingUi===prior)this.pendingUi=null;return this.snapshot(command);}return result;
   }
@@ -147,10 +167,23 @@ export class OfficeSchoolBrowser extends SchoolBrowser {
   const origin=this.page,popup=command.action==='click'?this.context.waitForEvent('page',{timeout:1500}).catch(()=>null):null;let clickedLabel,queryNavigation;const commitDate=command.action==='fill'&&/등록일자|신청일자|시작일자|종료일자/.test(this.ref(command.ref).entry.label);
   if(command.action==='click'){
    const {entry,locator}=this.ref(command.ref),label=entry.label.replace(/\s+/g,'');
-   if(regional.edufineHost(new URL(this.scope().url()).hostname)&&/^fncFormDraft\(/.test(await locator.getAttribute('onclick')||''))await this.prepareExternalCapture(locator,entry);
+   const launchHandler=await locator.getAttribute('onclick')||'';
+   if(regional.edufineHost(new URL(this.scope().url()).hostname)){
+    if(/^(?:fncFormDraft|fncDoCallGian|doCallClientApp|doCallClientAppExtra)\(/.test(launchHandler)){
+     const matches=(this.lastObservation?.documentRows||[]).filter(r=>r.title===entry.label);
+     const document=matches.length===1&&matches[0].documentIds.length===1?{id:matches[0].documentIds[0],title:matches[0].title,operation:matches[0].saved?'edit-saved':'read'}:undefined;
+     await this.prepareExternalCapture(locator,entry,document);
+    }
+    else if(/^fncRedrft\(/.test(launchHandler)){
+     const selected=(this.lastObservation?.documentRows||[]).filter(r=>r.selected);
+     if(selected.length!==1||selected[0].status!=='회수')throw new Fault('RECALLED_DOCUMENT_REQUIRED','회수 상태 문서 한 건을 선택한 뒤 재작성하세요.');
+     if(selected[0].documentIds.length!==1)throw new Fault('DOCUMENT_ID_REQUIRED','문서 식별자 한 개가 확인되어야 합니다.');
+     await this.prepareExternalCapture(locator,{...entry,label:selected[0].title},{id:selected[0].documentIds[0],title:selected[0].title,operation:'edit-recalled'});
+    }
+   }
    clickedLabel=label;
    if(/^(조회|검색)$/.test(label))queryNavigation=this.scope().waitForNavigation({waitUntil:'domcontentloaded',timeout:5000}).catch(()=>null);
-   if(!finalOperation(entry.label)){this.clickAttempts||=new Map();const signature=JSON.stringify({url:this.scope().url(),label,dialog:this.lastObservation?.dialog,values:this.lastObservation?.elements?.filter(e=>Object.hasOwn(e,'value')).map(e=>[e.label,e.value])}),attempts=this.clickAttempts.get(signature)||0;if(attempts>=3)throw new Fault('REPEATED_UI_ACTION','같은 화면·입력값에서 같은 버튼을 반복해 중지했습니다. 현재 탭을 유지하고 작업을 확인하세요.');this.clickAttempts.set(signature,attempts+1);}
+   if(!finalOperation(entry.label)){this.clickAttempts||=new Map();const signature=this.clickIdentity(entry,label),attempts=this.clickAttempts.get(signature)||0;if(attempts>=3)throw new Fault('REPEATED_UI_ACTION','같은 화면·입력값에서 같은 버튼을 반복해 중지했습니다. 현재 탭을 유지하고 작업을 확인하세요.');this.clickAttempts.set(signature,attempts+1);}
    if(label==='K-에듀파인'){this.launchAttempts||=new Set();const key=origin.url()+'\n'+label;if(this.launchAttempts.has(key))throw new Fault('REPEATED_SERVICE_LAUNCH','같은 요청에서 에듀파인 열기를 이미 시도했습니다. 열린 탭을 확인하고 메뉴를 다시 누르지 마세요.');this.launchAttempts.add(key);}
    if(entry.disabled)throw new Fault('DISABLED_ELEMENT','비활성 항목입니다. 현재 화면을 다시 확인하세요.');
    // The parent validates document-bound explicit authorization for final actions.
