@@ -2,15 +2,16 @@
 import { parseArgs } from 'node:util';
 import { pathToFileURL } from 'node:url';
 import { resolve } from 'node:path';
-import { realpathSync } from 'node:fs';
+import { realpathSync, readFileSync } from 'node:fs';
 import { Messenger } from './messenger.mjs';
 
-const HELP=`충북소통메신저 CLI 0.7.0 — 로그인된 앱에 연결
+const HELP=`충북소통메신저 CLI 0.8.1 — 로그인된 앱에 연결
 
 사용법:
   cbe status
   cbe notes list [--box received|sent|unread|important|self|reserved|all]
                  [--search "검색어"] [--search-type send|receive|title|content]
+  cbe notes draft <초안.json>  (열린 작성창에 제목·본문·로컬 첨부 준비, 전송·업로드 없음)
   cbe notes read <쪽지ID> [--type R|S] [--reserved]
   cbe notes download <쪽지ID> --out-dir "저장폴더" [--attachment 첨부ID] [--type R|S] [--reserved]
   cbe notes send --to <사용자ID[,사용자ID...]> [--text "내용"] [--title "제목"] [--file "경로"]
@@ -112,17 +113,20 @@ export async function run(argv=process.argv.slice(2)) {
   if((v['dry-run']||v['confirm-many']||v.title!==undefined||v.file.length)&&!sending)throw new Error('--dry-run, --confirm-many, --title, --file은 전송 명령에서만 사용하세요.');
   if(v['confirm-many']&&!(group==='notes'&&action==='send'))throw new Error('--confirm-many는 notes send에서만 사용하세요.');
   if(group==='users'&&action==='search'&&!p[2]?.trim())throw new Error('사용자 검색어를 입력하세요.');
-  const valid=(group==='status'&&p.length===1)||(['notes','chats'].includes(group)&&((action==='list'&&p.length<=2)||(action==='read'&&p.length===3)))||(downloading&&p.length===3)||(['notes','chats'].includes(group)&&action==='send'&&p.length===2)||(group==='chats'&&action==='create'&&p.length===2)||(group==='users'&&['search','show'].includes(action)&&p.length===3)||(group==='memos'&&action==='list'&&p.length<=2)||(group==='open'&&((action==='main'&&p.length===2)||(['note','chat','profile'].includes(action)&&p.length===3)))||(group==='compose'&&p.length===1);
+  const drafting=group==='notes'&&action==='draft'&&p.length===3;
+  const valid=drafting||(group==='status'&&p.length===1)||(['notes','chats'].includes(group)&&((action==='list'&&p.length<=2)||(action==='read'&&p.length===3)))||(downloading&&p.length===3)||(['notes','chats'].includes(group)&&action==='send'&&p.length===2)||(group==='chats'&&action==='create'&&p.length===2)||(group==='users'&&['search','show'].includes(action)&&p.length===3)||(group==='memos'&&action==='list'&&p.length<=2)||(group==='open'&&((action==='main'&&p.length===2)||(['note','chat','profile'].includes(action)&&p.length===3)))||(group==='compose'&&p.length===1);
   if(!valid)throw new Error('지원하지 않는 명령입니다. cbe --help를 확인하세요.');
   const boxes={all:'ALL',received:'R',sent:'S',unread:'N',important:'I',self:'M',reserved:'B'};
   if(group==='notes'&&action==='list'&&!(v.box in boxes))throw new Error('지원하지 않는 --box 값입니다.');
   if(group==='chats'&&action==='list'&&!['all','unread','important'].includes(v.box))throw new Error('대화방 --box는 all, unread, important를 지원합니다.');
   if(group==='chats'&&action==='read'&&!Number.isSafeInteger(Number(v.offset)))throw new Error('대화 offset이 너무 큽니다.');
+  const draftJob=drafting?JSON.parse(readFileSync(resolve(p[2]),'utf8').replace(/^\uFEFF/,'')):null;
   const client=await Messenger.connect(port);
   try{
     let result;
     if(group==='status')result=await client.status();
     else if(group==='notes'&&action==='list')result=await client.notes({...options,box:boxes[v.box],searchType:v['search-type']});
+    else if(drafting)result=await client.draftNote(draftJob);
     else if(group==='notes'&&action==='send')result=await client.sendNote(v.to,v.text,{title:v.title,dryRun:!!v['dry-run'],confirmMany:!!v['confirm-many'],files:v.file});
     else if(downloading&&group==='chats')result=await client.downloadChat(p[2],{messageId:v.message,outDir:v['out-dir']});
     else if(downloading)result=await client.downloadNote(p[2],{type:v.type,reserved:!!v.reserved,attachmentId:v.attachment,outDir:v['out-dir']});

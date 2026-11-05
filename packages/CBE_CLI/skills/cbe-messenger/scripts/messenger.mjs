@@ -13,6 +13,44 @@ const READ_ROUTES = new Set([
 ]);
 const WRITE_ROUTES = new Set(['/pc/note/write', '/common/fileuploadConfirm', '/common/getBsonCode4Chat']);
 
+// CEF-compatible: inspect only this composer's visible editor and local queue.
+export function noteDraftStateDOM(){
+  var data=$('#fileupload').data('blueimp-fileupload'),files=[];
+  $('#fileupload .template-upload').each(function(){var item=$(this).data('data');if(item&&item.files)for(var i=0;i<item.files.length;i++)files.push({name:item.files[i].name,size:item.files[i].size});});
+  var owner=typeof _mainWindow!=='undefined'?_mainWindow:window;
+  return {account:owner.common_activityData.getData('nurUuid'),recipients:String(noteWrite_activityData.getData('selectUserList')||'').split(':‡:').filter(Boolean),title:$('input[name=noteTitle]').val(),text:(document.querySelector('.note-editable').innerText||'').replace(/\uFEFF/g,'').replace(/\r\n/g,'\n').trim(),autoUpload:data&&data.options?data.options.autoUpload:null,files:files,fileCount:Number(noteWrite_activityData.getData('fileCount')||0),writePending:Boolean(noteWrite_activityData.getData('writeCode')||noteWrite_activityData.getData('writeSuccessFlag'))};
+}
+
+export async function stageNoteComposer(composer,{account,to,title,text,files,expectedTitle,expectedFiles}){
+  const state=()=>composer.evaluate(`JSON.stringify((${noteDraftStateDOM.toString()})())`).then(JSON.parse);
+  const before=await state(),sameFiles=()=>before.files.length===files.length&&before.files.every((f,i)=>f.name===files[i].name&&f.size===files[i].size);
+  if(before.account!==account||before.recipients.length!==1||before.recipients[0]!==to)throw Error('현재 작성창의 계정·수신자가 요청과 다릅니다.');
+  if(before.autoUpload!==false||before.writePending)throw Error('자동 업로드 중지·미전송 상태가 확인되지 않았습니다.');
+  if(before.title===title&&before.text===text&&sameFiles()&&before.fileCount===files.length)return {staged:true,verified:true,sent:false,uploaded:false,reused:true,title,text,files:fileSummary(files)};
+  if(before.files.length||before.fileCount){
+    if(before.title!==title||before.text!==text||!Array.isArray(expectedFiles)||before.fileCount!==before.files.length||JSON.stringify(before.files)!==JSON.stringify(expectedFiles))throw Error('작성창의 기존 첨부는 덮어쓰거나 중복 추가하지 않습니다. 교체하려면 확인한 expectedFiles를 지정하세요.');
+    await composer.evaluate(`(function(){if(JSON.stringify((${noteDraftStateDOM.toString()})())!==${JSON.stringify(JSON.stringify(before))})throw Error('draft changed');var buttons=$('#fileupload .template-upload .cancel.fileCancel');if(buttons.length!==${before.files.length})throw Error('queue changed');buttons.click();return true;})()`);
+    const cleared=await state();if(cleared.files.length||cleared.fileCount||cleared.writePending)throw Error('기존 로컬 첨부 해제를 확인하지 못했습니다. 다시 실행하지 말고 작성창을 확인하세요.');
+    return stageNoteComposer(composer,{account,to,title,text,files,expectedTitle:title});
+  }
+  if(before.text&&before.text!==text||before.title&&before.title!==title&&before.title!==expectedTitle)throw Error('작성창의 기존 초안은 덮어쓰지 않습니다. 현재 제목·본문을 확인하세요.');
+  await composer.evaluate(`(function(){if(JSON.stringify((${noteDraftStateDOM.toString()})())!==${JSON.stringify(JSON.stringify(before))})throw Error('draft changed');$('input[name=noteTitle]').val(${JSON.stringify(title)}).trigger('input').trigger('change');$('#neoContents').summernote('code',${JSON.stringify('<p style="white-space: pre-wrap;">'+escapeHtml(text).replace(/\n/g,'<br>')+'</p>')});return true;})()`);
+  if(files.length){
+    const {root}=await composer.call('DOM.getDocument',{depth:0});
+    const {nodeIds}=await composer.call('DOM.querySelectorAll',{nodeId:root.nodeId,selector:'#fileupload input[name=file]'});
+    if(nodeIds.length!==1)throw Error('현재 쪽지 첨부 입력란 한 개를 확인하지 못했습니다. 전송하지 않았습니다.');
+    await composer.call('DOM.setFileInputFiles',{nodeId:nodeIds[0],files:files.map(f=>f.path)});
+  }
+  const deadline=Date.now()+10000;
+  while(Date.now()<deadline){
+    const after=await state();
+    if(after.account!==account||after.recipients.length!==1||after.recipients[0]!==to||after.autoUpload!==false||after.writePending)throw Error('작성창 상태가 달라졌습니다. 같은 작업을 반복하지 마세요.');
+    if(after.title===title&&after.text===text&&after.fileCount===files.length&&after.files.length===files.length&&after.files.every((f,i)=>f.name===files[i].name&&f.size===files[i].size))return {staged:true,verified:true,sent:false,uploaded:false,title,text,files:fileSummary(files)};
+    await new Promise(resolve=>setTimeout(resolve,100));
+  }
+  throw Error('초안 제목·본문·로컬 첨부 목록을 모두 확인하지 못했습니다. 전송하지 않았습니다.');
+}
+
 export class DeliveryError extends Error {
   constructor(message,receipt){
     super(`${message} 자동 재전송하지 않았습니다. ${receipt.noteId?'쪽지':receipt.messageId?'메시지':'방'} ID: ${receipt.noteId||receipt.messageId||receipt.room}`);
@@ -202,6 +240,12 @@ export function selectTarget(targets) {
   return matches[0];
 }
 
+export function selectComposerTarget(targets) {
+  const matches=targets.filter(t=>{try{const u=new URL(t.url);return t.type==='page'&&u.origin===ORIGIN&&u.pathname==='/ezmaru/pc/noteWrite';}catch{return false;}});
+  if(matches.length!==1)throw new Error(`쪽지 작성창이 ${matches.length}개입니다. 작성할 창 한 개를 확인하세요.`);
+  return matches[0];
+}
+
 export function socketUrl(target, port) {
   const u = new URL(target.webSocketDebuggerUrl);
   if (u.protocol !== 'ws:' || !['127.0.0.1', 'localhost', '[::1]'].includes(u.hostname)
@@ -212,16 +256,18 @@ export function socketUrl(target, port) {
 }
 
 export class Messenger {
-  static async connect(port = 9000) {
+  static async connect(port = 9000, kind='main') {
+    if(!['main','composer'].includes(kind))throw new Error('지원하지 않는 메신저 창입니다.');
     let response;
     try { response = await fetch(`http://127.0.0.1:${port}/json`, {redirect:'error', signal:AbortSignal.timeout(5000)}); }
     catch { throw new Error(`메신저 연결 실패 (127.0.0.1:${port}). 충북소통메신저를 실행하고 로그인해 주세요.`); }
     if (!response.ok) throw new Error('메신저 디버깅 응답을 읽을 수 없습니다.');
     const targets = await response.json();
     if (!Array.isArray(targets)) throw new Error('메신저 디버깅 목록 형식이 달라졌습니다.');
-    const target = selectTarget(targets);
+    const target = kind==='main'?selectTarget(targets):selectComposerTarget(targets);
     const client = new Messenger();
     client.target = target;
+    client.port = port;
     client.pending = new Map();
     client.nextId = 0;
     client.ws = new WebSocket(socketUrl(target, port));
@@ -241,7 +287,7 @@ export class Messenger {
         client.ws.addEventListener('open', () => {clearTimeout(timer); resolve();}, {once:true});
         client.ws.addEventListener('error', () => {clearTimeout(timer); reject(new Error('메신저 연결이 끊겼습니다.'));}, {once:true});
       });
-      const ready = await client.evaluate(`typeof EZAjax === 'function' && typeof common_activityData !== 'undefined' && !!common_activityData.getData('nurUuid')`);
+      const ready = await client.evaluate(kind==='main'?`typeof EZAjax === 'function' && typeof common_activityData !== 'undefined' && !!common_activityData.getData('nurUuid')`:`!!document.body && !!document.querySelector('input,[contenteditable]')`);
       if (!ready) throw new Error('메신저 로그인이 완료되지 않았거나 앱 구조가 달라졌습니다.');
       return client;
     } catch (error) {client.close(); throw error;}
@@ -496,6 +542,15 @@ export class Messenger {
   async compose(uid) {
     await this.evaluate(`(function(){common_popup.writeNote('favorite',${JSON.stringify(uid)});return true;})()`);
     return {opened:'note-composer',recipientId:uid,sent:false};
+  }
+  async draftNote(job){
+    if(!job||typeof job!=='object'||Array.isArray(job)||Object.keys(job).some(k=>!['to','title','text','files','expectedTitle','expectedFiles'].includes(k)))throw Error('초안 JSON은 to,title,text,files,expectedTitle,expectedFiles만 지원합니다.');
+    if(job.expectedFiles!==undefined&&(!Array.isArray(job.expectedFiles)||job.expectedFiles.some(f=>!f||Object.keys(f).some(k=>!['name','size'].includes(k))||typeof f.name!=='string'||!Number.isSafeInteger(f.size)||f.size<0)))throw Error('expectedFiles는 확인한 파일명·바이트 크기의 배열이어야 합니다.');
+    const ids=recipientIds(job.to),text=messageText(job.text),title=job.title,files=await attachmentFiles(job.files||[]);
+    if(ids.length!==1||typeof title!=='string'||!title.trim()||title.length>100||job.expectedTitle!==undefined&&(typeof job.expectedTitle!=='string'||job.expectedTitle.length>100))throw Error('초안 수신자 한 명과 1~100자 제목을 지정하세요.');
+    const settings=await this.sendSettings();this.checkAttachments(files,settings,'note');
+    const recipient=await this.user(ids[0]),composer=await Messenger.connect(this.port||9000,'composer');
+    try{return {...await stageNoteComposer(composer,{account:settings.userId,to:ids[0],title,text,files,expectedTitle:job.expectedTitle,expectedFiles:job.expectedFiles}),recipient};}finally{composer.close();}
   }
   async sendChat(uid,text,options={}){
     if(recipientIds(uid).length!==1)throw new Error('chats send는 수신자 한 명을 지정하세요. 그룹 생성은 chats create를 사용하세요.');

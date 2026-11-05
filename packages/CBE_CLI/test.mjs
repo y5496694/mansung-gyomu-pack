@@ -1,6 +1,6 @@
 import test, {after} from 'node:test';
 import assert from 'node:assert/strict';
-import { selectTarget, socketUrl, plain, Messenger } from './messenger.mjs';
+import { selectTarget, selectComposerTarget, stageNoteComposer, socketUrl, plain, Messenger } from './messenger.mjs';
 import {positive,run,printResult} from './cli.mjs';
 import {mkdtempSync,writeFileSync,rmSync,readFileSync,readdirSync} from 'node:fs';
 import {createHash} from 'node:crypto';
@@ -11,6 +11,37 @@ import {fileURLToPath} from 'node:url';
 import vm from 'node:vm';
 
 const target={type:'page',id:'a-b',url:'http://stmsg.cbe.go.kr:7880/ezmaru/pc/main',webSocketDebuggerUrl:'ws://127.0.0.1:9000/devtools/page/a-b'};
+
+test('초안은 같은 앱의 작성창 한 개만 선택한다',()=>{
+  const composer={...target,url:'http://stmsg.cbe.go.kr:7880/ezmaru/pc/noteWrite'};
+  assert.equal(selectComposerTarget([target,composer]),composer);
+  assert.throws(()=>selectComposerTarget([composer,composer]));
+  assert.throws(()=>selectComposerTarget([{...composer,url:'https://evil.invalid/ezmaru/pc/noteWrite'}]));
+});
+
+test('미전송 초안은 로컬 첨부만 준비하고 같은 작업 재호출은 중복하지 않는다',async()=>{
+  const files=[{path:'D:/synthetic/신청서.hwp',name:'신청서.hwp',size:20},{path:'D:/synthetic/영수증.png',name:'영수증.png',size:30}],job={account:'own',to:'recipient',title:'합성 정산서',text:'합성 내용\n둘째 줄',files};
+  let state={account:'own',recipients:['recipient'],title:'',text:'',autoUpload:false,files:[],fileCount:0,writePending:false},mutations=0;const calls=[];
+  const composer={evaluate:async expression=>{if(expression.startsWith('JSON.stringify'))return JSON.stringify(state);mutations++;state={...state,title:job.title,text:job.text};return true;},call:async(method,args)=>{calls.push(method);if(method==='DOM.getDocument')return {root:{nodeId:1}};if(method==='DOM.querySelectorAll'){assert.equal(args.selector,'#fileupload input[name=file]');return {nodeIds:[2]};}if(method==='DOM.setFileInputFiles'){assert.deepEqual(args.files,files.map(f=>f.path));state={...state,files:files.map(({name,size})=>({name,size})),fileCount:2};return {};}throw Error('전송 또는 네트워크 호출 금지');}};
+  const result=await stageNoteComposer(composer,job);assert.equal(result.staged,true);assert.equal(result.verified,true);assert.equal(result.sent,false);assert.equal(result.uploaded,false);assert.deepEqual(calls,['DOM.getDocument','DOM.querySelectorAll','DOM.setFileInputFiles']);assert.equal(mutations,1);
+  const again=await stageNoteComposer(composer,job);assert.equal(again.reused,true);assert.equal(calls.length,3);assert.equal(mutations,1);
+});
+
+test('다른 계정·수신자·기존 초안·자동 업로드 작성창에서는 어떤 입력도 하지 않는다',async()=>{
+  const before={account:'own',recipients:['recipient'],title:'',text:'',autoUpload:false,files:[],fileCount:0,writePending:false},job={account:'own',to:'recipient',title:'합성 제목',text:'합성 내용',files:[]};
+  for(const change of [{account:'other'},{recipients:['other']},{recipients:['recipient','other']},{title:'기존 제목'},{text:'작성 중인 본문'},{files:[{name:'기존 첨부',size:10}],fileCount:1},{autoUpload:true},{writePending:true}]){
+    const composer={evaluate:async expression=>{assert(expression.startsWith('JSON.stringify'));return JSON.stringify({...before,...change});},call:()=>{throw Error('DOM 입력 금지');}};
+    await assert.rejects(stageNoteComposer(composer,job));
+  }
+});
+
+test('첨부 교체는 명시한 이전 로컬 대기열과 제목·본문이 모두 일치해야 한다',async()=>{
+  const previous=[{name:'미서명.hwp',size:20}],files=[{path:'D:/synthetic/서명.hwp',name:'서명.hwp',size:30}],job={account:'own',to:'recipient',title:'같은 제목',text:'같은 본문',files,expectedFiles:previous};
+  let state={account:'own',recipients:['recipient'],title:job.title,text:job.text,autoUpload:false,files:previous,fileCount:1,writePending:false},cancelled=0;
+  const composer={evaluate:async expression=>{if(expression.startsWith('JSON.stringify'))return JSON.stringify(state);if(expression.includes('buttons.click()')){cancelled++;state={...state,files:[],fileCount:0};}return true;},call:async method=>{if(method==='DOM.getDocument')return {root:{nodeId:1}};if(method==='DOM.querySelectorAll')return {nodeIds:[2]};if(method==='DOM.setFileInputFiles'){state={...state,files:[{name:files[0].name,size:files[0].size}],fileCount:1};return {};}throw Error('네트워크 제출 금지');}};
+  await assert.rejects(stageNoteComposer(composer,{...job,expectedFiles:[{name:'다른 파일.hwp',size:20}]}));assert.equal(cancelled,0);
+  const result=await stageNoteComposer(composer,job);assert.equal(result.verified,true);assert.equal(result.sent,false);assert.equal(result.uploaded,false);assert.equal(cancelled,1);assert.deepEqual(state.files,[{name:'서명.hwp',size:30}]);
+});
 test('앱 메인 페이지만 선택하며 중복·다른 호스트는 거절',()=>{
   assert.equal(selectTarget([{...target,url:'about:blank'},target]),target);
   assert.throws(()=>selectTarget([target,target]));

@@ -106,6 +106,8 @@ cbe notes send --to "사용자ID" --file "C:\자료\회의 안내.pdf" --dry-run
 
 ## GUI를 명시적으로 요청받았을 때
 
+미전송 준비는 `compose --to USER_ID --json` 후 `notes draft 초안.json --json`을 사용한다. 초안 파일의 `to,title,text,files`를 같은 계정·수신자의 작성창 한 개에 적용하고 제목·본문·파일명·바이트 크기를 재조회한다. `staged:true,verified:true,sent:false,uploaded:false`는 로컬 대기열 확인이며 업로드·전송을 뜻하지 않는다. 기존 내용·첨부가 다르면 중단하고, 같은 초안 재호출은 중복하지 않는다. 필요할 때 `expectedTitle`로 확인한 현재 제목 한 개만 지정할 수 있다. 다른 본문·첨부는 지우지 않는다.
+
 ```powershell
 node $cbeEntry open main --json
 node $cbeEntry open note NOTE_ID --type R --json
@@ -136,3 +138,6 @@ node --test '스킬폴더\scripts\test.mjs'
 동봉 테스트는 메신저 연결·전송을 모의 처리한다. 로컬 CLI 진입점, 대상 선택, 페이지 처리, 보안 쪽지 표시, 내 조직 우선 검색, 새 방·초대 패킷, 수신자 불일치 차단, 한 번 전송 후 서버 기록 검증, 쪽지 HTTP 오류 시 자동 재시도 차단, dry-run과 앱 전송 제한을 검사한다. 현재 버전은 45개 테스트를 포함하며 첨부 바이트 보존·다중 파일·부분 실패·방별 권한도 검사한다.
 
 대화 첨부: `chats download ROOM_ID --message MESSAGE_ID --out-dir 저장폴더 --json`. 실제 방에서 조회한 메시지의 유효한 첨부만 받으며 보안·회수·만료·외부 링크를 우회하지 않는다. 0.7.0은 59개 모의 테스트를 통과했다.
+
+
+서명본 등으로 로컬 초안 첨부를 교체하려면 `expectedFiles`에 현재 대기열의 `[{"name":"확인한 파일명","size":123}]`를 정확한 순서로 지정한다. 현재 제목·본문·계정·수신자와 파일명·바이트 크기가 모두 일치하고 자동 업로드가 꺼져 있을 때만 로컬 대기열을 교체한다. 서버 첨부 삭제나 업로드·전송은 실행하지 않는다.
